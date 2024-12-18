@@ -1,0 +1,4 @@
+name: two-group
+depend: hott-core-group
+include:
+  ./

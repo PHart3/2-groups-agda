@@ -1,0 +1,10 @@
+# Ignore Agda compiled files
+*.agdai
+.*.agda.vim
+# Ignore Emacs backup files
+*~
+# Ignore Agda-generated files
+html1/
+html2/
+# Ignore build output
+_build/
