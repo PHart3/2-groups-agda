@@ -142,3 +142,22 @@ has-sect⊙.sect⊙-eq (⊙Ω-sect f (sect⊙ r-inv sect⊙-eq)) =
 Ω-fmap-∙ : ∀ {i j} {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y) (p q : Ω X)
   → Ω-fmap F (p ∙ q) == Ω-fmap F p ∙ Ω-fmap F q
 Ω-fmap-∙ (f , idp) p q = ap-∙ f p q
+
+{- iterated loop spaces. [Ω^] and [Ω^'] iterates [Ω] from different sides:
+   [Ω^ (S n) X = Ω (Ω^ n X)] and [Ω^' (S n) X = Ω^' n (Ω X)]. -}
+
+module _ {i} where
+
+  ⊙Ω^ : (n : ℕ) → Ptd i → Ptd i
+  ⊙Ω^ O X = X
+  ⊙Ω^ (S n) X = ⊙Ω (⊙Ω^ n X)
+
+  Ω^ : (n : ℕ) → Ptd i → Type i
+  Ω^ n X = de⊙ (⊙Ω^ n X)
+
+  ⊙Ω^' : (n : ℕ) → Ptd i → Ptd i
+  ⊙Ω^' O X = X
+  ⊙Ω^' (S n) X = (⊙Ω^' n (⊙Ω X))
+
+  Ω^' : (n : ℕ) → Ptd i → Type i
+  Ω^' n X = de⊙ (⊙Ω^' n X)
