@@ -4,6 +4,7 @@ open import lib.Basics
 open import lib.types.Pointed
 open import lib.types.LoopSpace
 open import lib.types.Truncation
+open import lib.cubical.PathPathOver
 open import 2Grp
 
 -- delooping of a coherent 2-group via an EM-like 3-HIT
@@ -33,3 +34,12 @@ module _ {i} {G : Type i} {η : CohGrp {X = G}} where
       ap (λ p → p ∙ loop z) (loop-comp x y) ∙
       loop-comp (mu x y) z ∙
       ! (ap loop (al x y z))
+
+  module K₂Elim {j} {P : K₂ G η → Type j}
+    {{p : {x : K₂ G η} → has-level 2 (P x)}}
+    (base* : P base)
+    (loop* : (x : G) → base* == base* [ P ↓ loop x ])
+    (loop-comp* : (x y : G) →
+      PathPathOver (loop-comp x y) (loop* x ∙ᵈ loop* y) (loop* (mu x y)))
+    -- 3-dim path
+    where
