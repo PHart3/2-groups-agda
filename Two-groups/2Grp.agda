@@ -30,11 +30,11 @@ record CohGrp {i} {X : Type i} : Type i where
     linv : (x : X) → mu (inv x) x == id
     
     -- adjoint equiv conditions on inv ("zz" short for "zig-zag")
-    zz1 : (x : X) →
+    zz₁ : (x : X) →
       lam x ∙ ! (rho x)
       ==
       ap (λ z → mu z x) (rinv x) ∙ ! (al x (inv x) x) ∙ ap (mu x) (linv x)
-    zz2 : (x : X) →
+    zz₂ : (x : X) →
       rho (inv x) ∙ ! (lam (inv x))
       ==
       ap (mu (inv x)) (rinv x) ∙ al (inv x) x (inv x) ∙ ap (λ z → mu z (inv x)) (linv x)
