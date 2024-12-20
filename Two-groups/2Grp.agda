@@ -14,7 +14,10 @@ record CohGrp {i} {X : Type i} : Type i where
   field
     {{1trunc}} : has-level 1 X
     
-    -- monoidal groupoid structure
+    {-
+      monoidal groupoid structure on X (with
+      X viewed as a category with == as hom)
+    -}
     id : X
     mu : X → X → X
     lam : (x : X) → mu id x == x
