@@ -445,7 +445,6 @@ module _ {i j} {A : Type i} {B : A → Type j} where
     → q !◃ idp == ! q
   !◃idp idp = idp
 
-
   {-
   This is some kind of dependent horizontal composition (used in [apd∙]).
   -}

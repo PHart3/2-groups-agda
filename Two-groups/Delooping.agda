@@ -41,5 +41,5 @@ module _ {i} {G : Type i} {η : CohGrp {X = G}} where
     (loop* : (x : G) → base* == base* [ P ↓ loop x ])
     (loop-comp* : (x y : G) →
       PathPathOver (loop-comp x y) (loop* x ∙ᵈ loop* y) (loop* (mu x y)))
-    -- 3-dim path
+    -- 3-dim pathover
     where
