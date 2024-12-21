@@ -318,6 +318,15 @@ module _ {i j} {A : Type i} {B : A → Type j} where
 
   _◃_ = _∙ᵈ_
 
+  infixr 5 _∙ᵈ=_
+  _∙ᵈ=_ : {x y z : A} {p : x == y} {p' : y == z}
+    {u : B x} {v : B y} {w : B z}
+    → {d₁ d₂ : u == v [ B ↓ p ]}
+    → {e₁ e₂ : v == w [ B ↓ p' ]}
+    → d₁ == d₂ → e₁ == e₂
+    → d₁ ∙ᵈ e₁ == d₂ ∙ᵈ e₂
+  _∙ᵈ=_ {p = idp} {p' = idp} idp idp = idp
+
   ◃idp : {x : A} {v w : B x} (q : w == v)
     → q ◃ idp == q
   ◃idp idp = idp
