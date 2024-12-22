@@ -65,4 +65,30 @@ module _ {η : CohGrp {X = G}} where
 
   open K₂Elim public using () renaming (f to K₂-elim)
 
-  -- recursion principle
+  module K₂Rec {j} {B : Type j} {{_ : has-level 2 B}}
+    (base* : B) (loop* : G → base* == base*)
+    (loop-comp* : (x y : G) → loop* x ∙ loop* y == loop* (mu x y))
+    (loop-assoc* : (x y z : G) → 
+      ∙-assoc (loop* x) (loop* y) (loop* z) ∙
+      ap (λ p → loop* x ∙ p) (loop-comp* y z) ∙
+      loop-comp* x (mu y z)
+        ==
+      ap (λ p → p ∙ loop* z) (loop-comp* x y) ∙
+      loop-comp* (mu x y) z ∙
+      ! (ap loop* (al x y z)))
+    where
+
+    private
+      module M =
+        K₂Elim
+          base*
+          (λ x → ↓-cst-in (loop* x))
+          (λ x y → ppo-cst-in-∙ {p₁ = loop x} (loop-comp x y) (loop-comp* x y))
+          (λ x y z → {!!})
+
+    f : K₂ η → B
+    f = M.f
+
+    -- β rules
+
+  open K₂Rec public using () renaming (f to K₂Rec)

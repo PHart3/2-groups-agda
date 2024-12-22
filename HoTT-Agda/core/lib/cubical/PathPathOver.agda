@@ -2,6 +2,7 @@
 
 open import lib.Base
 open import lib.PathGroupoid
+open import lib.PathOver
 
 module lib.cubical.PathPathOver where
 
@@ -67,5 +68,13 @@ module _ {i j k} {A : Type i} {B : A → Type j} {X : Type k} where
     (f : (x : X) → u == v [ B ↓ p x ]) {x₁ x₂ : X} (q : x₁ == x₂)
     → PPOver (ap p q) (f x₁) (f x₂)
   apd-po f idp = idp
+
+module _ {i j} {A : Type i} {B : Type j} where
+
+  ppo-cst-in-∙ : {x y z : A} {p₁ : x == y} {p₂ : y == z}
+    {p₃ : x == z} {a b c : B} {τ₁ : a == b} {τ₂ : b == c}
+    {τ₃ : a == c} (q : p₁ ∙ p₂ == p₃) (r : τ₁ ∙ τ₂ == τ₃)
+    → PPOver q (↓-cst-in {p = p₁} τ₁ ∙ᵈ ↓-cst-in τ₂) (↓-cst-in τ₃)
+  ppo-cst-in-∙ {p₁ = idp} {p₂ = idp} {τ₁ = idp} {τ₂ = idp} idp idp = idp
 
 -- Describe PPOver for B₁ : A → Type j , B₂ : A → Type k , C = λ a → (B₁ a → B₂ a)
