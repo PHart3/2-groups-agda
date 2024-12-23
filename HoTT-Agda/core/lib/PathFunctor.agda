@@ -779,3 +779,15 @@ module _ {i₀ i₁ i₂ i₃ i₄ i₅ j} {A₀ : Type i₀} {A₁ : Type i₁}
     → (x₀ == y₀) → (x₁ == y₁) → (x₂ == y₂) → (x₃ == y₃) → (x₄ == y₄) → (x₅ == y₅)
     → f x₀ x₁ x₂ x₃ x₄ x₅ == f y₀ y₁ y₂ y₃ y₄ y₅
   ap6 idp idp idp idp idp idp = idp
+
+module _ {i} {A : Type i} {x y : A} where
+
+  ap-∙-id-unit-r : {q s : x == y} (r : s == q ∙ idp)
+    → ap (λ p → p ∙ idp) (r ∙ ∙-unit-r q) == ∙-unit-r s ∙ r
+  ap-∙-id-unit-r {q = idp} idp = idp
+
+module _ {i j} {A : Type i} {x y : A} where
+
+  ∙-id-ind : {p₁ p₂ : x == y} (P : p₁ ∙ idp == p₂ ∙ idp → Type j)
+    → Π (p₁ == p₂) (λ r → P (ap (λ p → p ∙ idp) r)) → (r : _) → P r 
+  ∙-id-ind {p₁ = idp} {p₂} P f ρ = transport P (ap-∙-id-unit-r ρ) (f (ρ ∙ ∙-unit-r p₂))

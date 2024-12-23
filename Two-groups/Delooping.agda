@@ -74,7 +74,7 @@ module _ {η : CohGrp {X = G}} where
       loop-comp* x (mu y z)
         ==
       ap (λ p → p ∙ loop* z) (loop-comp* x y) ∙
-      loop-comp* (mu x y) z ∙
+      loop-comp* (mu x y) z ∙'
       ! (ap loop* (al x y z)))
     where
 
@@ -83,12 +83,29 @@ module _ {η : CohGrp {X = G}} where
         K₂Elim
           base*
           (λ x → ↓-cst-in (loop* x))
-          (λ x y → ppo-cst-in-∙ {p₁ = loop x} (loop-comp x y) (loop-comp* x y))
-          (λ x y z → {!!})
+          (λ x y → ppo-cst-in-∙ (loop x) (loop-comp x y) (loop-comp* x y))
+          (λ x y z → pppo-cst-in-word loop loop* (al x y z) (loop-comp x y)
+                       (loop-comp y z) (loop-comp x (mu y z)) (loop-comp (mu x y) z)
+                       (loop-comp* x y) (loop-comp* y z) (loop-comp* x (mu y z))
+                       (loop-comp* (mu x y) z) (loop-assoc x y z) (loop-assoc* x y z))
 
     f : K₂ η → B
     f = M.f
 
-    -- β rules
+    -- non-dependent β rules
 
+    loop-βr : (x : G) → ap f (loop x) == loop* x
+    loop-βr x = apd=cst-in (M.loop-β x)
+
+    loop-comp-βr : (x y : G) →
+      loop-comp* x y
+      ==
+      ! (pair=-curry (_∙_) (loop-βr x) (loop-βr y)) ∙
+      ∙-ap f (loop x) (loop y) ∙ ap (ap f) (loop-comp x y) ∙
+      loop-βr (mu x y)
+    loop-comp-βr x y =
+      ppo-cst-in-∙ᵈ f (loop x) (loop-comp x y) (loop-comp* x y)
+        (M.loop-β x) (M.loop-β y) (M.loop-β (mu x y))
+        (M.loop-comp-β x y)
+    
   open K₂Rec public using () renaming (f to K₂Rec)

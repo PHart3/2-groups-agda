@@ -225,6 +225,10 @@ pair×= : ∀ {i j} {A : Type i} {B : Type j}
   → (a , b) == (a' , b')
 pair×= idp q = pair= idp q
 
+pair=-curry : ∀ {i j k} {A : Type i} {B : Type j} {C : Type k}
+  (f : A → B → C) {a a' : A} (p : a == a') {b b' : B} (q : b == b')
+  → f a b == f a' b'
+pair=-curry f {a} idp q = ap (f a) q
 
 {- Empty type
 

@@ -325,7 +325,7 @@ module _ {i j} {A : Type i} {B : A → Type j} where
     → {e₁ e₂ : v == w [ B ↓ p' ]}
     → d₁ == d₂ → e₁ == e₂
     → d₁ ∙ᵈ e₁ == d₂ ∙ᵈ e₂
-  _∙ᵈ=_ {p = idp} {p' = idp} idp idp = idp
+  _∙ᵈ=_ idp idp = idp
 
   ◃idp : {x : A} {v w : B x} (q : w == v)
     → q ◃ idp == q
