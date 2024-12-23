@@ -12,7 +12,7 @@ module 2Grp where
 record CohGrp {i} {X : Type i} : Type i where
   constructor cohgrp
   field
-    {{1trunc}} : has-level 1 X
+    instance {{1trunc}} : has-level 1 X
     
     {-
       monoidal groupoid structure on X (with

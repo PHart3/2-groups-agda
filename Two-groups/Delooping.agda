@@ -16,7 +16,7 @@ postulate -- HIT
 
 module _ {η : CohGrp {X = G}} where
 
-  open CohGrp {X = G} η
+  open CohGrp η
 
   postulate -- HIT
     base : K₂ η
@@ -92,7 +92,7 @@ module _ {η : CohGrp {X = G}} where
     f : K₂ η → B
     f = M.f
 
-    -- non-dependent β rules
+    -- non-dependent computation rules
 
     loop-βr : (x : G) → ap f (loop x) == loop* x
     loop-βr x = apd=cst-in (M.loop-β x)
@@ -107,5 +107,5 @@ module _ {η : CohGrp {X = G}} where
       ppo-cst-in-∙ᵈ f (loop x) (loop-comp x y) (loop-comp* x y)
         (M.loop-β x) (M.loop-β y) (M.loop-β (mu x y))
         (M.loop-comp-β x y)
-    
-  open K₂Rec public using () renaming (f to K₂Rec)
+
+  open K₂Rec public using () renaming (f to K₂-rec)
