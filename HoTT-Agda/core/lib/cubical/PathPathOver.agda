@@ -62,6 +62,8 @@ module _ {i j} {A : Type i} {B : A → Type j} where
     → PPOver q₁ d e → PPOver q₂ d e → Type j
   PPPOver idp po₁ po₂ = po₁ == po₂
 
+  -- PPOver for a family of 1-types is always inhabited.
+  
 
 module _ {i j k} {A : Type i} {B : A → Type j} {X : Type k} where
 
@@ -161,8 +163,7 @@ module _ {i j} {A : Type i} {B : Type j} where
       ==
     apᶜ² (! r₁ ∙ᵈ= ! r₂) (! r₃) (ppo-cst-in-∙ p₁ ρ τ)
     →
-    τ
-      ==
+    τ ==
     ! (pair=-curry (_∙_) (apd=cst-in r₁) (apd=cst-in r₂)) ∙
     ∙-ap f p₁ p₂ ∙ ap (ap f) ρ ∙ (apd=cst-in r₃) 
   ppo-cst-in-∙ᵈ f {a₀} idp {p₂ = idp} idp idp r₁ r₂ r₃ = lemma r₁ r₂ r₃ 
@@ -172,5 +173,3 @@ module _ {i j} {A : Type i} {B : Type j} where
         idp == ! (_∙ᵈ=_ {A = A} {B = λ _ → B} {x = a₀} (! s₁) (! s₂)) ∙ ! s₃ →
         idp == ! (pair=-curry _∙_ s₁ s₂) ∙ s₃
       lemma idp idp s₃ v = ap ! v ∙ !-! s₃
-
--- Describe PPOver for B₁ : A → Type j , B₂ : A → Type k , C = λ a → (B₁ a → B₂ a)
