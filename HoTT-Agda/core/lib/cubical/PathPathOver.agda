@@ -26,9 +26,13 @@ module _ {i j} {A : Type i} {B : A → Type j} where
     → d₁ == d₂ → e₁ == e₂ → PPOver q d₁ e₁ → PPOver q d₂ e₂
   apᶜ² {q = idp} c₁ c₂ po = ! c₁ ∙ po ∙ c₂
 
+  apdd : (f : (a : A) → B a) {x y : A} {τ₁ τ₂ : x == y}
+    (p : τ₁ == τ₂) → PPOver p (apd f τ₁) (apd f τ₂)
+  apdd f {τ₁ = idp} idp = idp
+
   apdd-∙ᵈ : (f : (a : A) → B a) {x y z : A} {τ₃ : x == z} (τ₁ : x == y) (τ₂ : y == z)
     (p : τ₁ ∙ τ₂ == τ₃) → PPOver p (apd f τ₁ ∙ᵈ apd f τ₂) (apd f τ₃)
-  apdd-∙ᵈ f {τ₃ = idp} idp τ₂ idp = idp
+  apdd-∙ᵈ f idp idp idp = idp
 
   -- associativity of pathovers (similar to ∙ᵈ-assoc in PathGroupoid.agda)
   ∙ᵈ-assoc-ppo : {x y z w : A} {p₁ : x == y} {p₂ : y == z} {p₃ : z == w}
@@ -82,6 +86,12 @@ module _ {i j} {A : Type i} {B : A → Type j} where
     → PPPOver r po₁ po₂
   PPPOver-1type {p₁ = idp} {q₁ = idp} {u = u} {v} idp po₁ po₂ =
     prop-has-all-paths po₁ po₂
+
+  -- sanity check on our definition of apdd-∙ᵈ
+  apdd-∙ᵈ=apdd : (f : (a : A) → B a) {x y z : A} {τ₃ : x == z}
+    (τ₁ : x == y) (τ₂ : y == z) (p : τ₁ ∙ τ₂ == τ₃)
+    → apdd-∙ᵈ f τ₁ τ₂ p == ! (apd-∙ f τ₁ τ₂) ∙ᶜ apdd f p
+  apdd-∙ᵈ=apdd f idp idp idp = idp
 
 module _ {i j k} {A : Type i} {B : A → Type j} {X : Type k} where
 
