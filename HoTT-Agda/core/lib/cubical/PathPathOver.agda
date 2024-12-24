@@ -37,6 +37,11 @@ module _ {i j} {A : Type i} {B : A → Type j} where
     → PPOver (∙-assoc p₁ p₂ p₃) ((d₁ ∙ᵈ d₂) ∙ᵈ d₃) (d₁ ∙ᵈ (d₂ ∙ᵈ d₃))
   ∙ᵈ-assoc-ppo {p₁ = idp} {p₂ = idp} {p₃ = idp} d₁ d₂ d₃ = ∙-assoc d₁ d₂ d₃
 
+  -- small generalization of PPOver (fillers of a hollow closed 3-dim triangle)
+  PPOverTri : {x y : A} {p₁ p₂ : x == y} {u : B x} {v₁ v₂ : B y} (r : v₁ == v₂)
+    (q : p₁ == p₂) (d : u == v₁ [ B ↓ p₁ ]) (e : u == v₂ [ B ↓ p₂ ]) → Type j
+  PPOverTri idp q d e = PPOver q d e
+
   -- basic operations on PPOver
 
   infixr 50 _∙ᶜ_
