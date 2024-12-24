@@ -4,6 +4,7 @@ open import lib.Base
 open import lib.PathGroupoid
 open import lib.PathFunctor
 open import lib.PathOver
+open import lib.NType
 
 module lib.cubical.PathPathOver where
 

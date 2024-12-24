@@ -1,7 +1,7 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Base
-open import lib.PathFunctor
+open import lib.PathGroupoid
 open import lib.Funext
 open import lib.cubical.PathPathOver
 
@@ -29,6 +29,6 @@ module _ {i j k} {A : Type i} {B₁ : A → Type j} {B₂ : A → Type k} where
       (α₁ : Π (B₁ x) (λ b →  f b == g (transport B₁ p₁ b) [ B₂ ↓ p₁ ]))
       (α₂ : Π (B₁ x) (λ b →  f b == g (transport B₁ p₂ b) [ B₂ ↓ p₂ ]))
       → Π (B₁ x)
-        (λ b → PPOver q (po-fun-↓ap q (λ p → g (transport B₁ p b)) (α₁ b)) (α₂ b))
+        (λ b → PPOver q (po-fun-↓ q (λ p → g (transport B₁ p b)) (α₁ b)) (α₂ b))
       → PPOver q (po-ext p₁ α₁) (po-ext p₂ α₂)
     ppo-ext {p₁ = idp} idp α₁ α₂ h = ap λ= (λ= h)

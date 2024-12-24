@@ -78,14 +78,6 @@ module _ {i j} {A : Type i} {B : A → Type j} (f : Π A B) where
     → apd f (! p) == !ᵈ (apd f p)
   apd-! idp = idp
 
-module _ {i j} {A : Type i} {B : A → Type j} where
-
-  po-fun-↓ap : {x y : A} {b : B x} {p₁ p₂ : x == y}
-    (q : p₁ == p₂) (g : (p : x == y) → B y)
-    → b == g p₁ [ B ↓ p₁ ]
-    → b == g p₂ [ B ↓ p₁ ]
-  po-fun-↓ap idp g po = po
-
 {- Over stuff -}
 module _ {i j k} {A : Type i} {B : A → Type j} {C : A → Type k}
   (f : {a : A} → B a → C a) where
