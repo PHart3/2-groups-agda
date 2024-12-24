@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Base
 open import lib.PathGroupoid
@@ -10,10 +10,16 @@ module lib.cubical.PathPathOver where
 
 module _ {i j} {A : Type i} {B : A → Type j} where
 
-  -- fillers of an open 3-dim box between pathovers
+  -- fillers of a hollow closed cylinder wrapped by two pathovers
   PPOver : {x y : A} {p₁ p₂ : x == y} (q : p₁ == p₂) {u : B x} {v : B y}
     (d : u == v [ B ↓ p₁ ]) (e : u == v [ B ↓ p₂ ]) → Type j
   PPOver idp d e = d == e
+
+  {-
+    One may also view PPOver as the type of
+    fillers of 2-sphere with its two poles
+    pinched together.
+  -}
 
   apᶜ² : {x y : A} {p₁ p₂ : x == y} {q : p₁ == p₂} {u : B x} {v : B y}
     {d₁ d₂ : u == v [ B ↓ p₁ ]} {e₁ e₂ : u == v [ B ↓ p₂ ]}
@@ -57,14 +63,20 @@ module _ {i j} {A : Type i} {B : A → Type j} where
     → PPOver q d₁ d₂ → PPOver (ap (λ p → p ∙ r) q) (d₁ ∙ᵈ e) (d₂ ∙ᵈ e)
   ap-∙-postᶜ {p₁ = idp} {r = idp} {q = idp} e po = ap (λ p → p ∙ e) po
 
-  -- fillers of an open 4-dim box between double pathovers
+  -- fillers of a hoolow 4-dim closed cylinder wrapped by two double pathovers
   PPPOver : {x y : A} {p₁ p₂ : x == y} {q₁ q₂ : p₁ == p₂} {u : B x} {v : B y}
     (r : q₁ == q₂) {d : u == v [ B ↓ p₁ ]} {e : u == v [ B ↓ p₂ ]} 
     → PPOver q₁ d e → PPOver q₂ d e → Type j
   PPPOver idp po₁ po₂ = po₁ == po₂
 
   -- PPOver for a family of 1-types is always inhabited.
-  
+  PPPOver-1type : {{ρ : {a : A} → has-level 1 (B a)}}
+    {x y : A} {p₁ p₂ : x == y} {q₁ q₂ : p₁ == p₂} {u : B x} {v : B y}
+    (r : q₁ == q₂) {d : u == v [ B ↓ p₁ ]} {e : u == v [ B ↓ p₂ ]} 
+    (po₁ : PPOver q₁ d e) (po₂ : PPOver q₂ d e)
+    → PPPOver r po₁ po₂
+  PPPOver-1type {p₁ = idp} {q₁ = idp} {u = u} {v} idp po₁ po₂ =
+    prop-has-all-paths po₁ po₂
 
 module _ {i j k} {A : Type i} {B : A → Type j} {X : Type k} where
 
