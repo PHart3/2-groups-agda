@@ -1,7 +1,6 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Base
-open import lib.PathGroupoid
 open import lib.Funext
 open import lib.cubical.PathPathOver
 

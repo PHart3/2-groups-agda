@@ -454,12 +454,6 @@ module _ {i j} {A : Type i} {B : A → Type j} where
     → q !◃ idp == ! q
   !◃idp idp = idp
 
-  po-fun-↓ : ∀ {k} {X : Type k} {x y : A} {b : B x}
-    {p : x == y} {z₁ z₂ : X} (q : z₁ == z₂) (g : X → B y)
-    → b == g z₁ [ B ↓ p ]
-    → b == g z₂ [ B ↓ p ]
-  po-fun-↓ idp g po = po
-
   {-
   This is some kind of dependent horizontal composition (used in [apd∙]).
   -}
