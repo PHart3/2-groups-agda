@@ -8,27 +8,29 @@ module Hmtpy2Grp where
 
 -- homotopy 2-groups of 2-types (i.e., loop spaces)
 
-module _ {i} {X : Type i} {{tr : has-level 2 X}} where
+module _ {i} {X : Type i} {{trX : has-level 2 X}} where
+
+  open CohGrp
 
   Loop2Grp : (x : X) → CohGrp (x == x)
-  CohGrp.1trunc (Loop2Grp x) =  has-level-apply tr x x
-  CohGrp.id (Loop2Grp x) = idp
-  CohGrp.mu (Loop2Grp x) = _∙_
-  CohGrp.lam (Loop2Grp x) x₁ = idp
-  CohGrp.rho (Loop2Grp x) x₁ = ∙-unit-r x₁
-  CohGrp.al (Loop2Grp x) x₁ y z = ! (∙-assoc x₁ y z)
-  CohGrp.tr (Loop2Grp x) x₁ y = {!!}
-  CohGrp.pent (Loop2Grp x) w x₁ y z = {!!}
-  CohGrp.inv (Loop2Grp x) x₁ = {!!}
-  CohGrp.rinv (Loop2Grp x) x₁ = {!!}
-  CohGrp.linv (Loop2Grp x) x₁ = {!!}
-  CohGrp.zz₁ (Loop2Grp x) x₁ = {!!}
-  CohGrp.zz₂ (Loop2Grp x) x₁ = {!!}
+  1trunc (Loop2Grp x) =  has-level-apply trX x x
+  id (Loop2Grp x) = idp
+  mu (Loop2Grp x) = _∙_
+  lam (Loop2Grp x) p = idp
+  rho (Loop2Grp x) = ∙-unit-r
+  al (Loop2Grp x) p₁ p₂ p₃ = ! (∙-assoc p₁ p₂ p₃)
+  tr (Loop2Grp x) = tri-id
+  pent (Loop2Grp x)= pent-id
+  inv (Loop2Grp x) = !
+  linv (Loop2Grp x) = !-inv-l
+  rinv (Loop2Grp x) p = ! (!-inv-r p)
+  zz₁ (Loop2Grp x) = zz-id1
+  zz₂ (Loop2Grp x) = zz-id2
 
--- Loop induces a morphism of 2-groups.
+-- Loop acts on morphism of 2-groups.
 
-module _ {i j} {G₁ : Type i} (η : CohGrp G₁)
+module _ {i j} {G₁ : Type i} (ηR : CohGrp G₁)
   (G₂ : Type j) (b : G₂) {{_ : has-level 2 G₂}} where
   
---  Hom (G₁ , η) (G₂ == G₂ , Loop2Grp G₂)
+--  CohGrpHom {{ηG}} {{Loop2Grp G₂}}
 

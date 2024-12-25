@@ -105,6 +105,38 @@ module _ {i} {A : Type i} where
 
 module _ {i} {A : Type i} where
 
+  tri-id : {x y z : A} (p : x == y) (q : y == z)
+    → idp == ! (∙-assoc p idp q) ∙ ap (λ v → v ∙ q) (∙-unit-r p)
+  tri-id idp q = idp
+
+  pent-id : {x y z w u : A} (p₁ : x == y) (p₂ : y == z)
+    (p₃ : z == w) (p₄ : w == u)
+    →
+    ! (∙-assoc p₁ p₂ (p₃ ∙ p₄)) ∙ ! (∙-assoc (p₁ ∙ p₂) p₃ p₄)
+    ==
+    ap (λ v → p₁ ∙ v) (! (∙-assoc p₂ p₃ p₄)) ∙
+    ! (∙-assoc p₁ (p₂ ∙ p₃) p₄) ∙
+    ap (λ v → v ∙ p₄) (! (∙-assoc p₁ p₂ p₃))
+  pent-id idp idp p₃ p₄ = idp
+
+  zz-id1 : {x y : A} (p : x == y)
+    →
+    ! (∙-unit-r p)
+    ==
+    ap (λ v → v ∙ p) (! (!-inv-r p)) ∙
+    ! (! (∙-assoc p (! p) p)) ∙
+    ap (λ v → p ∙ v) (!-inv-l p)
+  zz-id1 idp = idp
+
+  zz-id2 : {x y : A} (p : x == y)
+    →
+    ∙-unit-r (! p) ∙ idp
+    ==
+    ap (λ v → ! p ∙ v) (! (!-inv-r p)) ∙
+    ! (∙-assoc (! p) p (! p)) ∙
+    ap (λ v → v ∙ ! p) (!-inv-l p)
+  zz-id2 idp = idp
+
   ∙-∙'-!-rot : {x y z w : A} (p₀ : x == y) (p₁ : x == z) (p₂ : z == w) (p₃ : y == w)
     → p₀ == p₁ ∙ p₂  ∙' ! p₃ → p₂ == ! p₁ ∙ p₀ ∙' p₃
   ∙-∙'-!-rot p₀ idp p₂ idp e = ! e
