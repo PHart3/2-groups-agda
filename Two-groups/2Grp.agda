@@ -9,7 +9,7 @@ module 2Grp where
   following Baez and Lauda (2004)
 -}
 
-record CohGrp {i} {X : Type i} : Type i where
+record CohGrp {i} (X : Type i) : Type i where
   constructor cohgrp
   field
     instance {{1trunc}} : has-level 1 X
@@ -41,3 +41,14 @@ record CohGrp {i} {X : Type i} : Type i where
       rho (inv x) ∙ ! (lam (inv x))
       ==
       ap (mu (inv x)) (rinv x) ∙ al (inv x) x (inv x) ∙ ap (λ z → mu z (inv x)) (linv x)
+
+module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
+
+  open CohGrp {{...}}
+
+  record CohGrpHomFull : Type (lmax i j) where
+    constructor cohgrphomfull
+    field
+      map : G₁ → G₂
+      map-comp : (x y : G₁) → map (mu x y) == mu (map x) (map y)
+      map-id : map id == id

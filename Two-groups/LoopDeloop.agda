@@ -10,7 +10,7 @@ open import 2Grp
 
 module LoopDeloop where
 
-module _ {i} (G : Type i) {η : CohGrp {X = G}} where
+module _ {i} (G : Type i) {η : CohGrp G} where
 
   open import Delooping G
 

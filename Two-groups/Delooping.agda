@@ -12,9 +12,9 @@ open import 2Grp
 module Delooping {i} (G : Type i) where
 
 postulate -- HIT
-  K₂ : CohGrp {X = G} → Type i
+  K₂ : CohGrp G → Type i
 
-module _ {η : CohGrp {X = G}} where
+module _ {η : CohGrp G} where
 
   open CohGrp η
 
