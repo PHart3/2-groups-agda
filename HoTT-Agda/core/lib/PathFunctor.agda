@@ -28,6 +28,10 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → ap f (p ∙ q) == ap f p ∙ ap f q
   ap-∙ idp q = idp
 
+  ap-∙-!-! : {x y z : A} (p : x == y) (q : z == x)
+    → ap f (! p ∙ ! q) == ! (ap f p) ∙ ! (ap f q)
+  ap-∙-!-! idp idp = idp
+
   !ap-∙=∙-ap : {x y z : A} (p : x == y) (q : y == z)
     → ! (ap-∙ p q) == ∙-ap p q
   !ap-∙=∙-ap idp q = idp
@@ -496,8 +500,9 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} where
   hmpty-nat-∙'-r-idp : {x y : A} (p : x == y) → hmpty-nat-∙'-r {f = f} (λ x → idp) p == idp
   hmpty-nat-∙'-r-idp idp = idp
 
-module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} {f : A → B} {g : A → C}
-  (v : B → D) (u : C → D) (H : (x : A) → v (f x) == u (g x)) where
+module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄}
+  {f : A → B} {g : A → C} (v : B → D) (u : C → D)
+  (H : (x : A) → v (f x) == u (g x)) where
 
   apCommSq-cmp : {x y : A} (p : x == y) → ap v (ap f p) == H x ∙ ap u (ap g p) ∙ ! (H y)
   apCommSq-cmp {x = x} idp = ! (!-inv-r (H x)) 

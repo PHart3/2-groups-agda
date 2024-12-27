@@ -105,6 +105,20 @@ module _ {i} {A : Type i} where
 
 module _ {i} {A : Type i} where
 
+  ∙-assoc-!-! : {x₁ x₂ x₃ x₄ x₅ x₆ : A} (p₁ : x₁ == x₂) (p₂ : x₂ == x₃) (p₃ : x₃ == x₄)
+    (q₁ : x₆ == x₅) (q₂ : x₅ == x₄)
+    → (p₁ ∙ p₂ ∙ p₃) ∙ ! (q₁ ∙ q₂) == p₁ ∙ p₂ ∙ p₃ ∙ ! q₂ ∙ ! q₁
+  ∙-assoc-!-! idp idp idp idp idp = idp
+
+  ∙-assoc2-!-inv-r : {x y z w : A} (p₁ : x == y) (p₂ : y == z) (p₃ : z == w)
+    → p₁ ∙ p₂ == (p₁ ∙ p₂ ∙ p₃) ∙ ! p₃
+  ∙-assoc2-!-inv-r idp idp idp = idp
+
+  ∙-assoc2-∙2 : {x y z w u v : A} (p₁ : x == y) (p₂ : y == z)
+    (p₃ : z == w) (p₄ : w == u) (p₅ : u == v)
+    → p₁ ∙ (p₂ ∙ p₃) ∙ p₄ ∙ p₅ == (p₁ ∙ p₂) ∙ p₃ ∙ p₄ ∙ p₅
+  ∙-assoc2-∙2 idp idp _ _ _ = idp 
+
   tri-id : {x y z : A} (p : x == y) (q : y == z)
     → idp == ! (∙-assoc p idp q) ∙ ap (λ v → v ∙ q) (∙-unit-r p)
   tri-id idp q = idp
@@ -117,7 +131,7 @@ module _ {i} {A : Type i} where
     ap (λ v → p₁ ∙ v) (! (∙-assoc p₂ p₃ p₄)) ∙
     ! (∙-assoc p₁ (p₂ ∙ p₃) p₄) ∙
     ap (λ v → v ∙ p₄) (! (∙-assoc p₁ p₂ p₃))
-  pent-id idp idp p₃ p₄ = idp
+  pent-id idp idp _ _ = idp
 
   zz-id1 : {x y : A} (p : x == y)
     →
