@@ -133,6 +133,15 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
 
 -- natural isomorphisms between 2-group morphisms
 
+  open CohGrpHom
+
+  record CohGrpNatIso (μ₁ μ₂ : CohGrpHom) : Type (lmax i j) where
+    constructor cohgrpnatiso
+    field
+      θ : map μ₁ ∼ map μ₂
+      θ-comp : (x y : G₁) →
+        ap2 mu (θ x) (θ y) ∙ map-comp μ₂ x y == map-comp μ₁ x y ∙ θ (mu x y)
+
 -- some small helper lemmas
 
 module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
