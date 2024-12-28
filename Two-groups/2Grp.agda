@@ -44,11 +44,22 @@ record CohGrp {i} (X : Type i) : Type i where
       ==
       ap (mu (inv x)) (rinv x) ∙ al (inv x) x (inv x) ∙ ap (λ z → mu z (inv x)) (linv x)
 
+open CohGrp {{...}}
+
+module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
+
+  mu-iso : is-equiv (mu x)
+  mu-iso =
+    is-eq (mu x) (mu (inv x))
+      (λ b → al x (inv x) b ∙ ap2 mu (! (rinv x)) idp ∙ lam b)
+      λ a → al (inv x) x a ∙ ap2 mu (linv x) idp ∙ lam a
+
+  mu-ff : (z₁ z₂ : G) →  (z₁ == z₂) ≃ (mu x z₁ == mu x z₂)
+  mu-ff z₁ z₂ = ap-equiv (_ , mu-iso) z₁ z₂
+
 -- morphisms of 2-groups
 
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
-
-  open CohGrp {{...}}
 
   -- definition explicitly accounting for all 2-group data
   record CohGrpHomFull : Type (lmax i j) where
@@ -71,19 +82,19 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         ! (ap map (al x y z))
       map-inv : (x : G₁) → inv (map x) == map (inv x)
       map-linv : (x : G₁) → 
-        ap (λ z → mu z (map x)) (map-inv x) ∙
-        map-comp (inv x) x ∙
-        ap map (linv x)
+        ap (λ z → mu z (map x)) (map-inv x)        
         ==
         linv (map x) ∙
-        map-id
-      map-rinv : (x : G₁) →
-        rinv (map x) ∙
-        ap (mu (map x)) (map-inv x) ∙
-        map-comp x (inv x)
-        ==
         map-id ∙
-        ap map (rinv x)
+        ! (ap map (linv x)) ∙
+        ! (map-comp (inv x) x)
+      map-rinv : (x : G₁) →
+        ap (mu (map x)) (map-inv x)
+        ==
+        ! (rinv (map x)) ∙
+        map-id ∙
+        ap map (rinv x) ∙
+        ! (map-comp x (inv x))
 
   -- shorter definition, easier to work with
   record CohGrpHom : Type (lmax i j) where
@@ -131,7 +142,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       ∙-assoc-!-! (ap (λ v → mu v (map z)) (map-comp x y))
         (map-comp (mu x y) z) _ _ (map-comp x (mu y z))
 
--- natural isomorphisms between 2-group morphisms
+  -- natural isomorphisms between 2-group morphisms
 
   open CohGrpHom
 
@@ -142,51 +153,63 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       θ-comp : (x y : G₁) →
         ap2 mu (θ x) (θ y) ∙ map-comp μ₂ x y == map-comp μ₁ x y ∙ θ (mu x y)
 
--- some small helper lemmas
+-- some ad-hoc lemmas for algebraic reasoning below
 
-module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
+private
 
-  aux-red1 : {x₁ x₂ : A} {y : B} (p₁ : g x₂ == y) (p₂ : x₁ == x₂)
-    (p₃ : f x₁ == g x₁) →
-    (! p₁ ∙ ! (ap g p₂)) ∙ ! p₃ ∙ ap f p₂ ∙
-    (ap f (! p₂) ∙ p₃ ∙ ! (ap g (! p₂))) ∙ p₁
-    ==
-    idp
-  aux-red1 idp idp p₃ =
-    ap (λ q → ! p₃ ∙ q) (∙-unit-r (p₃ ∙ idp) ∙ ∙-unit-r p₃) ∙ !-inv-l p₃
+  module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
 
-module _ {i j k} {A : Type i} {B : Type j} {C : Type k}
-  (h₁ : B → B) (h₂ : A → A) (k₁ : C → A) (k₂ : A → B) where
+    abstract
+      aux-red1 : {x₁ x₂ : A} {y : B} (p₁ : g x₂ == y) (p₂ : x₁ == x₂)
+        (p₃ : f x₁ == g x₁) →
+        (! p₁ ∙ ! (ap g p₂)) ∙ ! p₃ ∙ ap f p₂ ∙
+        (ap f (! p₂) ∙ p₃ ∙ ! (ap g (! p₂))) ∙ p₁
+        ==
+        idp
+      aux-red1 idp idp p₃ =
+        ap (λ q → ! p₃ ∙ q) (∙-unit-r (p₃ ∙ idp) ∙ ∙-unit-r p₃) ∙ !-inv-l p₃
 
-  aux-red2 : {x₁ x₂ x₄ : A} {y₄ x₃ : B} {z w : C} {p₃ : x₁ == x₂}
-    {p₂ : h₁ (k₂ x₁) == k₂ (h₂ x₁)} {p₇ : h₁ (k₂ x₂) == k₂ (h₂ x₂)}
-    {r₃ : k₁ w == x₄} {p₆ : k₂ x₄ == y₄} {r₂ : y₄ == k₂ (k₁ w)}
-    (p₁ : x₃ == k₂ x₁) {p₄ : w == z} {p₅ : h₂ x₂ == k₁ z}
-    (ρ₁ : p₂ ∙ ap k₂ (ap h₂ p₃) == ap h₁ (ap k₂ p₃) ∙ p₇)
-    (ρ₂ : ap k₂ r₃ ∙ p₆ ∙ r₂ == idp) →  
-    ((ap h₁ p₁ ∙ p₂ ∙ ap k₂ (ap h₂ p₃ ∙ p₅ ∙ ! (ap k₁ p₄) ∙ r₃)) ∙ p₆) ∙ r₂
-    ==
-    ap h₁ (p₁ ∙ ap k₂ p₃) ∙ (p₇ ∙ ap k₂ p₅) ∙ ! (ap (k₂ ∘ k₁) p₄)
-  aux-red2 {p₃ = idp} {p₂} {r₃ = idp} {p₆ = idp} idp {p₄ = idp} {p₅} ρ₁ ρ₂ =
-    ap (λ q → _ ∙ q) ρ₂ ∙
-    ! (ap (λ q → (q ∙ ap k₂ _) ∙ idp) (! ρ₁) ∙ 
-      ap (λ q → (q ∙ ap k₂ p₅) ∙ idp) (∙-unit-r p₂) ∙ 
-      ! (ap (λ q → q ∙ idp) (∙-unit-r (p₂ ∙ ap k₂ (p₅ ∙ idp)) ∙
-        ap (λ q → p₂ ∙ ap k₂ q) (∙-unit-r p₅))))
+
+  module _ {i j k} {A : Type i} {B : Type j} {C : Type k}
+    (h₁ : B → B) (h₂ : A → A) (k₁ : C → A) (k₂ : A → B) where
+
+    abstract
+      aux-red2 : {x₁ x₂ x₄ : A} {y₄ x₃ : B} {z w : C} {p₃ : x₁ == x₂}
+        {p₂ : h₁ (k₂ x₁) == k₂ (h₂ x₁)} {p₇ : h₁ (k₂ x₂) == k₂ (h₂ x₂)}
+        {r₃ : k₁ w == x₄} {p₆ : k₂ x₄ == y₄} {r₂ : y₄ == k₂ (k₁ w)}
+        (p₁ : x₃ == k₂ x₁) {p₄ : w == z} {p₅ : h₂ x₂ == k₁ z}
+        (ρ₁ : p₂ ∙ ap k₂ (ap h₂ p₃) == ap h₁ (ap k₂ p₃) ∙ p₇)
+        (ρ₂ : ap k₂ r₃ ∙ p₆ ∙ r₂ == idp) →  
+        ((ap h₁ p₁ ∙ p₂ ∙ ap k₂ (ap h₂ p₃ ∙ p₅ ∙ ! (ap k₁ p₄) ∙ r₃)) ∙ p₆) ∙ r₂
+        ==
+        ap h₁ (p₁ ∙ ap k₂ p₃) ∙ (p₇ ∙ ap k₂ p₅) ∙ ! (ap (k₂ ∘ k₁) p₄)
+      aux-red2 {p₃ = idp} {p₂} {r₃ = idp} {p₆ = idp} idp {p₄ = idp} {p₅} ρ₁ ρ₂ =
+        ap (λ q → _ ∙ q) ρ₂ ∙
+        ! (ap (λ q → (q ∙ ap k₂ _) ∙ idp) (! ρ₁) ∙ 
+          ap (λ q → (q ∙ ap k₂ p₅) ∙ idp) (∙-unit-r p₂) ∙ 
+          ! (ap (λ q → q ∙ idp) (∙-unit-r (p₂ ∙ ap k₂ (p₅ ∙ idp)) ∙
+            ap (λ q → p₂ ∙ ap k₂ q) (∙-unit-r p₅))))
+
+-- categorical structure on 2-groups
+
+open CohGrpHom
+
+module _ {i} {G : Type i} {{η : CohGrp G}} where
+
+  id2G : CohGrpHom {{η}} {{η}}
+  map id2G = idf G
+  map-comp id2G x y = idp
+  map-al id2G x y z = ∙-unit-r (! (al x y z)) ∙ ap ! (! (ap-idf (al x y z)))
 
 module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
   {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}} where
 
-  open CohGrp
-
-  open CohGrpHom
-
   -- composition of 2-group morphisms
   infixr 50 _∘2G_
-  _∘2G_ : CohGrpHom {{η₁}} {{η₂}} → CohGrpHom {{η₂}} {{η₃}} → CohGrpHom {{η₁}} {{η₃}}
-  map (F₁ ∘2G F₂) = map F₂ ∘ map F₁
-  map-comp (F₁ ∘2G F₂) x y = map-comp F₂ (map F₁ x) (map F₁ y) ∙ ap (map F₂) (map-comp F₁ x y) 
-  map-al (F₁ ∘2G F₂) x y z =
+  _∘2G_ : CohGrpHom {{η₂}} {{η₃}} → CohGrpHom {{η₁}} {{η₂}} → CohGrpHom {{η₁}} {{η₃}}
+  map (F₂ ∘2G F₁) = map F₂ ∘ map F₁
+  map-comp (F₂ ∘2G F₁) x y = map-comp F₂ (map F₁ x) (map F₁ y) ∙ ap (map F₂) (map-comp F₁ x y) 
+  map-al (F₂ ∘2G F₁) x y z =
     ! (al η₃ ((map F₂ ∘ map F₁) x) ((map F₂ ∘ map F₁) y) ((map F₂ ∘ map F₁) z)) ∙
     ap (mu η₃ ((map F₂ ∘ map F₁) x))
       (map-comp F₂ (map F₁ y) (map F₁ z) ∙
@@ -236,6 +259,7 @@ module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
       (map-comp F₂ (map F₁ x) (map F₁ y))
       lemma1 lemma2
     where
+      open CohGrp
       lemma1 :
         map-comp F₂ (mu η₂ (map F₁ x) (map F₁ y)) (map F₁ z) ∙
         ap (map F₂) (ap (λ v → mu η₂ v (map F₁ z)) (map-comp F₁ x y))
