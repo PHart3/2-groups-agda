@@ -196,10 +196,10 @@ open CohGrpHom
 
 module _ {i} {G : Type i} {{η : CohGrp G}} where
 
-  id2G : CohGrpHom {{η}} {{η}}
-  map id2G = idf G
-  map-comp id2G x y = idp
-  map-al id2G x y z = ∙-unit-r (! (al x y z)) ∙ ap ! (! (ap-idf (al x y z)))
+  idf2G : CohGrpHom {{η}} {{η}}
+  map idf2G = idf G
+  map-comp idf2G x y = idp
+  map-al idf2G x y z = ∙-unit-r (! (al x y z)) ∙ ap ! (! (ap-idf (al x y z)))
 
 module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
   {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}} where

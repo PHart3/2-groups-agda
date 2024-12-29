@@ -83,7 +83,7 @@ module _ {i j k} {X₁ : Ptd i} {X₂ : Ptd j} {X₃ : Ptd k} {{tr₁ : has-leve
 
 module _ {i} {X : Ptd i} {{tr : has-level 2 (de⊙ X)}} where
 
-  Loop2Grp-map-idf : CohGrpNatIso (Loop2Grp-map (⊙idf X)) (id2G)
+  Loop2Grp-map-idf : CohGrpNatIso (Loop2Grp-map (⊙idf X)) (idf2G)
   CohGrpNatIso.θ Loop2Grp-map-idf p = ap-idf p
   CohGrpNatIso.θ-comp Loop2Grp-map-idf p₁ p₂ = red-aux3 p₁ p₂
 
