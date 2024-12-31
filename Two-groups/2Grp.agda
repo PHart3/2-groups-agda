@@ -23,7 +23,7 @@ record CohGrp {i} (X : Type i) : Type i where
     lam : (x : X) → mu id x == x
     rho : (x : X) → mu x id == x
     al : (x y z : X) → mu x (mu y z) == mu (mu x y) z
-    tr : (x y : X) → ap (mu x) (lam y) == al x id y ∙ ap (λ z → mu z y ) (rho x)
+    tr : (x y : X) → ap (mu x) (lam y) == al x id y ∙ ap (λ z → mu z y) (rho x)
     pent : (w x y z : X) →
       al w x (mu y z) ∙ al (mu w x) y z
       ==
@@ -36,27 +36,50 @@ record CohGrp {i} (X : Type i) : Type i where
     
     -- adjoint equiv conditions on inv ("zz" short for "zig-zag")
     zz₁ : (x : X) →
-      lam x ∙ ! (rho x)
+      lam x
       ==
-      ap (λ z → mu z x) (rinv x) ∙ ! (al x (inv x) x) ∙ ap (mu x) (linv x)
+      ap (λ z → mu z x) (rinv x) ∙ ! (al x (inv x) x) ∙ ap (mu x) (linv x) ∙ rho x
     zz₂ : (x : X) →
-      rho (inv x) ∙ ! (lam (inv x))
+      ! (lam (inv x))
       ==
-      ap (mu (inv x)) (rinv x) ∙ al (inv x) x (inv x) ∙ ap (λ z → mu z (inv x)) (linv x)
+      ! (rho (inv x)) ∙ ap (mu (inv x)) (rinv x) ∙ al (inv x) x (inv x) ∙ ap (λ z → mu z (inv x)) (linv x)
 
 open CohGrp {{...}}
 
+-- multiplication on either side is an iso
 module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
 
-  mu-iso : is-equiv (mu x)
-  mu-iso =
+  mu-pre-iso : is-equiv (mu x)
+  mu-pre-iso =
     is-eq (mu x) (mu (inv x))
       (λ b → al x (inv x) b ∙ ap2 mu (! (rinv x)) idp ∙ lam b)
       λ a → al (inv x) x a ∙ ap2 mu (linv x) idp ∙ lam a
 
-  mu-ff : (z₁ z₂ : G) →  (z₁ == z₂) ≃ (mu x z₁ == mu x z₂)
-  mu-ff z₁ z₂ = ap-equiv (_ , mu-iso) z₁ z₂
+  mu-pre-ff : (z₁ z₂ : G) →  (z₁ == z₂) ≃ (mu x z₁ == mu x z₂)
+  mu-pre-ff z₁ z₂ = ap-equiv (_ , mu-pre-iso) z₁ z₂
 
+  mu-pre-ff<– : (z₁ z₂ : G) → (mu x z₁ == mu x z₂) → (z₁ == z₂)
+  mu-pre-ff<– z₁ z₂ p =
+    ! (al (inv x) x z₁ ∙ ap2 mu (linv x) idp ∙ lam z₁) ∙
+    ap (mu (inv x)) p ∙
+    al (inv x) x z₂ ∙
+    ap2 mu (linv x) idp ∙
+    lam z₂
+
+  mu-post-iso : is-equiv (λ z → mu z x)
+  mu-post-iso =
+    is-eq (λ z → mu z x) (λ z → mu z (inv x))
+      (λ b → ! (al b (inv x) x) ∙ ap (mu b) (linv x) ∙ rho b )
+      λ a → ! (al a x (inv x)) ∙ ! (ap (mu a) (rinv x)) ∙ rho a
+
+  mu-post-ff<– : (z₁ z₂ : G) → (mu z₁ x == mu z₂ x) → (z₁ == z₂)
+  mu-post-ff<– z₁ z₂ p =
+    ! (! (al z₁ x (inv x)) ∙ ! (ap (mu z₁) (rinv x)) ∙ rho z₁) ∙
+    ap (λ z → mu z (inv x)) p ∙
+    ! (al z₂ x (inv x)) ∙
+    ! (ap (mu z₂) (rinv x)) ∙
+    rho z₂
+    
 -- morphisms of 2-groups
 
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
@@ -69,7 +92,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       map-comp : (x y : G₁) → mu (map x) (map y) == map (mu x y)
       map-id : id == map id
       map-lam : (x : G₁) →
-        ap (λ z → mu z (map x)) map-id ∙ map-comp id x ∙ ap map (lam x) == lam (map x)
+        ! (lam (map x)) == ! (ap map (lam x)) ∙ ! (map-comp id x) ∙ ! (ap (λ z → mu z (map x)) map-id)
       map-rho : (x : G₁) →
         ap (mu (map x)) map-id ∙ map-comp x id ∙ ap map (rho x) == rho (map x)
       map-al : (x y z : G₁) →

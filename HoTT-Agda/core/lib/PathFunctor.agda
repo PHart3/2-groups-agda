@@ -48,6 +48,10 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → ap f (! p ∙ q ∙ r) == ! (ap f p) ∙ ap f q ∙ ap f r
   ap-!∙∙ idp idp r = idp
 
+  ap-∙∙!! : {x y z w v : A} (p : x == y) (q : y == z) (r : w == z) (s : v == w)
+    → ap f (p ∙ q ∙ ! r ∙ ! s) ◃∎ =ₛ ap f p ◃∙ ap f q ◃∙ ! (ap f r) ◃∙ ! (ap f s) ◃∎ 
+  ap-∙∙!! idp idp idp idp = =ₛ-in idp
+
   ap-∙∙∙ : {x y z w t : A} (p : x == y) (q : y == z) (r : z == w) (s : w == t)
     → ap f (p ∙ q ∙ r ∙ s) == ap f p ∙ ap f q ∙ ap f r ∙ ap f s
   ap-∙∙∙ idp idp idp s = idp
@@ -486,8 +490,17 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f g : A → B) (H 
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} (H : (x : A) → f x == g x) where
 
+  apCommSq◃ : {x y : A} (p : x == y) →  ap g p ◃∎ =ₛ ! (H x) ◃∙ ap f p ◃∙ H y ◃∎
+  apCommSq◃ {x = x} idp = =ₛ-in (! (!-inv-l (H x)))
+
   hmtpy-nat-! : {x y : A} (p : x == y) → ! (H x) == ap g p ∙ ! (H y) ∙ ! (ap f p)
   hmtpy-nat-! {x = x} idp = ! (∙-unit-r (! (H x)))
+
+  hmtpy-nat-!◃ : {x y : A} (p : x == y) → ! (H x) ◃∎ =ₛ ap g p ◃∙ ! (H y) ◃∙ ! (ap f p) ◃∎
+  hmtpy-nat-!◃ {x = x} idp = =ₛ-in (! (∙-unit-r (! (H x))))
+
+  hmtpy-nat-!◃-! : {x y : A} (p : y == x) → ! (H x) ◃∎ =ₛ ! (ap g p) ◃∙ ! (H y) ◃∙ ap f p ◃∎
+  hmtpy-nat-!◃-! {x = x} idp = =ₛ-in (! (∙-unit-r (! (H x))))
 
   hmtpy-nat-!-sq : {x y : A} (p : x == y) → ! (H x) ∙ ap f p == ap g p ∙ ! (H y)
   hmtpy-nat-!-sq {x = x} idp = ∙-unit-r (! (H x))

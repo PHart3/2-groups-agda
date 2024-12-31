@@ -159,6 +159,10 @@ module _ {i} {A : Type i} where
     → m == ap ! n →  ! (!-! p₁) ∙ ap ! m ∙' !-! p₂ == n
   !-inj-rot {p₁ = idp} idp idp = idp
 
+  !-!∙!∙ : {x y z w : A} (p₁ : x == y) (p₂ : z == x) (p₃ : z == w)
+    → ! (! p₁ ∙ ! p₂ ∙ p₃) ◃∎ =ₛ ! p₃ ◃∙ p₂ ◃∙ p₁ ◃∎
+  !-!∙!∙ idp idp idp = =ₛ-in idp
+
   ∙'-!-∙-∙ : {x y z w : A} (p₁ : x == y) (p₂ : z == y) (p₃ : y == w)
     → (p₁ ∙' ! p₂) ∙ p₂ ∙ p₃ == p₁ ∙ p₃
   ∙'-!-∙-∙ p₁ idp p₃ = idp
