@@ -85,6 +85,10 @@ module _ {i} {A : Type i} where
   !-∙ : {x y z : A} (p : x == y) (q : y == z) → ! (p ∙ q) == ! q ∙ ! p
   !-∙ idp idp = idp
 
+  !-∙-∙ : {x y z w : A} (p : x == y) (q : y == z) (r : z == w)
+    → ! (p ∙ q ∙ r) == ! r ∙ ! q ∙ ! p
+  !-∙-∙ idp idp idp = idp
+
   ∙-! : {x y z : A} (q : y == z) (p : x == y) → ! q ∙ ! p == ! (p ∙ q)
   ∙-! idp idp = idp
 

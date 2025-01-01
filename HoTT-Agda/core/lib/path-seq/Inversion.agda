@@ -75,3 +75,10 @@ seq-!-inv-r s = =ₛ-in $
   ↯ s ∙ ! (↯ s)
     =⟨ !-inv-r (↯ s) ⟩
   idp =∎
+
+!-!-seq4 : {a₁ a₂ a₃ a₄ a₅ : A}
+  (q₄ : a₁ == a₂) (q₃ : a₂ == a₃) (q₂ : a₃ == a₄) (q₁ : a₄ == a₅)
+  (p : a₁ == a₅)
+  → ! p ◃∎ =ₛ ! q₁ ◃∙ ! q₂ ◃∙ ! q₃ ◃∙ ! q₄ ◃∎
+  → p ◃∎ =ₛ q₄ ◃∙ q₃ ◃∙ q₂ ◃∙ q₁ ◃∎
+!-!-seq4 idp idp idp idp p ρ = =ₛ-in (! (!-! p) ∙ ap ! (=ₛ-out ρ))

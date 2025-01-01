@@ -43,6 +43,22 @@ record CohGrp {i} (X : Type i) : Type i where
       ! (lam (inv x))
       ==
       ! (rho (inv x)) ∙ ap (mu (inv x)) (rinv x) ∙ al (inv x) x (inv x) ∙ ap (λ z → mu z (inv x)) (linv x)
+  zz₂-rot◃ : (x : X) →
+    rho (inv x) ◃∎
+      =ₛ
+    ap (mu (inv x)) (rinv x) ◃∙
+    al (inv x) x (inv x) ◃∙
+    ap (λ z → mu z (inv x)) (linv x) ◃∙
+    lam (inv x) ◃∎
+  zz₂-rot◃ x = !-!-seq4 _ _ _ _ _ (=ₛ-in
+    (! (∙-unit-r (! (rho (inv x)))) ∙
+      ap (λ p → ! (rho (inv x)) ∙ p)
+        (! (!-inv-r (ap (mu (inv x)) (rinv x) ∙ al (inv x) x (inv x) ∙ ap (λ z → mu z (inv x)) (linv x)))) ∙
+      ! (∙-assoc (! (rho (inv x)))
+        (ap (mu (inv x)) (rinv x) ∙ al (inv x) x (inv x) ∙ ap (λ z → mu z (inv x)) (linv x)) _) ∙
+      ap (λ p → p ∙ ! (ap (mu (inv x)) (rinv x) ∙
+        al (inv x) x (inv x) ∙ ap (λ z → mu z (inv x)) (linv x))) (! (zz₂ x)) ∙
+      ap (λ p → ! (lam (inv x)) ∙ p) (!-∙-∙ (ap (mu (inv x)) (rinv x)) (al (inv x) x (inv x)) _)))
 
 open CohGrp {{...}}
 
@@ -92,9 +108,13 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       map-comp : (x y : G₁) → mu (map x) (map y) == map (mu x y)
       map-id : id == map id
       map-lam : (x : G₁) →
-        ! (lam (map x)) == ! (ap map (lam x)) ∙ ! (map-comp id x) ∙ ! (ap (λ z → mu z (map x)) map-id)
+        ! (lam (map x))
+        ==
+        ! (ap map (lam x)) ∙ ! (map-comp id x) ∙ ! (ap (λ z → mu z (map x)) map-id)
       map-rho : (x : G₁) →
-        ap (mu (map x)) map-id ∙ map-comp x id ∙ ap map (rho x) == rho (map x)
+        ! (map-comp x id)
+        ==
+        ap map (rho x) ∙ ! (rho (map x)) ∙ ap (mu (map x)) map-id
       map-al : (x y z : G₁) →
         ! (al (map x) (map y) (map z)) ∙
         ap (mu (map x)) (map-comp y z) ∙
@@ -191,7 +211,6 @@ private
         idp
       aux-red1 idp idp p₃ =
         ap (λ q → ! p₃ ∙ q) (∙-unit-r (p₃ ∙ idp) ∙ ∙-unit-r p₃) ∙ !-inv-l p₃
-
 
   module _ {i j k} {A : Type i} {B : Type j} {C : Type k}
     (h₁ : B → B) (h₂ : A → A) (k₁ : C → A) (k₂ : A → B) where
