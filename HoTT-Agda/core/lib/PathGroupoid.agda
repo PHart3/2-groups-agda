@@ -206,6 +206,12 @@ module _ {i} {A : Type i} where
     → ! p ∙ q == r → p == q ∙ ! r
   tri-exch {p = idp} {q = idp} {r} e = ap ! e
 
+  tri-rot : {a₁ a₂ a₃ a₄ a₅ : A} (q₁ : a₁ == a₂) (q₂ : a₃ == a₂)
+    (q₃ : a₃ == a₄) (q₄ : a₄ == a₅) {p : a₁ == a₅}
+    → p == q₁ ∙ ! q₂ ∙ q₃ ∙ q₄
+    → q₁ == p ∙ ! q₄ ∙ ! q₃ ∙ q₂
+  tri-rot idp idp idp idp idp = idp 
+
   {- Horizontal compositions -}
 
   infixr 80 _∙2_ _∙'2_
