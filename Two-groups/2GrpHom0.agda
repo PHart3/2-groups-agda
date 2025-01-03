@@ -2,6 +2,7 @@
 
 open import lib.Basics
 open import 2Grp
+open import 2GrpProps
 
 module 2GrpHom0 where
 

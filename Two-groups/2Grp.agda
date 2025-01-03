@@ -61,6 +61,28 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
     (λ x → ! (lam x))
     (idf-is-equiv G)
 
+  -- <– (ap-equiv (muid , muid-iso) _ _)
+  muid-iso<– : (z₁ z₂ : G) → (mu id z₁ == mu id z₂) → (z₁ == z₂)
+  muid-iso<– z₁ z₂ p = 
+    ! (ap (λ x → x) (! (! (lam z₁))) ∙ idp) ∙
+    ap (λ x → x) p ∙
+    ap (λ x → x) (! (! (lam z₂))) ∙
+    idp
+
+  idmu-iso : is-equiv (λ x → mu x id)
+  idmu-iso =
+    ∼-preserves-equiv
+    (λ x → ! (rho x))
+    (idf-is-equiv G)
+
+  -- <– (ap-equiv ((λ x → mu x id) , idmu-iso) _ _)
+  idmu-iso<– : (z₁ z₂ : G) → (mu z₁ id == mu z₂ id) → (z₁ == z₂)
+  idmu-iso<– z₁ z₂ p = 
+    ! (ap (λ x → x) (! (! (rho z₁))) ∙ idp) ∙
+    ap (λ x → x) p ∙
+    ap (λ x → x) (! (! (rho z₂))) ∙
+    idp
+
 -- multiplication on either side is an iso
 module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
 
@@ -73,6 +95,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
   mu-pre-ff : (z₁ z₂ : G) →  (z₁ == z₂) ≃ (mu x z₁ == mu x z₂)
   mu-pre-ff z₁ z₂ = ap-equiv (_ , mu-pre-iso) z₁ z₂
 
+  -- <– (mu-pre-ff _ _)
   mu-pre-ff<– : (z₁ z₂ : G) → (mu x z₁ == mu x z₂) → (z₁ == z₂)
   mu-pre-ff<– z₁ z₂ p =
     ! (al (inv x) x z₁ ∙ ap2 mu (linv x) idp ∙ lam z₁) ∙
@@ -87,6 +110,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
       (λ b → ! (al b (inv x) x) ∙ ap (mu b) (linv x) ∙ rho b )
       λ a → ! (al a x (inv x)) ∙ ! (ap (mu a) (rinv x)) ∙ rho a
 
+  -- <– (mu-post-ff _ _)
   mu-post-ff<– : (z₁ z₂ : G) → (mu z₁ x == mu z₂ x) → (z₁ == z₂)
   mu-post-ff<– z₁ z₂ p =
     ! (! (al z₁ x (inv x)) ∙ ! (ap (mu z₁) (rinv x)) ∙ rho z₁) ∙

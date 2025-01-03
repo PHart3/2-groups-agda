@@ -2,13 +2,15 @@
 
 open import lib.Basics
 open import 2Grp
+open import 2GrpProps
 
-module 2GrpHomEq where
+module 2GrpHom3 where
 
 open CohGrp {{...}}
 
-module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}
+module MapUnit0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}
   (map : G₁ → G₂) (map-comp : (x y : G₁) → mu (map x) (map y) == map (mu x y))
+  (map-inv : (x : G₁) → inv (map x) == map (inv x))
   (map-id : id == map id)
   (map-al-rot2 :
     (x y z : G₁) →
@@ -19,11 +21,12 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
      ! (ap map (al x y z)) ◃∙
      ! (map-comp x (mu y z)) ◃∙
      ! (ap (mu (map x)) (map-comp y z)) ◃∎)
-  (map-inv : (x : G₁) → inv (map x) == map (inv x))
   (map-rho : (x : G₁) →
-    ! (map-comp x id) ◃∎
+    rho (map x) ◃∎
     =ₛ
-    ap map (rho x) ◃∙ ! (rho (map x)) ◃∙ ap (mu (map x)) map-id ◃∎)
+    ap (mu (map x)) map-id ◃∙
+    map-comp x id ◃∙
+    ap map (rho x) ◃∎)
   (x : G₁) where
 
   rho-to-lam :
@@ -36,9 +39,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       ! (map-comp id x)) ◃∙
     ! (al (map id) (map x) (inv (map x))) ◃∙
     ! (ap (mu (map id)) (rinv (map x))) ◃∙
-    ap (mu (map id)) map-id ◃∙
-    map-comp id id ◃∙
-    ap map (rho id) ◃∎
+    rho (map id) ◃∎
       =ₛ
     map-id ◃∎
   rho-to-lam = {!!}
