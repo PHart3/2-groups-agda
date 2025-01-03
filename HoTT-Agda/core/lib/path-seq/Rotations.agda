@@ -161,7 +161,8 @@ post-rotate'-seq-out-idp : {a a' : A}
   → {r q : a =-= a'}
   → r ∙∙ seq-! q =ₛ idp ◃∎
   → r =ₛ q
-post-rotate'-seq-out-idp {r = r} {q = q} e = (post-rotate'-seq-out {q = q} e) ∙ₛ =ₛ-in (↯-∙∙ (idp ◃∎) q)
+post-rotate'-seq-out-idp {r = r} {q = q} e =
+  (post-rotate'-seq-out {q = q} e) ∙ₛ =ₛ-in (↯-∙∙ (idp ◃∎) q)
 
 post-rotate-seq-out : {a a' a'' : A}
   → {p : a =-= a'} {q : a' =-= a''} {r : a =-= a''}

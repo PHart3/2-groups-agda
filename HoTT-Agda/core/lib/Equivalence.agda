@@ -285,6 +285,10 @@ module _ {i j} {A : Type i} {B : Type j} where
   ap-equiv : (e : A ≃ B) (x y : A) → (x == y) ≃ (–> e x == –> e y)
   ap-equiv e x y = _ , ap-is-equiv (snd e) x y
 
+  ap-equiv-idp : {f : A → B} {x : A} {p : x == x}
+    → is-equiv f → ap f p == idp → p == idp
+  ap-equiv-idp {f} {x} {p} e q = equiv-is-inj (ap-is-equiv e x x) p idp q
+
 {- Equivalent types have the same truncation level -}
 
 equiv-preserves-level : ∀ {i j} {A : Type i} {B : Type j} {n : ℕ₋₂} (e : A ≃ B)

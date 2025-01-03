@@ -157,9 +157,16 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
   ∘-!-ap-inv-r : {x y : A} (p : x == y) → ap (g ∘ f) p ∙ ! (ap g (ap f p)) == idp 
   ∘-!-ap-inv-r idp = idp
 
+  ap-∘-!-inv-r : {x y : A} (p : x == y) → ap g (ap f p) ∙ ! (ap (g ∘ f) p) == idp 
+  ap-∘-!-inv-r idp = idp
+
   ap-∘-∙ : {x y : A} (p : x == y) {b : B} (q : f y == b)
     → ap g (ap f p ∙ q) == ap (g ∘ f) p ∙ ap g q
   ap-∘-∙ idp q = idp
+
+  ap-!-∙-∘ : {x y : A} (p : x == y) {b : B} (q : f x == b)
+    → ap g (! q ∙ ap f p) ◃∎ =ₛ ! (ap g q) ◃∙ ap (g ∘ f) p ◃∎
+  ap-!-∙-∘ idp idp = =ₛ-in idp
 
   ap-∘-∘ : ∀ {l} {D : Type l} (h : D → A) {x y : D} (p : x == y)
     → ap (g ∘ f ∘ h) p == ap g (ap f (ap h p))
@@ -491,6 +498,13 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k}
   homotopy-naturality2 {a₀ = a} {b₀ = b} idp idp =
     =ₛ-in (! (∙-unit-r (h a b)))
 
+module _ {i j k} {A : Type i} {B : Type j} {C : Type k}
+         {f g : A → B → C} (h : ∀ a b → f a b == g a b) where
+
+  ap2CommSq◃! : {a₀ a₁ : A} {b₀ b₁ : B} (p : a₀ == a₁) (q : b₀ == b₁)
+    →  ! (h a₁ b₁) ◃∎ =ₛ ap2 g (! p) (! q) ◃∙ ! (h a₀ b₀) ◃∙ ap2 f p q ◃∎
+  ap2CommSq◃! {a₀ = a} {b₀ = b} idp idp = =ₛ-in (! (∙-unit-r (! (h a b))))
+
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f g : A → B) (H : (x : A) → f x == g x) where
 
   apCommSq : {x y : A} (p : x == y) → ! (H x) ∙ ap f p ∙ H y == ap g p
@@ -509,6 +523,9 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} (H 
 
   apCommSq◃! : {x y : A} (p : x == y) →  ! (ap g p) ◃∎ =ₛ ! (H y) ◃∙ ! (ap f p) ◃∙ H x ◃∎
   apCommSq◃! {x = x} idp = =ₛ-in (! (!-inv-l (H x)))
+
+  apCommSq2◃! : {x y : A} (p : x == y) → ! (H y) ◃∎ =ₛ ! (ap g p) ◃∙ ! (H x) ◃∙ ap f p ◃∎
+  apCommSq2◃! {x = x} idp = =ₛ-in (! (∙-unit-r (! (H x))))
 
   hmtpy-nat-! : {x y : A} (p : x == y) → ! (H x) == ap g p ∙ ! (H y) ∙ ! (ap f p)
   hmtpy-nat-! {x = x} idp = ! (∙-unit-r (! (H x)))
