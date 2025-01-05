@@ -139,13 +139,17 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         ! (ap map (al x y z))
       map-id : id == map id
       map-lam : (x : G₁) →
-        lam (map x)
+        ! (lam (map x))
         ==
-        ap (λ z → mu z (map x)) map-id ∙ map-comp id x ∙ ap map (lam x)
+        ! (ap map (lam x)) ∙
+        ! (map-comp id x) ∙
+        ! (ap (λ z → mu z (map x)) map-id)
       map-rho : (x : G₁) →
-        rho (map x)
+        ! (map-comp x id)
         ==
-        ap (mu (map x)) map-id ∙ map-comp x id ∙ ap map (rho x)
+        ap map (rho x) ∙
+        ! (rho (map x)) ∙
+        ap (mu (map x)) map-id
       map-inv : (x : G₁) → inv (map x) == map (inv x)
       map-linv : (x : G₁) → 
         ap (λ z → mu z (map x)) (map-inv x)        

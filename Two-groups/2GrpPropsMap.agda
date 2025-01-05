@@ -39,11 +39,11 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
   
     module _ 
       (map-rho : (x : G₁) →
-        rho (map x) ◃∎
+        ! (map-comp x id) ◃∎
           =ₛ
-        ap (mu (map x)) map-id ◃∙
-        map-comp x id ◃∙
-        ap map (rho x) ◃∎)
+        ap map (rho x) ◃∙
+        ! (rho (map x)) ◃∙
+        ap (mu (map x)) map-id ◃∎)
       (x : G₁) where
 
       abstract
@@ -59,7 +59,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
           ! (map-comp x id) ◃∙
           ! (ap (mu (map x)) map-id) ◃∙
           rho (map x) ◃∎          
-            =ₛ⟨ pre-rotate'-in (pre-rotate'-in (pre-rotate'-in (map-rho x))) ⟩
+            =ₛ⟨ post-rotate-out (post-rotate'-in (pre-rotate'-in (map-rho x))) ⟩
           []
             =ₛ₁⟨ idp ⟩
           idp ◃∎ ∎ₛ

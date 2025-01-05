@@ -30,11 +30,11 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
     ap map (rinv x) ◃∙
     ! (map-comp x (inv x)) ◃∎)
   (map-rho : (x : G₁) →
-    rho (map x) ◃∎
+    ! (map-comp x id) ◃∎
       =ₛ
-    ap (mu (map x)) map-id ◃∙
-    map-comp x id ◃∙
-    ap map (rho x) ◃∎)
+    ap map (rho x) ◃∙
+    ! (rho (map x)) ◃∙
+    ap (mu (map x)) map-id ◃∎)
   (x : G₁) where
 
   open MapUnit0 map map-comp map-inv map-id map-al x
