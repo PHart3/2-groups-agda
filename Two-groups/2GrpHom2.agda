@@ -36,7 +36,7 @@ module MapInv2 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
   open MapInv1 map map-comp map-id map-al-rot2 map-inv map-lam map-rho x
 
   abstract
-    -- This is essentially Section 6 of Baez and Lauda.   
+    -- This theorem is essentially Section 6 of Baez and Lauda.   
     linv-to-rinv :
       ! (ap (mu (map x)) (map-inv x))
         ==

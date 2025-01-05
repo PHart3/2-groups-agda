@@ -36,6 +36,10 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → ap f (! p ∙ ! q) == ! (ap f p) ∙ ! (ap f q)
   ap-∙-!-! idp idp = idp
 
+  ap-∙-!-!◃ : {x y z : A} (p : x == y) (q : z == x)
+    → ap f (! p ∙ ! q) ◃∎ =ₛ ! (ap f p) ◃∙ ! (ap f q) ◃∎
+  ap-∙-!-!◃ idp idp = =ₛ-in idp
+
   !ap-∙=∙-ap : {x y z : A} (p : x == y) (q : y == z)
     → ! (ap-∙ p q) == ∙-ap p q
   !ap-∙=∙-ap idp q = idp
@@ -528,6 +532,9 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} (H 
 
   apCommSq2◃ : {x y : A} (p : x == y) → H y ◃∎ =ₛ ! (ap f p) ◃∙ H x ◃∙ ap g p ◃∎
   apCommSq2◃ {x = x} idp = =ₛ-in (! (∙-unit-r (H x)))
+
+  apCommSq2◃' : {x y : A} (p : x == y) → H x ◃∎ =ₛ ap f p ◃∙ H y ◃∙ ! (ap g p) ◃∎
+  apCommSq2◃' {x = x} idp = =ₛ-in (! (∙-unit-r (H x)))
 
   apCommSq◃! : {x y : A} (p : x == y) →  ! (ap g p) ◃∎ =ₛ ! (H y) ◃∙ ! (ap f p) ◃∙ H x ◃∎
   apCommSq◃! {x = x} idp = =ₛ-in (! (!-inv-l (H x)))

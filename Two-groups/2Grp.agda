@@ -192,7 +192,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       ap (λ q → q ∙ ! (map-comp x (mu y z))) (map-al x y z)
     map-al-rot2 : (x y z : G₁) →
       ! (al (map x) (map y) (map z)) ◃∎
-        =ₛ
+      =ₛ
       ap (λ v → mu v (map z)) (map-comp x y) ◃∙
       map-comp (mu x y) z ◃∙
       ! (ap map (al x y z)) ◃∙
@@ -228,7 +228,7 @@ private
         (p₃ : f x₁ == g x₁) →
         (! p₁ ∙ ! (ap g p₂)) ∙ ! p₃ ∙ ap f p₂ ∙
         (ap f (! p₂) ∙ p₃ ∙ ! (ap g (! p₂))) ∙ p₁
-        ==
+          ==
         idp
       aux-red1 idp idp p₃ =
         ap (λ q → ! p₃ ∙ q) (∙-unit-r (p₃ ∙ idp) ∙ ∙-unit-r p₃) ∙ !-inv-l p₃
@@ -237,16 +237,16 @@ private
     (h₁ : B → B) (h₂ : A → A) (k₁ : C → A) (k₂ : A → B) where
 
     abstract
-      aux-red2 : {x₁ x₂ x₄ : A} {y₄ x₃ : B} {z w : C} {p₃ : x₁ == x₂}
+      aux-red2 : {x₁ x₂ x₄ : A} {y₁ y₂ : B} {z₂ z₁ : C} {p₃ : x₁ == x₂}
         {p₂ : h₁ (k₂ x₁) == k₂ (h₂ x₁)} {p₇ : h₁ (k₂ x₂) == k₂ (h₂ x₂)}
-        {r₃ : k₁ w == x₄} {p₆ : k₂ x₄ == y₄} {r₂ : y₄ == k₂ (k₁ w)}
-        (p₁ : x₃ == k₂ x₁) {p₄ : w == z} {p₅ : h₂ x₂ == k₁ z}
+        {r₂ : k₁ z₁ == x₄} {p₆ : k₂ x₄ == y₁} {r₁ : y₁ == k₂ (k₁ z₁)}
+        (p₁ : y₂ == k₂ x₁) {p₄ : z₁ == z₂} {p₅ : h₂ x₂ == k₁ z₂}
         (ρ₁ : p₂ ∙ ap k₂ (ap h₂ p₃) == ap h₁ (ap k₂ p₃) ∙ p₇)
-        (ρ₂ : ap k₂ r₃ ∙ p₆ ∙ r₂ == idp) →  
-        ((ap h₁ p₁ ∙ p₂ ∙ ap k₂ (ap h₂ p₃ ∙ p₅ ∙ ! (ap k₁ p₄) ∙ r₃)) ∙ p₆) ∙ r₂
-        ==
+        (ρ₂ : ap k₂ r₂ ∙ p₆ ∙ r₁ == idp) →  
+        ((ap h₁ p₁ ∙ p₂ ∙ ap k₂ (ap h₂ p₃ ∙ p₅ ∙ ! (ap k₁ p₄) ∙ r₂)) ∙ p₆) ∙ r₁
+          ==
         ap h₁ (p₁ ∙ ap k₂ p₃) ∙ (p₇ ∙ ap k₂ p₅) ∙ ! (ap (k₂ ∘ k₁) p₄)
-      aux-red2 {p₃ = idp} {p₂} {r₃ = idp} {p₆ = idp} idp {p₄ = idp} {p₅} ρ₁ ρ₂ =
+      aux-red2 {p₃ = idp} {p₂} {r₂ = idp} {p₆ = idp} idp {p₄ = idp} {p₅} ρ₁ ρ₂ =
         ap (λ q → _ ∙ q) ρ₂ ∙
         ! (ap (λ q → (q ∙ ap k₂ _) ∙ idp) (! ρ₁) ∙ 
           ap (λ q → (q ∙ ap k₂ p₅) ∙ idp) (∙-unit-r p₂) ∙ 
@@ -326,7 +326,7 @@ module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
       lemma1 :
         map-comp F₂ (mu η₂ (map F₁ x) (map F₁ y)) (map F₁ z) ∙
         ap (map F₂) (ap (λ v → mu η₂ v (map F₁ z)) (map-comp F₁ x y))
-        ==
+          ==
         ap (λ v → mu η₃ v ((map F₂ ∘ map F₁) z))
           (ap (map F₂) (map-comp F₁ x y)) ∙
         map-comp F₂ (map F₁ (mu η₁ x y)) (map F₁ z)
@@ -353,7 +353,7 @@ module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
         ap (mu η₃ ((map F₂ ∘ map F₁) x)) (ap (map F₂) (map-comp F₁ y z)) ∙
         map-comp F₂ (map F₁ x) (map F₁ (mu η₁ y z)) ∙
         ap (map F₂) (map-comp F₁ x (mu η₁ y z))
-        ==
+          ==
         idp
       lemma2 = 
         ap (map F₂) (! (map-comp F₁ x (mu η₁ y z)) ∙

@@ -144,6 +144,20 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         idp ◃∎
       lam-alid-lam = =ₛ-in (ap-equiv-idp muid-iso (=ₛ-out lam-alid-lam4))
 
+    abstract
+      lam-alid-lam-rot :
+        ! (al id x y) ◃∎
+          =ₛ
+        ap (λ v → mu v y) (lam x) ◃∙
+        ! (lam (mu x y)) ◃∎
+      lam-alid-lam-rot =
+        ! (al id x y) ◃∎
+          =ₛ⟨ tri-exch◃ lam-alid-lam ⟩
+        _
+          =ₛ₁⟨ 0 & 1 & ap ! (ap-! (λ v → mu v y) (lam x)) ∙ !-! (ap (λ v → mu v y) (lam x)) ⟩
+        ap (λ v → mu v y) (lam x) ◃∙
+        ! (lam (mu x y)) ◃∎ ∎ₛ
+
   rho-lam-id-eq0 =
     rho id ◃∎
       =ₛ⟨ =ₛ-in (! (<–-inv-l (ap-equiv ((λ z → mu z id) , idmu-iso) _ _) (rho id))) ⟩

@@ -210,6 +210,10 @@ module _ {i} {A : Type i} where
     → ! p ∙ q == r → p == q ∙ ! r
   tri-exch {p = idp} {q = idp} {r} e = ap ! e
 
+  tri-exch◃ : {x y z : A} {p₁ : x == y} {p₂ : z == y} {p₃ : z == x}
+    → p₁ ◃∙ ! p₂ ◃∙ p₃ ◃∎ =ₛ idp ◃∎ → ! p₂ ◃∎ =ₛ ! p₁ ◃∙ ! p₃ ◃∎
+  tri-exch◃ {p₁ = idp} {p₂ = idp} e = =ₛ-in (ap ! (! (=ₛ-out e)))
+
   tri-rot : {a₁ a₂ a₃ a₄ a₅ : A} (q₁ : a₁ == a₂) (q₂ : a₃ == a₂)
     (q₃ : a₃ == a₄) (q₄ : a₄ == a₅) {p : a₁ == a₅}
     → p == q₁ ∙ ! q₂ ∙ q₃ ∙ q₄
