@@ -127,6 +127,15 @@ module _ {i} {A : Type i} where
     → p₁ ∙ (p₂ ∙ p₃) ∙ p₄ ∙ p₅ == (p₁ ∙ p₂) ∙ p₃ ∙ p₄ ∙ p₅
   ∙-assoc2-∙2 idp idp _ _ _ = idp 
 
+  ∙-assoc-pentagon : {v w x y z : A} (p : v == w) (q : w == x) (r : x == y) (s : y == z)
+    → ∙-assoc (p ∙ q) r s ◃∙
+      ∙-assoc p q (r ∙ s) ◃∎
+      =ₛ
+      ap (λ u → u ∙ s) (∙-assoc p q r) ◃∙
+      ∙-assoc p (q ∙ r) s ◃∙
+      ap (λ u → p ∙ u) (∙-assoc q r s) ◃∎
+  ∙-assoc-pentagon idp idp r s = =ₛ-in idp
+
   tri-id : {x y z : A} (p : x == y) (q : y == z)
     → idp == ! (∙-assoc p idp q) ∙ ap (λ v → v ∙ q) (∙-unit-r p)
   tri-id idp q = idp
@@ -187,7 +196,8 @@ module _ {i} {A : Type i} where
   assoc-tri-!-mid idp p₁ p₂ p₃ idp = ∙'-!-∙-∙ p₁ p₂ p₃
 
   assoc-tri-!-coher : {x y : A} (p : x == y) →
-    ! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p))) ==
+    ! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p)))
+      ==
     ap (λ q → q ∙ idp)
       (! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p)))) ∙
     ap (_∙_ (p ∙ idp ∙' ! p))
@@ -219,6 +229,13 @@ module _ {i} {A : Type i} where
     → p == q₁ ∙ ! q₂ ∙ q₃ ∙ q₄
     → q₁ == p ∙ ! q₄ ∙ ! q₃ ∙ q₂
   tri-rot idp idp idp idp idp = idp 
+
+  !-!-tri-rot : {a₁ a₂ a₃ a₄ a₅ : A}
+    (p₁ : a₁ == a₂) (p₄ : a₃ == a₁) (p₃ : a₃ == a₄)
+    (p₂ : a₄ == a₅) {p₅ : a₅ == a₂}
+    → p₁ ◃∎ =ₛ ! (! p₂ ∙ ! p₃ ∙ p₄) ◃∙ p₅ ◃∎
+    → ! p₅ ◃∙ ! p₂ ◃∙ ! p₃ ◃∎ =ₛ ! p₁ ◃∙ ! p₄ ◃∎
+  !-!-tri-rot idp idp idp idp e = =ₛ-in (ap (λ p → ! p ∙ idp) (! (=ₛ-out e)))
 
   {- Horizontal compositions -}
 
@@ -260,17 +277,6 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} where
 
   fun-rid-inv2 : {x y : A} (p : x == y) → idp == (ap f p ∙ idp) ∙ ! (ap f (p ∙ idp) ∙ idp)
   fun-rid-inv2 idp = idp
-
-module _ {i} {A : Type i} where
-
-  ∙-assoc-pentagon : {v w x y z : A} (p : v == w) (q : w == x) (r : x == y) (s : y == z)
-    → ∙-assoc (p ∙ q) r s ◃∙
-      ∙-assoc p q (r ∙ s) ◃∎
-      =ₛ
-      ap (λ u → u ∙ s) (∙-assoc p q r) ◃∙
-      ∙-assoc p (q ∙ r) s ◃∙
-      ap (λ u → p ∙ u) (∙-assoc q r s) ◃∎
-  ∙-assoc-pentagon idp idp r s = =ₛ-in idp
 
 module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
 

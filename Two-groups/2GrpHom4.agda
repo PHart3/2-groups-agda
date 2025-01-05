@@ -3,21 +3,99 @@
 open import lib.Basics
 open import 2Grp
 open import 2GrpProps
+open import 2GrpPropsMap
 
 module 2GrpHom4 where
 
 open CohGrp {{...}}
 
 module MapUnit1 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}
-  (map : G₁ → G₂) (map-comp : (x y : G₁) → mu (map x) (map y) == map (mu x y))
+  (map : G₁ → G₂)
+  (map-comp : (x y : G₁) → mu (map x) (map y) == map (mu x y))
+  (map-inv : (x : G₁) → inv (map x) == map (inv x))
   (map-id : id == map id)
-  (map-al-rot2 :
-    (x y z : G₁) →
-     ! (al (map x) (map y) (map z)) ◃∎
-     =ₛ
-     ap (λ v → mu v (map z)) (map-comp x y) ◃∙
-     map-comp (mu x y) z ◃∙
-     ! (ap map (al x y z)) ◃∙
-     ! (map-comp x (mu y z)) ◃∙
-     ! (ap (mu (map x)) (map-comp y z)) ◃∎)
+  (map-rinv : (x : G₁) →
+    ap (mu (map x)) (map-inv x) ◃∎
+      =ₛ
+    ! (rinv (map x)) ◃∙
+    map-id ◃∙
+    ap map (rinv x) ◃∙
+    ! (map-comp x (inv x)) ◃∎)
+  (map-rho : (x : G₁) →
+    rho (map x) ◃∎
+      =ₛ
+    ap (mu (map x)) map-id ◃∙
+    map-comp x id ◃∙
+    ap map (rho x) ◃∎)
   (x : G₁) where
+
+  rho-to-lam4 = 
+    rinv (map x) ◃∙
+    ap (mu (map x)) (map-inv x) ◃∙
+    map-comp x (inv x) ◃∙
+    ap map (
+      ! (ap (λ z → mu z (inv x)) (lam x)) ∙
+      ! (al id x (inv x)) ∙
+      ! (ap (mu id) (rinv x))) ◃∙
+    ! (map-comp id id) ◃∙
+    ap (mu (map id)) (
+      ap map (rinv x) ∙
+      ! (map-comp x (inv x)) ∙
+      ! (ap (mu (map x)) (map-inv x)) ∙
+      ! (rinv (map x))) ◃∙
+    rho (map id) ◃∎
+      =ₛ⟨ 3 & 1 & ∙-ap-seq-=ₛ map (zz₁-rinv-rot x) ⟩
+    rinv (map x) ◃∙
+    ap (mu (map x)) (map-inv x) ◃∙
+    map-comp x (inv x) ◃∙
+    ap map (! (rinv x)) ◃∙
+    ap map (! (rho id)) ◃∙
+    ! (map-comp id id) ◃∙
+    ap (mu (map id)) (
+      ap map (rinv x) ∙
+      ! (map-comp x (inv x)) ∙
+      ! (ap (mu (map x)) (map-inv x)) ∙
+      ! (rinv (map x))) ◃∙
+    rho (map id) ◃∎
+      =ₛ⟨ 3 & 2 & !-!-ap-∙◃ map (rinv x) (rho id) ⟩
+    _
+      =ₛ⟨ 6 & 1 &
+        ∙-ap-seq-=ₛ (mu (map id))
+          (!ₛ (map-rinv-rot1◃ map map-comp map-id map-inv map-rinv x)) ⟩
+    rinv (map x) ◃∙
+    ap (mu (map x)) (map-inv x) ◃∙
+    map-comp x (inv x) ◃∙
+    ! (ap map (rinv x)) ◃∙
+    ! (ap map (rho id)) ◃∙
+    ! (map-comp id id) ◃∙
+    ap (mu (map id)) (! map-id) ◃∙
+    rho (map id) ◃∎
+      =ₛ₁⟨ 6 & 1 & ap-! (mu (map id)) (map-id) ⟩
+    rinv (map x) ◃∙
+    ap (mu (map x)) (map-inv x) ◃∙
+    map-comp x (inv x) ◃∙
+    ! (ap map (rinv x)) ◃∙
+    ! (ap map (rho id)) ◃∙
+    ! (map-comp id id) ◃∙
+    ! (ap (mu (map id)) map-id) ◃∙
+    rho (map id) ◃∎ ∎ₛ
+
+  rho-to-lam5 =
+    rinv (map x) ◃∙
+    ap (mu (map x)) (map-inv x) ◃∙
+    map-comp x (inv x) ◃∙
+    ! (ap map (rinv x)) ◃∙
+    ! (ap map (rho id)) ◃∙
+    ! (map-comp id id) ◃∙
+    ! (ap (mu (map id)) map-id) ◃∙
+    rho (map id) ◃∎
+      =ₛ⟨ 4 & 4 & map-rho-rot◃ map map-comp map-id map-rho id ⟩
+    rinv (map x) ◃∙
+    ap (mu (map x)) (map-inv x) ◃∙
+    map-comp x (inv x) ◃∙
+    ! (ap map (rinv x)) ◃∙
+    idp ◃∎
+      =ₛ⟨ 0 & 4 & map-rinv-rot2◃ map map-comp map-id map-inv map-rinv x ⟩
+    map-id ◃∙ idp ◃∎
+      =ₛ₁⟨ ∙-unit-r (map-id) ⟩
+    map-id ◃∎ ∎ₛ

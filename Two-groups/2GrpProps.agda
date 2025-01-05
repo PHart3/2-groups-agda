@@ -406,3 +406,13 @@ module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
         =ₛ₁⟨ 1 & 2 & ∙-unit-r (ap (λ z → mu z (inv x)) (lam x)) ⟩
       ! (! (al id x (inv x)) ∙ ! (ap (mu id) (rinv x)) ∙ rho id) ◃∙
       ap (λ z → mu z (inv x)) (lam x) ◃∎ ∎ₛ
+
+  abstract
+    zz₁-rinv-rot :
+      ! (ap (λ z → mu z (inv x)) (lam x)) ◃∙
+      ! (al id x (inv x)) ◃∙
+      ! (ap (mu id) (rinv x)) ◃∎
+        =ₛ
+      ! (rinv x) ◃∙
+      ! (rho id) ◃∎
+    zz₁-rinv-rot = !-!-tri-rot _ _ _ _ zz₁-rinv

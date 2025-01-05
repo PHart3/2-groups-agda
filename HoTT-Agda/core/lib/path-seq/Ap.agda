@@ -42,6 +42,16 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
       =ₛ⟨ ap-seq-∙ t ⟩
     ap-seq t ∎ₛ
 
+  ∙-ap-seq-=ₛ : {a a' : A} {s t : a =-= a'}
+    → s =ₛ t
+    → ap f (↯ s) ◃∎ =ₛ ap-seq t
+  ∙-ap-seq-=ₛ {s = s} {t = t} e =
+    ap f (↯ s) ◃∎
+      =ₛ⟨ !ₛ (∙-ap-seq s) ⟩
+    ap-seq s
+      =ₛ⟨ ap-seq-=ₛ e ⟩
+    ap-seq t ∎ₛ
+
 module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (f : A → B → C) where
 
   ap2-seq : {a a' : A} {b b' : B} → a =-= a' → b =-= b' → f a b =-= f a' b'
