@@ -31,9 +31,10 @@ module MapInv0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
     ap map (rho x) ◃∙ ! (rho (map x)) ◃∙ ap (mu (map x)) map-id ◃∎)
   (x : G₁) where
 
-  linv-to-rinv0 = 
+  rinv-to-linv0 = 
     ! (! (al (inv (map x)) (map x) (inv (map x))) ∙
-      ! (ap (mu (inv (map x))) (rinv (map x))) ∙ rho (inv (map x))) ◃∙
+      ! (ap (mu (inv (map x))) (rinv (map x))) ∙
+      rho (inv (map x))) ◃∙
     ap (λ z → mu z (inv (map x)))
       (linv (map x) ∙ map-id ∙ ! (ap map (linv x)) ∙ ! (map-comp (inv x) x)) ◃∙
     ! (al (map (inv x)) (map x) (inv (map x))) ◃∙
@@ -56,7 +57,7 @@ module MapInv0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
     ! (ap (mu (map (inv x))) (rinv (map x))) ◃∙
     rho (map (inv x)) ◃∎ ∎ₛ
 
-  linv-to-rinv1 =
+  rinv-to-linv1 =
     ! (rho (inv (map x))) ◃∙
     ap (mu (inv (map x))) (rinv (map x)) ◃∙
     al (inv (map x)) (map x) (inv (map x)) ◃∙
@@ -84,7 +85,7 @@ module MapInv0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
     ! (ap (mu (map (inv x))) (rinv (map x))) ◃∙
     rho (map (inv x)) ◃∎ ∎ₛ
 
-  linv-to-rinv2 =
+  rinv-to-linv2 =
     ap (λ z → z) (map-inv x) ◃∙
     ! (ap map (lam (inv x))) ◃∙
     ! (map-comp id (inv x)) ◃∙
@@ -115,7 +116,7 @@ module MapInv0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
     ! (ap (mu (map (inv x))) (rinv (map x))) ◃∙
     rho (map (inv x)) ◃∎ ∎ₛ
 
-  linv-to-rinv3 =
+  rinv-to-linv3 =
     ap (λ z → z) (map-inv x) ◃∙
     ! (ap map (lam (inv x))) ◃∙
     ! (ap (λ z → map (mu z (inv x))) (linv x)) ◃∙
@@ -154,7 +155,7 @@ module MapInv0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
     ! (ap (mu (map (inv x))) (rinv (map x))) ◃∙
     rho (map (inv x)) ◃∎ ∎ₛ
 
-  linv-to-rinv4 =
+  rinv-to-linv4 =
     ap (λ z → z) (map-inv x) ◃∙
     ! (ap map (lam (inv x))) ◃∙
     ! (ap (λ z → map (mu z (inv x))) (linv x)) ◃∙
@@ -179,7 +180,7 @@ module MapInv0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
       =ₛ⟨ 8 & 1 & hmtpy-nat-!◃-! (λ z → map-comp (inv x) z) (rinv x) ⟩
     _ ∎ₛ
 
-  linv-to-rinv5 =
+  rinv-to-linv5 =
     ap (λ z → z) (map-inv x) ◃∙
     ! (ap map (lam (inv x))) ◃∙
     ! (ap (λ z → map (mu z (inv x))) (linv x)) ◃∙
@@ -239,15 +240,16 @@ module MapInv0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
     ! (ap (mu (map (inv x))) (rinv (map x))) ◃∙
     rho (map (inv x)) ◃∎ ∎ₛ
 
-  module _ (τ :
-    ! (ap (mu (map x)) (map-inv x)) ◃∎
-    =ₛ
-    map-comp x (inv x) ◃∙
-    ! (ap map (rinv x)) ◃∙
-    ! map-id ◃∙
-    rinv (map x) ◃∎) where
+  module _
+    (map-rinv :
+      ! (ap (mu (map x)) (map-inv x)) ◃∎
+        =ₛ
+      map-comp x (inv x) ◃∙
+      ! (ap map (rinv x)) ◃∙
+      ! map-id ◃∙
+      rinv (map x) ◃∎) where
 
-    linv-to-rinv6 =
+    rinv-to-linv6 =
       ap (λ z → z) (map-inv x) ◃∙
       ! (ap map (lam (inv x))) ◃∙
       ! (ap (λ z → map (mu z (inv x))) (linv x)) ◃∙
@@ -282,7 +284,7 @@ module MapInv0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
       _
         =ₛ₁⟨ 17 & 1 & !-ap-∘ (mu (map (inv x))) (mu (map x)) (map-inv x) ⟩
       _
-        =ₛ⟨ 17 & 1 & ap-seq-=ₛ (mu (map (inv x))) τ ⟩
+        =ₛ⟨ 17 & 1 & ap-seq-=ₛ (mu (map (inv x))) map-rinv ⟩
       ap (λ z → z) (map-inv x) ◃∙
       ! (ap map (lam (inv x))) ◃∙
       ! (ap (λ z → map (mu z (inv x))) (linv x)) ◃∙
@@ -319,7 +321,7 @@ module MapInv0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
       ! (ap (mu (map (inv x))) (rinv (map x))) ◃∙
       rho (map (inv x)) ◃∎ ∎ₛ
 
-  linv-to-rinv7 =
+  rinv-to-linv7 =
     ap (λ z → z) (map-inv x) ◃∙
     ! (ap map (lam (inv x))) ◃∙
     ! (ap (λ z → map (mu z (inv x))) (linv x)) ◃∙
@@ -391,7 +393,7 @@ module MapInv0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
     ! (ap (mu (map (inv x))) (rinv (map x))) ◃∙
     rho (map (inv x)) ◃∎ ∎ₛ
 
-  linv-to-rinv8 =
+  rinv-to-linv8 =
     ap (λ z → z) (map-inv x) ◃∙
     ! (ap map (lam (inv x))) ◃∙
     ! (ap (λ z → map (mu z (inv x))) (linv x)) ◃∙
@@ -459,7 +461,7 @@ module MapInv0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
     ! (ap (mu (map (inv x))) (rinv (map x))) ◃∙
     rho (map (inv x)) ◃∎ ∎ₛ
 
-  linv-to-rinv9 =
+  rinv-to-linv9 =
     ap (λ z → z) (map-inv x) ◃∙
     ! (ap map (lam (inv x))) ◃∙
     ! (ap (λ z → map (mu z (inv x))) (linv x)) ◃∙

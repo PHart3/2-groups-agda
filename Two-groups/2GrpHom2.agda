@@ -37,16 +37,17 @@ module MapInv2 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
 
   abstract
     -- This theorem is essentially Section 6 of Baez and Lauda.   
-    linv-to-rinv :
-      ! (ap (mu (map x)) (map-inv x))
-        ==
-      map-comp x (inv x) ∙
-      ! (ap map (rinv x)) ∙
-      ! map-id ∙
-      rinv (map x)
+    rinv-to-linv :
+      ! (ap (mu (map x)) (map-inv x)) ◃∎
+        =ₛ
+      map-comp x (inv x) ◃∙
+      ! (ap map (rinv x)) ◃∙
+      ! map-id ◃∙
+      rinv (map x) ◃∎
       →
       ! (! (al (inv (map x)) (map x) (inv (map x))) ∙
-      ! (ap (mu (inv (map x))) (rinv (map x))) ∙ rho (inv (map x))) ◃∙
+        ! (ap (mu (inv (map x))) (rinv (map x))) ∙
+        rho (inv (map x))) ◃∙
       ap (λ z → mu z (inv (map x)))
         (linv (map x) ∙ map-id ∙ ! (ap map (linv x)) ∙ ! (map-comp (inv x) x)) ◃∙
       ! (al (map (inv x)) (map x) (inv (map x))) ◃∙
@@ -54,9 +55,9 @@ module MapInv2 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
       rho (map (inv x)) ◃∎
         =ₛ
       map-inv x ◃∎
-    linv-to-rinv τ =
-      linv-to-rinv0 ∙ₛ (linv-to-rinv1 ∙ₛ (linv-to-rinv2 ∙ₛ (linv-to-rinv3 ∙ₛ
-      (linv-to-rinv4 ∙ₛ (linv-to-rinv5 ∙ₛ (linv-to-rinv6 (=ₛ-in τ) ∙ₛ
-      (linv-to-rinv7 ∙ₛ (linv-to-rinv8 ∙ₛ (linv-to-rinv9 ∙ₛ (linv-to-rinv10 ∙ₛ
-      (linv-to-rinv11 ∙ₛ (linv-to-rinv12 ∙ₛ (linv-to-rinv13 ∙ₛ
-      linv-to-rinv14)))))))))))))
+    rinv-to-linv map-rinv =
+      rinv-to-linv0 ∙ₛ (rinv-to-linv1 ∙ₛ (rinv-to-linv2 ∙ₛ (rinv-to-linv3 ∙ₛ
+      (rinv-to-linv4 ∙ₛ (rinv-to-linv5 ∙ₛ (rinv-to-linv6 map-rinv ∙ₛ
+      (rinv-to-linv7 ∙ₛ (rinv-to-linv8 ∙ₛ (rinv-to-linv9 ∙ₛ (rinv-to-linv10 ∙ₛ
+      (rinv-to-linv11 ∙ₛ (rinv-to-linv12 ∙ₛ (rinv-to-linv13 ∙ₛ
+      rinv-to-linv14)))))))))))))

@@ -23,12 +23,12 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
   (map-inv : (x : G₁) → inv (map x) == map (inv x))
   (map-id : id == map id)
   (map-rinv : (x : G₁) →
-    ap (mu (map x)) (map-inv x) ◃∎
+    ! (ap (mu (map x)) (map-inv x)) ◃∎
       =ₛ
-    ! (rinv (map x)) ◃∙
-    map-id ◃∙
-    ap map (rinv x) ◃∙
-    ! (map-comp x (inv x)) ◃∎)
+    map-comp x (inv x) ◃∙
+    ! (ap map (rinv x)) ◃∙
+    ! map-id ◃∙
+    rinv (map x) ◃∎)
   (map-rho : (x : G₁) →
     ! (map-comp x id) ◃∎
       =ₛ

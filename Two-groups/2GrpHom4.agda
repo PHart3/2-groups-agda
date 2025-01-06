@@ -15,12 +15,12 @@ module MapUnit1 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{
   (map-inv : (x : G₁) → inv (map x) == map (inv x))
   (map-id : id == map id)
   (map-rinv : (x : G₁) →
-    ap (mu (map x)) (map-inv x) ◃∎
+    ! (ap (mu (map x)) (map-inv x)) ◃∎
       =ₛ
-    ! (rinv (map x)) ◃∙
-    map-id ◃∙
-    ap map (rinv x) ◃∙
-    ! (map-comp x (inv x)) ◃∎)
+    map-comp x (inv x) ◃∙
+    ! (ap map (rinv x)) ◃∙
+    ! map-id ◃∙
+    rinv (map x) ◃∎)
   (map-rho : (x : G₁) →
     ! (map-comp x id) ◃∎
       =ₛ
@@ -61,7 +61,7 @@ module MapUnit1 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{
     _
       =ₛ⟨ 6 & 1 &
         ∙-ap-seq-=ₛ (mu (map id))
-          (!ₛ (map-rinv-rot1◃ map map-comp map-id map-inv map-rinv x)) ⟩
+          (map-rinv-rot1◃ map map-comp map-id map-inv map-rinv x) ⟩
     rinv (map x) ◃∙
     ap (mu (map x)) (map-inv x) ◃∙
     map-comp x (inv x) ◃∙
@@ -89,13 +89,13 @@ module MapUnit1 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{
     ! (map-comp id id) ◃∙
     ! (ap (mu (map id)) map-id) ◃∙
     rho (map id) ◃∎
-      =ₛ⟨ 4 & 4 & map-rho-rot◃ map map-comp map-id map-rho id ⟩
+      =ₛ⟨ 4 & 4 & map-rho-rot1◃ map map-comp map-id map-rho id ⟩
     rinv (map x) ◃∙
     ap (mu (map x)) (map-inv x) ◃∙
     map-comp x (inv x) ◃∙
     ! (ap map (rinv x)) ◃∙
     idp ◃∎
-      =ₛ⟨ 0 & 4 & map-rinv-rot2◃ map map-comp map-id map-inv map-rinv x ⟩
+      =ₛ⟨ 0 & 4 & !ₛ (map-rinv-rot2◃ map map-comp map-id map-inv map-rinv x) ⟩
     map-id ◃∙ idp ◃∎
       =ₛ₁⟨ ∙-unit-r (map-id) ⟩
     map-id ◃∎ ∎ₛ

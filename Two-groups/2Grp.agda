@@ -92,10 +92,6 @@ module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
       (λ b → al x (inv x) b ∙ ap2 mu (! (rinv x)) idp ∙ lam b)
       λ a → al (inv x) x a ∙ ap2 mu (linv x) idp ∙ lam a
 
-  mu-pre-ff : (z₁ z₂ : G) →  (z₁ == z₂) ≃ (mu x z₁ == mu x z₂)
-  mu-pre-ff z₁ z₂ = ap-equiv (_ , mu-pre-iso) z₁ z₂
-
-  -- <– (mu-pre-ff _ _)
   mu-pre-ff<– : (z₁ z₂ : G) → (mu x z₁ == mu x z₂) → (z₁ == z₂)
   mu-pre-ff<– z₁ z₂ p =
     ! (al (inv x) x z₁ ∙ ap2 mu (linv x) idp ∙ lam z₁) ∙
@@ -110,7 +106,6 @@ module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
       (λ b → ! (al b (inv x) x) ∙ ap (mu b) (linv x) ∙ rho b )
       λ a → ! (al a x (inv x)) ∙ ! (ap (mu a) (rinv x)) ∙ rho a
 
-  -- <– (mu-post-ff _ _)
   mu-post-ff<– : (z₁ z₂ : G) → (mu z₁ x == mu z₂ x) → (z₁ == z₂)
   mu-post-ff<– z₁ z₂ p =
     ! (! (al z₁ x (inv x)) ∙ ! (ap (mu z₁) (rinv x)) ∙ rho z₁) ∙
@@ -151,19 +146,19 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         ap (mu (map x)) map-id
       map-inv : (x : G₁) → inv (map x) == map (inv x)
       map-linv : (x : G₁) → 
-        ap (λ z → mu z (map x)) (map-inv x)        
+        ! (ap (λ z → mu z (map x)) (map-inv x))
         ==
-        linv (map x) ∙
-        map-id ∙
-        ! (ap map (linv x)) ∙
-        ! (map-comp (inv x) x)
+        map-comp (inv x) x ∙
+        ap map (linv x) ∙
+        ! map-id ∙
+        ! (linv (map x))
       map-rinv : (x : G₁) →
-        ap (mu (map x)) (map-inv x)
+        ! (ap (mu (map x)) (map-inv x))
         ==
-        ! (rinv (map x)) ∙
-        map-id ∙
-        ap map (rinv x) ∙
-        ! (map-comp x (inv x))
+        map-comp x (inv x) ∙
+        ! (ap map (rinv x)) ∙
+        ! map-id ∙
+        rinv (map x)
 
   -- shorter definition, easier to work with
   record CohGrpHomStr (map : G₁ → G₂) : Type (lmax i j) where

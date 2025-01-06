@@ -36,6 +36,41 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       map-al-rot◃ = post-rotate-in (post-rotate-in (pre-rotate'-in (map-al x y z)))
 
   module _ (map-id : id == map id) where
+            
+    abstract
+      map-id-map-lam : (x : G₁) → 
+        map-id ◃∎
+          =ₛ
+        ! (! (al id (map x) (inv (map x))) ∙
+          ! (ap (mu id) (rinv (map x))) ∙
+          rho id) ◃∙
+        ap (λ z → mu z (inv (map x))) (
+          lam (map x) ∙
+          ! (ap map (lam x)) ∙
+          ! (map-comp id x)) ◃∙
+        ! (al (map id) (map x) (inv (map x))) ◃∙
+        ! (ap (mu (map id)) (rinv (map x))) ◃∙
+        rho (map id) ◃∎
+        →
+        ! (ap map (lam x)) ◃∙
+        ! (map-comp id x) ◃∙
+        ! (ap (λ z → mu z (map x)) map-id) ◃∎
+          =ₛ
+        ! (lam (map x)) ◃∎
+      map-id-map-lam x e = post-rotate'-in (pre-rotate-in lemma)
+        where
+          lemma :
+            lam (map x) ◃∙
+            ! (ap map (lam x)) ◃∙
+            ! (map-comp id x) ◃∎
+              =ₛ
+            ap (λ z → mu z (map x)) map-id ◃∎
+          lemma = =ₛ-in (! (
+            ap (ap (λ z → mu z (map x))) (=ₛ-out e) ∙
+            <–-inv-r (ap-equiv ((λ z → mu z (map x)) , mu-post-iso (map x)) _ _)
+              (lam (map x) ∙ ! (ap map (lam x)) ∙ ! (map-comp id x))))
+
+    -- properties about map-rho
 
     module _ 
       (map-rho : (x : G₁) →
@@ -77,15 +112,14 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         map-rho-map-id :
           map-id ◃∎
             =ₛ
-          (! (al (inv (map x)) (map x) id ∙
+          ! (al (inv (map x)) (map x) id ∙
             ap2 (mu) (linv (map x)) idp ∙
             lam id) ◃∙
-          ap (mu (inv (map x))) (rho (map x)) ◃∙
-          ap (mu (inv (map x))) (! (ap map (rho x))) ◃∙
-          ap (mu (inv (map x))) (! (map-comp x id)) ◃∙
+          ap (mu (inv (map x)))
+            (rho (map x) ∙ ! (ap map (rho x)) ∙ ! (map-comp x id)) ◃∙
           al (inv (map x)) (map x) (map id) ◃∙
           ap2 (mu) (linv (map x)) idp ◃∙
-          lam (map id) ◃∎)
+          lam (map id) ◃∎
         map-rho-map-id = 
           map-id ◃∎
             =ₛ⟨ =ₛ-in (! (<–-inv-l (ap-equiv (mu (map x) , mu-pre-iso (map x)) _ _) map-id)) ⟩
@@ -96,44 +130,189 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
           al (inv (map x)) (map x) (map id) ◃∙
           ap2 (mu) (linv (map x)) idp ◃∙
           lam (map id) ◃∎
-            =ₛ⟨ 1 & 1 & ap-seq-=ₛ (mu (inv (map x))) map-rho-rot2◃ ⟩
+            =ₛ₁⟨ 1 & 1 & ap (ap (mu (inv (map x)))) (=ₛ-out (map-rho-rot2◃)) ⟩
           ! (al (inv (map x)) (map x) id ∙
             ap2 (mu) (linv (map x)) idp ∙
             lam id) ◃∙
-          ap (mu (inv (map x))) (rho (map x)) ◃∙
-          ap (mu (inv (map x))) (! (ap map (rho x))) ◃∙
-          ap (mu (inv (map x))) (! (map-comp x id)) ◃∙
+          ap (mu (inv (map x)))
+            (rho (map x) ∙ ! (ap map (rho x)) ∙ ! (map-comp x id)) ◃∙
           al (inv (map x)) (map x) (map id) ◃∙
           ap2 (mu) (linv (map x)) idp ◃∙
           lam (map id) ◃∎ ∎ₛ
-
-    module _
-      (map-inv : (x : G₁) → inv (map x) == map (inv x))
-      (map-rinv : (x : G₁) →
-        ap (mu (map x)) (map-inv x) ◃∎
+          
+    abstract
+      map-id-map-rho : (x : G₁) → 
+        map-id ◃∎
           =ₛ
-        ! (rinv (map x)) ◃∙
-        map-id ◃∙
-        ap map (rinv x) ◃∙
-        ! (map-comp x (inv x)) ◃∎)
-      (x : G₁) where
+        ! (al (inv (map x)) (map x) id ∙
+          ap2 (mu) (linv (map x)) idp ∙
+          lam id) ◃∙
+        ap (mu (inv (map x)))
+          (rho (map x) ∙ ! (ap map (rho x)) ∙ ! (map-comp x id)) ◃∙
+        al (inv (map x)) (map x) (map id) ◃∙
+        ap2 (mu) (linv (map x)) idp ◃∙
+        lam (map id) ◃∎
+        →
+        ! (map-comp x id) ◃∎
+          =ₛ
+        ap map (rho x) ◃∙
+        ! (rho (map x)) ◃∙
+        ap (mu (map x)) map-id ◃∎
+      map-id-map-rho x e = pre-rotate'-out (pre-rotate-in lemma)
+        where
+          lemma :
+            rho (map x) ◃∙
+            ! (ap map (rho x)) ◃∙
+            ! (map-comp x id) ◃∎
+              =ₛ
+            ap (mu (map x)) map-id ◃∎
+          lemma = =ₛ-in (! (
+            ap (ap (mu (map x))) (=ₛ-out e) ∙
+            <–-inv-r (ap-equiv (mu (map x) , mu-pre-iso (map x)) _ _)
+              (rho (map x) ∙ ! (ap map (rho x)) ∙ ! (map-comp x id))))
+            
+    module _ (map-inv : (x : G₁) → inv (map x) == map (inv x))  where
 
       abstract
-
-        map-rinv-rot1◃ :
-          ! map-id ◃∎
+        map-inv-map-linv : (x : G₁) →
+          map-inv x ◃∎
             =ₛ
-          ap map (rinv x) ◃∙
-          ! (map-comp x (inv x)) ◃∙
-          ! (ap (mu (map x)) (map-inv x)) ◃∙
-          ! (rinv (map x)) ◃∎
-        map-rinv-rot1◃ = post-rotate-in (post-rotate-in (pre-rotate'-in (pre-rotate-out (map-rinv x))))
+          ! (! (al (inv (map x)) (map x) (inv (map x))) ∙
+            ! (ap (mu (inv (map x))) (rinv (map x))) ∙
+            rho (inv (map x))) ◃∙
+          ap (λ z → mu z (inv (map x)))
+            (linv (map x) ∙ map-id ∙ ! (ap map (linv x)) ∙ ! (map-comp (inv x) x)) ◃∙
+          ! (al (map (inv x)) (map x) (inv (map x))) ◃∙
+          ! (ap (mu (map (inv x))) (rinv (map x))) ◃∙
+          rho (map (inv x)) ◃∎
+          →
+          map-comp (inv x) x ◃∙
+          ap map (linv x) ◃∙
+          ! map-id ◃∙
+          ! (linv (map x)) ◃∎
+            =ₛ
+          ! (ap (λ z → mu z (map x)) (map-inv x)) ◃∎
+        map-inv-map-linv x e = post-rotate'-in (post-rotate'-in (pre-rotate-in (post-rotate-out (post-rotate-out lemma))))
+          where
+            lemma :
+              ap (λ z → mu z (map x)) (map-inv x) ◃∎
+                =ₛ
+              linv (map x) ◃∙
+              map-id ◃∙
+              ! (ap map (linv x)) ◃∙
+              ! (map-comp (inv x) x) ◃∎
+            lemma = =ₛ-in (
+              ap (ap (λ z → mu z (map x))) (=ₛ-out e) ∙
+              <–-inv-r (ap-equiv ((λ z → mu z (map x)) , mu-post-iso (map x)) _ _)
+                (linv (map x) ∙ map-id ∙ ! (ap map (linv x)) ∙ ! (map-comp (inv x) x)))
 
-        map-rinv-rot2◃ :
-          rinv (map x) ◃∙
-          ap (mu (map x)) (map-inv x) ◃∙
+
+      -- properties about map-rinv
+
+      module _
+        (map-rinv : (x : G₁) →
+          ! (ap (mu (map x)) (map-inv x)) ◃∎
+            =ₛ
           map-comp x (inv x) ◃∙
-          ! (ap map (rinv x)) ◃∎
+          ! (ap map (rinv x)) ◃∙
+          ! map-id ◃∙
+          rinv (map x) ◃∎)
+        (x : G₁) where
+
+        abstract
+
+          map-rinv-rot1◃ :
+            ap map (rinv x) ◃∙
+            ! (map-comp x (inv x)) ◃∙
+            ! (ap (mu (map x)) (map-inv x)) ◃∙
+            ! (rinv (map x)) ◃∎
+              =ₛ
+            ! map-id ◃∎
+          map-rinv-rot1◃ = post-rotate'-in (pre-rotate-out (pre-rotate'-in (map-rinv x)))
+
+          map-rinv-rot2◃ :
+            map-id ◃∎
+              =ₛ
+            rinv (map x) ◃∙
+            ap (mu (map x)) (map-inv x) ◃∙
+            map-comp x (inv x) ◃∙
+            ! (ap map (rinv x)) ◃∎
+          map-rinv-rot2◃ =
+            post-rotate-in (
+              post-rotate'-seq-out {q = ap (mu (map x)) (map-inv x) ◃∙ map-comp x (inv x) ◃∎} (
+                pre-rotate-out (pre-rotate-out (pre-rotate'-in (map-rinv x)))))
+
+        abstract
+          map-rinv-rot3◃ :
+            ! (rinv (map x)) ◃∙
+            map-id ◃∙
+            ap map (rinv x) ◃∙
+            ! (map-comp x (inv x)) ◃∎
+              =ₛ
+            ap (mu (map x)) (map-inv x) ◃∎
+          map-rinv-rot3◃ = post-rotate'-in (post-rotate-out (pre-rotate'-in (map-rinv-rot2◃)))
+
+        abstract
+          map-rinv-map-inv :
+            map-inv x ◃∎
+              =ₛ
+            ! (al (inv (map x)) (map x) (inv (map x)) ∙
+              ap2 mu (linv (map x)) idp ∙
+              lam (inv (map x))) ◃∙
+            ap (mu (inv (map x)))
+              (! (rinv (map x)) ∙ map-id ∙ ap map (rinv x) ∙ ! (map-comp x (inv x))) ◃∙
+            al (inv (map x)) (map x) (map (inv x)) ◃∙
+            ap2 mu (linv (map x)) idp ◃∙
+            lam (map (inv x)) ◃∎
+          map-rinv-map-inv = 
+            map-inv x ◃∎
+              =ₛ⟨ =ₛ-in (! (<–-inv-l (ap-equiv (mu (map x) , mu-pre-iso (map x)) _ _) (map-inv x))) ⟩
+            ! (al (inv (map x)) (map x) (inv (map x)) ∙
+              ap2 mu (linv (map x)) idp ∙
+              lam (inv (map x))) ◃∙
+            ap (mu (inv (map x))) (ap (mu (map x)) (map-inv x)) ◃∙
+            al (inv (map x)) (map x) (map (inv x)) ◃∙
+            ap2 mu (linv (map x)) idp ◃∙
+            lam (map (inv x)) ◃∎
+              =ₛ₁⟨ 1 & 1 & ap (ap (mu (inv (map x)))) (! (=ₛ-out map-rinv-rot3◃)) ⟩
+            ! (al (inv (map x)) (map x) (inv (map x)) ∙
+              ap2 mu (linv (map x)) idp ∙
+              lam (inv (map x))) ◃∙
+            ap (mu (inv (map x)))
+              (! (rinv (map x)) ∙ map-id ∙ ap map (rinv x) ∙ ! (map-comp x (inv x))) ◃∙
+            al (inv (map x)) (map x) (map (inv x)) ◃∙
+            ap2 mu (linv (map x)) idp ◃∙
+            lam (map (inv x)) ◃∎ ∎ₛ
+
+      abstract
+        map-inv-map-rinv : (x : G₁) →
+          map-inv x ◃∎
             =ₛ
-          map-id ◃∎
-        map-rinv-rot2◃ = post-rotate'-in (post-rotate-out (pre-rotate-out (map-rinv x)))
+          ! (al (inv (map x)) (map x) (inv (map x)) ∙
+            ap2 mu (linv (map x)) idp ∙
+            lam (inv (map x))) ◃∙
+          ap (mu (inv (map x)))
+            (! (rinv (map x)) ∙ map-id ∙ ap map (rinv x) ∙ ! (map-comp x (inv x))) ◃∙
+          al (inv (map x)) (map x) (map (inv x)) ◃∙
+          ap2 mu (linv (map x)) idp ◃∙
+          lam (map (inv x)) ◃∎
+          →
+          map-comp x (inv x) ◃∙
+          ! (ap map (rinv x)) ◃∙
+          ! map-id ◃∙
+          rinv (map x) ◃∎
+            =ₛ
+          ! (ap (mu (map x)) (map-inv x)) ◃∎
+        map-inv-map-rinv x e = pre-rotate-in (post-rotate-out (post-rotate'-in (post-rotate'-in (post-rotate-out lemma))))
+          where
+            lemma :
+              ap (mu (map x)) (map-inv x) ◃∎
+                =ₛ
+              ! (rinv (map x)) ◃∙
+              map-id ◃∙
+              ap map (rinv x) ◃∙
+              ! (map-comp x (inv x)) ◃∎
+            lemma = =ₛ-in (
+              ap (ap (mu (map x))) (=ₛ-out e) ∙
+              <–-inv-r (ap-equiv (mu (map x) , mu-pre-iso (map x)) _ _)
+                (! (rinv (map x)) ∙ map-id ∙ ap map (rinv x) ∙ ! (map-comp x (inv x))))

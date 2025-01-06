@@ -2,6 +2,7 @@
 
 open import lib.Basics
 open import 2Grp
+open import 2GrpPropsMap
 open import 2GrpHom2
 open import 2GrpHom5
 
