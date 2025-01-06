@@ -124,10 +124,9 @@ module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
 
   -- definition explicitly accounting for all 2-group data
-  record CohGrpHomFull : Type (lmax i j) where
-    constructor cohgrphomfull
+  record CohGrpHomStrFull (map : G₁ → G₂) : Type (lmax i j) where
+    constructor cohgrphomstrfull
     field
-      map : G₁ → G₂
       map-comp : (x y : G₁) → mu (map x) (map y) == map (mu x y)
       map-al : (x y z : G₁) →
         ! (al (map x) (map y) (map z)) ∙
@@ -167,10 +166,9 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         ! (map-comp x (inv x))
 
   -- shorter definition, easier to work with
-  record CohGrpHom : Type (lmax i j) where
-    constructor cohgrphom
+  record CohGrpHomStr (map : G₁ → G₂) : Type (lmax i j) where
+    constructor cohgrphomstr
     field
-      map : G₁ → G₂
       map-comp : (x y : G₁) → mu (map x) (map y) == map (mu x y)
       map-al : (x y z : G₁) →
         ! (al (map x) (map y) (map z)) ∙
@@ -210,8 +208,15 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         {q = ap (mu (map x)) (map-comp y z) ◃∙ map-comp x (mu y z) ◃∎}
         (=ₛ-in (map-al x y z))
 
+  record CohGrpHom : Type (lmax i j) where
+    constructor cohgrphom
+    field
+      map : G₁ → G₂
+      {{str}} : CohGrpHomStr map
+
   -- natural isomorphisms between 2-group morphisms
 
+  open CohGrpHomStr {{...}}
   open CohGrpHom
 
   record CohGrpNatIso (μ₁ μ₂ : CohGrpHom) : Type (lmax i j) where
@@ -219,7 +224,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
     field
       θ : map μ₁ ∼ map μ₂
       θ-comp : (x y : G₁) →
-        ap2 mu (θ x) (θ y) ∙ map-comp μ₂ x y == map-comp μ₁ x y ∙ θ (mu x y)
+        ap2 mu (θ x) (θ y) ∙ map-comp x y == map-comp x y ∙ θ (mu x y)
 
 -- some ad-hoc lemmas for algebraic reasoning below
 
@@ -260,11 +265,11 @@ private
 -- categorical structure on 2-groups
 
 open CohGrpHom
+open CohGrpHomStr
 
 module _ {i} {G : Type i} {{η : CohGrp G}} where
 
-  idf2G : CohGrpHom {{η}} {{η}}
-  map idf2G x = x
+  idf2G : CohGrpHomStr (idf G)
   map-comp idf2G x y = idp
   map-al idf2G x y z = ∙-unit-r (! (al x y z)) ∙ ap ! (! (ap-idf (al x y z)))
 
@@ -273,133 +278,132 @@ module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
 
   -- composition of 2-group morphisms
   infixr 50 _∘2G_
-  _∘2G_ : CohGrpHom {{η₂}} {{η₃}} → CohGrpHom {{η₁}} {{η₂}} → CohGrpHom {{η₁}} {{η₃}}
-  map (F₂ ∘2G F₁) = map F₂ ∘ map F₁
-  map-comp (F₂ ∘2G F₁) x y = map-comp F₂ (map F₁ x) (map F₁ y) ∙ ap (map F₂) (map-comp F₁ x y) 
+  _∘2G_ :  (F₂ : CohGrpHom {{η₂}} {{η₃}}) (F₁ : CohGrpHom {{η₁}} {{η₂}}) → CohGrpHomStr (map F₂ ∘ map F₁)
+  map-comp (F₂ ∘2G F₁) x y = map-comp (str F₂) (map F₁ x) (map F₁ y) ∙ ap (map F₂) (map-comp (str F₁) x y) 
   map-al (F₂ ∘2G F₁) x y z =
     ! (al η₃ ((map F₂ ∘ map F₁) x) ((map F₂ ∘ map F₁) y) ((map F₂ ∘ map F₁) z)) ∙
     ap (mu η₃ ((map F₂ ∘ map F₁) x))
-      (map-comp F₂ (map F₁ y) (map F₁ z) ∙
-      ap (map F₂) (map-comp F₁ y z))∙
-    map-comp F₂ (map F₁ x) (map F₁ (mu η₁ y z)) ∙
-    ap (map F₂) (map-comp F₁ x (mu η₁ y z))
+      (map-comp (str F₂) (map F₁ y) (map F₁ z) ∙
+      ap (map F₂) (map-comp (str F₁) y z))∙
+    map-comp (str F₂) (map F₁ x) (map F₁ (mu η₁ y z)) ∙
+    ap (map F₂) (map-comp (str F₁) x (mu η₁ y z))
       =⟨ ap (λ q →
             ! (al η₃ ((map F₂ ∘ map F₁) x) ((map F₂ ∘ map F₁) y) ((map F₂ ∘ map F₁) z)) ∙
             q ∙
-            map-comp F₂ (map F₁ x) (map F₁ (mu η₁ y z)) ∙
-            ap (map F₂) (map-comp F₁ x (mu η₁ y z))) (
+            map-comp (str F₂) (map F₁ x) (map F₁ (mu η₁ y z)) ∙
+            ap (map F₂) (map-comp (str F₁) x (mu η₁ y z))) (
               ap-∙ (mu η₃ ((map F₂ ∘ map F₁) x))
-                (map-comp F₂ (map F₁ y) (map F₁ z))
-                (ap (map F₂) (map-comp F₁ y z)) ) ∙
+                (map-comp (str F₂) (map F₁ y) (map F₁ z))
+                (ap (map F₂) (map-comp (str F₁) y z)) ) ∙
           ∙-assoc2-∙2
             (! (al η₃ ((map F₂ ∘ map F₁) x) ((map F₂ ∘ map F₁) y)
               ((map F₂ ∘ map F₁) z)))
             _ _
-            (map-comp F₂ (map F₁ x) (map F₁ (mu η₁ y z)))
-            (ap (map F₂) (map-comp F₁ x (mu η₁ y z)))
+            (map-comp (str F₂) (map F₁ x) (map F₁ (mu η₁ y z)))
+            (ap (map F₂) (map-comp (str F₁) x (mu η₁ y z)))
              ∙
           ap (λ q →
             q ∙
-            ap (mu η₃ ((map F₂ ∘ map F₁) x)) (ap (map F₂) (map-comp F₁ y z)) ∙
-            map-comp F₂ (map F₁ x) (map F₁ (mu η₁ y z)) ∙
-            ap (map F₂) (map-comp F₁ x (mu η₁ y z)))
-              (map-al-rot1 F₂ (map F₁ x) (map F₁ y) (map F₁ z)) ⟩
+            ap (mu η₃ ((map F₂ ∘ map F₁) x)) (ap (map F₂) (map-comp (str F₁) y z)) ∙
+            map-comp (str F₂) (map F₁ x) (map F₁ (mu η₁ y z)) ∙
+            ap (map F₂) (map-comp (str F₁) x (mu η₁ y z)))
+              (map-al-rot1 (str F₂) (map F₁ x) (map F₁ y) (map F₁ z)) ⟩
     ((ap (λ v → mu η₃ v (map F₂ (map F₁ z)))
-      (map-comp F₂ (map F₁ x) (map F₁ y)) ∙
-    map-comp F₂ (mu η₂ (map F₁ x) (map F₁ y)) (map F₁ z) ∙
+      (map-comp (str F₂) (map F₁ x) (map F₁ y)) ∙
+    map-comp (str F₂) (mu η₂ (map F₁ x) (map F₁ y)) (map F₁ z) ∙
     ! (ap (map F₂) (al η₂ (map F₁ x) (map F₁ y) (map F₁ z)))) ∙
-    ! (map-comp F₂ (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z)))) ∙
-    ap (mu η₃ ((map F₂ ∘ map F₁) x)) (ap (map F₂) (map-comp F₁ y z)) ∙
-    map-comp F₂ (map F₁ x) (map F₁ (mu η₁ y z)) ∙
-    ap (map F₂) (map-comp F₁ x (mu η₁ y z))
+    ! (map-comp (str F₂) (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z)))) ∙
+    ap (mu η₃ ((map F₂ ∘ map F₁) x)) (ap (map F₂) (map-comp (str F₁) y z)) ∙
+    map-comp (str F₂) (map F₁ x) (map F₁ (mu η₁ y z)) ∙
+    ap (map F₂) (map-comp (str F₁) x (mu η₁ y z))
       =⟨ ap (λ q →
               ((ap (λ v → mu η₃ v (map F₂ (map F₁ z)))
-                (map-comp F₂ (map F₁ x) (map F₁ y)) ∙
-                map-comp F₂ (mu η₂ (map F₁ x) (map F₁ y)) (map F₁ z) ∙ q) ∙ _) ∙
-                ap (mu η₃ ((map F₂ ∘ map F₁) x)) (ap (map F₂) (map-comp F₁ y z)) ∙
-                map-comp F₂ (map F₁ x) (map F₁ (mu η₁ y z)) ∙
-                ap (map F₂) (map-comp F₁ x (mu η₁ y z)))
+                (map-comp (str F₂) (map F₁ x) (map F₁ y)) ∙
+                map-comp (str F₂) (mu η₂ (map F₁ x) (map F₁ y)) (map F₁ z) ∙ q) ∙ _) ∙
+                ap (mu η₃ ((map F₂ ∘ map F₁) x)) (ap (map F₂) (map-comp (str F₁) y z)) ∙
+                map-comp (str F₂) (map F₁ x) (map F₁ (mu η₁ y z)) ∙
+                ap (map F₂) (map-comp (str F₁) x (mu η₁ y z)))
             (!-ap (map F₂) (al η₂ (map F₁ x) (map F₁ y) (map F₁ z)) ∙
-            ap (ap (map F₂)) (=ₛ-out (map-al-rot2 F₁ x y z))) ⟩
+            ap (ap (map F₂)) (=ₛ-out (map-al-rot2 (str F₁) x y z))) ⟩
     aux-red2 (λ v → mu η₃ v (map F₂ (map F₁ z)))
       (λ v → mu η₂ v (map F₁ z)) (map F₁) (map F₂)
-      (map-comp F₂ (map F₁ x) (map F₁ y))
+      (map-comp (str F₂) (map F₁ x) (map F₁ y))
       lemma1 lemma2
     where
       open CohGrp
       lemma1 :
-        map-comp F₂ (mu η₂ (map F₁ x) (map F₁ y)) (map F₁ z) ∙
-        ap (map F₂) (ap (λ v → mu η₂ v (map F₁ z)) (map-comp F₁ x y))
+        map-comp (str F₂) (mu η₂ (map F₁ x) (map F₁ y)) (map F₁ z) ∙
+        ap (map F₂) (ap (λ v → mu η₂ v (map F₁ z)) (map-comp (str F₁) x y))
           ==
         ap (λ v → mu η₃ v ((map F₂ ∘ map F₁) z))
-          (ap (map F₂) (map-comp F₁ x y)) ∙
-        map-comp F₂ (map F₁ (mu η₁ x y)) (map F₁ z)
+          (ap (map F₂) (map-comp (str F₁) x y)) ∙
+        map-comp (str F₂) (map F₁ (mu η₁ x y)) (map F₁ z)
       lemma1 = 
-        map-comp F₂ (mu η₂ (map F₁ x) (map F₁ y)) (map F₁ z) ∙
-        ap (map F₂) (ap (λ v → mu η₂ v (map F₁ z)) (map-comp F₁ x y))
-          =⟨ ap (λ q → map-comp F₂ (mu η₂ (map F₁ x) (map F₁ y)) (map F₁ z) ∙ q)
-               (∘-ap (map F₂) (λ v → mu η₂ v (map F₁ z)) ((map-comp F₁ x y))) ⟩
+        map-comp (str F₂) (mu η₂ (map F₁ x) (map F₁ y)) (map F₁ z) ∙
+        ap (map F₂) (ap (λ v → mu η₂ v (map F₁ z)) (map-comp (str F₁) x y))
+          =⟨ ap (λ q → map-comp (str F₂) (mu η₂ (map F₁ x) (map F₁ y)) (map F₁ z) ∙ q)
+               (∘-ap (map F₂) (λ v → mu η₂ v (map F₁ z)) ((map-comp (str F₁) x y))) ⟩
         _
           =⟨ ! (=ₛ-out
                  (homotopy-naturality (λ v → mu η₃ (map F₂ v) (map F₂ (map F₁ z)))
                  (map F₂ ∘ (λ v → mu η₂ v (map F₁ z)))
-                 (λ v → map-comp F₂ v (map F₁ z)) (map-comp F₁ x y))) ⟩
-        ap (λ v → mu η₃ (map F₂ v) (map F₂ (map F₁ z))) (map-comp F₁ x y) ∙
-        map-comp F₂ (map F₁ (mu η₁ x y)) (map F₁ z)
-          =⟨ ap (λ q → q ∙ map-comp F₂ (map F₁ (mu η₁ x y)) (map F₁ z))
-               (ap-∘ (λ v → mu η₃ v (map F₂ (map F₁ z))) (map F₂) (map-comp F₁ x y)) ⟩
-        ap (λ v → mu η₃ v (map F₂ (map F₁ z))) (ap (map F₂) (map-comp F₁ x y)) ∙
-        map-comp F₂ (map F₁ (mu η₁ x y)) (map F₁ z) =∎
+                 (λ v → map-comp (str F₂) v (map F₁ z)) (map-comp (str F₁) x y))) ⟩
+        ap (λ v → mu η₃ (map F₂ v) (map F₂ (map F₁ z))) (map-comp (str F₁) x y) ∙
+        map-comp (str F₂) (map F₁ (mu η₁ x y)) (map F₁ z)
+          =⟨ ap (λ q → q ∙ map-comp (str F₂) (map F₁ (mu η₁ x y)) (map F₁ z))
+               (ap-∘ (λ v → mu η₃ v (map F₂ (map F₁ z))) (map F₂) (map-comp (str F₁) x y)) ⟩
+        ap (λ v → mu η₃ v (map F₂ (map F₁ z))) (ap (map F₂) (map-comp (str F₁) x y)) ∙
+        map-comp (str F₂) (map F₁ (mu η₁ x y)) (map F₁ z) =∎
       lemma2 :
-        ap (map F₂) (! (map-comp F₁ x (mu η₁ y z)) ∙
-          ! (ap (mu η₂ (map F₁ x)) (map-comp F₁ y z))) ∙
-        ! (map-comp F₂ (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z))) ∙
-        ap (mu η₃ ((map F₂ ∘ map F₁) x)) (ap (map F₂) (map-comp F₁ y z)) ∙
-        map-comp F₂ (map F₁ x) (map F₁ (mu η₁ y z)) ∙
-        ap (map F₂) (map-comp F₁ x (mu η₁ y z))
+        ap (map F₂) (! (map-comp (str F₁) x (mu η₁ y z)) ∙
+          ! (ap (mu η₂ (map F₁ x)) (map-comp (str F₁) y z))) ∙
+        ! (map-comp (str F₂) (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z))) ∙
+        ap (mu η₃ ((map F₂ ∘ map F₁) x)) (ap (map F₂) (map-comp (str F₁) y z)) ∙
+        map-comp (str F₂) (map F₁ x) (map F₁ (mu η₁ y z)) ∙
+        ap (map F₂) (map-comp (str F₁) x (mu η₁ y z))
           ==
         idp
       lemma2 = 
-        ap (map F₂) (! (map-comp F₁ x (mu η₁ y z)) ∙
-          ! (ap (mu η₂ (map F₁ x)) (map-comp F₁ y z))) ∙
-        ! (map-comp F₂ (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z))) ∙
-        ap (mu η₃ ((map F₂ ∘ map F₁) x)) (ap (map F₂) (map-comp F₁ y z)) ∙
-        map-comp F₂ (map F₁ x) (map F₁ (mu η₁ y z)) ∙
-        ap (map F₂) (map-comp F₁ x (mu η₁ y z))
+        ap (map F₂) (! (map-comp (str F₁) x (mu η₁ y z)) ∙
+          ! (ap (mu η₂ (map F₁ x)) (map-comp (str F₁) y z))) ∙
+        ! (map-comp (str F₂) (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z))) ∙
+        ap (mu η₃ ((map F₂ ∘ map F₁) x)) (ap (map F₂) (map-comp (str F₁) y z)) ∙
+        map-comp (str F₂) (map F₁ x) (map F₁ (mu η₁ y z)) ∙
+        ap (map F₂) (map-comp (str F₁) x (mu η₁ y z))
           =⟨ ap (λ q →
-               ap (map F₂) (! (map-comp F₁ x (mu η₁ y z)) ∙
-                 ! (ap (mu η₂ (map F₁ x)) (map-comp F₁ y z))) ∙
-               ! (map-comp F₂ (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z))) ∙
-               ap (mu η₃ (map F₂ (map F₁ x))) (ap (map F₂) (map-comp F₁ y z)) ∙
-               q ∙ ap (map F₂) (map-comp F₁ x (mu η₁ y z)))             
-             (apCommSq2 _ _ (map-comp F₂ (map F₁ x)) (! (map-comp F₁ y z))) ⟩
+               ap (map F₂) (! (map-comp (str F₁) x (mu η₁ y z)) ∙
+                 ! (ap (mu η₂ (map F₁ x)) (map-comp (str F₁) y z))) ∙
+               ! (map-comp (str F₂) (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z))) ∙
+               ap (mu η₃ (map F₂ (map F₁ x))) (ap (map F₂) (map-comp (str F₁) y z)) ∙
+               q ∙ ap (map F₂) (map-comp (str F₁) x (mu η₁ y z)))             
+             (apCommSq2 _ _ (map-comp (str F₂) (map F₁ x)) (! (map-comp (str F₁) y z))) ⟩
         _
           =⟨ ap (λ q → q ∙
-               ! (map-comp F₂ (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z))) ∙
-               ap (mu η₃ (map F₂ (map F₁ x))) (ap (map F₂) (map-comp F₁ y z)) ∙
+               ! (map-comp (str F₂) (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z))) ∙
+               ap (mu η₃ (map F₂ (map F₁ x))) (ap (map F₂) (map-comp (str F₁) y z)) ∙
                (ap (λ z₁ → mu η₃ (map F₂ (map F₁ x)) (map F₂ z₁))
-                 (! (map-comp F₁ y z)) ∙
-               map-comp F₂ (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z)) ∙
-               ! (ap (λ z₁ → map F₂ (mu η₂ (map F₁ x) z₁)) (! (map-comp F₁ y z)))) ∙
-               ap (map F₂) (map-comp F₁ x (mu η₁ y z)))
-                 (ap-∙-!-! (map F₂) (map-comp F₁ x (mu η₁ y z))
-                   (ap (mu η₂ (map F₁ x)) (map-comp F₁ y z))) ⟩
+                 (! (map-comp (str F₁) y z)) ∙
+               map-comp (str F₂) (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z)) ∙
+               ! (ap (λ z₁ → map F₂ (mu η₂ (map F₁ x) z₁)) (! (map-comp (str F₁) y z)))) ∙
+               ap (map F₂) (map-comp (str F₁) x (mu η₁ y z)))
+                 (ap-∙-!-! (map F₂) (map-comp (str F₁) x (mu η₁ y z))
+                   (ap (mu η₂ (map F₁ x)) (map-comp (str F₁) y z))) ⟩
           _
             =⟨ ap2 (λ q₁ q₂ →
-                 (! (ap (map F₂) (map-comp F₁ x (mu η₁ y z))) ∙ ! q₁) ∙
-                 ! (map-comp F₂ (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z))) ∙ q₂ ∙
+                 (! (ap (map F₂) (map-comp (str F₁) x (mu η₁ y z))) ∙ ! q₁) ∙
+                 ! (map-comp (str F₂) (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z))) ∙ q₂ ∙
                  (ap (λ z₁ → mu η₃ (map F₂ (map F₁ x)) (map F₂ z₁))
-                   (! (map-comp F₁ y z)) ∙
-                 map-comp F₂ (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z)) ∙
-                 ! (ap (λ z₁ → map F₂ (mu η₂ (map F₁ x) z₁)) (! (map-comp F₁ y z)))) ∙
-                 ap (map F₂) (map-comp F₁ x (mu η₁ y z)))
-               (∘-ap (map F₂) (mu η₂ (map F₁ x)) (map-comp F₁ y z))
-               (∘-ap (mu η₃ (map F₂ (map F₁ x))) (map F₂) (map-comp F₁ y z)) ⟩
+                   (! (map-comp (str F₁) y z)) ∙
+                 map-comp (str F₂) (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z)) ∙
+                 ! (ap (λ z₁ → map F₂ (mu η₂ (map F₁ x) z₁)) (! (map-comp (str F₁) y z)))) ∙
+                 ap (map F₂) (map-comp (str F₁) x (mu η₁ y z)))
+               (∘-ap (map F₂) (mu η₂ (map F₁ x)) (map-comp (str F₁) y z))
+               (∘-ap (mu η₃ (map F₂ (map F₁ x))) (map F₂) (map-comp (str F₁) y z)) ⟩
           _
             =⟨ aux-red1
                  (mu η₃ (map F₂ (map F₁ x)) ∘ map F₂)
                  (map F₂ ∘ (mu η₂ (map F₁ x)))
-                 (ap (map F₂) (map-comp F₁ x (mu η₁ y z)))
-                 (map-comp F₁ y z)
-                 (map-comp F₂ (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z))) ⟩
+                 (ap (map F₂) (map-comp (str F₁) x (mu η₁ y z)))
+                 (map-comp (str F₁) y z)
+                 (map-comp (str F₂) (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z))) ⟩
           idp

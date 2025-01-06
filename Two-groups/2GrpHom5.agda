@@ -40,6 +40,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
   open MapUnit0 map map-comp map-inv map-id map-al x
   open MapUnit1 map map-comp map-inv map-id map-rinv map-rho x
 
+  -- This lets us eliminate the unit iso from the definition of 2-group morphism.
   abstract
     rho-to-lam :
       ! (! (al id (map x) (inv (map x))) ∙
