@@ -13,3 +13,14 @@ open CohGrp {{...}}
 
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}
   (map : G₁ → G₂) where
+
+  open CohGrpHomStr
+  open CohGrpHomStrFull
+
+  -- forgetful map
+  ForgMap : CohGrpHomStrFull map → CohGrpHomStr map
+  map-comp (ForgMap ρ) = map-comp ρ
+  map-al (ForgMap ρ) = map-al ρ
+
+  Forg-equiv : is-equiv ForgMap
+  Forg-equiv = {!!}
