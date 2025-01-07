@@ -9,7 +9,7 @@ module 2GrpHom2 where
 
 open CohGrp {{...}}
 
-module MapInv2 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}
+module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}
   (map : G₁ → G₂) (map-comp : (x y : G₁) → mu (map x) (map y) == map (mu x y))
   (map-id : id == map id)
   (map-al-rot2 :

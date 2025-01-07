@@ -21,12 +21,12 @@ module MapUnit1 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{
     ! (ap map (rinv x)) ◃∙
     ! map-id ◃∙
     rinv (map x) ◃∎)
-  (map-rho : (x : G₁) →
-    ! (map-comp x id) ◃∎
+  (map-rho-id :
+    ! (map-comp id id) ◃∎
       =ₛ
-    ap map (rho x) ◃∙
-    ! (rho (map x)) ◃∙
-    ap (mu (map x)) map-id ◃∎)
+    ap map (rho id) ◃∙
+    ! (rho (map id)) ◃∙
+    ap (mu (map id)) map-id ◃∎)
   (x : G₁) where
 
   rho-to-lam4 = 
@@ -89,7 +89,7 @@ module MapUnit1 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{
     ! (map-comp id id) ◃∙
     ! (ap (mu (map id)) map-id) ◃∙
     rho (map id) ◃∎
-      =ₛ⟨ 4 & 4 & map-rho-rot1◃ map map-comp map-id map-rho id ⟩
+      =ₛ⟨ 4 & 4 & map-rho-rot1◃ map map-comp map-id id map-rho-id ⟩
     rinv (map x) ◃∙
     ap (mu (map x)) (map-inv x) ◃∙
     map-comp x (inv x) ◃∙

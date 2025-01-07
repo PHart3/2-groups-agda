@@ -29,16 +29,16 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
     ! (ap map (rinv x)) ◃∙
     ! map-id ◃∙
     rinv (map x) ◃∎)
-  (map-rho : (x : G₁) →
-    ! (map-comp x id) ◃∎
+  (map-rho-id :
+    ! (map-comp id id) ◃∎
       =ₛ
-    ap map (rho x) ◃∙
-    ! (rho (map x)) ◃∙
-    ap (mu (map x)) map-id ◃∎)
+    ap map (rho id) ◃∙
+    ! (rho (map id)) ◃∙
+    ap (mu (map id)) map-id ◃∎)
   (x : G₁) where
 
   open MapUnit0 map map-comp map-inv map-id map-al x
-  open MapUnit1 map map-comp map-inv map-id map-rinv map-rho x
+  open MapUnit1 map map-comp map-inv map-id map-rinv map-rho-id x
 
   -- This lets us eliminate the unit iso from the definition of 2-group morphism.
   abstract
