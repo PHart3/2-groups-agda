@@ -230,6 +230,12 @@ module _ {i} {A : Type i} where
     → q₁ == p ∙ ! q₄ ∙ ! q₃ ∙ q₂
   tri-rot idp idp idp idp idp = idp 
 
+  tri-rot2 : {a₁ a₂ a₃ a₄ a₅ : A} (q₁ : a₁ == a₂) (q₂ : a₃ == a₂)
+    (q₃ : a₃ == a₄) (q₄ : a₄ == a₅) {p : a₁ == a₅}
+    → p == q₁ ∙ ! q₂ ∙ q₃ ∙ q₄
+    → q₃ == q₂ ∙ ! q₁ ∙ p ∙ ! q₄
+  tri-rot2 idp idp idp idp idp = idp 
+
   !-!-tri-rot : {a₁ a₂ a₃ a₄ a₅ : A}
     (p₁ : a₁ == a₂) (p₄ : a₃ == a₁) (p₃ : a₃ == a₄)
     (p₂ : a₄ == a₅) {p₅ : a₅ == a₂}

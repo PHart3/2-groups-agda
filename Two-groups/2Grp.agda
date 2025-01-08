@@ -160,7 +160,6 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         ! map-id ∙
         ! (linv (map x))
 
-
   -- shorter definition, easier to work with
   record CohGrpHomStr (map : G₁ → G₂) : Type (lmax i j) where
     constructor cohgrphomstr
