@@ -25,7 +25,8 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
     (x y z : G₁) where
 
     abstract
-      map-al-rot◃ :
+    
+      map-al-rot1◃ :
         ! (ap (λ v → mu v (map z)) (map-comp x y)) ◃∙
         ! (al (map x) (map y) (map z)) ◃∎
           =ₛ
@@ -33,7 +34,18 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         ! (ap map (al x y z)) ◃∙
         ! (map-comp x (mu y z)) ◃∙
         ! (ap (mu (map x)) (map-comp y z)) ◃∎        
-      map-al-rot◃ = post-rotate-in (post-rotate-in (pre-rotate'-in (map-al x y z)))
+      map-al-rot1◃ = post-rotate-in (post-rotate-in (pre-rotate'-in (map-al x y z)))
+    
+      map-al-rot2◃ :
+        map-comp x (mu y z) ◃∙
+        ap map (al x y z) ◃∙
+        ! (map-comp (mu x y) z) ◃∙
+        ! (ap (λ v → mu v (map z)) (map-comp x y)) ◃∎
+          =ₛ
+        ! (ap (mu (map x)) (map-comp y z)) ◃∙
+        al (map x) (map y) (map z) ◃∎
+      map-al-rot2◃ =
+        post-rotate'-in (post-rotate'-in (post-rotate-out (pre-rotate-in (pre-rotate'-out (map-al x y z)))))
 
   module _ (map-id : id == map id) where
 

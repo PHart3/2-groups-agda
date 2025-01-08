@@ -294,11 +294,31 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         lam id ◃∎ ∎ₛ
 
     abstract
-      zz₁-linv-rot :
+      zz₁-linv-rot1 :
         ! (lam id) ◃∙
         ! (ap2 mu (linv x) idp) ◃∙
         ! (al (inv x) x id) ◃∙
         ap (mu (inv x)) (rho x) ◃∎
           =ₛ
         ! (linv x) ◃∎
-      zz₁-linv-rot = post-rotate-in (pre-rotate'-in (pre-rotate'-in (pre-rotate'-in (pre-rotate-out (zz₁-linv)))))
+      zz₁-linv-rot1 = post-rotate-in (pre-rotate'-in (pre-rotate'-in (pre-rotate'-in (pre-rotate-out (zz₁-linv)))))
+
+      zz₁-linv-rot2 :
+        linv x ◃∙
+        ! (lam id) ◃∎
+          =ₛ
+        ! (ap (mu (inv x)) (rho x)) ◃∙
+        al (inv x) x id ◃∙
+        ap (λ z → mu z id) (linv x) ◃∎
+      zz₁-linv-rot2 =  
+        linv x ◃∙
+        ! (lam id) ◃∎
+          =ₛ⟨ post-rotate'-in (zz₁-linv) ⟩
+        ! (ap (mu (inv x)) (rho x)) ◃∙
+        al (inv x) x id ◃∙
+        ap2 mu (linv x) idp ◃∎
+          =ₛ₁⟨ 2 & 1 & ap2-idp-r mu (linv x) ⟩
+        ! (ap (mu (inv x)) (rho x)) ◃∙
+        al (inv x) x id ◃∙
+        ap (λ z → mu z id) (linv x) ◃∎ ∎ₛ
+          
