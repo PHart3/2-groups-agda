@@ -2,6 +2,7 @@
 
 open import lib.Basics
 open import 2Grp
+open import 2GrpPropsMap
 open import 2GrpHom3
 open import 2GrpHom4
 
@@ -20,39 +21,54 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
     ap (λ v → mu v (map z)) (map-comp x y) ◃∙
     map-comp (mu x y) z ◃∙
     ! (ap map (al x y z)) ◃∎)
-  (map-inv : (x : G₁) → inv (map x) == map (inv x))
   (map-id : id == map id)
-  (map-rinv : (x : G₁) →
-    ! (ap (mu (map x)) (map-inv x)) ◃∎
-      =ₛ
-    map-comp x (inv x) ◃∙
-    ! (ap map (rinv x)) ◃∙
-    ! map-id ◃∙
-    rinv (map x) ◃∎)
   (map-rho-id :
     ! (map-comp id id) ◃∎
       =ₛ
     ap map (rho id) ◃∙
     ! (rho (map id)) ◃∙
-    ap (mu (map id)) map-id ◃∎)
-  (x : G₁) where
+    ap (mu (map id)) map-id ◃∎) where
 
-  open MapUnit0 map map-comp map-inv map-id map-al x
-  open MapUnit1 map map-comp map-inv map-id map-rinv map-rho-id x
-
-  abstract
-    rho-to-lam :
-      ! (! (al id (map x) (inv (map x))) ∙
-        ! (ap (mu id) (rinv (map x))) ∙
-        rho id) ◃∙
-      ap (λ z → mu z (inv (map x))) (
-        lam (map x) ∙
-        ! (ap map (lam x)) ∙
-        ! (map-comp id x)) ◃∙
-      ! (al (map id) (map x) (inv (map x))) ◃∙
-      ! (ap (mu (map id)) (rinv (map x))) ◃∙
-      rho (map id) ◃∎
+  private
+  
+    map-inv : (x : G₁) → inv (map x) == map (inv x)
+    map-inv x =
+      ! (al (inv (map x)) (map x) (inv (map x)) ∙
+        ap2 mu (linv (map x)) idp ∙
+        lam (inv (map x))) ∙
+      ap (mu (inv (map x)))
+        (! (rinv (map x)) ∙ map-id ∙ ap map (rinv x) ∙ ! (map-comp x (inv x))) ∙
+      al (inv (map x)) (map x) (map (inv x)) ∙
+      ap2 mu (linv (map x)) idp ∙
+      lam (map (inv x))
+      
+    map-rinv : (x : G₁) →
+      ! (ap (mu (map x)) (map-inv x)) ◃∎
         =ₛ
-      map-id ◃∎
-    rho-to-lam =
-      rho-to-lam0 ∙ₛ (rho-to-lam1 ∙ₛ (rho-to-lam2 ∙ₛ (rho-to-lam3 ∙ₛ (rho-to-lam4 ∙ₛ rho-to-lam5))))
+      map-comp x (inv x) ◃∙
+      ! (ap map (rinv x)) ◃∙
+      ! map-id ◃∙
+      rinv (map x) ◃∎
+    map-rinv x = !ₛ (map-inv-map-rinv map map-comp map-id map-inv x (=ₛ-in idp))
+
+  module _ (x : G₁) where
+
+    open MapUnit0 map map-comp map-inv map-id map-al x
+    open MapUnit1 map map-comp map-inv map-id map-rinv map-rho-id x
+
+    abstract
+      rho-to-lam :
+        ! (! (al id (map x) (inv (map x))) ∙
+          ! (ap (mu id) (rinv (map x))) ∙
+          rho id) ◃∙
+        ap (λ z → mu z (inv (map x))) (
+          lam (map x) ∙
+          ! (ap map (lam x)) ∙
+          ! (map-comp id x)) ◃∙
+        ! (al (map id) (map x) (inv (map x))) ◃∙
+        ! (ap (mu (map id)) (rinv (map x))) ◃∙
+        rho (map id) ◃∎
+          =ₛ
+        map-id ◃∎
+      rho-to-lam =
+        rho-to-lam0 ∙ₛ (rho-to-lam1 ∙ₛ (rho-to-lam2 ∙ₛ (rho-to-lam3 ∙ₛ (rho-to-lam4 ∙ₛ rho-to-lam5))))

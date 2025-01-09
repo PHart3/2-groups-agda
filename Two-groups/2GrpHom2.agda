@@ -12,24 +12,27 @@ open CohGrp {{...}}
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}
   (map : G₁ → G₂) (map-comp : (x y : G₁) → mu (map x) (map y) == map (mu x y))
   (map-id : id == map id)
-  (map-al-rot2 :
-    (x y z : G₁) →
-     ! (al (map x) (map y) (map z)) ◃∎
-     =ₛ
-     ap (λ v → mu v (map z)) (map-comp x y) ◃∙
-     map-comp (mu x y) z ◃∙
-     ! (ap map (al x y z)) ◃∙
-     ! (map-comp x (mu y z)) ◃∙
-     ! (ap (mu (map x)) (map-comp y z)) ◃∎)
+  (map-al-rot2 : (x y z : G₁) →
+    ! (al (map x) (map y) (map z)) ◃∎
+      =ₛ
+    ap (λ v → mu v (map z)) (map-comp x y) ◃∙
+    map-comp (mu x y) z ◃∙
+    ! (ap map (al x y z)) ◃∙
+    ! (map-comp x (mu y z)) ◃∙
+    ! (ap (mu (map x)) (map-comp y z)) ◃∎)
   (map-inv : (x : G₁) → inv (map x) == map (inv x)) 
-  (map-lam : (x : G₁) →
-    ! (lam (map x)) ◃∎
-    =ₛ
-    ! (ap map (lam x)) ◃∙ ! (map-comp id x) ◃∙ ! (ap (λ z → mu z (map x)) map-id) ◃∎)
   (map-rho : (x : G₁) →
     ! (map-comp x id) ◃∎
-    =ₛ
-    ap map (rho x) ◃∙ ! (rho (map x)) ◃∙ ap (mu (map x)) map-id ◃∎)
+      =ₛ
+    ap map (rho x) ◃∙
+    ! (rho (map x)) ◃∙
+    ap (mu (map x)) map-id ◃∎)
+  (map-lam : (x : G₁) →
+    ! (lam (map x)) ◃∎
+      =ₛ
+    ! (ap map (lam x)) ◃∙
+    ! (map-comp id x) ◃∙
+    ! (ap (λ z → mu z (map x)) map-id) ◃∎)
   (x : G₁) where
 
   open MapInv0 map map-comp map-id map-al-rot2 map-inv map-lam map-rho x

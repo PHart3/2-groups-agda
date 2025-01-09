@@ -49,7 +49,8 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
 
   module _ (map-id : id == map id) where
 
-    module _ (x : G₁) where 
+    module _ (x : G₁) where
+    
       abstract
         map-id-map-lam : 
           map-id ◃∎

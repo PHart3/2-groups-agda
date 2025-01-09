@@ -38,29 +38,8 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       ! (ap (λ z → mu z (map id)) map-id) ◃∎
     map-lam-id =
       !ₛ (map-id-map-lam map map-comp map-id id
-        (!ₛ (rho-to-lam map map-comp map-al (
-          λ v → 
-            ! (al (inv (map v)) (map v) (inv (map v)) ∙
-              ap2 mu (linv (map v)) idp ∙
-              lam (inv (map v))) ∙
-            ap (mu (inv (map v)))
-              (! (rinv (map v)) ∙ map-id ∙ ap map (rinv v) ∙ ! (map-comp v (inv v))) ∙
-            al (inv (map v)) (map v) (map (inv v)) ∙
-            ap2 mu (linv (map v)) idp ∙
-            lam (map (inv v)))
-          map-id (
-          λ u → !ₛ (map-inv-map-rinv map map-comp map-id
-            (λ v → 
-              ! (al (inv (map v)) (map v) (inv (map v)) ∙
-                ap2 mu (linv (map v)) idp ∙
-                lam (inv (map v))) ∙
-              ap (mu (inv (map v)))
-                (! (rinv (map v)) ∙ map-id ∙ ap map (rinv v) ∙ ! (map-comp v (inv v))) ∙
-              al (inv (map v)) (map v) (map (inv v)) ∙
-              ap2 mu (linv (map v)) idp ∙
-              lam (map (inv v)))
-            u (=ₛ-in idp)))
-          map-rho-id id)))
+        (!ₛ (rho-to-lam map map-comp map-al 
+          map-id map-rho-id id)))
 
   -- This lets us eliminate the unit iso from the definition of 2-group morphism.
   abstract
