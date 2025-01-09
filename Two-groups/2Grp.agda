@@ -275,10 +275,10 @@ module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
   open CohGrpHomStr {{...}}
 
   -- composition of 2-group morphisms
-  infixr 50 _∘2G_
-  _∘2G_ :  (F₂ : CohGrpHom {{η₂}} {{η₃}}) (F₁ : CohGrpHom {{η₁}} {{η₂}}) → CohGrpHomStr (map F₂ ∘ map F₁)
-  CohGrpHomStr.map-comp (F₂ ∘2G F₁) x y = map-comp (map F₁ x) (map F₁ y) ∙ ap (map F₂) (map-comp x y) 
-  CohGrpHomStr.map-al (F₂ ∘2G F₁) x y z =
+  infixr 60 _∘2Gσ_
+  _∘2Gσ_ :  (F₂ : CohGrpHom {{η₂}} {{η₃}}) (F₁ : CohGrpHom {{η₁}} {{η₂}}) → CohGrpHomStr (map F₂ ∘ map F₁)
+  CohGrpHomStr.map-comp (F₂ ∘2Gσ F₁) x y = map-comp (map F₁ x) (map F₁ y) ∙ ap (map F₂) (map-comp x y) 
+  CohGrpHomStr.map-al (F₂ ∘2Gσ F₁) x y z =
     ! (al η₃ ((map F₂ ∘ map F₁) x) ((map F₂ ∘ map F₁) y) ((map F₂ ∘ map F₁) z)) ∙
     ap (mu η₃ ((map F₂ ∘ map F₁) x))
       (map-comp (map F₁ y) (map F₁ z) ∙
@@ -405,3 +405,8 @@ module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
                  (map-comp y z)
                  (map-comp (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z))) ⟩
           idp
+          
+  infixr 50 _∘2G_
+  _∘2G_ : CohGrpHom {{η₂}} {{η₃}} → CohGrpHom {{η₁}} {{η₂}} → CohGrpHom {{η₁}} {{η₃}}
+  map (F₂ ∘2G F₁) = map F₂ ∘ map F₁
+  str (F₂ ∘2G F₁) = F₂ ∘2Gσ F₁

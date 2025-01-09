@@ -137,7 +137,7 @@ module _ {i} {A : Type i} where
   ∙-assoc-pentagon idp idp r s = =ₛ-in idp
 
   tri-id : {x y z : A} (p : x == y) (q : y == z)
-    → idp == ! (∙-assoc p idp q) ∙ ap (λ v → v ∙ q) (∙-unit-r p)
+    → ap (λ v → v ∙ q) (∙-unit-r p) == ! (! (∙-assoc p idp q)) ∙ idp
   tri-id idp q = idp
 
   pent-id : {x y z w u : A} (p₁ : x == y) (p₂ : y == z)
@@ -152,17 +152,19 @@ module _ {i} {A : Type i} where
 
   zz-id1 : {x y : A} (p : x == y)
     →
-    ! (∙-unit-r p)
+    idp
     ==
     ap (λ v → v ∙ p) (! (!-inv-r p)) ∙
     ! (! (∙-assoc p (! p) p)) ∙
-    ap (λ v → p ∙ v) (!-inv-l p)
+    ap (λ v → p ∙ v) (!-inv-l p) ∙
+    ∙-unit-r p
   zz-id1 idp = idp
 
   zz-id2 : {x y : A} (p : x == y)
     →
-    ∙-unit-r (! p) ∙ idp
+    idp
     ==
+    ! (∙-unit-r (! p)) ∙
     ap (λ v → ! p ∙ v) (! (!-inv-r p)) ∙
     ! (∙-assoc (! p) p (! p)) ∙
     ap (λ v → v ∙ ! p) (!-inv-l p)

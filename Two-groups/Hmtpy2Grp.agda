@@ -64,14 +64,19 @@ module _ {i} {X : Type i} where
   red-aux3 idp idp = idp
 
 open CohGrpHom
+open CohGrpHomStr
 
 module _ {i j} {X₁ : Ptd i} {X₂ : Ptd j}
   {{tr₁ : has-level 2 (de⊙ X₁)}} {{tr₂ : has-level 2 (de⊙ X₂)}} where
 
-  Loop2Grp-map : (φ : X₁ ⊙→ X₂) → CohGrpHom {{Loop2Grp (pt X₁)}} {{Loop2Grp (pt X₂)}}
+  Loop2Grp-map-str : (φ : X₁ ⊙→ X₂) → CohGrpHomStr (Ω-fmap φ)
+  map-comp (Loop2Grp-map-str φ) p₁ p₂ = ! (Ω-fmap-∙ φ p₁ p₂)
+  map-al (Loop2Grp-map-str (f , idp)) p₁ p₂ p₃ = red-aux1 f p₁ p₂ p₃
+
+  Loop2Grp-map : (φ : X₁ ⊙→ X₂) → CohGrpHom
   map (Loop2Grp-map φ) = Ω-fmap φ
-  map-comp (Loop2Grp-map φ) p₁ p₂ = ! (Ω-fmap-∙ φ p₁ p₂)
-  map-al (Loop2Grp-map (f , idp)) p₁ p₂ p₃ = red-aux1 f p₁ p₂ p₃
+  str (Loop2Grp-map φ) = Loop2Grp-map-str φ
+
 
 module _ {i j k} {X₁ : Ptd i} {X₂ : Ptd j} {X₃ : Ptd k} {{tr₁ : has-level 2 (de⊙ X₁)}}
   {{tr₂ : has-level 2 (de⊙ X₂)}}  {{tr₃ : has-level 2 (de⊙ X₃)}} where
@@ -83,7 +88,7 @@ module _ {i j k} {X₁ : Ptd i} {X₂ : Ptd j} {X₃ : Ptd k} {{tr₁ : has-leve
 
 module _ {i} {X : Ptd i} {{tr : has-level 2 (de⊙ X)}} where
 
-  Loop2Grp-map-idf : CohGrpNatIso (Loop2Grp-map (⊙idf X)) (idf2G)
+  Loop2Grp-map-idf : CohGrpNatIso (Loop2Grp-map (⊙idf X)) (cohgrphom _ {{idf2G}})
   CohGrpNatIso.θ Loop2Grp-map-idf p = ap-idf p
   CohGrpNatIso.θ-comp Loop2Grp-map-idf p₁ p₂ = red-aux3 p₁ p₂
 
@@ -91,4 +96,3 @@ module _ {i j} {G₁ : Type i} {{ηR : CohGrp G₁}}
   (G₂ : Type j) (b : G₂) {{_ : has-level 2 G₂}} where
   
 --  CohGrpHom {{ηG}} {{Loop2Grp G₂}}
-
