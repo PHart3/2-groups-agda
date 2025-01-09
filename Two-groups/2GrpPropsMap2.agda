@@ -48,7 +48,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
 
     module _ (map-inv : (x : G₁) → inv (map x) == map (inv x))  where
 
-      -- properties about map-rinv
+      -- properties about map-linv
 
       module _
         (map-linv : (x : G₁) →

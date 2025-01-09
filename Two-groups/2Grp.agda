@@ -132,6 +132,18 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         map-comp (mu x y) z ∙
         ! (ap map (al x y z))
       map-id : id == map id
+      map-rho : (x : G₁) →
+        ! (map-comp x id)
+        ==
+        ap map (rho x) ∙
+        ! (rho (map x)) ∙
+        ap (mu (map x)) map-id
+      map-lam : (x : G₁) →
+        ! (lam (map x))
+        ==
+        ! (ap map (lam x)) ∙
+        ! (map-comp id x) ∙
+        ! (ap (λ z → mu z (map x)) map-id)
       map-inv : (x : G₁) → inv (map x) == map (inv x)
       map-rinv : (x : G₁) →
         ! (ap (mu (map x)) (map-inv x))
@@ -140,18 +152,6 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         ! (ap map (rinv x)) ∙
         ! map-id ∙
         rinv (map x)
-      map-lam : (x : G₁) →
-        ! (lam (map x))
-        ==
-        ! (ap map (lam x)) ∙
-        ! (map-comp id x) ∙
-        ! (ap (λ z → mu z (map x)) map-id)
-      map-rho : (x : G₁) →
-        ! (map-comp x id)
-        ==
-        ap map (rho x) ∙
-        ! (rho (map x)) ∙
-        ap (mu (map x)) map-id
       map-linv : (x : G₁) → 
         ! (ap (λ z → mu z (map x)) (map-inv x))
         ==
