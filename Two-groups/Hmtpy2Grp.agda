@@ -1,19 +1,20 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth 3 #-}
 
 open import lib.Basics
+open import lib.NType2
 open import lib.types.LoopSpace
 open import 2Grp
 
 module Hmtpy2Grp where
 
-open CohGrp
-
 -- homotopy 2-groups of 2-types (i.e., loop spaces)
 
-module _ {i} {X : Type i} {{trX : has-level 2 X}} where
+module _ {i} {X : Type i} where
 
-  Loop2Grp : (x : X) → CohGrp (x == x)
-  1trunc (Loop2Grp x) =  has-level-apply trX x x
+  open CohGrp
+
+  Loop2Grp : (x : X) {{trX : has-level 1 (x == x)}} → CohGrp (x == x)
+  1trunc (Loop2Grp x {{trX}}) = trX
   id (Loop2Grp x) = idp
   mu (Loop2Grp x) = _∙_
   lam (Loop2Grp x) p = idp
@@ -28,8 +29,8 @@ module _ {i} {X : Type i} {{trX : has-level 2 X}} where
   zz₂ (Loop2Grp x) = zz-id2
 
   instance
-    Loop2Grp-instance : {x : X} → CohGrp (x == x)
-    Loop2Grp-instance {x} = Loop2Grp x
+    Loop2Grp-instance : {x : X} {{trX : has-level 1 (x == x)}} → CohGrp (x == x)
+    Loop2Grp-instance {x} {{trX}} = Loop2Grp x {{trX}}
 
 -- ad-hoc lemmas for Ω's action on  maps, described below
 module _ {i j} {X : Type i} {Y : Type j} (f : X → Y) where
@@ -92,7 +93,26 @@ module _ {i} {X : Ptd i} {{tr : has-level 2 (de⊙ X)}} where
   CohGrpNatIso.θ Loop2Grp-map-idf p = ap-idf p
   CohGrpNatIso.θ-comp Loop2Grp-map-idf p₁ p₂ = red-aux3 p₁ p₂
 
-module _ {i j} {G₁ : Type i} {{ηR : CohGrp G₁}}
-  (G₂ : Type j) (b : G₂) {{_ : has-level 2 G₂}} where
-  
---  CohGrpHom {{ηG}} {{Loop2Grp G₂}}
+module _ {i j} (G₁ : Type i) {{η₁ : CohGrp G₁}} (G₂ : Type j) {{tr : has-level 1 G₂}} where
+
+  open CohGrp {{...}}
+
+  record 2Grp→-≃ : Type (lmax i j) where
+    field
+      funs : G₁ → G₂ → G₂
+      funs-equiv : (x : G₁) → is-equiv (funs x)
+      funs-comp : (x y : G₁) → funs y ∘ funs x ∼ funs (mu x y)
+      funs-assoc : (x y z : G₁) (v : G₂) → 
+        funs-comp y z (funs x v) ∙
+        funs-comp x (mu y z) v
+          ==
+        ap (funs z) (funs-comp x y v) ∙
+        funs-comp (mu x y) z v ∙
+        ! (app= (ap funs (al x y z)) v)
+        
+  open 2Grp→-≃ {{...}} public
+
+  2Grp-≃-to-Loop : {{φ : 2Grp→-≃}} → CohGrpHom {{η₁}} {{Loop2Grp G₂}}
+  map (2Grp-≃-to-Loop {{φ}}) x = ua (funs x , funs-equiv x)
+  map-comp (str (2Grp-≃-to-Loop {{φ}})) x y = {!!}
+  map-al (str (2Grp-≃-to-Loop {{φ}})) x y z = {!!}
