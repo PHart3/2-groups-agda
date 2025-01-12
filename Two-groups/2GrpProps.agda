@@ -16,12 +16,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
       al x id y ◃∙ ap (λ z → mu z y) (rho x) ◃∎
         =ₛ
       ap (mu x) (lam y) ◃∎
-    tr-rot x y = 
-      al x id y ◃∙ ap (λ z → mu z y) (rho x) ◃∎
-        =ₛ₁⟨ 0 & 1 & ! (!-! (al x id y)) ⟩
-      _
-        =ₛ⟨ pre-rotate'-in (=ₛ-in (tr x y)) ⟩
-      ap (mu x) (lam y) ◃∎ ∎ₛ
+    tr-rot x y = pre-rotate-out (=ₛ-in (tr x y))
 
     pent-rot : (w x y z : G) →
       al w x (mu y z) ◃∙ al (mu w x) y z ◃∙ ! (ap (λ v → mu v z) (al w x y)) ◃∎
@@ -254,53 +249,24 @@ module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
       ! (lam x) ◃∙
       ap (λ z → mu z x) (rinv x) ◃∎
     zz₁-rot◃ =
-      ! (rho x) ◃∙
-      ! (ap (mu x) (linv x)) ◃∙
-      al x (inv x) x ◃∎
-        =ₛ₁⟨ 2 & 1 & ! (!-! (al x (inv x) x)) ⟩
-      _
-        =ₛ⟨ pre-rotate-in
-              {p = lam x}
-              (post-rotate'-seq-in
-                {r = lam x ◃∎}
-                {q =
-                  ! (al x (inv x) x) ◃∙
-                  ap (mu x) (linv x) ◃∙
-                  rho x ◃∎}
-                {p = ap (λ z → mu z x) (rinv x) ◃∎}
-                (=ₛ-in (zz₁ x))) ⟩
-      ! (lam x) ◃∙
-      ap (λ z → mu z x) (rinv x) ◃∎ ∎ₛ
+      post-rotate-out {q = al x (inv x) x}
+        (post-rotate'-in {q = ap (mu x) (linv x)}
+          (post-rotate'-in {r = []} {q = rho x}
+            (pre-rotate-in (=ₛ-in (zz₁ x)))))
 
     zz₂-rot◃ :
-      rho (inv x) ◃∎
-        =ₛ
       ap (mu (inv x)) (rinv x) ◃∙
       al (inv x) x (inv x) ◃∙
       ap (λ z → mu z (inv x)) (linv x) ◃∙
       lam (inv x) ◃∎
-    zz₂-rot◃ = 
+        =ₛ
       rho (inv x) ◃∎
-        =ₛ₁⟨ ! (!-! (rho (inv x))) ⟩
-      _
-        =ₛ⟨ post-rotate-in
-              {r =
-                ap (mu (inv x)) (rinv x) ◃∙
-                al (inv x) x (inv x) ◃∙
-                ap (λ z → mu z (inv x)) (linv x) ◃∎}
-              {q = ! (lam (inv x))}
-              (pre-rotate'-in
-                {p = ! (rho (inv x))}
-                (=ₛ-in (zz₂ x)))  ⟩
-      ap (mu (inv x)) (rinv x) ◃∙
-      al (inv x) x (inv x) ◃∙
-      ap (λ z → mu z (inv x)) (linv x) ◃∙
-      ! (! (lam (inv x))) ◃∎
-        =ₛ₁⟨ 3 & 1 & !-! (lam (inv x)) ⟩
-      ap (mu (inv x)) (rinv x) ◃∙
-      al (inv x) x (inv x) ◃∙
-      ap (λ z → mu z (inv x)) (linv x) ◃∙
-      lam (inv x) ◃∎ ∎ₛ
+    zz₂-rot◃ =
+      post-rotate-out
+        {p = ap (mu (inv x)) (rinv x) ◃∙
+        al (inv x) x (inv x) ◃∙
+        ap (λ z → mu z (inv x)) (linv x) ◃∎}
+        (!ₛ ((pre-rotate-out {p = rho (inv x)} (=ₛ-in (zz₂ x)))))
 
     zz₁-rinv-aux :
       rinv x ◃∎

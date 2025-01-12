@@ -77,6 +77,9 @@ module _ {i j} {A : Type i} {B : A → Type j} where
   fst= : {ab a'b' : Σ A B} (p : ab == a'b') → (fst ab == fst a'b')
   fst= = ap fst
 
+  fst=2 : {ab a'b' : Σ A B} {p q : ab == a'b'} (s : p == q) → (fst= p == fst= q)
+  fst=2 = ap fst=
+
   snd= : {ab a'b' : Σ A B} (p : ab == a'b')
     → (snd ab == snd a'b' [ B ↓ fst= p ])
   snd= {._} {_} idp = idp

@@ -23,8 +23,8 @@ module _ {i} {A : Type i} where
 module _ {i j} {A : Type i} {B : A → Type j} where
   abstract
     ↓-level : {a b : A} {p : a == b} {u : B a} {v : B b} {n : ℕ₋₂}
-      → has-level (S n) (B b) → has-level n (u == v [ B ↓ p ])
-    ↓-level {p = idp} k = has-level-apply k _ _
+      → {{has-level (S n) (B b)}} → has-level n (u == v [ B ↓ p ])
+    ↓-level {p = idp} {{k}} = has-level-apply k _ _
 
     ↓-preserves-level : {a b : A} {p : a == b} {u : B a} {v : B b} {n : ℕ₋₂}
       → has-level n (B b) → has-level n (u == v [ B ↓ p ])
@@ -88,7 +88,7 @@ abstract
 
 {- Subtypes. -}
 
-module _ {i j} {A : Type i} (P : SubtypeProp A j) where
+module _ {i j} {A : Type i} (P : SubtypeProp {A = A} {j}) where
   private
     module P = SubtypeProp P
 
@@ -96,13 +96,19 @@ module _ {i j} {A : Type i} (P : SubtypeProp A j) where
     Subtype-level : ∀ {n : ℕ₋₂}
       {{_ : has-level (S n) A}}
       → has-level (S n) (Subtype P)
-    Subtype-level = Σ-level ⟨⟩ (λ x → prop-has-level-S (P.level x))
+    Subtype-level = Σ-level ⟨⟩ (λ x → prop-has-level-S (P.level {x}))
 
   Subtype= : (x y : Subtype P) → Type i
   Subtype= x y = fst x == fst y
 
+  Subtype== : {x y : Subtype P} (p q : x == y) → Type i
+  Subtype== p q = fst= p == fst= q
+
+  Subtype=== : {x y : Subtype P} {p q : x == y} (r s : p == q) → Type i
+  Subtype=== r s = fst=2 r ◃∎ =ₛ fst=2 s ◃∎
+
   Subtype=-out : ∀ {x y : Subtype P} → Subtype= x y → x == y
-  Subtype=-out p = pair= p (prop-has-all-paths-↓ {{P.level _}})
+  Subtype=-out p = pair= p (prop-has-all-paths-↓ {{P.level {_}}})
 
   Subtype=-β : {x y : Subtype P} (p : Subtype= x y)
     → fst= (Subtype=-out {x = x} {y = y} p) == p
@@ -111,10 +117,20 @@ module _ {i j} {A : Type i} (P : SubtypeProp A j) where
   Subtype=-η : {x y : Subtype P} (p : x == y)
     → Subtype=-out (fst= p) == p
   Subtype=-η idp = ap (pair= idp)
-    (contr-has-all-paths {{has-level-apply (P.level _) _ _}} _ _)
+    (contr-has-all-paths {{has-level-apply (P.level {_}) _ _}} _ _)
 
   Subtype=-econv : (x y : Subtype P) → (Subtype= x y) ≃ (x == y)
   Subtype=-econv x y = equiv Subtype=-out fst= Subtype=-η Subtype=-β
+
+  Subtype==-out : ∀ {x y : Subtype P} {p q : x == y}
+    → Subtype== p q → p == q
+  Subtype==-out {p = idp} {q} e = ! (equiv-is-inj (snd ((Subtype=-econv _ _ ) ⁻¹)) q idp (! e) ) 
+
+  Subtype===-out : ∀ {x y : Subtype P} {p q : x == y} {r s : p == q}
+    → Subtype=== r s → r == s
+  Subtype===-out {p = idp} {q} {r = idp} {s} e =
+    ! (equiv-is-inj {f = ap (ap fst)}
+      (snd (ap-equiv ((Subtype=-econv _ _ ) ⁻¹) _ _)) s idp (! (=ₛ-out e)) )
 
   abstract
     Subtype-∙ : ∀ {x y z : Subtype P}
@@ -123,9 +139,9 @@ module _ {i j} {A : Type i} (P : SubtypeProp A j) where
       == Subtype=-out {x} {z} (p ∙ q)
     Subtype-∙ {x} {y} {z} p q =
       Subtype=-out p ∙ Subtype=-out q
-        =⟨ Σ-∙ {p = p} {p' = q} (prop-has-all-paths-↓ {{P.level (fst y)}}) (prop-has-all-paths-↓ {{P.level (fst z)}}) ⟩
-      pair= (p ∙ q) (prop-has-all-paths-↓ {p = p} {{P.level (fst y)}} ∙ᵈ prop-has-all-paths-↓ {{P.level (fst z)}})
-        =⟨ contr-has-all-paths {{↓-level (P.level (fst z))}} _ (prop-has-all-paths-↓ {{P.level (fst z)}})
+        =⟨ Σ-∙ {p = p} {p' = q} (prop-has-all-paths-↓ {{P.level {fst y}}}) (prop-has-all-paths-↓ {{P.level {fst z}}}) ⟩
+      pair= (p ∙ q) (prop-has-all-paths-↓ {p = p} {{P.level {fst y}}} ∙ᵈ prop-has-all-paths-↓ {{P.level {fst z}}})
+        =⟨ contr-has-all-paths {{↓-level {{P.level {fst z}}}}} _ (prop-has-all-paths-↓ {{P.level {fst z}}})
           |in-ctx pair= (p ∙ q) ⟩
       Subtype=-out (p ∙ q)
         =∎
@@ -146,8 +162,8 @@ is-gpd = has-level 1
 --     {{El-level}} : has-level n El
 -- open _-Type_ public
 
-has-level-prop : ∀ {i} → ℕ₋₂ → SubtypeProp (Type i) i
-has-level-prop n = has-level n , λ _ → has-level-is-prop
+has-level-prop : ∀ {i} → ℕ₋₂ → SubtypeProp {A = Type i} {i}
+has-level-prop n = subtypeprop (has-level n) {{λ {_} → has-level-is-prop}}
 
 _-Type_ : (n : ℕ₋₂) (i : ULevel) → Type (lsucc i)
 n -Type i = Subtype (has-level-prop {i} n)
@@ -195,7 +211,7 @@ universe-=-level pA pB = universe-=-level-instance where instance _ = pA ; _ = p
 
 module _ {i} {n} where
   private
-    prop : SubtypeProp {lsucc i} (Type i) i
+    prop : SubtypeProp {lsucc i} {A = Type i} {i}
     prop = has-level-prop n
 
   nType= : (A B : n -Type i) → Type (lsucc i)

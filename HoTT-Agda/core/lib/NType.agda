@@ -195,18 +195,28 @@ module _ {i} where
 {- Subtypes -}
 
 -- TODO: replace them by records, with the second field an instance field
-
+{-
 module _ {i} (A : Type i) where
   SubtypeProp : ∀ j → Type (lmax i (lsucc j))
-  SubtypeProp j = Σ (A → Type j) (λ P → ∀ a → is-prop (P a))
+  SubtypeProp j = Σ () (λ P → ∀ a → is-prop (P a))
+-}
 
+record SubtypeProp {i} {A : Type i} {j} : Type (lmax i (lsucc j)) where
+  constructor subtypeprop
+  field
+    prop : A → Type j
+    {{level}} : ∀ {a} → is-prop (prop a)
+open SubtypeProp
+
+{-
 module SubtypeProp {i j} {A : Type i} (P : SubtypeProp A j) where
   prop = fst P
   level = snd P
+-}
 
-module _ {i j} {A : Type i} (P : SubtypeProp A j) where
+module _ {i j} {A : Type i} (P : SubtypeProp {A = A} {j}) where
   private
     module P = SubtypeProp P
 
   Subtype : Type (lmax i j)
-  Subtype = Σ A P.prop
+  Subtype = Σ A (prop P)

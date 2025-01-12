@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import 2Magma
 open import 2Grp
 open import 2GrpPropsMap
 open import 2GrpPropsMap2
@@ -17,12 +18,12 @@ open CohGrp {{...}}
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}
   (map : G₁ → G₂) where
 
-  open CohGrpHomStr {{...}}
+  open WkMagHomStr {{...}}
   open CohGrpHomStrFull {{...}} hiding (map-comp; map-al)
 
   ForgMap : CohGrpHomStrFull map → CohGrpHomStr map
-  CohGrpHomStr.map-comp (ForgMap ρ) = CohGrpHomStrFull.map-comp ρ
-  CohGrpHomStr.map-al (ForgMap ρ) = CohGrpHomStrFull.map-al ρ
+  WkMagHomStr.map-comp (ForgMap ρ) = CohGrpHomStrFull.map-comp ρ
+  WkMagHomStr.map-al (ForgMap ρ) = CohGrpHomStrFull.map-al ρ
 
   FreeMap : {{ρ : CohGrpHomStr map}} → CohGrpHomStrFull map
   CohGrpHomStrFull.map-comp (FreeMap ⦃ ρ ⦄) = map-comp

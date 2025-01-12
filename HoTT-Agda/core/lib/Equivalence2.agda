@@ -133,8 +133,8 @@ abstract
     is-equiv-level = prop-has-level-S is-equiv-is-prop
 
 is-equiv-prop : ∀ {i j} {A : Type i} {B : Type j}
-  → SubtypeProp (A → B) (lmax i j)
-is-equiv-prop = is-equiv , λ f → is-equiv-is-prop
+  → SubtypeProp {A = A → B} {lmax i j}
+is-equiv-prop = subtypeprop is-equiv {{λ {f} → is-equiv-is-prop}}
 
 ∘e-unit-r : ∀ {i} {A B : Type i} (e : A ≃ B) → (e ∘e ide A) == e
 ∘e-unit-r e = pair= idp (prop-has-all-paths _ _)

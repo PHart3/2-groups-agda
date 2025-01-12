@@ -208,7 +208,7 @@ module MapInv0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
     rho (map (inv x)) ◃∎
       =ₛ⟨ 9 & 1 & map-rho (inv x) ⟩
     _
-      =ₛ⟨ 9 & 1 & ap-seq-=ₛ map (zz₂-rot◃ x) ⟩
+      =ₛ⟨ 9 & 1 & ap-seq-=ₛ map (!ₛ (zz₂-rot◃ x)) ⟩
     ap (λ z → z) (map-inv x) ◃∙
     ! (ap map (lam (inv x))) ◃∙
     ! (ap (λ z → map (mu z (inv x))) (linv x)) ◃∙

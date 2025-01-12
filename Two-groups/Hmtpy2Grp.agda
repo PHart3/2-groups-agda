@@ -1,20 +1,22 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth 3 #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=3 #-}
 
 open import lib.Basics
+open import lib.Equivalence2 hiding (linv; rinv)
 open import lib.NType2
+open import lib.types.Sigma
 open import lib.types.LoopSpace
+open import 2Magma
 open import 2Grp
 
 module Hmtpy2Grp where
 
 -- homotopy 2-groups of 2-types (i.e., loop spaces)
 
-module _ {i} {X : Type i} where
+module _ {i} {X : Type i} {{trX : has-level 2 X}} where
 
   open CohGrp
 
-  Loop2Grp : (x : X) {{trX : has-level 1 (x == x)}} → CohGrp (x == x)
-  1trunc (Loop2Grp x {{trX}}) = trX
+  Loop2Grp : (x : X) → CohGrp (x == x)
   id (Loop2Grp x) = idp
   mu (Loop2Grp x) = _∙_
   lam (Loop2Grp x) p = idp
@@ -29,8 +31,8 @@ module _ {i} {X : Type i} where
   zz₂ (Loop2Grp x) = zz-id2
 
   instance
-    Loop2Grp-instance : {x : X} {{trX : has-level 1 (x == x)}} → CohGrp (x == x)
-    Loop2Grp-instance {x} {{trX}} = Loop2Grp x {{trX}}
+    Loop2Grp-instance : {x : X} → CohGrp (x == x)
+    Loop2Grp-instance {x} = Loop2Grp x
 
 -- ad-hoc lemmas for Ω's action on  maps, described below
 module _ {i j} {X : Type i} {Y : Type j} (f : X → Y) where
@@ -65,7 +67,7 @@ module _ {i} {X : Type i} where
   red-aux3 idp idp = idp
 
 open CohGrpHom
-open CohGrpHomStr
+open WkMagHomStr
 
 module _ {i j} {X₁ : Ptd i} {X₂ : Ptd j}
   {{tr₁ : has-level 2 (de⊙ X₁)}} {{tr₂ : has-level 2 (de⊙ X₂)}} where
@@ -93,26 +95,44 @@ module _ {i} {X : Ptd i} {{tr : has-level 2 (de⊙ X)}} where
   CohGrpNatIso.θ Loop2Grp-map-idf p = ap-idf p
   CohGrpNatIso.θ-comp Loop2Grp-map-idf p₁ p₂ = red-aux3 p₁ p₂
 
-module _ {i j} (G₁ : Type i) {{η₁ : CohGrp G₁}} (G₂ : Type j) {{tr : has-level 1 G₂}} where
+module _ {i} (G : Type i) {{trG : has-level 1 G}} where
 
-  open CohGrp {{...}}
+  open WkMag {{...}}
+  open WkMagHom
+  open WkMagHomStr {{...}}
 
-  record 2Grp→-≃ : Type (lmax i j) where
-    field
-      funs : G₁ → G₂ → G₂
-      funs-equiv : (x : G₁) → is-equiv (funs x)
-      funs-comp : (x y : G₁) → funs y ∘ funs x ∼ funs (mu x y)
-      funs-assoc : (x y z : G₁) (v : G₂) → 
-        funs-comp y z (funs x v) ∙
-        funs-comp x (mu y z) v
-          ==
-        ap (funs z) (funs-comp x y v) ∙
-        funs-comp (mu x y) z v ∙
-        ! (app= (ap funs (al x y z)) v)
-        
-  open 2Grp→-≃ {{...}} public
-
-  2Grp-≃-to-Loop : {{φ : 2Grp→-≃}} → CohGrpHom {{η₁}} {{Loop2Grp G₂}}
-  map (2Grp-≃-to-Loop {{φ}}) x = ua (funs x , funs-equiv x)
-  map-comp (str (2Grp-≃-to-Loop {{φ}})) x y = {!!}
-  map-al (str (2Grp-≃-to-Loop {{φ}})) x y z = {!!}
+  ua-2MagMap : WkMagHom {{≃-2Mag G}} {{mag (Loop2Grp {X = 1 -Type i} (G , trG))}}
+  map ua-2MagMap e = pair= (ua e) prop-has-all-paths-↓
+  map-comp (str ua-2MagMap) e₁ e₂ = ↯ (
+    pair= (ua e₁) prop-has-all-paths-↓ ∙ pair= (ua e₂) prop-has-all-paths-↓ 
+      =⟪ Σ-∙ {p = ua e₁} {p' = ua e₂} _ _ ⟫
+    pair= (ua e₁ ∙ ua e₂) (prop-has-all-paths-↓ ∙ᵈ prop-has-all-paths-↓ {p = ua e₂})
+      =⟪ pair== (! (ua-∘e e₁ e₂)) (prop-has-all-paths-↓ {{↓-level}}) ⟫
+    pair= (ua (e₂ ∘e e₁)) prop-has-all-paths-↓ ∎∎ )
+  map-al (str ua-2MagMap) e₁ e₂ e₃ = Subtype===-out (subtypeprop (has-level 1)) lemma
+    where
+      lemma :
+        fst=2 (! (al
+            (pair= (ua e₁) prop-has-all-paths-↓)
+            (pair= (ua e₂) prop-has-all-paths-↓)
+            (pair= (ua e₃) prop-has-all-paths-↓)) ∙
+        ap (λ v → pair= (ua e₁) prop-has-all-paths-↓ ∙ v)
+          (Σ-∙ prop-has-all-paths-↓ prop-has-all-paths-↓ ∙
+          pair== (! (ua-∘e e₂ e₃)) (prop-has-all-paths-↓ {{↓-level}})) ∙
+        Σ-∙ prop-has-all-paths-↓ prop-has-all-paths-↓ ∙
+        pair== (! (ua-∘e e₁ (e₃ ∘e e₂))) (prop-has-all-paths-↓ {{↓-level}})) ◃∎
+          =ₛ
+        fst=2 (ap (λ v → mu v (map ua-2MagMap e₃)) (map-comp (str ua-2MagMap) e₁ e₂) ∙
+        map-comp (str ua-2MagMap) (mu e₁ e₂) e₃ ∙
+        ! (ap (map ua-2MagMap) (al e₁ e₂ e₃))) ◃∎
+      lemma = 
+        fst=2 (! (! (∙-assoc (pair= (ua e₁) prop-has-all-paths-↓)
+            (pair= (ua e₂) prop-has-all-paths-↓)
+            (pair= (ua e₃) prop-has-all-paths-↓))) ∙
+        ap (λ v → pair= (ua e₁) prop-has-all-paths-↓ ∙ v)
+          (Σ-∙ prop-has-all-paths-↓ prop-has-all-paths-↓ ∙
+          pair== (! (ua-∘e e₂ e₃)) (prop-has-all-paths-↓ {{↓-level}})) ∙
+        Σ-∙ prop-has-all-paths-↓ prop-has-all-paths-↓ ∙
+        pair== (! (ua-∘e e₁ (e₃ ∘e e₂))) (prop-has-all-paths-↓ {{↓-level}})) ◃∎
+          =ₛ⟨ ? ⟩
+        ?
