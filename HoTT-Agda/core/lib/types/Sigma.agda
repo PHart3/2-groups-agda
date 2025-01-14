@@ -312,12 +312,18 @@ module _ {i₀ i₁ j₀ j₁} {A₀ : Type i₀} {A₁ : Type i₁}
 Σ-∙' {p = idp} {p' = idp} q idp = idp
 
 -- Implementation of [_∙_] on Σ
+
+Σ-∙-aux : ∀ {i j} {A : Type i} {B : A → Type j} {x : A}
+  {u v w : B x} (q : u == v) (r : v == w)
+  → ap {B = Σ A B} (x ,_) q ∙ ap (x ,_) r == ap (x ,_) (q ∙ r)
+Σ-∙-aux idp r = idp
+
 Σ-∙ : ∀ {i j} {A : Type i} {B : A → Type j}
   {x y z : A} {p : x == y} {p' : y == z}
   {u : B x} {v : B y} {w : B z}
   (q : u == v [ B ↓ p ]) (r : v == w [ B ↓ p' ])
   → (pair= p q ∙ pair= p' r) == pair= (p ∙ p') (q ∙ᵈ r)
-Σ-∙ {p = idp} {p' = idp} idp r = idp
+Σ-∙ {p = idp} {p' = idp} q r = Σ-∙-aux q r
 
 -- Implementation of [!] on Σ
 Σ-! : ∀ {i j} {A : Type i} {B : A → Type j}

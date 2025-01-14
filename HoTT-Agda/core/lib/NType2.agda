@@ -89,14 +89,14 @@ abstract
 {- Subtypes. -}
 
 module _ {i j} {A : Type i} (P : SubtypeProp {A = A} {j}) where
-  private
-    module P = SubtypeProp P
+
+  open SubtypeProp
 
   instance
     Subtype-level : ∀ {n : ℕ₋₂}
       {{_ : has-level (S n) A}}
       → has-level (S n) (Subtype P)
-    Subtype-level = Σ-level ⟨⟩ (λ x → prop-has-level-S (P.level {x}))
+    Subtype-level = Σ-level ⟨⟩ (λ x → prop-has-level-S (level P {x}))
 
   Subtype= : (x y : Subtype P) → Type i
   Subtype= x y = fst x == fst y
@@ -108,7 +108,7 @@ module _ {i j} {A : Type i} (P : SubtypeProp {A = A} {j}) where
   Subtype=== r s = fst=2 r ◃∎ =ₛ fst=2 s ◃∎
 
   Subtype=-out : ∀ {x y : Subtype P} → Subtype= x y → x == y
-  Subtype=-out p = pair= p (prop-has-all-paths-↓ {{P.level {_}}})
+  Subtype=-out p = pair= p (prop-has-all-paths-↓ {{level P {_}}})
 
   Subtype=-β : {x y : Subtype P} (p : Subtype= x y)
     → fst= (Subtype=-out {x = x} {y = y} p) == p
@@ -117,7 +117,7 @@ module _ {i j} {A : Type i} (P : SubtypeProp {A = A} {j}) where
   Subtype=-η : {x y : Subtype P} (p : x == y)
     → Subtype=-out (fst= p) == p
   Subtype=-η idp = ap (pair= idp)
-    (contr-has-all-paths {{has-level-apply (P.level {_}) _ _}} _ _)
+    (contr-has-all-paths {{has-level-apply (level P {_}) _ _}} _ _)
 
   Subtype=-econv : (x y : Subtype P) → (Subtype= x y) ≃ (x == y)
   Subtype=-econv x y = equiv Subtype=-out fst= Subtype=-η Subtype=-β
@@ -139,9 +139,9 @@ module _ {i j} {A : Type i} (P : SubtypeProp {A = A} {j}) where
       == Subtype=-out {x} {z} (p ∙ q)
     Subtype-∙ {x} {y} {z} p q =
       Subtype=-out p ∙ Subtype=-out q
-        =⟨ Σ-∙ {p = p} {p' = q} (prop-has-all-paths-↓ {{P.level {fst y}}}) (prop-has-all-paths-↓ {{P.level {fst z}}}) ⟩
-      pair= (p ∙ q) (prop-has-all-paths-↓ {p = p} {{P.level {fst y}}} ∙ᵈ prop-has-all-paths-↓ {{P.level {fst z}}})
-        =⟨ contr-has-all-paths {{↓-level {{P.level {fst z}}}}} _ (prop-has-all-paths-↓ {{P.level {fst z}}})
+        =⟨ Σ-∙ {p = p} {p' = q} (prop-has-all-paths-↓ {{level P {fst y}}}) (prop-has-all-paths-↓ {{level P {fst z}}}) ⟩
+      pair= (p ∙ q) (prop-has-all-paths-↓ {p = p} {{level P {fst y}}} ∙ᵈ prop-has-all-paths-↓ {{level P {fst z}}})
+        =⟨ contr-has-all-paths {{↓-level {{level P {fst z}}}}} _ (prop-has-all-paths-↓ {{level P {fst z}}})
           |in-ctx pair= (p ∙ q) ⟩
       Subtype=-out (p ∙ q)
         =∎

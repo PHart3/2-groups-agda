@@ -113,6 +113,15 @@ post-rotate-out {p = p} {q = q} {r = r} e = =ₛ-in $
     =⟨ =ₛ-out (post-rotate'-in {r = p} {q = ! q} {p = r} e) ⟩
   ↯ r =∎
 
+post-rotate'-out : {a a' a'' : A}
+  → {p : a =-= a'} {q : a' == a''} {r : a =-= a''}
+  → r ∙▹ ! q =ₛ p
+  → r =ₛ p ∙▹ q
+post-rotate'-out {p = p} {q = q} {r = r} e = =ₛ-in $
+  ↯ r
+    =⟨ ! (=ₛ-out (post-rotate-out {p = p} {q = q} {r = r} (!ₛ e))) ⟩
+  ↯ (p ∙▹ q) =∎
+
 post-rotate'-seq-in : {a a' a'' : A}
   → {r : a =-= a''} {q : a' =-= a''} {p : a =-= a'}
   → r =ₛ p ∙∙ q
