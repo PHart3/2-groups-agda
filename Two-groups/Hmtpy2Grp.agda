@@ -2,11 +2,13 @@
 
 open import lib.Basics
 open import lib.Equivalence2 hiding (linv; rinv)
+open import lib.Univalence2
 open import lib.NType2
 open import lib.types.Sigma
 open import lib.types.LoopSpace
 open import 2Magma
 open import 2Grp
+open import 2GrpAutoEq
 
 module Hmtpy2Grp where
 
@@ -82,7 +84,6 @@ module _ {i j} {X₁ : Ptd i} {X₂ : Ptd j}
   map (Loop2Grp-map φ) = Ω-fmap φ
   str (Loop2Grp-map φ) = Loop2Grp-map-str φ
 
-
 module _ {i j k} {X₁ : Ptd i} {X₂ : Ptd j} {X₃ : Ptd k} {{tr₁ : has-level 2 (de⊙ X₁)}}
   {{tr₂ : has-level 2 (de⊙ X₂)}}  {{tr₃ : has-level 2 (de⊙ X₃)}} where
 
@@ -103,11 +104,10 @@ module _ {i} (G : Type i) {{trG : has-level 1 G}} where
   open WkMagHom
   open WkMagHomStr {{...}}
 
-{-
   ua-2MagMap : WkMagHom {{≃-2Mag G}} {{mag (Loop2Grp G)}}
   map ua-2MagMap = ua
   map-comp (str ua-2MagMap) e₁ e₂ = ! (ua-∘e e₁ e₂)
-  map-al (str ua-2MagMap) e₁ e₂ e₃ = =ₛ-out (
+  map-al (str ua-2MagMap) e₁ e₂ e₃ = =ₛ-out $
     ! (! (∙-assoc (ua e₁) (ua e₂) (ua e₃))) ◃∙
     ap (λ v → ua e₁ ∙ v) (! (ua-∘e e₂ e₃)) ◃∙
     ! (ua-∘e e₁ (e₃ ∘e e₂)) ◃∎
@@ -116,7 +116,7 @@ module _ {i} (G : Type i) {{trG : has-level 1 G}} where
       =ₛ⟨ ua-∘e-al e₁ e₂ e₃ ⟩
     ap (λ v → v ∙ ua e₃) (! (ua-∘e e₁ e₂)) ◃∙
     ! (ua-∘e (e₂ ∘e e₁) e₃) ◃∙
-    ! (ap ua (pair= idp (prop-has-all-paths _ _))) ◃∎ ∎ₛ)
+    ! (ap ua (pair= idp (prop-has-all-paths _ _))) ◃∎ ∎ₛ
 
   1tr-2MagMap : WkMagHom {{mag (Loop2Grp G)}} {{mag (Loop2Grp {X = 1 -Type i} (G , trG))}}
   map 1tr-2MagMap p = pair= p prop-has-all-paths-↓
@@ -126,25 +126,37 @@ module _ {i} (G : Type i) {{trG : has-level 1 G}} where
   map-al (str 1tr-2MagMap) p₁ p₂ p₃ = lemma p₁ p₂ p₃
     where
       lemma : {A₁ A₂ A₃ A₄ : Type i} (q₁ : A₁ == A₂) (q₂ : A₂ == A₃) (q₃ : A₃ == A₄)
-        {t₁ : _} {t₂ : _} {t₃ : _} {t₅ : {!!} == {!!} [ has-level 1 ↓ q₂ ]}
-        {t₆ : {!!} == {!!} [ has-level 1 ↓ q₃ ]}
-        {t₈ : {!!} == {!!} [ has-level 1 ↓ q₁ ]}
-        {t₁₀ : {!!} == {!!} [ has-level 1 ↓ (q₂ ∙ q₃) ]}
-        {t₇ : t₂ ∙ᵈ t₃ == t₁₀}
-        {t₁₁ : {!!}} {t₁₂ : {!!}} {t₁₃ : t₁ ∙ᵈ t₂ == {!!}} {t₁₄ : (p : A₁ == A₄) → {!!}}
-        {t₁₅ : {!!}} {t₁₆ : {!!}} {t₁₇ : {!!}} {t₁₈ : {!!}} →
+        {d₁ : has-level 1 A₁} {d₂ : has-level 1 A₂} {d₃ : has-level 1 A₃} {d₄ : has-level 1 A₄}
+        {t₁ : d₁ == d₂ [ has-level 1 ↓ q₁ ]} {t₂ : d₂ == d₃ [ has-level 1 ↓ q₂ ]}
+        {t₃ : d₃ == d₄ [ has-level 1 ↓ q₃ ]} {t₈ : d₂ == d₄ [ has-level 1 ↓ (q₂ ∙ q₃) ]}
+        {t₄ : d₁ == d₃ [ has-level 1 ↓ (q₁ ∙ q₂) ]} {t₅ : (p : A₁ == A₄) → _}
+        {t₆ : t₁ ∙ᵈ t₂ == t₄} {t₇ : t₂ ∙ᵈ t₃ == t₈} {t₉ : t₁ ∙ᵈ t₈ == t₅ (q₁ ∙ q₂ ∙ q₃)}
+        {t₁₀ : t₄ ∙ᵈ t₃ == t₅ ((q₁ ∙ q₂) ∙ q₃)} →
         ! (! (∙-assoc (pair= q₁ t₁) (pair= q₂ t₂) (pair= q₃ t₃))) ∙
         ap (_∙_ (pair= q₁ t₁))
-          (Σ-∙ {B = has-level 1} {p = q₂} {p' = q₃} t₅ t₆ ∙
+          (Σ-∙ {B = has-level 1} {p = q₂} {p' = q₃} t₂ t₃ ∙
           ap (pair= (q₂ ∙ q₃)) t₇) ∙
-        Σ-∙ {B = has-level 1} {p = q₁} {p' = q₂ ∙ q₃} t₈ t₁₀ ∙
-        ap (pair= (q₁ ∙ q₂ ∙ q₃)) {!!}
+        Σ-∙ {B = has-level 1} {p = q₁} {p' = q₂ ∙ q₃} t₁ t₈ ∙
+        ap (pair= (q₁ ∙ q₂ ∙ q₃)) t₉
           ==
         ap (λ v → v ∙ pair= q₃ t₃)
-          (Σ-∙ {B = has-level 1} {p = q₁} {p' = q₂} {!!} {!!} ∙
-          ap (pair= (q₁ ∙ q₂)) t₁₃) ∙
-        (Σ-∙ {B = has-level 1} {p = q₁ ∙ q₂} {p' = q₃} {!!} {!!} ∙
-        ap (pair= ((q₁ ∙ q₂) ∙ q₃)) {!!}) ∙
-        ! (ap (λ p → pair= p (t₁₄ p)) (! (∙-assoc q₁ q₂ q₃)))
-      lemma idp idp idp = {!!}
--}
+          (Σ-∙ {B = has-level 1} {p = q₁} {p' = q₂} t₁ t₂ ∙
+          ap (pair= (q₁ ∙ q₂)) t₆) ∙
+        (Σ-∙ {B = has-level 1} {p = q₁ ∙ q₂} {p' = q₃} t₄ t₃ ∙
+        ap (pair= ((q₁ ∙ q₂) ∙ q₃)) t₁₀) ∙
+        ! (ap (λ p → pair= p (t₅ p)) (! (∙-assoc q₁ q₂ q₃)))
+      lemma {A₁} idp idp idp {t₁ = t₁} {t₂} {t₃} {t₆ = idp} {t₇ = idp} {t₉} {t₁₀} = aux t₁ t₂ t₃ t₉ t₁₀
+        where
+          aux : {x₁ x₂ x₃ x₄ : has-level 1 A₁}
+            (r₁ : x₁ == x₂) (r₂ : x₂ == x₃) (r₃ : x₃ == x₄)
+            {z : x₁ == x₄} (r₄ : r₁ ∙ r₂ ∙ r₃ == z) (r₅ : (r₁ ∙ r₂) ∙ r₃ == z)
+            →            
+            ! (! (∙-assoc (ap (A₁ ,_) r₁) (ap (A₁ ,_) r₂) (ap (A₁ ,_) r₃))) ∙
+            ap (_∙_ (ap (A₁ ,_) r₁)) (Σ-∙-aux r₂ r₃ ∙ idp) ∙
+            Σ-∙-aux r₁ (r₂ ∙ r₃) ∙ ap (ap (A₁ ,_)) r₄
+            ==
+            ap (λ v → v ∙ ap (A₁ ,_) r₃) (Σ-∙-aux r₁ r₂ ∙ idp) ∙
+            (Σ-∙-aux (r₁ ∙ r₂) r₃ ∙ ap (ap (A₁ ,_)) r₅) ∙ idp
+          aux idp idp idp idp r₅ =
+            ! (ap (λ p → ap (ap (A₁ ,_)) p ∙ idp)
+              (prop-has-all-paths {{=-preserves-level-instance {{=-preserves-level-instance}}}} r₅ idp))
