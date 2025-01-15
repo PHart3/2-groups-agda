@@ -1,9 +1,6 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=10 #-}
+{-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
-open import lib.types.Sigma
-open import lib.Equivalence2 hiding (linv; rinv)
-open import lib.NType2
 open import 2Magma
 
 module 2Grp where
@@ -98,72 +95,36 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
     idp
 
 -- multiplication on either side is an iso
-module _ {i} {G : Type i} {{η : CohGrp G}} where
+module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
 
-  module _ (x : G) where
+  mu-pre-iso : is-equiv (mu x)
+  mu-pre-iso =
+    is-eq (mu x) (mu (inv x))
+      (λ b → al x (inv x) b ∙ ap2 mu (! (rinv x)) idp ∙ lam b)
+      λ a → al (inv x) x a ∙ ap2 mu (linv x) idp ∙ lam a
 
-    mu-pre-iso : is-equiv (mu x)
-    mu-pre-iso =
-      is-eq (mu x) (mu (inv x))
-        (λ b → al x (inv x) b ∙ ap2 mu (! (rinv x)) idp ∙ lam b)
-        λ a → al (inv x) x a ∙ ap2 mu (linv x) idp ∙ lam a
+  mu-pre-ff<– : (z₁ z₂ : G) → (mu x z₁ == mu x z₂) → (z₁ == z₂)
+  mu-pre-ff<– z₁ z₂ p =
+    ! (al (inv x) x z₁ ∙ ap2 mu (linv x) idp ∙ lam z₁) ∙
+    ap (mu (inv x)) p ∙
+    al (inv x) x z₂ ∙
+    ap2 mu (linv x) idp ∙
+    lam z₂
 
-    mu-pre-ff<– : (z₁ z₂ : G) → (mu x z₁ == mu x z₂) → (z₁ == z₂)
-    mu-pre-ff<– z₁ z₂ p =
-      ! (al (inv x) x z₁ ∙ ap2 mu (linv x) idp ∙ lam z₁) ∙
-      ap (mu (inv x)) p ∙
-      al (inv x) x z₂ ∙
-      ap2 mu (linv x) idp ∙
-      lam z₂
+  mu-post-iso : is-equiv (λ z → mu z x)
+  mu-post-iso =
+    is-eq (λ z → mu z x) (λ z → mu z (inv x))
+      (λ b → ! (al b (inv x) x) ∙ ap (mu b) (linv x) ∙ rho b )
+      λ a → ! (al a x (inv x)) ∙ ! (ap (mu a) (rinv x)) ∙ rho a
 
-    mu-post-iso : is-equiv (λ z → mu z x)
-    mu-post-iso =
-      is-eq (λ z → mu z x) (λ z → mu z (inv x))
-        (λ b → ! (al b (inv x) x) ∙ ap (mu b) (linv x) ∙ rho b )
-        λ a → ! (al a x (inv x)) ∙ ! (ap (mu a) (rinv x)) ∙ rho a
+  mu-post-ff<– : (z₁ z₂ : G) → (mu z₁ x == mu z₂ x) → (z₁ == z₂)
+  mu-post-ff<– z₁ z₂ p =
+    ! (! (al z₁ x (inv x)) ∙ ! (ap (mu z₁) (rinv x)) ∙ rho z₁) ∙
+    ap (λ z → mu z (inv x)) p ∙
+    ! (al z₂ x (inv x)) ∙
+    ! (ap (mu z₂) (rinv x)) ∙
+    rho z₂
 
-    mu-post-ff<– : (z₁ z₂ : G) → (mu z₁ x == mu z₂ x) → (z₁ == z₂)
-    mu-post-ff<– z₁ z₂ p =
-      ! (! (al z₁ x (inv x)) ∙ ! (ap (mu z₁) (rinv x)) ∙ rho z₁) ∙
-      ap (λ z → mu z (inv x)) p ∙
-      ! (al z₂ x (inv x)) ∙
-      ! (ap (mu z₂) (rinv x)) ∙
-      rho z₂
-
-  mu-≃-map : WkMagHom {{mag η}} {{≃-2Mag G}}
-  fst (WkMagHom.map mu-≃-map x) = λ z → mu z x
-  snd (WkMagHom.map mu-≃-map x) = mu-post-iso x
-  WkMagHomStr.map-comp (WkMagHom.str mu-≃-map) x y = pair= (λ= (λ z → ! (al z x y) )) prop-has-all-paths-↓
-  WkMagHomStr.map-al (WkMagHom.str mu-≃-map) x y z = Subtype==-out (subtypeprop is-equiv) (=ₛ-out lemma)
-    where
-      open WkMag {{...}} renaming (mu to muM; al to alM)      
-      open WkMagHom
-      open WkMagHomStr
-      lemma :
-        fst=
-          (! (alM (map mu-≃-map x) (map mu-≃-map y) (map mu-≃-map z)) ∙
-            ap (muM (map mu-≃-map x)) (map-comp (str mu-≃-map) y z) ∙
-            map-comp (str mu-≃-map) x (muM y z)) ◃∎
-          =ₛ
-        fst=
-          (ap (λ v → muM v (map mu-≃-map z)) (map-comp (str mu-≃-map) x y) ∙
-          map-comp (str mu-≃-map) (muM x y) z ∙
-          ! (ap (map mu-≃-map) (alM x y z))) ◃∎
-      lemma = 
-        fst=
-          (! (alM (map mu-≃-map x) (map mu-≃-map y) (map mu-≃-map z)) ∙
-            ap (muM (map mu-≃-map x)) (map-comp (str mu-≃-map) y z) ∙
-            map-comp (str mu-≃-map) x (muM y z)) ◃∎
-          =ₛ⟨ ap-seq-∙ fst
-                (! (alM (map mu-≃-map x) (map mu-≃-map y) (map mu-≃-map z)) ◃∙
-                ap (muM (map mu-≃-map x)) (map-comp (str mu-≃-map) y z) ◃∙
-                map-comp (str mu-≃-map) x (muM y z) ◃∎) ⟩
-        fst= (! (alM (map mu-≃-map x) (map mu-≃-map y) (map mu-≃-map z))) ◃∙
-        fst= (ap (muM (map mu-≃-map x)) (map-comp (str mu-≃-map) y z)) ◃∙
-        fst= (map-comp (str mu-≃-map) x (muM y z)) ◃∎
-          =ₛ₁⟨ 0 & 1 & {!!} ⟩
-        {!!}
-{-
 -- morphisms of 2-groups
 
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
@@ -258,5 +219,3 @@ module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
   _∘2G_ : CohGrpHom {{η₂}} {{η₃}} → CohGrpHom {{η₁}} {{η₂}} → CohGrpHom {{η₁}} {{η₃}}
   map (F₂ ∘2G F₁) = map F₂ ∘ map F₁
   str (F₂ ∘2G F₁) = F₂ ∘2Gσ F₁
-
--}

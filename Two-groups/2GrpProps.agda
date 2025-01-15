@@ -18,15 +18,25 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
       ap (mu x) (lam y) ◃∎
     tr-rot x y = pre-rotate-out (=ₛ-in (tr x y))
 
-    pent-rot : (w x y z : G) →
+    pent-rot1 : (w x y z : G) →
       al w x (mu y z) ◃∙ al (mu w x) y z ◃∙ ! (ap (λ v → mu v z) (al w x y)) ◃∎
         =ₛ
       ap (mu w) (al x y z) ◃∙ al w (mu x y) z ◃∎
-    pent-rot w x y z =
+    pent-rot1 w x y z =
       post-rotate'-seq-in
         {r = al w x (mu y z) ◃∙ al (mu w x) y z ◃∎}
         {q = ap (λ v → mu v z) (al w x y) ◃∎}
         (=ₛ-in (pent w x y z))
+
+    pent-rot2 : (w x y z : G) →
+      []
+        =ₛ
+      ! (al (mu w x) y z) ◃∙
+      ! (al w x (mu y z)) ◃∙
+      ap (mu w) (al x y z) ◃∙
+      al w (mu x y) z ◃∙
+      ap (λ u → mu u z) (al w x y) ◃∎
+    pent-rot2 w x y z = pre-rotate-in (pre-rotate-in (=ₛ-in (pent w x y z)))
 
   module _ (x y : G) where
 
@@ -96,7 +106,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         ! (al id (mu id x) y) ◃∙
         ap (mu id) (! (al id x y)) ◃∙
         ap (mu id) (lam (mu x y)) ◃∎
-          =ₛ⟨ 1 & 3 & pent-rot id id x y ⟩
+          =ₛ⟨ 1 & 3 & pent-rot1 id id x y ⟩
         _
           =ₛ₁⟨ 3 & 2 & !-inv-r (ap (λ z → mu (mu id z) y) (lam x)) ⟩
         _

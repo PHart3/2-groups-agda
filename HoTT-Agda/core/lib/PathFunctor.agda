@@ -36,6 +36,9 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     →  ap f p ◃∙ ap f q ◃∎ =ₛ ap f (p ∙ q) ◃∎
   ∙-ap◃ idp q = =ₛ-in idp
 
+  !-!-ap : {x y : A} (p : x == y) → ! (ap f (! p)) == ap f p
+  !-!-ap idp = idp
+
   ap-∙-!-! : {x y z : A} (p : x == y) (q : z == x)
     → ap f (! p ∙ ! q) == ! (ap f p) ∙ ! (ap f q)
   ap-∙-!-! idp idp = idp

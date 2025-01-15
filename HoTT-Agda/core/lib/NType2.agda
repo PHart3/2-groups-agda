@@ -102,7 +102,7 @@ module _ {i j} {A : Type i} (P : SubtypeProp {A = A} {j}) where
   Subtype= x y = fst x == fst y
 
   Subtype== : {x y : Subtype P} (p q : x == y) → Type i
-  Subtype== p q = fst= p == fst= q
+  Subtype== p q = fst= p ◃∎ =ₛ fst= q ◃∎
 
   Subtype=== : {x y : Subtype P} {p q : x == y} (r s : p == q) → Type i
   Subtype=== r s = fst=2 r ◃∎ =ₛ fst=2 s ◃∎
@@ -124,7 +124,7 @@ module _ {i j} {A : Type i} (P : SubtypeProp {A = A} {j}) where
 
   Subtype==-out : ∀ {x y : Subtype P} {p q : x == y}
     → Subtype== p q → p == q
-  Subtype==-out {p = idp} {q} e = ! (equiv-is-inj (snd ((Subtype=-econv _ _ ) ⁻¹)) q idp (! e) ) 
+  Subtype==-out {p = idp} {q} (=ₛ-in e) = ! (equiv-is-inj (snd ((Subtype=-econv _ _ ) ⁻¹)) q idp (! e) ) 
 
   Subtype===-out : ∀ {x y : Subtype P} {p q : x == y} {r s : p == q}
     → Subtype=== r s → r == s
