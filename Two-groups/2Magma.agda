@@ -128,6 +128,7 @@ module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
   open WkMagHomStr {{...}}
 
   -- composition of 2-magma morphisms
+  
   infixr 60 _∘2Mσ_
   _∘2Mσ_ :  (F₂ : WkMagHom {{η₂}} {{η₃}}) (F₁ : WkMagHom {{η₁}} {{η₂}}) → WkMagHomStr (map F₂ ∘ map F₁)
   WkMagHomStr.map-comp (F₂ ∘2Mσ F₁) x y = map-comp (map F₁ x) (map F₁ y) ∙ ap (map F₂) (map-comp x y) 
@@ -258,3 +259,8 @@ module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
                  (map-comp y z)
                  (map-comp (map F₁ x) (mu η₂ (map F₁ y) (map F₁ z))) ⟩
           idp
+          
+  infixr 50 _∘2M_
+  _∘2M_ : WkMagHom {{η₂}} {{η₃}} → WkMagHom {{η₁}} {{η₂}} → WkMagHom {{η₁}} {{η₃}}
+  map (F₂ ∘2M F₁) = map F₂ ∘ map F₁
+  str (F₂ ∘2M F₁) = F₂ ∘2Mσ F₁

@@ -36,9 +36,55 @@ module _ {i} {X : Type i} where
 
   instance
     Loop2Grp-instance : {x : X} {{trX : has-level 1 (x == x)}} → CohGrp (x == x)
-    Loop2Grp-instance {x} = Loop2Grp x 
+    Loop2Grp-instance {x} = Loop2Grp x
 
--- ad-hoc lemmas for Ω's action on  maps, described below
+  module _ {j} {G : Type j} {{η : WkMag G}} (x : X) {{trX : has-level 1 (x == x)}} where
+
+    open WkMag {{...}}
+    
+    record Loop2Map : Type (lmax i j) where
+      field
+        loop' : G → x == x
+        loop-comp' : (a b : G) → loop' a ∙ loop' b == loop' (mu a b)
+        loop-assoc' : (a b c : G) → 
+          ∙-assoc (loop' a) (loop' b) (loop' c) ∙
+          ap (λ p → loop' a ∙ p) (loop-comp' b c) ∙
+          loop-comp' a (mu b c)
+            ==
+          ap (λ p → p ∙ loop' c) (loop-comp' a b) ∙
+          loop-comp' (mu a b) c ∙'
+          ! (ap loop' (al a b c))
+
+    open Loop2Map public
+    open WkMagHom
+    open WkMagHomStr {{...}}
+    
+    loop2mag-conv : WkMagHom {{η}} {{mag (Loop2Grp x)}} → Loop2Map
+    loop' (loop2mag-conv f) = map f
+    loop-comp' (loop2mag-conv _) = map-comp
+    loop-assoc' (loop2mag-conv f) a b c = =ₛ-out $
+      ∙-assoc (map f a) (map f b) (map f c) ◃∙
+      ap (λ p → map f a ∙ p) (map-comp b c) ◃∙
+      map-comp a (mu b c) ◃∎
+        =ₛ₁⟨ 0 & 1 & ! (!-! (∙-assoc (map f a) (map f b) (map f c))) ⟩
+      ! (! (∙-assoc (map f a) (map f b) (map f c))) ◃∙
+      ap (λ p → map f a ∙ p) (map-comp b c) ◃∙
+      map-comp a (mu b c) ◃∎
+        =ₛ⟨ =ₛ-in (map-al a b c) ⟩
+      ap (λ p → p ∙ map f c) (map-comp a b) ◃∙
+      (map-comp (mu a b) c ∙
+      ! (ap (map f) (al a b c))) ◃∎
+        =ₛ₁⟨ 1 & 1 & ∙=∙' (map-comp (mu a b) c) (! (ap (map f) (al a b c))) ⟩
+      ap (λ p → p ∙ map f c) (map-comp a b) ◃∙
+      (map-comp (mu a b) c ∙'
+      ! (ap (map f) (al a b c))) ◃∎
+        =ₛ₁⟨ idp ⟩
+      (ap (λ p → p ∙ map f c) (map-comp a b) ∙
+      map-comp (mu a b) c ∙'
+      ! (ap (map f) (al a b c))) ◃∎ ∎ₛ
+
+-- a few ad-hoc lemmas for Ω's action on  maps, described below
+
 module _ {i j} {X : Type i} {Y : Type j} (f : X → Y) where
 
   red-aux1 : {x y z w : X} (p₁ : x == y) (p₂ : y == z) (p₃ : z == w) →
