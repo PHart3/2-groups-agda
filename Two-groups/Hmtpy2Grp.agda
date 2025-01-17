@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=3 #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=4 #-}
 
 open import lib.Basics
 open import lib.Equivalence2 hiding (linv; rinv)
@@ -54,8 +54,12 @@ module _ {i} {X : Type i} where
           ap (λ p → p ∙ loop' c) (loop-comp' a b) ∙
           loop-comp' (mu a b) c ∙'
           ! (ap loop' (al a b c))
-
     open Loop2Map public
+
+    loop-2map-forg : Loop2Map → WkMagWkHom {{η}} {{mag (Loop2Grp x)}}
+    map-wk (loop-2map-forg f) = loop' f
+    map-comp-wk (loop-2map-forg f) = loop-comp' f
+
     open WkMagHom
     open WkMagHomStr {{...}}
     
@@ -89,21 +93,21 @@ module _ {i j} {X : Type i} {Y : Type j} (f : X → Y) where
 
   red-aux1 : {x y z w : X} (p₁ : x == y) (p₂ : y == z) (p₃ : z == w) →
     ! (! (∙-assoc (ap f p₁) (ap f p₂) (ap f p₃))) ∙
-    ap (_∙_ (ap f p₁)) (! (ap-∙ f p₂ p₃)) ∙
-    ! (ap-∙ f p₁ (p₂ ∙ p₃))
+    ap (_∙_ (ap f p₁)) (∙-ap f p₂ p₃) ∙
+    ∙-ap f p₁ (p₂ ∙ p₃)
     ==
-    ap (λ v → v ∙ ap f p₃) (! (ap-∙ f p₁ p₂)) ∙
-    ! (ap-∙ f (p₁ ∙ p₂) p₃) ∙
+    ap (λ v → v ∙ ap f p₃) (∙-ap f p₁ p₂) ∙
+    ∙-ap f (p₁ ∙ p₂) p₃ ∙
     ! (ap (ap f) (! (∙-assoc p₁ p₂ p₃)))
   red-aux1 idp idp _ = idp
 
   red-aux2 : ∀ {k} {Z : Type k} (g : Y → Z) {x y z : X}
     (p₁ : x == y) (p₂ : y == z) → 
-    ap2 _∙_ (ap-∘ g f p₁) (ap-∘ g f p₂) ∙
-    ! (ap-∙ g (ap f p₁) (ap f p₂)) ∙
-    ap (ap g) (! (ap-∙ f p₁ p₂))
+    ∙-ap g (ap f p₁) (ap f p₂) ∙
+    ap (ap g) (∙-ap f p₁ p₂)
     ==
-    ! (ap-∙ (λ x → g (f x)) p₁ p₂) ∙
+    ! (ap2 _∙_ (ap-∘ g f p₁) (ap-∘ g f p₂)) ∙
+    ∙-ap (g ∘ f) p₁ p₂ ∙
     ap-∘ g f (p₁ ∙ p₂)
   red-aux2 g idp idp = idp
 
@@ -111,9 +115,9 @@ module _ {i} {X : Type i} where
 
   red-aux3 : {x y z : X} (p₁ : x == y) (p₂ : y == z)
     →
-    ap2 _∙_ (ap-idf p₁) (ap-idf p₂) ∙ idp
+    idp
     ==
-    ! (ap-∙ (λ x → x) p₁ p₂) ∙ ap-idf (p₁ ∙ p₂)
+    ! (ap2 _∙_ (ap-idf p₁) (ap-idf p₂)) ∙ ∙-ap (λ x → x) p₁ p₂ ∙ ap-idf (p₁ ∙ p₂)
   red-aux3 idp idp = idp
 
 open CohGrpHom
@@ -123,8 +127,8 @@ module _ {i j} {X₁ : Ptd i} {X₂ : Ptd j}
   {{tr₁ : has-level 2 (de⊙ X₁)}} {{tr₂ : has-level 2 (de⊙ X₂)}} where
 
   Loop2Grp-map-str : (φ : X₁ ⊙→ X₂) → CohGrpHomStr (Ω-fmap φ)
-  map-comp (Loop2Grp-map-str φ) p₁ p₂ = ! (Ω-fmap-∙ φ p₁ p₂)
-  map-al (Loop2Grp-map-str (f , idp)) p₁ p₂ p₃ = red-aux1 f p₁ p₂ p₃
+  map-comp (Loop2Grp-map-str φ) p₁ p₂ = ∙-Ω-fmap φ p₁ p₂
+  map-al (Loop2Grp-map-str (f , idp)) p₁ p₂ p₃ = red-aux1 f p₁ p₂ p₃ 
 
   Loop2Grp-map : (φ : X₁ ⊙→ X₂) → CohGrpHom
   map (Loop2Grp-map φ) = Ω-fmap φ
@@ -135,14 +139,14 @@ module _ {i j k} {X₁ : Ptd i} {X₂ : Ptd j} {X₃ : Ptd k} {{tr₁ : has-leve
 
   Loop2Grp-map-∘ : (φ₂ : X₂ ⊙→ X₃) (φ₁ : X₁ ⊙→ X₂)
     →  CohGrpNatIso (Loop2Grp-map (φ₂ ⊙∘ φ₁)) (Loop2Grp-map φ₂ ∘2G Loop2Grp-map φ₁)
-  CohGrpNatIso.θ (Loop2Grp-map-∘ (f₂ , idp) (f₁ , idp)) = λ p → ap-∘ f₂ f₁ p
-  CohGrpNatIso.θ-comp (Loop2Grp-map-∘ (f₂ , idp) (f₁ , idp)) = λ p₁ p₂ → red-aux2 f₁ f₂ p₁ p₂
+  WkMagNatIso.θ (Loop2Grp-map-∘ (f₂ , idp) (f₁ , idp)) = λ p → ap-∘ f₂ f₁ p
+  WkMagNatIso.θ-comp (Loop2Grp-map-∘ (f₂ , idp) (f₁ , idp)) = λ p₁ p₂ → red-aux2 f₁ f₂ p₁ p₂
 
 module _ {i} {X : Ptd i} {{tr : has-level 2 (de⊙ X)}} where
 
   Loop2Grp-map-idf : CohGrpNatIso (Loop2Grp-map (⊙idf X)) (cohgrphom _ {{idf2G}})
-  CohGrpNatIso.θ Loop2Grp-map-idf p = ap-idf p
-  CohGrpNatIso.θ-comp Loop2Grp-map-idf p₁ p₂ = red-aux3 p₁ p₂
+  WkMagNatIso.θ Loop2Grp-map-idf p = ap-idf p
+  WkMagNatIso.θ-comp Loop2Grp-map-idf p₁ p₂ = red-aux3 p₁ p₂
 
 module _ {i} (G : Type i) {{trG : has-level 1 G}} where
 
@@ -206,3 +210,48 @@ module _ {i} (G : Type i) {{trG : has-level 1 G}} where
           aux idp idp idp idp r₅ =
             ! (ap (λ p → ap (ap (A₁ ,_)) p ∙ idp)
               (prop-has-all-paths {{=-preserves-level-instance {{=-preserves-level-instance}}}} r₅ idp))
+
+module _ {i} {G : Type i} {{η : CohGrp G}} where
+
+  open CohGrp η
+
+  2Grp-1Ty-map : WkMagHom {{mag η}} {{mag (Loop2Grp (G , 1trunc))}}
+  2Grp-1Ty-map = 1tr-2MagMap G ∘2M ua-2MagMap G ∘2M mu-≃-map
+
+  2Grp-1Ty-lmap : Loop2Map (G , 1trunc)
+  2Grp-1Ty-lmap = loop2mag-conv (G , 1trunc) 2Grp-1Ty-map
+
+  fst=-2map : WkMagWkHom {{mag (Loop2Grp (G , 1trunc))}} {{mag (Loop2Grp G)}}
+  map-wk fst=-2map = fst=
+  map-comp-wk fst=-2map p₁ p₂ = ∙-ap fst p₁ p₂
+
+  fst=-sect : WkMagNatIso (fst=-2map ∘2Mw maghom-forg (1tr-2MagMap G)) (idf2Mw {{mag (Loop2Grp G)}})
+  WkMagNatIso.θ fst=-sect p = fst=-β p prop-has-all-paths-↓
+  WkMagNatIso.θ-comp fst=-sect p₁ p₂ = lemma p₁ p₂
+    where
+      lemma : {A₁ A₂ A₃ : Type i} (q₁ : A₁ == A₂) (q₂ : A₂ == A₃)
+        {d₁ : has-level 1 A₁} {d₂ : has-level 1 A₂} {d₃ : has-level 1 A₃}
+        {t₁ : d₁ == d₂ [ has-level 1 ↓ q₁ ]} {t₂ : d₂ == d₃ [ has-level 1 ↓ q₂ ]}
+        {t₃ : d₁ == d₃ [ has-level 1 ↓ q₁ ∙ q₂ ]} {t₄ : t₁ ∙ᵈ t₂ == t₃} →
+        idp
+          ==
+        ! (ap2 _∙_ (fst=-β q₁ t₁) (fst=-β q₂ t₂)) ∙
+        (∙-ap fst (pair= q₁ t₁) (pair= q₂ t₂) ∙
+        ap (ap fst) (Σ-∙ {p = q₁} {p' = q₂} t₁ t₂ ∙ ap (pair= (q₁ ∙ q₂)) t₄)) ∙
+        fst=-β (q₁ ∙ q₂) t₃
+      lemma {A₁} idp idp {t₁ = t₁} {t₂} {t₄ = idp} = aux t₁ t₂
+        where
+          aux : {x₁ x₂ x₃ : has-level 1 A₁} (v₁ : x₁ == x₂) (v₂ : x₂ == x₃) → 
+            idp
+              ==
+            ! (ap2 _∙_ (fst=-β {B = has-level 1} idp v₁) (fst=-β idp v₂)) ∙
+            (∙-ap fst (ap (A₁ ,_) v₁) (ap (A₁ ,_) v₂) ∙
+            ap (ap fst) (Σ-∙-aux v₁ v₂ ∙ idp)) ∙
+            fst=-β {B = has-level 1} idp (v₁ ∙ v₂)
+          aux idp idp = idp
+
+{-
+  fst=-tri : WkMagNatIso (fst=-2map ∘2Mw loop-2map-forg (G , 1trunc) 2Grp-1Ty-lmap) (maghom-forg (ua-2MagMap G ∘2M mu-≃-map))
+  WkMagNatIso.θ fst=-tri x = fst=-β (ua (WkMagHom.map mu-≃-map x)) prop-has-all-paths-↓
+  WkMagNatIso.θ-comp fst=-tri x y = {!!}
+-}

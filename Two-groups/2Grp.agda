@@ -180,18 +180,16 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
     field
       map : G₁ → G₂
       {{str}} : CohGrpHomStr map
+  open CohGrpHom
+
+  grphom-forg : CohGrpHom → WkMagWkHom
+  map-wk (grphom-forg f) = map f
+  map-comp-wk (grphom-forg f) = map-comp (str f) where open WkMagHomStr
 
   -- natural isomorphisms between 2-group morphisms
 
-  open WkMagHomStr {{...}}
-  open CohGrpHom
-
-  record CohGrpNatIso (μ₁ μ₂ : CohGrpHom) : Type (lmax i j) where
-    constructor cohgrpnatiso
-    field
-      θ : map μ₁ ∼ map μ₂
-      θ-comp : (x y : G₁) →
-        ap2 mu (θ x) (θ y) ∙ map-comp x y == map-comp x y ∙ θ (mu x y)
+  CohGrpNatIso : CohGrpHom → CohGrpHom → Type (lmax i j)
+  CohGrpNatIso μ₁ μ₂ = WkMagNatIso (grphom-forg μ₁) (grphom-forg μ₂)
 
 -- categorical structure on 2-groups
 

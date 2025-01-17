@@ -100,8 +100,8 @@ module _ {η : CohGrp G} where
     loop-comp-βr : (x y : G) →
       loop-comp* x y
       ==
-      ! (pair=-curry (_∙_) (loop-βr x) (loop-βr y)) ∙
-      ∙-ap f (loop x) (loop y) ∙ ap (ap f) (loop-comp x y) ∙
+      ! (ap2 (_∙_) (loop-βr x) (loop-βr y)) ∙
+      (∙-ap f (loop x) (loop y) ∙ ap (ap f) (loop-comp x y)) ∙
       loop-βr (mu x y)
     loop-comp-βr x y =
       ppo-cst-in-∙ᵈ f (loop x) (loop-comp x y) (loop-comp* x y)

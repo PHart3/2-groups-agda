@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=3 #-}
 
 open import lib.Basics
 open import lib.NType2
@@ -28,7 +28,7 @@ instance
 
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : WkMag G₂}} where
 
-  -- 2-magma morphisms
+  -- (coherent) morphisms between 2-magmas
   record WkMagHomStr (map : G₁ → G₂) : Type (lmax i j) where
     constructor cohmaghomstr
     field
@@ -76,6 +76,63 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : 
     field
       map : G₁ → G₂
       {{str}} : WkMagHomStr map
+  open WkMagHom
+
+  -- weak morphisms between 2-magmas
+  record WkMagWkHom : Type (lmax i j) where
+    constructor wkmaghom
+    field
+      map-wk : G₁ → G₂
+      map-comp-wk : (x y : G₁) → mu (map-wk x) (map-wk y) == map-wk (mu x y)
+  open WkMagWkHom
+
+  maghom-forg : WkMagHom → WkMagWkHom
+  map-wk (maghom-forg f) = map f
+  map-comp-wk (maghom-forg f) = map-comp (str f) where open WkMagHomStr
+
+  record WkMagNatIso (μ₁ μ₂ : WkMagWkHom) : Type (lmax i j) where
+    constructor cohgrpnatiso
+    field
+      θ : map-wk μ₁ ∼ map-wk μ₂
+      θ-comp : (x y : G₁) →
+        map-comp-wk μ₂ x y == ! (ap2 mu (θ x) (θ y)) ∙ map-comp-wk μ₁ x y ∙ θ (mu x y)
+  open WkMagNatIso
+
+  natiso-id : (μ : WkMagWkHom) → WkMagNatIso μ μ
+  θ (natiso-id μ) x = idp
+  θ-comp (natiso-id μ) x y = ! (∙-unit-r (map-comp-wk μ x y))
+
+module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : WkMag G₂}} where
+
+  open WkMagNatIso
+  open WkMagWkHom {{...}}
+  
+  infixr 50 _natiso-∘_
+  _natiso-∘_ : {{μ₁ μ₂ μ₃ : WkMagWkHom {{η₁}} {{η₂}}}} → WkMagNatIso μ₂ μ₃ → WkMagNatIso μ₁ μ₂ → WkMagNatIso μ₁ μ₃
+  θ (F₂ natiso-∘ F₁) x = θ F₁ x ∙ θ F₂ x
+  θ-comp (F₂ natiso-∘ F₁) x y = =ₛ-out $
+    map-comp-wk x y ◃∎
+      =ₛ⟨ =ₛ-in (θ-comp F₂ x y) ⟩
+    ! (ap2 mu (θ F₂ x) (θ F₂ y)) ◃∙
+    map-comp-wk x y ◃∙
+    θ F₂(mu x y) ◃∎
+      =ₑ⟨ 1 & 1 & (! (ap2 mu (θ F₁ x) (θ F₁ y)) ◃∙ map-comp-wk x y ◃∙ θ F₁ (mu x y) ◃∎) % =ₛ-in (θ-comp F₁ x y) ⟩
+    ! (ap2 mu (θ F₂ x) (θ F₂ y)) ◃∙
+    ! (ap2 mu (θ F₁ x) (θ F₁ y)) ◃∙
+    map-comp-wk x y ◃∙
+    θ F₁ (mu x y) ◃∙
+    θ F₂ (mu x y) ◃∎
+      =ₛ₁⟨ 0 & 2 & ∙-! (ap2 mu (θ F₂ x) (θ F₂ y)) (ap2 mu (θ F₁ x) (θ F₁ y)) ⟩
+    ! (ap2 mu (θ F₁ x) (θ F₁ y) ∙
+      ap2 mu (θ F₂ x) (θ F₂ y)) ◃∙
+    map-comp-wk x y ◃∙
+    θ F₁ (mu x y) ◃∙
+    θ F₂ (mu x y) ◃∎
+      =ₛ₁⟨ 0 & 1 & ap ! (∙-ap2 mu (θ F₁ x) (θ F₂ x) (θ F₁ y) (θ F₂ y)) ⟩
+    ! (ap2 mu (θ F₁ x ∙ θ F₂ x) (θ F₁ y ∙ θ F₂ y)) ◃∙
+    map-comp-wk x y ◃∙
+    θ F₁ (mu x y) ◃∙
+    θ F₂ (mu x y) ◃∎ ∎ₛ
 
 -- some ad-hoc lemmas for algebraic reasoning below
 
@@ -113,7 +170,13 @@ private
           ! (ap (λ q → q ∙ idp) (∙-unit-r (p₂ ∙ ap k₂ (p₅ ∙ idp)) ∙
             ap (λ q → p₂ ∙ ap k₂ q) (∙-unit-r p₅))))
 
+open WkMagWkHom public
+
 module _ {i} {G : Type i} {{η : WkMag G}} where
+
+  idf2Mw : WkMagWkHom {{η}} {{η}}
+  map-wk idf2Mw = idf G
+  map-comp-wk idf2Mw x y = idp
 
   open WkMagHomStr
 
@@ -264,3 +327,8 @@ module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
   _∘2M_ : WkMagHom {{η₂}} {{η₃}} → WkMagHom {{η₁}} {{η₂}} → WkMagHom {{η₁}} {{η₃}}
   map (F₂ ∘2M F₁) = map F₂ ∘ map F₁
   str (F₂ ∘2M F₁) = F₂ ∘2Mσ F₁
+
+  infixr 50 _∘2Mw_
+  _∘2Mw_ : WkMagWkHom {{η₂}} {{η₃}} → WkMagWkHom {{η₁}} {{η₂}} → WkMagWkHom {{η₁}} {{η₃}}
+  map-wk (F₂ ∘2Mw F₁) = map-wk F₂ ∘ map-wk F₁
+  map-comp-wk (F₂ ∘2Mw F₁) x y = map-comp-wk F₂ (map-wk F₁ x) (map-wk F₁ y) ∙ ap (map-wk F₂) (map-comp-wk F₁ x y)

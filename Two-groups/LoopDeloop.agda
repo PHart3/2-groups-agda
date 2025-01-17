@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=4 #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=3 #-}
 
 open import lib.Basics
 open import lib.NType2
@@ -17,11 +17,11 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
 
   open CohGrp η
 
-  2Grp-1Ty-map : Loop2Map (G , 1trunc)
-  2Grp-1Ty-map = loop2mag-conv {{mag η}} (G , 1trunc) (1tr-2MagMap G ∘2M ua-2MagMap G ∘2M mu-≃-map)
-
   open import Delooping G
 
   Codes : K₂ η → 1 -Type i
   Codes =
-    K₂-rec (G , 1trunc) (loop' 2Grp-1Ty-map) (loop-comp' 2Grp-1Ty-map) (loop-assoc' 2Grp-1Ty-map)
+    K₂-rec (G , 1trunc)
+      (loop' (2Grp-1Ty-lmap {{η}}))
+      (loop-comp' (2Grp-1Ty-lmap {{η}}))
+      (loop-assoc' (2Grp-1Ty-lmap {{η}}))

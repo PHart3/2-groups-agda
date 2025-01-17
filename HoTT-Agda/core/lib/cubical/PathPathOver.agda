@@ -192,12 +192,13 @@ module _ {i j} {A : Type i} {B : Type j} where
     apᶜ² (! r₁ ∙ᵈ= ! r₂) (! r₃) (ppo-cst-in-∙ p₁ ρ τ)
     →
     τ ==
-    ! (pair=-curry (_∙_) (apd=cst-in r₁) (apd=cst-in r₂)) ∙
-    ∙-ap f p₁ p₂ ∙ ap (ap f) ρ ∙ (apd=cst-in r₃) 
+    ! (ap2 (_∙_) (apd=cst-in r₁) (apd=cst-in r₂)) ∙
+    (∙-ap f p₁ p₂ ∙ ap (ap f) ρ) ∙
+    apd=cst-in r₃ 
   ppo-cst-in-∙ᵈ f {a₀} idp {p₂ = idp} idp idp r₁ r₂ r₃ = lemma r₁ r₂ r₃ 
     where
       lemma : {z₁ z₂ : f a₀ == f a₀}
         (s₁ : idp == z₁) (s₂ : idp == z₂) (s₃ : idp == z₁ ∙ z₂) →
         idp == ! (_∙ᵈ=_ {A = A} {B = λ _ → B} {x = a₀} (! s₁) (! s₂)) ∙ ! s₃ →
-        idp == ! (pair=-curry _∙_ s₁ s₂) ∙ s₃
+        idp == ! (ap2 _∙_ s₁ s₂) ∙ s₃
       lemma idp idp s₃ v = ap ! v ∙ !-! s₃
