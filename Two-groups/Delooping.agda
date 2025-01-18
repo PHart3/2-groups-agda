@@ -1,11 +1,13 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
 open import lib.types.Pointed
 open import lib.types.LoopSpace
 open import lib.types.Truncation
 open import lib.cubical.PathPathOver
+open import 2Magma
 open import 2Grp
+open import Hmtpy2Grp
 
 -- delooping of a coherent 2-group via an EM-like 3-HIT
 
@@ -14,9 +16,9 @@ module Delooping {i} (G : Type i) where
 postulate -- HIT
   K₂ : CohGrp G → Type i
 
-module _ {η : CohGrp G} where
+module _ {{η : CohGrp G}} where
 
-  open CohGrp η
+  open CohGrp {{...}}
 
   postulate -- HIT
     base : K₂ η
@@ -34,6 +36,10 @@ module _ {η : CohGrp G} where
       ap (λ p → p ∙ loop z) (loop-comp x y) ∙
       loop-comp (mu x y) z ∙
       ! (ap loop (al x y z))
+
+  K₂-loophom : WkMagWkHom {{mag η}} {{mag (Loop2Grp base)}}
+  map-wk K₂-loophom = loop
+  map-comp-wk K₂-loophom = loop-comp
 
   module K₂Elim {j} {P : K₂ η → Type j}
     {{p : {x : K₂ η} → has-level 2 (P x)}}
@@ -63,7 +69,7 @@ module _ {η : CohGrp G} where
         ==
         apᶜ² (! (loop-β x) ∙ᵈ= ! (loop-β y)) (! (loop-β (mu x y))) (loop-comp* x y)
 
-  open K₂Elim public using () renaming (f to K₂-elim)
+  open K₂Elim public renaming (f to K₂-elim)
 
   module K₂Rec {j} {B : Type j} {{_ : has-level 2 B}}
     (base* : B) (loop* : G → base* == base*)
@@ -108,4 +114,4 @@ module _ {η : CohGrp G} where
         (M.loop-β x) (M.loop-β y) (M.loop-β (mu x y))
         (M.loop-comp-β x y)
 
-  open K₂Rec public using () renaming (f to K₂-rec)
+  open K₂Rec public renaming (f to K₂-rec)

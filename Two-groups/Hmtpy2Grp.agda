@@ -7,6 +7,7 @@ open import lib.NType2
 open import lib.types.Sigma
 open import lib.types.LoopSpace
 open import 2Magma
+open import 2MagMap
 open import 2Grp
 open import 2GrpAutoEq
 
@@ -250,8 +251,24 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
             fst=-β {B = has-level 1} idp (v₁ ∙ v₂)
           aux idp idp = idp
 
-{-
-  fst=-tri : WkMagNatIso (fst=-2map ∘2Mw loop-2map-forg (G , 1trunc) 2Grp-1Ty-lmap) (maghom-forg (ua-2MagMap G ∘2M mu-≃-map))
-  WkMagNatIso.θ fst=-tri x = fst=-β (ua (WkMagHom.map mu-≃-map x)) prop-has-all-paths-↓
-  WkMagNatIso.θ-comp fst=-tri x y = {!!}
--}
+  fst=-tri0 =
+    fst=-2map ∘2Mw loop-2map-forg (G , 1trunc) 2Grp-1Ty-lmap
+      =⟦ natiso-id (fst=-2map ∘2Mw loop-2map-forg (G , 1trunc) 2Grp-1Ty-lmap) ⟧
+    fst=-2map ∘2Mw maghom-forg (1tr-2MagMap G) ∘2Mw maghom-forg (ua-2MagMap G) ∘2Mw maghom-forg mu-≃-map
+      =⟦ assoc-wkmaghom fst=-2map (maghom-forg (1tr-2MagMap G)) (maghom-forg (ua-2MagMap G) ∘2Mw maghom-forg mu-≃-map) ⟧
+    (fst=-2map ∘2Mw maghom-forg (1tr-2MagMap G)) ∘2Mw maghom-forg (ua-2MagMap G) ∘2Mw maghom-forg mu-≃-map ∎ₙ
+
+  fst=-tri1 =
+    (fst=-2map ∘2Mw maghom-forg (1tr-2MagMap G)) ∘2Mw maghom-forg (ua-2MagMap G) ∘2Mw maghom-forg mu-≃-map
+      =⟦ natiso-whisk fst=-sect ⟧
+    idf2Mw ∘2Mw maghom-forg (ua-2MagMap G) ∘2Mw maghom-forg mu-≃-map
+      =⟦ unit-wkmaghom (maghom-forg (ua-2MagMap G) ∘2Mw maghom-forg mu-≃-map) ⟧
+    maghom-forg (ua-2MagMap G) ∘2Mw maghom-forg mu-≃-map ∎ₙ
+
+  abstract
+    fst=-tri :
+      WkMagNatIso
+        (fst=-2map ∘2Mw loop-2map-forg (G , 1trunc) 2Grp-1Ty-lmap)
+        (maghom-forg (ua-2MagMap G) ∘2Mw maghom-forg mu-≃-map)
+    fst=-tri = fst=-tri1 natiso-∘ fst=-tri0
+
