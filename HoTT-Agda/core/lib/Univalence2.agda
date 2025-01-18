@@ -11,7 +11,6 @@ open import lib.FTID
 
 module lib.Univalence2 where
 
-
 module _ {i} (A : Type i) where
 
   ap-ua-idf-idp : 

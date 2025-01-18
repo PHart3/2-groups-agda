@@ -173,6 +173,120 @@ ua-∘e-coh : ∀ {i} {C A B : Type i} (e₂ : B ≃ C) {e₁ e₁' : A ≃ B} (
   ! (ap (λ q → q ∙ ua e₂) (ap ua p)) ◃∎
 ua-∘e-coh e₂ {e₁ = e₁} idp = =ₛ-in (! (∙-unit-r (ua-∘e e₁ e₂)))
 
+∙-coe-equiv : ∀ {i} {A B C : Type i} (p₁ : A == B) (p₂ : B == C)
+  → coe-equiv p₂ ∘e coe-equiv p₁ == coe-equiv (p₁ ∙ p₂)
+∙-coe-equiv idp p₂ = ∘e-unit-r (coe-equiv p₂)
+
+postulate  -- rest of univalence axiom
+  ua-adj : ∀ {i} {A B : Type i} (p : A == B) → ap coe-equiv (ua-η p) == coe-equiv-β (coe-equiv p)
+
+ap-ua-∘e : ∀ {i} {C A B : Type i} (e₁ : A ≃ B) (e₂ : B ≃ C)
+  →
+  ap coe-equiv (ua-∘e e₁ e₂) ◃∎
+    =ₛ
+  coe-equiv-β (e₂ ∘e e₁) ◃∙
+  ap2 _∘e_ (! (coe-equiv-β e₂)) (! (coe-equiv-β e₁)) ◃∙
+  ∙-coe-equiv (ua e₁) (ua e₂) ◃∎  
+ap-ua-∘e {C = C} {A} = 
+  equiv-induction-b
+    (λ {B} e₁ → ∀ (e₂ : B ≃ C) →
+      ap coe-equiv (ua-∘e e₁ e₂) ◃∎
+        =ₛ
+      coe-equiv-β (e₂ ∘e e₁) ◃∙
+      ap2 _∘e_ (! (coe-equiv-β e₂)) (! (coe-equiv-β e₁)) ◃∙
+      ∙-coe-equiv (ua e₁) (ua e₂) ◃∎)
+    aux
+  where
+    open is-equiv
+    aux2 : (e₂ : A ≃ C) →
+      ap2 _∘e_ (! (coe-equiv-β e₂)) (! (coe-equiv-β (ide A))) ◃∙
+      ap (λ z → coe-equiv (ua e₂) ∘e coe-equiv z) (ua-η idp) ◃∙
+      ∘e-unit-r (coe-equiv (ua e₂)) ◃∎
+        =ₛ
+      ap (λ z → z) (∘e-unit-r e₂) ◃∙
+      ! (coe-equiv-β e₂) ◃∎
+    aux2 e₂ = 
+      ap2 _∘e_ (! (coe-equiv-β e₂)) (! (coe-equiv-β (ide A))) ◃∙
+      ap (λ z → coe-equiv (ua e₂) ∘e coe-equiv z) (ua-η idp) ◃∙
+      ∘e-unit-r (coe-equiv (ua e₂)) ◃∎
+        =ₛ⟨ 0 & 1 & ap2-out _∘e_ (! (coe-equiv-β e₂)) (! (coe-equiv-β (ide A))) ⟩
+      ap (λ u → u ∘e ide A) (! (coe-equiv-β e₂)) ◃∙
+      ap (_∘e_ (coe-equiv (ua e₂))) (! (coe-equiv-β (ide A))) ◃∙
+      ap (λ z → coe-equiv (ua e₂) ∘e coe-equiv z) (ua-η idp) ◃∙
+      ∘e-unit-r (coe-equiv (ua e₂)) ◃∎
+        =ₛ₁⟨ 2 & 1 & ap-∘ (_∘e_ (coe-equiv (ua e₂))) coe-equiv (ua-η idp) ⟩
+      ap (λ u → u ∘e ide A) (! (coe-equiv-β e₂)) ◃∙
+      ap (_∘e_ (coe-equiv (ua e₂))) (! (coe-equiv-β (ide A))) ◃∙
+      ap (_∘e_ (coe-equiv (ua e₂))) (ap coe-equiv (ua-η idp)) ◃∙
+      ∘e-unit-r (coe-equiv (ua e₂)) ◃∎
+        =ₛ⟨ 1 & 2 & ∙-ap◃ (_∘e_ (coe-equiv (ua e₂))) (! (coe-equiv-β (ide A))) (ap coe-equiv (ua-η idp)) ⟩
+      ap (λ u → u ∘e ide A) (! (coe-equiv-β e₂)) ◃∙
+      ap (_∘e_ (coe-equiv (ua e₂))) (! (coe-equiv-β (ide A)) ∙ ap coe-equiv (ua-η idp)) ◃∙
+      ∘e-unit-r (coe-equiv (ua e₂)) ◃∎
+        =ₛ₁⟨ 1 & 1 &
+          ap (λ p → ap (_∘e_ (coe-equiv (ua e₂))) (! (coe-equiv-β (ide A)) ∙ p)) (ua-adj idp) ∙
+          ap (ap (_∘e_ (coe-equiv (ua e₂)))) (!-inv-l (coe-equiv-β (ide A))) ⟩
+      ap (λ u → u ∘e ide A) (! (coe-equiv-β e₂)) ◃∙
+      idp ◃∙
+      ∘e-unit-r (coe-equiv (ua e₂)) ◃∎
+        =ₛ⟨ 2 & 1 & apCommSq2◃' ∘e-unit-r (coe-equiv-β e₂) ⟩
+      ap (λ z → z ∘e ide A) (! (coe-equiv-β e₂)) ◃∙
+      idp ◃∙
+      ap (λ z → z ∘e ide A) (coe-equiv-β e₂) ◃∙
+      ∘e-unit-r e₂ ◃∙
+      ! (ap (λ z → z) (coe-equiv-β e₂)) ◃∎
+        =ₛ₁⟨ 0 & 1 & ap-! (λ z → z ∘e ide A) (coe-equiv-β e₂) ⟩
+      _
+        =ₛ₁⟨ 0 & 3 & !-inv-l (ap (λ z → z ∘e ide A) (coe-equiv-β e₂)) ⟩
+      idp ◃∙
+      ∘e-unit-r e₂ ◃∙
+      ! (ap (λ z → z) (coe-equiv-β e₂)) ◃∎
+        =ₛ₁⟨ 0 & 2 & ! (ap-idf (∘e-unit-r e₂)) ⟩
+      _
+        =ₛ₁⟨ 1 & 1 & ap ! (ap-idf (coe-equiv-β e₂)) ⟩
+      ap (λ z → z) (∘e-unit-r e₂) ◃∙
+      ! (coe-equiv-β e₂) ◃∎ ∎ₛ
+
+    aux : (e₂ : A ≃ C) →
+      ap coe-equiv (ua-∘e (ide A) e₂) ◃∎
+        =ₛ
+      coe-equiv-β (e₂ ∘e ide A) ◃∙
+      ap2 _∘e_ (! (coe-equiv-β e₂)) (! (coe-equiv-β (ide A))) ◃∙
+      ∙-coe-equiv (ua (ide A)) (ua e₂) ◃∎
+    aux e₂ =
+      ap coe-equiv (ua-∘e (ide A) e₂) ◃∎
+        =ₛ₁⟨ ap (ap coe-equiv) (ua-∘e-β e₂) ⟩
+      ap coe-equiv (ap ua (∘e-unit-r e₂) ∙ ap (λ w → w ∙ ua e₂) (! (ua-η idp))) ◃∎
+        =ₛ⟨ !ₛ (∙-ap◃ coe-equiv (ap ua (∘e-unit-r e₂)) (ap (λ w → w ∙ ua e₂) (! (ua-η idp)))) ⟩
+      ap coe-equiv (ap ua (∘e-unit-r e₂)) ◃∙
+      ap coe-equiv (ap (λ w → w ∙ ua e₂) (! (ua-η idp))) ◃∎
+        =ₛ₁⟨ 0 & 1 & ∘-ap coe-equiv ua (∘e-unit-r e₂) ⟩
+      ap (coe-equiv ∘ ua) (∘e-unit-r e₂) ◃∙
+      ap coe-equiv (ap (λ w → w ∙ ua e₂) (! (ua-η idp))) ◃∎
+        =ₛ⟨ 0 & 1 & hmpty-nat-∙◃ coe-equiv-β (∘e-unit-r e₂) ⟩
+      coe-equiv-β (e₂ ∘e ide A) ◃∙
+      ap (λ z → z) (∘e-unit-r e₂) ◃∙
+      ! (coe-equiv-β e₂) ◃∙
+      ap coe-equiv (ap (λ w → w ∙ ua e₂) (! (ua-η idp))) ◃∎
+        =ₛ₁⟨ 3 & 1 & 
+          ap (ap coe-equiv) (ap-! (λ w → w ∙ ua e₂) (ua-η idp)) ∙
+          ap-! coe-equiv (ap (λ w → w ∙ ua e₂) (ua-η idp)) ∙
+          ap ! (∘-ap coe-equiv (λ w → w ∙ ua e₂) (ua-η idp)) ⟩
+      coe-equiv-β (e₂ ∘e ide A) ◃∙
+      ap (λ z → z) (∘e-unit-r e₂) ◃∙
+      ! (coe-equiv-β e₂) ◃∙
+      ! (ap (λ z → coe-equiv (z ∙ ua e₂)) (ua-η idp)) ◃∎
+        =ₛ⟨ 1 & 2 & !ₛ (aux2 e₂) ⟩
+      coe-equiv-β (e₂ ∘e ide A) ◃∙
+      ap2 _∘e_ (! (coe-equiv-β e₂)) (! (coe-equiv-β (ide A))) ◃∙
+      ap (λ z → coe-equiv (ua e₂) ∘e coe-equiv z) (ua-η idp) ◃∙
+      ∘e-unit-r (coe-equiv (ua e₂)) ◃∙
+      ! (ap (λ z → coe-equiv (z ∙ ua e₂)) (ua-η idp)) ◃∎
+        =ₛ⟨ 2 & 3 & !ₛ (apCommSq2◃' (λ z → ∙-coe-equiv z (ua e₂)) (ua-η idp)) ⟩
+      coe-equiv-β (e₂ ∘e ide A) ◃∙
+      ap2 _∘e_ (! (coe-equiv-β e₂)) (! (coe-equiv-β (ide A))) ◃∙
+      ∙-coe-equiv (ua (ide A)) (ua e₂) ◃∎ ∎ₛ
+
 {- Adjointion where hom = path -}
 
 module _ {i j} {A : Type i} {B : Type j} (e : A ≃ B) where
