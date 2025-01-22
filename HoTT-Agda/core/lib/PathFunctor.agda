@@ -324,6 +324,12 @@ module _ {i j} {A : Type i} {B : Type j} where
       []
   ap-transp-idp f p@idp = =ₛ-in idp
 
+module _ {i j} {A : Type i} {B : A → Type j} where
+
+  transp-coe : {x y : A} (p : x == y) (u : B x) →
+    transport B p u == coe (ap B p) u
+  transp-coe idp _ = idp
+
 {- for functions with two arguments -}
 module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (f : A → B → C) where
 

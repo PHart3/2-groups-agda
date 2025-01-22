@@ -28,6 +28,9 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
       (loop-comp' (2Grp-1Ty-lmap {{η}}))
       (loop-assoc' (2Grp-1Ty-lmap {{η}}))
 
+  Codes-fst : K₂ η → Type i
+  Codes-fst = fst ∘ Codes
+
   Codes-β-aux :
     WkMagNatIso
       (grphom-forg (Loop2Grp-map (Codes , idp)) ∘2Mw K₂-loophom {{η}})
@@ -53,3 +56,21 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
     natiso-tri-∘
       {μ₁ = K₂-loophom {{η}}} {ω₁ = grphom-forg (Loop2Grp-map (Codes , idp))} {ω₂ = fst=-2map {{η}}}
       Codes-β-aux (fst=-tri {{η}})
+
+  encode : (z : K₂ η) → base == z → Codes-fst z
+  encode _ p = transport Codes-fst p id
+
+  encode-loop : encode base ∘ loop ∼ idf G
+  encode-loop x =
+    transport Codes-fst (loop x) id
+      =⟨ transp-coe {B = Codes-fst} (loop x) id ⟩
+    coe (ap Codes-fst (loop x)) id
+      =⟨ ap (λ q → coe q id) (ap-∘ fst Codes (loop x)) ⟩
+    coe (ap fst (ap Codes (loop x))) id
+      =⟨ ap (λ q → coe q id) (WkMagNatIso.θ Codes-β x) ⟩
+    coe ((ua ∘ WkMagHom.map mu-≃-map) x) id
+      =⟨ coe-β (WkMagHom.map mu-≃-map x) id ⟩
+    mu id x
+      =⟨ lam x ⟩
+    x =∎
+  
