@@ -60,16 +60,22 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
   encode : (z : K₂ η) → base == z → Codes-fst z
   encode _ p = transport Codes-fst p id
 
+  transp-codes : (x y : G) → transport Codes-fst (loop x) y =-= mu y x
+  transp-codes x y = 
+    transport Codes-fst (loop x) y
+      =⟪ transp-coe {B = Codes-fst} (loop x) y ⟫
+    coe (ap Codes-fst (loop x)) y
+      =⟪ ap (λ q → coe q y) (ap-∘ fst Codes (loop x)) ⟫
+    coe (ap fst (ap Codes (loop x))) y
+      =⟪ ap (λ q → coe q y) (WkMagNatIso.θ Codes-β x) ⟫
+    coe ((ua ∘ WkMagHom.map mu-≃-map) x) y
+      =⟪ coe-β (WkMagHom.map mu-≃-map x) y ⟫
+    mu y x ∎∎
+
   encode-loop : encode base ∘ loop ∼ idf G
   encode-loop x =
     transport Codes-fst (loop x) id
-      =⟨ transp-coe {B = Codes-fst} (loop x) id ⟩
-    coe (ap Codes-fst (loop x)) id
-      =⟨ ap (λ q → coe q id) (ap-∘ fst Codes (loop x)) ⟩
-    coe (ap fst (ap Codes (loop x))) id
-      =⟨ ap (λ q → coe q id) (WkMagNatIso.θ Codes-β x) ⟩
-    coe ((ua ∘ WkMagHom.map mu-≃-map) x) id
-      =⟨ coe-β (WkMagHom.map mu-≃-map x) id ⟩
+      =⟨ ↯ (transp-codes x id) ⟩
     mu id x
       =⟨ lam x ⟩
     x =∎
