@@ -31,3 +31,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
     loop y ∙ loop x
       =⟪ ! (transp-cst=idf (loop x) (loop y)) ⟫
     transport (λ z → base == z) (loop x) (loop y) ∎∎
+
+  module _ (x y z : G) where
+
+    
