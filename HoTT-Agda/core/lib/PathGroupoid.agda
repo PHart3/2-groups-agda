@@ -225,6 +225,10 @@ module _ {i} {A : Type i} where
     → p == r → ! p ∙ q ∙' p == ! r ∙ q ∙' r
   ∙-∙'-= q idp = idp
 
+  bi-rot : {x y z w : A} {p : y == x} {q : y == z} {s : z == w} {r : x == w}
+    → r == ! p ∙ q ∙ s → s == ! q ∙ p ∙ r
+  bi-rot {p = idp} {q = idp} {s = idp} idp = idp
+
   tri-exch : {x y z : A} {p : y == x} {q : y == z} {r : x == z}
     → ! p ∙ q == r → p == q ∙ ! r
   tri-exch {p = idp} {q = idp} {r} e = ap ! e

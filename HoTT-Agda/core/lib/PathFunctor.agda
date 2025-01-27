@@ -851,6 +851,12 @@ module _ {i₀ i₁ i₂ j} {A₀ : Type i₀} {A₁ : Type i₁} {A₂ : Type i
     → (x₀ == y₀) → (x₁ == y₁) → (x₂ == y₂) → f x₀ x₁ x₂ == f y₀ y₁ y₂
   ap3 idp idp idp = idp
 
+module _ {i₀ i₁ j} {A₀ : Type i₀} {A₁ : Type i₁} (B : A₀ → A₁ → Type j) where
+
+  transp2 : {x₀ y₀ : A₀} {x₁ y₁ : A₁}
+    → (x₀ == y₀) → (x₁ == y₁) → B x₀ x₁ → B y₀ y₁
+  transp2 idp idp x = x
+
 module _ {i₀ i₁ i₂ j} {A₀ : Type i₀} {A₁ : Type i₁} {A₂ : Type i₂}
   (B : A₀ → A₁ → A₂ → Type j) where
 

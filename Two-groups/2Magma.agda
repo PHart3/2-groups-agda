@@ -96,6 +96,10 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : 
       θ : map-wk μ₁ ∼ map-wk μ₂
       θ-comp : (x y : G₁) →
         map-comp-wk μ₂ x y == ! (ap2 mu (θ x) (θ y)) ∙ map-comp-wk μ₁ x y ∙ θ (mu x y)
+    θ-comp-rot : (x y : G₁) →
+      θ (mu x y) ◃∎ =ₛ ! (map-comp-wk μ₁ x y) ◃∙ ap2 mu (θ x) (θ y) ◃∙ map-comp-wk μ₂ x y ◃∎
+    θ-comp-rot x y = =ₛ-in (bi-rot {p = (ap2 mu (θ x) (θ y))} (θ-comp x y))
+      
   open WkMagNatIso
 
   natiso-id : (μ : WkMagWkHom) → WkMagNatIso μ μ

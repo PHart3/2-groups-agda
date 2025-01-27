@@ -47,6 +47,16 @@ module _ {i j k l} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k} {G₄ : Type 
 
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : WkMag G₂}} where
 
+  !ʷ : {μ₁ μ₂ : WkMagWkHom {{η₁}} {{η₂}}} (γ : WkMagNatIso μ₁ μ₂) → WkMagNatIso μ₂ μ₁
+  θ (!ʷ γ) x = ! (θ γ x)
+  θ-comp (!ʷ γ) x y = aux {p₁ = θ γ x} (θ-comp γ x y)
+    where
+      aux : {x₁ x₂ x₃ x₄ x₅ x₆ : G₂} {p₁ : x₁ == x₂} {p₂ : x₃ == x₄}
+        {p₃ : mu x₁ x₃ == x₅} {p₄ : x₅ == x₆} {p₀ : mu x₂ x₄ == x₆}
+        → p₀ == ! (ap2 mu p₁ p₂) ∙ p₃ ∙ p₄
+        → p₃ == ! (ap2 mu (! p₁) (! p₂)) ∙ p₀ ∙ ! p₄
+      aux {p₁ = idp} {p₂ = idp} {p₃ = idp} {p₄ = idp} idp = idp
+
   unit-wkmaghom : (μ : WkMagWkHom {{η₁}} {{η₂}}) → WkMagNatIso (idf2Mw {{η₂}} ∘2Mw μ) μ
   θ (unit-wkmaghom μ) x = idp
   θ-comp (unit-wkmaghom μ) x y =

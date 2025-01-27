@@ -45,12 +45,16 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
 
   codes-β :
     WkMagNatIso
-      (fst=-2map {{η}} ∘2Mw grphom-forg (Loop2Grp-map (codes , idp)) ∘2Mw K₂-loophom {{η}})
+      ((fst=-2map {{η}} ∘2Mw grphom-forg (Loop2Grp-map (codes , idp))) ∘2Mw K₂-loophom {{η}})
       (maghom-forg (ua-2MagMap G ∘2M mu-≃-map))
   codes-β =
-    natiso-tri-∘
-      {μ₁ = K₂-loophom {{η}}} {ω₁ = grphom-forg (Loop2Grp-map (codes , idp))} {ω₂ = fst=-2map {{η}}}
-      codes-β-aux (fst=-tri {{η}})
+    (fst=-2map {{η}} ∘2Mw grphom-forg (Loop2Grp-map (codes , idp))) ∘2Mw K₂-loophom {{η}}
+      =⟦ !ʷ (assoc-wkmaghom (fst=-2map {{η}}) (grphom-forg (Loop2Grp-map (codes , idp))) (K₂-loophom {{η}})) ⟧
+    fst=-2map {{η}} ∘2Mw grphom-forg (Loop2Grp-map (codes , idp)) ∘2Mw K₂-loophom {{η}}
+      =⟦ natiso-tri-∘
+           {μ₁ = K₂-loophom {{η}}} {ω₁ = grphom-forg (Loop2Grp-map (codes , idp))} {ω₂ = fst=-2map {{η}}}
+           codes-β-aux (fst=-tri {{η}}) ⟧
+    maghom-forg (ua-2MagMap G ∘2M mu-≃-map) ∎ₙ
 
   encode : (z : K₂ η) → base == z → codes-fst z
   encode _ p = transport codes-fst p id

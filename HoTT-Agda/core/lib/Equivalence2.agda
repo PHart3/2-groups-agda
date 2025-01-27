@@ -134,6 +134,21 @@ is-equiv-prop : ∀ {i j} {A : Type i} {B : Type j}
   → SubtypeProp {A = A → B} {lmax i j}
 is-equiv-prop = subtypeprop is-equiv {{λ {f} → is-equiv-is-prop}}
 
+equiv-induction-bi : ∀ {i j}
+  (P : {A B C : Type i} (f₁ : A ≃ B) (f₂ : B ≃ C) → Type j)
+  (d : (A : Type i) → P (ide A) (ide A))
+  → {A B C : Type i} (f₁ : A ≃ B) (f₂ : B ≃ C)
+  → P f₁ f₂
+equiv-induction-bi {i} {j} P d f₁ f₂ =
+  transp2 P (coe-equiv-β f₁) (coe-equiv-β f₂)
+    (aux P d (ua f₁) (ua f₂))
+  where
+    aux : (P : {A B C : Type i} (f₁ : A ≃ B) (f₂ : B ≃ C) → Type j)
+      (d : (A : Type i) → P (ide A) (ide A))
+      {A B C : Type i} (p₁ : A == B) (p₂ : B == C)
+      → P (coe-equiv p₁) (coe-equiv p₂)
+    aux P d idp idp = d _
+
 equiv-induction-tri : ∀ {i j}
   (P : {A B C D : Type i} (f₁ : A ≃ B) (f₂ : B ≃ C) (f₃ : C ≃ D) → Type j)
   (d : (A : Type i) → P (ide A) (ide A) (ide A))
@@ -180,6 +195,101 @@ ua-∘e-coh e₂ {e₁ = e₁} idp = =ₛ-in (! (∙-unit-r (ua-∘e e₁ e₂))
 postulate  -- rest of univalence axiom
   ua-adj : ∀ {i} {A B : Type i} (p : A == B) → ap coe-equiv (ua-η p) == coe-equiv-β (coe-equiv p)
 
+coe-β-∘ : ∀ {i} {A B C : Type i} (h₁ : A ≃ C) (h₂ : C ≃ B)
+  {e : A ≃ B} (H : e == h₂ ∘e h₁) (x : A)
+  →
+  coe-β e x ◃∎
+    =ₛ
+  app= (ap coe (ap ua H)) x ◃∙
+  app= (ap coe (ua-∘e h₁ h₂)) x ◃∙
+  coe-∙ (ua h₁) (ua h₂) x ◃∙
+  ap (coe (ua h₂)) (coe-β h₁ x) ◃∙
+  coe-β h₂ (–> h₁ x) ◃∙
+  ! (app= (ap –> H) x) ◃∎
+coe-β-∘ h₁ h₂ idp = 
+  equiv-induction-bi
+    (λ k₁ k₂ → (x : _) → 
+      coe-β (k₂ ∘e k₁) x ◃∎
+        =ₛ
+      idp ◃∙
+      app= (ap coe (ua-∘e k₁ k₂)) x ◃∙
+      coe-∙ (ua k₁) (ua k₂) x ◃∙
+      ap (coe (ua k₂)) (coe-β k₁ x) ◃∙
+      coe-β k₂ (–> k₁ x) ◃∙
+      idp ◃∎)
+       (λ A x → !ₛ (aux x)) h₁ h₂
+  where
+    aux : ∀ {i} {A : Type i} (x : A) →
+      idp ◃∙
+      app= (ap coe (ua-∘e (ide A) (ide A))) x ◃∙
+      coe-∙ (ua (ide A)) (ua (ide A)) x ◃∙
+      ap (coe (ua (ide A))) (coe-β (ide A) x) ◃∙
+      coe-β (ide A) x ◃∙
+      idp ◃∎
+        =ₛ
+      coe-β (ide A ∘e ide A) x ◃∎
+    aux {A = A} x = 
+      idp ◃∙
+      app= (ap coe (ua-∘e (ide A) (ide A))) x ◃∙
+      coe-∙ (ua (ide A)) (ua (ide A)) x ◃∙
+      ap (coe (ua (ide A))) (coe-β (ide A) x) ◃∙
+      coe-β (ide A) x ◃∙
+      idp ◃∎
+        =ₛ₁⟨ 0 & 2 & ap (λ p → app= (ap coe p) x) (ua-∘e-β (ide A)) ⟩
+      app= (ap coe
+        (ap ua (∘e-unit-r (ide A)) ∙
+        ap (λ w → w ∙ ua (ide A)) (! (ua-η idp)))) x ◃∙
+      coe-∙ (ua (ide A)) (ua (ide A)) x ◃∙
+      ap (coe (ua (ide A))) (coe-β (ide A) x) ◃∙
+      coe-β (ide A) x ◃∙
+      idp ◃∎
+        =ₛ₁⟨ 2 & 1 & ap (ap (coe (ua (ide A)))) (ap (ap (λ e → –> e x)) (! (ua-adj idp))) ⟩
+      app= (ap coe
+        (ap ua (∘e-unit-r (ide A)) ∙
+        ap (λ w → w ∙ ua (ide A)) (! (ua-η idp)))) x ◃∙
+      coe-∙ (ua (ide A)) (ua (ide A)) x ◃∙
+      ap (coe (ua (ide A))) (ap (λ e → –> e x) (ap coe-equiv (ua-η idp))) ◃∙
+      coe-β (ide A) x ◃∙
+      idp ◃∎
+        =ₛ₁⟨ 3 & 2 & ∙-unit-r (coe-β (ide A) x) ⟩
+      app= (ap coe
+        (ap ua (∘e-unit-r (ide A)) ∙
+        ap (λ w → w ∙ ua (ide A)) (! (ua-η idp)))) x ◃∙
+      coe-∙ (ua (ide A)) (ua (ide A)) x ◃∙
+      ap (coe (ua (ide A))) (ap (λ e → –> e x) (ap coe-equiv (ua-η idp))) ◃∙
+      coe-β (ide A) x ◃∎
+        =ₛ⟨ =ₛ-in (aux-path (∘e-unit-r (ide A)) (coe-β (ide A) x)) ⟩
+      ap (λ z → coe (ua z) x) (∘e-unit-r (ide A)) ◃∙
+      coe-β (ide A) x ◃∙
+      idp ◃∎
+        =ₛ₁⟨ 2 & 1 &
+          ap ! (! (ap-∘ (λ k → k x) fst (∘e-unit-r (ide A)) ∙
+            ap (ap (λ k → k x)) (fst=-β idp _))) ⟩
+      ap (λ z → coe (ua z) x) (∘e-unit-r (ide A)) ◃∙
+      coe-β (ide A) x ◃∙
+      ! (ap (λ z → –> z x) (∘e-unit-r (ide A))) ◃∎
+        =ₛ⟨ !ₛ (apCommSq2◃' (λ z → coe-β z x) (∘e-unit-r (ide A)) ) ⟩
+      coe-β (ide A ∘e ide A) x ◃∎ ∎ₛ
+      where
+        aux-path : {a : A} {e : A ≃ A} (p₁ : e == ide A) (p₂ : _ == a) → 
+          app= (ap coe (ap ua p₁ ∙
+            ap (λ w → w ∙ ua (ide A)) (! (ua-η idp)))) x ∙
+          coe-∙ (ua (ide A)) (ua (ide A)) x ∙
+          ap (coe (ua (ide A))) (ap (λ e → –> e x) (ap coe-equiv (ua-η idp))) ∙
+          p₂
+            ==
+          ap (λ z → coe (ua z) x) p₁ ∙
+          p₂ ∙ idp
+        aux-path idp idp = aux-path-aux (ua-η idp)
+          where
+            aux-path-aux : {r : A == A} (p : r == idp) → 
+              app= (ap coe (ap (λ w → w ∙ r) (! p))) x ∙
+              coe-∙ r r x ∙
+              ap (coe r) (ap (λ e → –> e x) (ap coe-equiv p)) ∙ idp
+                ==
+              idp
+            aux-path-aux idp = idp
+          
 ap-ua-∘e : ∀ {i} {C A B : Type i} (e₁ : A ≃ B) (e₂ : B ≃ C)
   →
   ap coe-equiv (ua-∘e e₁ e₂) ◃∎
