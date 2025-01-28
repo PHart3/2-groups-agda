@@ -34,13 +34,14 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         =⟪ ! (transp-cst=idf (loop x) (loop y)) ⟫
       transport (λ z → base == z) (loop x) (loop y) ∎∎
 
-    codes-β-mu :
-      θ codes-β (mu x y) ◃∎
-        =ₛ
-      ! ((∙-ap fst (ap codes (loop x)) (ap codes (loop y)) ∙
-        ap (ap fst) (∙-Ω-fmap (codes , idp) (loop x) (loop y))) ∙
-        ap (ap fst ∘ ap codes) (loop-comp x y)) ◃∙
-      ap2 _∙_ (θ codes-β x) (θ codes-β y) ◃∙
-      (! (ua-∘e ((λ z → mu z x) , mu-post-iso x) ((λ z → mu z y) , mu-post-iso y)) ∙
-      ap ua (pair= (λ= (λ v → ! (al v x y))) prop-has-all-paths-↓)) ◃∎
-    codes-β-mu = θ-comp-rot codes-β x y
+    abstract
+      codes-β-mu :
+        θ codes-β (mu x y) ◃∎
+          =ₛ
+        ! ((∙-ap fst (ap codes (loop x)) (ap codes (loop y)) ∙
+          ap (ap fst) (∙-Ω-fmap (codes , idp) (loop x) (loop y))) ∙
+          ap (ap fst ∘ ap codes) (loop-comp x y)) ◃∙
+        ap2 _∙_ (θ codes-β x) (θ codes-β y) ◃∙
+        (! (ua-∘e ((λ z → mu z x) , mu-post-iso x) ((λ z → mu z y) , mu-post-iso y)) ∙
+        ap ua (pair= (λ= (λ v → ! (al v x y))) prop-has-all-paths-↓)) ◃∎
+      codes-β-mu = θ-comp-rot codes-β x y

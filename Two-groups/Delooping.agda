@@ -37,6 +37,27 @@ module _ {{η : CohGrp G}} where
       loop-comp (mu x y) z ∙
       ! (ap loop (al x y z))
 
+  loop-assoc-rot : (x y z : G) →
+    ! (loop-comp (mu x y) z) ◃∙
+    ! (ap (λ p → p ∙ loop z) (loop-comp x y)) ◃∙
+    ∙-assoc (loop x) (loop y) (loop z) ◃∙
+    ap (λ p → loop x ∙ p) (loop-comp y z) ◃∎
+      =ₛ
+    ap loop (! (al x y z)) ◃∙
+    ! (loop-comp x (mu y z)) ◃∎
+  loop-assoc-rot x y z =
+    ! (loop-comp (mu x y) z) ◃∙
+    ! (ap (λ p → p ∙ loop z) (loop-comp x y)) ◃∙
+    ∙-assoc (loop x) (loop y) (loop z) ◃∙
+    ap (λ p → loop x ∙ p) (loop-comp y z) ◃∎
+      =ₛ⟨ post-rotate-in {r = ! (ap loop (al x y z)) ◃∎}
+            (pre-rotate'-in (pre-rotate'-in (=ₛ-in (loop-assoc x y z)))) ⟩
+    ! (ap loop (al x y z)) ◃∙
+    ! (loop-comp x (mu y z)) ◃∎
+      =ₛ₁⟨ 0 & 1 & !-ap loop (al x y z) ⟩
+    ap loop (! (al x y z)) ◃∙
+    ! (loop-comp x (mu y z)) ◃∎ ∎ₛ
+
   K₂-loophom : WkMagWkHom {{mag η}} {{mag (Loop2Grp base)}}
   map-wk K₂-loophom = loop
   map-comp-wk K₂-loophom = loop-comp
