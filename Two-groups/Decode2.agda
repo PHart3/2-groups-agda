@@ -97,14 +97,49 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         ap loop (! (app= (ap coe (ap ua (pair= (λ= (λ v → al v x y)) prop-has-all-paths-↓))) z)) ◃∎
       code-β-mu-ap2 z = ap-seq-=ₛ loop (code-β-mu-ap z)
 
-      pref-comp : (z : G) → 
-        ap loop (↯ (transp-codes y (transport codes-fst (loop x) z))) ◃∙
-        ! (loop-comp (transport codes-fst (loop x) z) y) ◃∎
-          =ₛ
-        transport
-          (λ v → loop (transport codes-fst (loop y) v) == (loop v) ∙ loop y)
-          (! (↯ (transp-codes x z)))
-          (ap loop (↯ (transp-codes y (mu z x))) ∙ ! (loop-comp (mu z x) y)) ◃∎
-      pref-comp z =  =ₛ-in $
-        ! (apd-tr (λ v → ap loop (↯ (transp-codes y v)) ∙ ! (loop-comp v y))
-          (! (↯ (transp-codes x z))))
+      abstract
+        loop-comp-decode5 : (z : G) →
+          transport
+              (λ v → loop (transport codes-fst (loop y) v) == loop v ∙ loop y)
+              (! (↯ (transp-codes x z)))
+              (ap loop (↯ (transp-codes y (mu z x))) ∙ ! (loop-comp (mu z x) y)) ◃∙
+          ! (transp-cst=idf (loop y) (loop (transport codes-fst (loop x) z))) ◃∙
+          ap (transport (λ b → base == b) (loop y)) (ap loop (↯ (transp-codes x z))) ◃∙
+          ap (transport (λ b → base == b) (loop y)) (! (loop-comp z x)) ◃∙
+          ap (transport (λ b → base == b) (loop y)) (! (transp-cst=idf (loop x) (loop z))) ◃∙
+          ! (transp-∙ (loop x) (loop y) (loop z)) ◃∙
+          ap (λ p → transport (λ b → base == b) p (loop z)) (loop-comp x y) ◃∎
+            =ₛ
+          ap loop (↯ (transp-codes y (transport codes-fst (loop x) z))) ◃∙
+          ! (loop-comp (transport codes-fst (loop x) z) y) ◃∙
+          ! (transp-cst=idf (loop y) (loop (transport codes-fst (loop x) z))) ◃∙
+          ap (transport (λ b → base == b) (loop y)) (ap loop (↯ (transp-codes x z))) ◃∙
+          ap (transport (λ b → base == b) (loop y)) (! (loop-comp z x)) ◃∙
+          ap (transport (λ b → base == b) (loop y)) (! (transp-cst=idf (loop x) (loop z))) ◃∙
+          ! (transp-∙ (loop x) (loop y) (loop z)) ◃∙
+          ap (λ p → transport (λ b → base == b) p (loop z)) (loop-comp x y) ◃∎
+        loop-comp-decode5 z = 
+          transport
+            (λ v → loop (transport codes-fst (loop y) v) == loop v ∙ loop y)
+            (! (↯ (transp-codes x z)))
+            (ap loop (↯ (transp-codes y (mu z x))) ∙ ! (loop-comp (mu z x) y)) ◃∙
+          ! (transp-cst=idf (loop y) (loop (transport codes-fst (loop x) z))) ◃∙
+          ap (transport (λ b → base == b) (loop y)) (ap loop (↯ (transp-codes x z))) ◃∙
+          ap (transport (λ b → base == b) (loop y)) (! (loop-comp z x)) ◃∙
+          ap (transport (λ b → base == b) (loop y)) (! (transp-cst=idf (loop x) (loop z))) ◃∙
+          ! (transp-∙ (loop x) (loop y) (loop z)) ◃∙
+          ap (λ p → transport (λ b → base == b) p (loop z)) (loop-comp x y) ◃∎
+            =ₑ⟨ 0 & 1 &
+              (ap loop (↯ (transp-codes y (transport codes-fst (loop x) z))) ◃∙
+              ! (loop-comp (transport codes-fst (loop x) z) y) ◃∎) %
+              =ₛ-in $
+                apd-tr (λ v → ap loop (↯ (transp-codes y v)) ∙ ! (loop-comp v y))
+                  (! (↯ (transp-codes x z))) ⟩
+          ap loop (↯ (transp-codes y (transport codes-fst (loop x) z))) ◃∙
+          ! (loop-comp (transport codes-fst (loop x) z) y) ◃∙
+          ! (transp-cst=idf (loop y) (loop (transport codes-fst (loop x) z))) ◃∙
+          ap (transport (λ b → base == b) (loop y)) (ap loop (↯ (transp-codes x z))) ◃∙
+          ap (transport (λ b → base == b) (loop y)) (! (loop-comp z x)) ◃∙
+          ap (transport (λ b → base == b) (loop y)) (! (transp-cst=idf (loop x) (loop z))) ◃∙
+          ! (transp-∙ (loop x) (loop y) (loop z)) ◃∙
+          ap (λ p → transport (λ b → base == b) p (loop z)) (loop-comp x y) ◃∎ ∎ₛ
