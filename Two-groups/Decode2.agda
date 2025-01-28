@@ -98,7 +98,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
       code-β-mu-ap2 z = ap-seq-=ₛ loop (code-β-mu-ap z)
 
       abstract
-        loop-comp-decode5 : (z : G) →
+        loop-comp-decode6 : (z : G) →
           transport
               (λ v → loop (transport codes-fst (loop y) v) == loop v ∙ loop y)
               (! (↯ (transp-codes x z)))
@@ -118,7 +118,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
           ap (transport (λ b → base == b) (loop y)) (! (transp-cst=idf (loop x) (loop z))) ◃∙
           ! (transp-∙ (loop x) (loop y) (loop z)) ◃∙
           ap (λ p → transport (λ b → base == b) p (loop z)) (loop-comp x y) ◃∎
-        loop-comp-decode5 z = 
+        loop-comp-decode6 z = 
           transport
             (λ v → loop (transport codes-fst (loop y) v) == loop v ∙ loop y)
             (! (↯ (transp-codes x z)))
