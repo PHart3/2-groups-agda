@@ -9,7 +9,7 @@ open import Codes
 open import Decode-aux1a
 open import Decode-aux1b
 
-module Decode-aux1 where
+module Decode-aux2 where
 
 module _ {i} {G : Type i} {{η : CohGrp G}} where
 
