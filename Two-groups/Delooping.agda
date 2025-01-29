@@ -37,6 +37,13 @@ module _ {{η : CohGrp G}} where
       loop-comp (mu x y) z ∙
       ! (ap loop (al x y z))
 
+  abstract
+    loop-ident : loop id == idp
+    loop-ident = ! (path-canc-l (loop id) (loop id) aux) 
+      where
+        aux : loop id == loop id ∙ loop id
+        aux = ! (loop-comp id id ∙ ap loop (lam id))
+        
   loop-assoc-rot : (x y z : G) →
     ! (loop-comp (mu x y) z) ◃∙
     ! (ap (λ p → p ∙ loop z) (loop-comp x y)) ◃∙

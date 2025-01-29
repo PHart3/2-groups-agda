@@ -325,6 +325,9 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
 
 module _ {i} {A : Type i} {x y : A} where
 
+  path-canc-l : (p : x == y) (q : y == y) → p == p ∙ q → idp == q
+  path-canc-l idp q e = e
+
   left-canc : {z : A} (p : x == y) {r : x =-= z} → r =ₛ p ◃∙ ! p ◃∙ ↯ r ◃∎
   left-canc idp = =ₛ-in idp
 
