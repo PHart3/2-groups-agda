@@ -1,20 +1,14 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=4 #-}
+{-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
-open import lib.NType2
-open import lib.Equivalence2 hiding (linv; rinv)
 open import lib.types.LoopSpace
-open import 2Magma
 open import 2Grp
-open import Hmtpy2Grp
 open import Codes
 open import Decode12
 
 module Decode13 where
 
 module _ {i} {G : Type i} {{η : CohGrp G}} where
-
-  open CohGrp {{...}}
 
   open import Delooping G
 
@@ -145,7 +139,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
        ap (transport (λ b → base == b) p₂) (! (transp-cst=idf p₁ p₃)) ◃∙
        ! (transp-∙ p₁ p₂ p₃) ◃∙
        ap (λ p → transport (λ b → base == b) p p₃) q₁ ◃∎
-    long-aux e₁ e₂ α₁ α₂ β₁ idp idp q₂ q₃ = =ₛ-in {!!}
+    long-aux e₁ e₂ α₁ α₂ β₁ idp idp q₂ q₃ = =ₛ-in (long-aux2 e₁ e₂ α₁ α₂ β₁ q₂ q₃)
 
 {-
   p₁ = loop x

@@ -1,9 +1,6 @@
 {-# OPTIONS --without-K --rewriting --lossy-unification #-}
 
 open import lib.Basics
-open import lib.NType2
-open import lib.Equivalence2 hiding (linv; rinv)
-open import 2Magma
 open import 2Grp
 open import Codes
 open import Decode11
@@ -29,8 +26,6 @@ module _ {i} {A : Type i} where
       aux idp = idp
 
 module _ {i} {G : Type i} {{η : CohGrp G}} where
-
-  open CohGrp {{...}}
 
   open import Delooping G
 
@@ -85,7 +80,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         ap (transport (_==_ base) p₂)
           (ap loop (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp)) ◃∙
         ap (transport (_==_ base) p₂) (! q₃) ◃∙
-        transp-cst=idf p₂ t ◃∎
+        transp-cst=idf p₂ (p₃ ∙ p₁) ◃∎
           =ₛ⟨ 4 & 1 & transp-cst-∙ p₁ p₂ p₃ ⟩
         transport (λ v → loop (transport codes-fst p₂ v) == loop v ∙ p₂)
           (! (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp))
@@ -114,16 +109,16 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         (∙-assoc p₃ p₁ p₂ ∙
         ! (transp-cst=idf (p₁ ∙ p₂) p₃)) ◃∎
           =ₛ
-        (transport (λ v → loop (transport codes-fst p₂ v) == loop v ∙ p₂)
+        transport (λ v → loop (transport codes-fst p₂ v) == loop v ∙ p₂)
           (! (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp))
           (ap loop (transp-coe p₂ (coe (ap fst (ap codes p₁)) z) ∙
             ap (λ q → coe q (coe (ap fst (ap codes p₁)) z))
               (ap-∘ fst codes p₂) ∙ idp) ∙
-           ! q₂) ∙
-        ! (transp-cst=idf p₂ (loop (transport codes-fst p₁ z))) ∙
+           ! q₂) ◃∙
+        ! (transp-cst=idf p₂ (loop (transport codes-fst p₁ z))) ◃∙
         ap (transport (_==_ base) p₂)
-          (ap loop (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp)) ∙
-        ap (transport (_==_ base) p₂) (! q₃)) ◃∙
+          (ap loop (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp)) ◃∙
+        ap (transport (_==_ base) p₂) (! q₃) ◃∙
         (ap (transport (_==_ base) p₂) (! (transp-cst=idf p₁ p₃)) ∙
         ! (transp-∙ p₁ p₂ p₃) ∙ idp) ◃∎
       long-aux5 = post-rotate-out long-aux6

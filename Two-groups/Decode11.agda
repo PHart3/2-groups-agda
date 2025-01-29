@@ -1,9 +1,6 @@
 {-# OPTIONS --without-K --rewriting --lossy-unification #-}
 
 open import lib.Basics
-open import lib.NType2
-open import lib.Equivalence2 hiding (linv; rinv)
-open import 2Magma
 open import 2Grp
 open import Codes
 open import Decode-aux0
@@ -13,8 +10,6 @@ open import Decode-aux3
 module Decode11 where
 
 module _ {i} {G : Type i} {{η : CohGrp G}} where
-
-  open CohGrp {{...}}
 
   open import Delooping G
 
@@ -39,8 +34,11 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
       ! q₂ ◃∙
       idp ◃∎
         =ₛ
-      ap (λ v → loop v ∙ p₂)
-        (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp) ◃∎
+      ! (transp-cst=idf p₂ (loop (transport codes-fst p₁ z))) ◃∙
+      ap (transport (_==_ base) p₂)
+        (ap loop (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp)) ◃∙
+      idp ◃∙
+      transp-cst=idf p₂ (loop (coe (ap fst (ap codes p₁)) z)) ◃∎
     long-aux8 = 
       ! (transport (λ v → loop (transport codes-fst p₂ v) == loop v ∙ p₂)
         (! (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp))

@@ -1,18 +1,13 @@
-{-# OPTIONS --without-K --rewriting --lossy-unification #-}
+{-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
-open import lib.NType2
-open import lib.Equivalence2 hiding (linv; rinv)
-open import 2Magma
 open import 2Grp
 open import Codes
 
 module Decode-aux1a where
 
 module _ {i} {G : Type i} {{η : CohGrp G}} where
-
-  open CohGrp {{...}}
-
+  
   open import Delooping G
 
   module Long-aux8-aux-aux2a (z : G) (p₁ : base == base) where
