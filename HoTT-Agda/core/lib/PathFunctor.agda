@@ -600,6 +600,12 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : 
   apCommSq-cmp : {x y : A} (p : x == y) → ap v (ap f p) == H x ∙ ap u (ap g p) ∙ ! (H y)
   apCommSq-cmp {x = x} idp = ! (!-inv-r (H x)) 
 
+module _ {i j} {A : Type i} {B : Type j} {z₁ z₂ : B} (f : A → z₁ == z₂) where
+
+  ap-∙-unit-r-nat : {x y : A} (p : x == y)
+    → ap (λ v → f v ∙ idp) p ◃∎ =ₛ ∙-unit-r (f x) ◃∙ ap f p ◃∙ ! (∙-unit-r (f y)) ◃∎
+  ap-∙-unit-r-nat {x} idp = =ₛ-in (! (!-inv-r (∙-unit-r (f x))))
+
 module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (f : A → B → C) where
 
   ap-comm : {a₀ a₁ : A} (p : a₀ == a₁) {b₀ b₁ : B} (q : b₀ == b₁)
@@ -703,6 +709,10 @@ module _ {i j} {A : Type i} {B : Type j} {f : A → B} where
   transp-pth-s : {x y : A} {g : A → B} (p : x == y) (q : f x == g x)
     → transport (λ x → f x == g x) p q ◃∎ =ₛ (! (ap f p)) ◃∙ q ◃∙ (ap g p) ◃∎
   transp-pth-s idp q = =ₛ-in (! (∙-unit-r q))
+
+  transp-pth!-!◃ : {x y : A} {g : A → B} (p : x == y) (q : f y == g y)
+    → ! (transport (λ x → f x == g x) (! p) q) ◃∎ =ₛ ap g p ◃∙ ! q ◃∙ ! (ap f p) ◃∎
+  transp-pth!-!◃ idp q = =ₛ-in (! (∙-unit-r (! q)))
 
   transp-path-cmp-idf : (g : B → A) {x y : A} (p : x == y) (q : g (f x) == x)
     → transport (λ z → g (f z) == z) p q ◃∎ =ₛ ! (ap g (ap f p)) ◃∙ q ◃∙ p ◃∎
