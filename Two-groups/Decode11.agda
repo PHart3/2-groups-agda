@@ -7,7 +7,7 @@ open import 2Magma
 open import 2Grp
 open import Codes
 open import Decode-aux0
-open import Decode-aux1
+open import Decode-aux2
 
 module Decode11 where
 
