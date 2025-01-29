@@ -35,10 +35,10 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
             !ᶜ (apd-po (λ x → po-ext (loop x) (loop-decode x)) (al x y z)) ))
 
   decode-encode : (z : K₂ η) (p : base == z) → decode z (encode z p) == p
-  decode-encode z idp = ?
+  decode-encode z idp = ? -- loop id == idp
 
   loop-encode : loop ∘ encode base ∼ idf (base == base)
   loop-encode = decode-encode base
 
   loop-equiv : is-equiv loop
-  loop-equiv is-eq loop (encode base) loop-encode encode-loop
+  loop-equiv = is-eq loop (encode base) loop-encode encode-loop
