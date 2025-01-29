@@ -3,7 +3,6 @@
 open import lib.Basics
 open import lib.NType2
 open import lib.Equivalence2 hiding (linv; rinv)
-open import lib.types.LoopSpace
 open import 2Magma
 open import 2Grp
 open import Codes

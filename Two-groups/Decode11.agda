@@ -3,10 +3,11 @@
 open import lib.Basics
 open import lib.NType2
 open import lib.Equivalence2 hiding (linv; rinv)
-open import lib.types.LoopSpace
 open import 2Magma
 open import 2Grp
 open import Codes
+open import Decode-aux0
+open import Decode-aux1
 
 module Decode11 where
 
@@ -15,56 +16,6 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
   open CohGrp {{...}}
 
   open import Delooping G
-
-  long-aux8-aux-aux1 : (z : G) {b : K₂ η} (p₁ : base == b) (p₂ : b == base) →
-    ! (ap loop (transp-coe p₂ (coe (ap fst (ap codes p₁)) z) ∙
-      ap (λ q → coe q (coe (ap fst (ap codes p₁)) z))
-        (ap-∘ fst codes p₂) ∙ idp)) ∙
-    ! (ap (λ v → loop (transport codes-fst p₂ v))
-      (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp)) ∙
-    ! (ap loop (transp-∙ p₁ p₂ z)) ∙
-    (ap loop (transp-coe (p₁ ∙ p₂) z) ∙
-    ap loop (ap (λ q → coe q z) (ap-∘ fst codes (p₁ ∙ p₂)))) ∙
-    ap loop (ap (λ q → coe q z)
-      (! ((∙-ap fst (ap codes p₁) (ap codes p₂) ∙
-        ap (ap fst) (∙-ap codes p₁ p₂)) ∙ idp))) ∙
-    ap loop (coe-∙ (ap fst (ap codes p₁)) (ap fst (ap codes p₂)) z)
-      ==
-    idp
-  long-aux8-aux-aux1 z idp p₂ = aux (transp-coe p₂ z) (ap (λ q → coe q z) (ap-∘ fst codes p₂))
-    where
-      aux : {x₁ x₂ x₃ : G} (c₁ : x₁ == x₂) (c₂ : x₂ == x₃) →
-        ! (ap loop (c₁ ∙ c₂ ∙ idp)) ∙ (ap loop c₁ ∙ ap loop c₂) ∙ idp == idp
-      aux idp idp = idp
-
-  long-aux8-aux-aux2 : (z : G) {b : K₂ η} (p₁ : base == base) (p₂ : base == b) →
-    ap (λ v → loop v ∙ p₂)
-      (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp) ◃∎
-      =ₛ
-    ! (transp-cst=idf p₂ (loop (transport codes-fst p₁ z))) ◃∙
-    ap (transport (_==_ base) p₂)
-      (ap loop (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp)) ◃∙
-    idp ◃∙
-    transp-cst=idf p₂ (loop (coe (ap fst (ap codes p₁)) z)) ◃∎
-  long-aux8-aux-aux2 z p₁ idp =
-    ap (λ v → loop v ∙ idp) (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp) ◃∎
-      =ₛ⟨ ap-∙-unit-r-nat loop (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp) ⟩
-    ∙-unit-r (loop (transport codes-fst p₁ z)) ◃∙
-    ap loop (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp) ◃∙
-    ! (∙-unit-r (loop (coe (ap fst (ap codes p₁)) z))) ◃∎
-      =ₛ₁⟨ 0 & 1 & ! (!-! (∙-unit-r (loop (transport codes-fst p₁ z)))) ⟩
-    ! (! (∙-unit-r (loop (transport codes-fst p₁ z)))) ◃∙
-    ap loop (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp) ◃∙
-    ! (∙-unit-r (loop (coe (ap fst (ap codes p₁)) z))) ◃∎
-      =ₛ₁⟨ 1 & 1 & ap-idf (ap loop (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp)) ⟩
-    ! (! (∙-unit-r (loop (transport codes-fst p₁ z)))) ◃∙
-    ap (λ v → v) (ap loop (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp)) ◃∙
-    ! (∙-unit-r (loop (coe (ap fst (ap codes p₁)) z))) ◃∎
-      =ₑ⟨ 2 & 1 & (idp ◃∙ ! (∙-unit-r (loop (coe (ap fst (ap codes p₁)) z))) ◃∎) % =ₛ-in idp ⟩
-    ! (! (∙-unit-r (loop (transport codes-fst p₁ z)))) ◃∙
-    ap (λ v → v) (ap loop (transp-coe p₁ z ∙ ap (λ q → coe q z) (ap-∘ fst codes p₁) ∙ idp)) ◃∙
-    idp ◃∙
-    ! (∙-unit-r (loop (coe (ap fst (ap codes p₁)) z))) ◃∎ ∎ₛ
 
   module _ (z : G) (p₁ p₂ : base == base)
     (q₂ : loop (coe (ap fst (ap codes p₁)) z) ∙ p₂ == loop (coe (ap fst (ap codes p₂)) (coe (ap fst (ap codes p₁)) z)))
