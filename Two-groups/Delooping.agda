@@ -70,12 +70,12 @@ module _ {{η : CohGrp G}} where
       PPOver (loop-comp x y) (loop* x ∙ᵈ loop* y) (loop* (mu x y)))
     (loop-assoc* : (x y z : G) →
       PPPOver (loop-assoc x y z)
-        (∙ᵈ-assoc-ppo (loop* x) (loop* y) (loop* z) ∙ᶜ
-        ap-∙-preᶜ (loop* x) (loop-comp* y z) ∙ᶜ
-        loop-comp* x (mu y z))
-        (ap-∙-postᶜ (loop* z) (loop-comp* x y) ∙ᶜ
-        loop-comp* (mu x y) z ∙ᶜ
-        !ᶜ (apd-po loop* (al x y z))))
+        ( ∙ᵈ-assoc-ppo (loop* x) (loop* y) (loop* z) ∙ᶜ
+          ap-∙-preᶜ (loop* x) (loop-comp* y z) ∙ᶜ
+          loop-comp* x (mu y z) )
+        ( ap-∙-postᶜ (loop* z) (loop-comp* x y) ∙ᶜ
+          loop-comp* (mu x y) z ∙ᶜ
+          !ᶜ (apd-po loop* (al x y z))) )
     where
 
     postulate -- HIT
