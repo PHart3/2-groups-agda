@@ -38,13 +38,3 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
       (λ x → po-ext (loop x) (loop-decode x))
       (λ x y → ppo-ext {p₁ = loop x} (loop-comp x y) (loop-decode x) (loop-decode y) (loop-decode (mu x y)) (loop-comp-decode x y))
       A
-
-  decode-encode : (z : K₂ η) (p : base == z) → decode z (encode z p) == p
-  decode-encode z idp = loop-ident
-
-  loop-encode : loop ∘ encode base ∼ idf (base == base)
-  loop-encode = decode-encode base
-
-  -- main delooping theorem
-  loop-equiv : is-equiv loop
-  loop-equiv = is-eq loop (encode base) loop-encode encode-loop
