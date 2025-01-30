@@ -41,4 +41,4 @@ RUN echo "/build/HoTT-Agda/hott-core.agda-lib" >> /dist/libraries
 RUN echo "/build/Two-groups/two-group.agda-lib" >> /dist/libraries
 
 WORKDIR /build/Two-groups
-RUN /dist/agda --library-file=/dist/libraries ./Decode11.agda
+RUN /dist/agda --library-file=/dist/libraries ./Decode16.agda
