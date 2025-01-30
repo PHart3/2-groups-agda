@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=3 #-}
 
 open import lib.Basics
+open import lib.types.Pi
 open import lib.cubical.PathPathOver
 open import lib.cubical.PPOverFun
 open import 2Grp

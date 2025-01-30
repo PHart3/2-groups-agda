@@ -47,7 +47,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
       ap (transport (_==_ base) p₂) (! q₃) ∙
       ap (transport (_==_ base) p₂) (! (transp-cst=idf p₁ p₃)) ∙
       ! (transp-∙ p₁ p₂ p₃) ∙ idp
-    long-aux3 idp idp q₂ q₃ = =ₛ-out (long-aux5 z p₁ p₂ p₃ q₂ q₃)
+    long-aux3 idp idp q₂ q₃ = =ₛ-out (long-aux4 z p₁ p₂ p₃ q₂ q₃)
 
     long-aux2 : (e₁ e₂ : G ≃ G)
       (α₁ : ap fst (ap codes p₁) == ua e₁) (α₂ : ap fst (ap codes p₂) == ua e₂)

@@ -2,12 +2,12 @@
 
 open import lib.Basics
 open import lib.NType2
-open import lib.Equivalence2 hiding (linv; rinv)
 open import lib.types.LoopSpace
 open import 2Magma
 open import 2Grp
 open import Hmtpy2Grp
 open import Codes
+open import Decode10
 open import Decode13
 
 module Decode14 where
@@ -18,7 +18,23 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
 
   open import Delooping G
 
+  open WkMagNatIso
+
   module _ (x y z : G) where
+
+    Δ =
+      transport
+        (λ v → loop (transport codes-fst (loop y) v) == loop v ∙ loop y)
+        (! (transp-coe {B = codes-fst} (loop x) z ∙
+            ap (λ q → coe q z) (ap-∘ fst codes (loop x)) ∙
+            ap (λ q → coe q z) (θ codes-β x) ∙
+            coe-β ((λ v → mu v x) , mu-post-iso x) z))
+        (ap loop
+          (transp-coe {B = codes-fst} (loop y) (mu z x) ∙
+          ap (λ q → coe q (mu z x)) (ap-∘ fst codes (loop y)) ∙
+          ap (λ q → coe q (mu z x)) (θ codes-β y) ∙
+          coe-β ((λ v → mu v y) , mu-post-iso y) (mu z x)) ∙
+        ! (loop-comp (mu z x) y))
 
     abstract
       loop-comp-decode5 :
@@ -46,12 +62,13 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
             (loop-comp x y)
             (transp-cst=idf (loop x ∙ loop y) (loop z))) ◃∎
           =ₛ
-        transport
-          (λ v → loop (transport codes-fst (loop y) v) == loop v ∙ loop y)
-          (! (↯ (transp-codes x z)))
-          (ap loop (↯ (transp-codes y (mu z x))) ∙ ! (loop-comp (mu z x) y)) ◃∙
+        Δ ◃∙
         ! (transp-cst=idf (loop y) (loop (transport codes-fst (loop x) z))) ◃∙
-        ap (transport (λ b → base == b) (loop y)) (ap loop (↯ (transp-codes x z))) ◃∙
+        ap (transport (λ b → base == b) (loop y))
+          (ap loop (transp-coe {B = codes-fst} (loop x) z ∙
+                    ap (λ q → coe q z) (ap-∘ fst codes (loop x)) ∙
+                    ap (λ q → coe q z) (θ codes-β x) ∙
+                    coe-β ((λ v → mu v x) , mu-post-iso x) z)) ◃∙
         ap (transport (λ b → base == b) (loop y)) (! (loop-comp z x)) ◃∙
         ap (transport (λ b → base == b) (loop y)) (! (transp-cst=idf (loop x) (loop z))) ◃∙
         ! (transp-∙ (loop x) (loop y) (loop z)) ◃∙
@@ -62,3 +79,24 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
           (θ codes-β x) (θ codes-β y)
           (coe-β ((λ v → mu v x) , mu-post-iso x) z) (coe-β ((λ v → mu v y) , mu-post-iso y) (mu z x))
           (loop-comp x y) (loop-comp (mu z x) y) (loop-comp z x)
+
+    abstract
+      loop-comp-decode05 :
+        ! (ap loop (transp-∙ (loop x) (loop y) z)) ◃∙
+        ap loop (ap (λ p → transport codes-fst p z) (loop-comp x y)) ◃∙
+        ap loop (↯ (transp-codes (mu x y) z)) ◃∙
+        ! (loop-comp z (mu x y)) ◃∙
+        ! (transp-cst=idf (loop (mu x y)) (loop z)) ◃∎
+          =ₛ
+        Δ ◃∙
+        ! (transp-cst=idf (loop y) (loop (transport codes-fst (loop x) z))) ◃∙
+        ap (transport (λ b → base == b) (loop y))
+          (ap loop (transp-coe {B = codes-fst} (loop x) z ∙
+                    ap (λ q → coe q z) (ap-∘ fst codes (loop x)) ∙
+                    ap (λ q → coe q z) (θ codes-β x) ∙
+                    coe-β ((λ v → mu v x) , mu-post-iso x) z)) ◃∙
+        ap (transport (λ b → base == b) (loop y)) (! (loop-comp z x)) ◃∙
+        ap (transport (λ b → base == b) (loop y)) (! (transp-cst=idf (loop x) (loop z))) ◃∙
+        ! (transp-∙ (loop x) (loop y) (loop z)) ◃∙
+        ap (λ p → transport (λ b → base == b) p (loop z)) (loop-comp x y) ◃∎
+      loop-comp-decode05 = loop-comp-decode04 x y z ∙ₛ loop-comp-decode5

@@ -1,13 +1,11 @@
 {-# OPTIONS --without-K --rewriting --lossy-unification #-}
 
 open import lib.Basics
-open import lib.NType2
-open import lib.Equivalence2 hiding (linv; rinv)
-open import 2Magma
 open import 2Grp
 open import Codes
 open import Decode-aux1a
 open import Decode-aux1b
+open import Decode-aux1c
 
 module Decode-aux2 where
 
@@ -21,6 +19,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
 
     open Long-aux8-aux-aux2a z p₁
     open Long-aux8-aux-aux2b z p₁
+    open Long-aux8-aux-aux2c z p₁
 
     abstract
       long-aux8-aux-aux2 : {b : K₂ η} (p₂ : base == b) →
