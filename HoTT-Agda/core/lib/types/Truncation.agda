@@ -224,3 +224,21 @@ transport-Trunc : ∀ {i j} {A : Type i} {n : ℕ₋₂} (P : A → Type j)
   {x y : A} (p : x == y) (b : P x)
   → transport (Trunc n ∘ P) p [ b ] == [ transport P p b ]
 transport-Trunc _ idp _ = idp
+
+{- Truncation preserves equivalences - more convenient than univalence+ap
+ - when we need to know the forward or backward function explicitly -}
+module _ {i j} {n : ℕ₋₂} {A : Type i} {B : Type j} where
+
+  Trunc-isemap : {f : A → B} → is-equiv f → is-equiv (Trunc-fmap {n = n} f)
+  Trunc-isemap {f-orig} ie = is-eq f g f-g g-f where
+    f = Trunc-fmap f-orig
+    g = Trunc-fmap (is-equiv.g ie)
+
+    f-g : ∀ tb → f (g tb) == tb
+    f-g = Trunc-elim (ap [_] ∘ is-equiv.f-g ie)
+
+    g-f : ∀ ta → g (f ta) == ta
+    g-f = Trunc-elim (ap [_] ∘ is-equiv.g-f ie)
+
+  Trunc-emap : A ≃ B → Trunc n A ≃ Trunc n B
+  Trunc-emap (f , f-ie) = Trunc-fmap f , Trunc-isemap f-ie
