@@ -4,7 +4,7 @@ open import lib.Basics
 open import 2Grp
 open import Codes
 open import Decode-aux4a-defs
-open import Decode-aux3
+open import Decode-aux3b
 
 module Decode-aux4a where
 
