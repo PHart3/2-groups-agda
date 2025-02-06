@@ -40,5 +40,9 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
       F₁ : {a b : B₀} → hom a b → hom (F₀ a) (F₀ b)
       F-id₁ : {a : B₀} → id₁ (F₀ a) == F₁ (id₁ a)
       F-◻ : {a b c : B₀} (f : hom a b) (g : hom b c)
-        → _◻_ {{ξC}} (F₁ f) (F₁ g) == F₁ (_◻_ {{ξB}} f g)  -- mysteriously Agda gets stuck on the two instance candidates
-      
+        → _◻_ {{ξC}} (F₁ f) (F₁ g) == F₁ (_◻_ {{ξB}} f g)  -- somehow Agda gets stuck on the two instance candidates
+      -- F-wh1 : 
+      -- F-wh2 : 
+      -- F-λ : 
+      -- F-ρ : 
+      -- F-α : 
