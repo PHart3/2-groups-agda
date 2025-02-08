@@ -99,7 +99,7 @@ module _ {{η : CohGrp G}} where
 
   open K₂Elim public renaming (f to K₂-elim)
 
-  module K₂Rec {j} {B : Type j} {{_ : has-level 2 B}}
+  module K₂Rec {j} {B : Type j} {{ρ : has-level 2 B}}
     (base* : B) (loop* : G → base* == base*)
     (loop-comp* : (x y : G) → loop* x ∙ loop* y == loop* (mu x y))
     (loop-assoc* : (x y z : G) → 

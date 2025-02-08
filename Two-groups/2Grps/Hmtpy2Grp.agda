@@ -44,6 +44,7 @@ module _ {i} {X : Type i} where
     open WkMag {{...}}
     
     record Loop2Map : Type (lmax i j) where
+      constructor loop2map
       field
         loop' : G → x == x
         loop-comp' : (a b : G) → loop' a ∙ loop' b == loop' (mu a b)
@@ -56,6 +57,21 @@ module _ {i} {X : Type i} where
           loop-comp' (mu a b) c ∙'
           ! (ap loop' (al a b c))
     open Loop2Map public
+    
+    record Loop2Map-∙ : Type (lmax i j) where
+      constructor loop2map-∙
+      field
+        loop∙ : G → x == x
+        loop-comp∙ : (a b : G) → loop∙ a ∙ loop∙ b == loop∙ (mu a b)
+        loop-assoc' : (a b c : G) → 
+          ∙-assoc (loop∙ a) (loop∙ b) (loop∙ c) ∙
+          ap (λ p → loop∙ a ∙ p) (loop-comp∙ b c) ∙
+          loop-comp∙ a (mu b c)
+            ==
+          ap (λ p → p ∙ loop∙ c) (loop-comp∙ a b) ∙
+          loop-comp∙ (mu a b) c ∙
+          ! (ap loop∙ (al a b c))
+    open Loop2Map-∙ public
 
     loop-2map-forg : Loop2Map → WkMagWkHom {{η}} {{mag (Loop2Grp x)}}
     map-wk (loop-2map-forg f) = loop' f
@@ -64,10 +80,10 @@ module _ {i} {X : Type i} where
     open WkMagHom
     open WkMagHomStr {{...}}
     
-    loop2mag-conv : WkMagHom {{η}} {{mag (Loop2Grp x)}} → Loop2Map
-    loop' (loop2mag-conv f) = map f
-    loop-comp' (loop2mag-conv _) = map-comp
-    loop-assoc' (loop2mag-conv f) a b c = =ₛ-out $
+    wkmag-to-loop : WkMagHom {{η}} {{mag (Loop2Grp x)}} → Loop2Map
+    loop' (wkmag-to-loop f) = map f
+    loop-comp' (wkmag-to-loop _) = map-comp
+    loop-assoc' (wkmag-to-loop f) a b c = =ₛ-out $
       ∙-assoc (map f a) (map f b) (map f c) ◃∙
       ap (λ p → map f a ∙ p) (map-comp b c) ◃∙
       map-comp a (mu b c) ◃∎
@@ -87,6 +103,26 @@ module _ {i} {X : Type i} where
       (ap (λ p → p ∙ map f c) (map-comp a b) ∙
       map-comp (mu a b) c ∙'
       ! (ap (map f) (al a b c))) ◃∎ ∎ₛ
+
+    loop-to-wkmag : Loop2Map-∙ → WkMagHom {{η}} {{mag (Loop2Grp x)}}
+    map (loop-to-wkmag f) = loop∙ f
+    WkMagHomStr.map-comp (str (loop-to-wkmag f)) = loop-comp∙ f
+    WkMagHomStr.map-al (str (loop-to-wkmag f)) a b c = =ₛ-out $
+      ! (! (∙-assoc (loop∙ f a) (loop∙ f b) (loop∙ f c))) ◃∙
+      ap (_∙_ (loop∙ f a)) (loop-comp∙ f b c) ◃∙
+      loop-comp∙ f a (mu b c) ◃∎
+        =ₛ₁⟨ 0 & 1 & !-! (∙-assoc (loop∙ f a) (loop∙ f b) (loop∙ f c)) ⟩
+      ∙-assoc (loop∙ f a) (loop∙ f b) (loop∙ f c) ◃∙
+      ap (_∙_ (loop∙ f a)) (loop-comp∙ f b c) ◃∙
+      loop-comp∙ f a (mu b c) ◃∎
+        =ₛ⟨ =ₛ-in (loop-assoc' f a b c) ⟩
+      ap (λ p → p ∙ loop∙ f c) (loop-comp∙ f a b) ◃∙
+      (loop-comp∙ f (WkMag.mu η a b) c ∙
+      ! (ap (loop∙ f) (WkMag.al η a b c))) ◃∎
+        =ₛ₁⟨ idp ⟩
+      (ap (λ v → v ∙ loop∙ f c) (loop-comp∙ f a b) ∙
+      loop-comp∙ f (mu a b) c ∙
+      ! (ap (loop∙ f) (al a b c))) ◃∎ ∎ₛ
 
 -- a few ad-hoc lemmas for Ω's action on  maps, described below
 
@@ -220,7 +256,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
   2Grp-1Ty-map = 1tr-2MagMap G ∘2M ua-2MagMap G ∘2M mu-≃-map
 
   2Grp-1Ty-lmap : Loop2Map (G , 1trunc)
-  2Grp-1Ty-lmap = loop2mag-conv (G , 1trunc) 2Grp-1Ty-map
+  2Grp-1Ty-lmap = wkmag-to-loop (G , 1trunc) 2Grp-1Ty-map
 
   fst=-2map : WkMagWkHom {{mag (Loop2Grp (G , 1trunc))}} {{mag (Loop2Grp G)}}
   map-wk fst=-2map = fst=
@@ -271,4 +307,3 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         (fst=-2map ∘2Mw loop-2map-forg (G , 1trunc) 2Grp-1Ty-lmap)
         (maghom-forg (ua-2MagMap G) ∘2Mw maghom-forg mu-≃-map)
     fst=-tri = fst=-tri1 natiso-∘ fst=-tri0
-

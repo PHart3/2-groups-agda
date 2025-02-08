@@ -8,11 +8,10 @@ module Bicategory where
 
 module _ (j : ULevel) where
 
-  record BicatStr {i} (B₀ : Type i) : Type (lmax i (lsucc j)) where
+  record PreBicatStr {i} (B₀ : Type i) : Type (lmax i (lsucc j)) where
     infixr 82 _◻_
     field
       hom : B₀ → B₀ → Type j
-      instance {{hom-trunc}} : {a b : B₀} → has-level 1 (hom a b)
       id₁ : (a : B₀) → hom a a
       _◻_ : {a b c : B₀} → hom a b → hom b c → hom a c
       lamb : {a b : B₀} (f : hom a b) → id₁ a ◻ f == f  -- "λ" is built-in term
@@ -31,9 +30,11 @@ module _ (j : ULevel) where
       pent-bc : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e)
         → α f g (h ◻ i) ∙ α (f ◻ g) h i == ap (λ m → f ◻ m) (α g h i) ∙ α f (g ◻ h) i ∙ ap (λ m → m ◻ i) (α f g h)
 
-open BicatStr {{...}}
+      -- instance {{hom-trunc}} : {a b : B₀} → has-level 1 (hom a b)
 
-module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}} where
+open PreBicatStr {{...}}
+
+module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : PreBicatStr j₁ B₀}} {{ξC : PreBicatStr j₂ C₀}} where
 
   record PsfunctorStr (F₀ : B₀ → C₀) : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
     field
