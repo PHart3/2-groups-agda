@@ -5,14 +5,13 @@ open import lib.types.LoopSpace
 open import 2Magma
 open import 2Grp
 open import Hmtpy2Grp
+open import Delooping
 
 -- action of K₂ on maps
 
 module KFunctor where
 
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
-
-  open import Delooping
 
   instance
   
@@ -97,13 +96,20 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       loop-comp G₂ (f x) (f y) ◃∙
       ap (loop G₂) (map-comp σ x y) ◃∎ ∎ₛ
 
-  module _ {k} {G₃ : Type k} {{η₃ : CohGrp G₃}} where
-    
-    K₂G₃-instance : has-level 2 (K₂ G₃ η₃)
-    K₂G₃-instance = K₂-is-2type G₃
+module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
+  {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}} where
+  
+  K₂G₃-instance : has-level 2 (K₂ G₃ η₃)
+  K₂G₃-instance = K₂-is-2type G₃
 
-    module _ {f₁ : G₁ → G₂} (σ₁ : WkMagHomStr f₁) {f₂ : G₁ → G₂} (σ₂ : WkMagHomStr f₂) where
+  module _ {f₁ : G₁ → G₂} (σ₁ : WkMagHomStr f₁) {f₂ : G₂ → G₃} (σ₂ : WkMagHomStr f₂) where
 
     -- K₂-map respects composition
+    K₂-map-∘ : K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}) ∼ K₂-map σ₂ ∘ K₂-map σ₁
+    K₂-map-∘ = {!!}
+
+module _ {i} {G₁ : Type i} {{η₁ : CohGrp G₁}} where
 
     -- K₂-map respects identity
+    K₂-map-idf : K₂-map idf2G ∼ idf (K₂ G₁ η₁)
+    K₂-map-idf = {!!}
