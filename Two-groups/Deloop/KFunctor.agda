@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=4 #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=5 #-}
 
 open import lib.Basics
 open import lib.types.LoopSpace
@@ -6,22 +6,22 @@ open import 2Magma
 open import 2Grp
 open import Hmtpy2Grp
 open import Delooping
+open import K-hom-ind
 
 -- action of K₂ on maps
 
 module KFunctor where
 
-module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
+open CohGrp {{...}}
+
+module _ {i} {G : Type i} {{η : CohGrp G}} where
 
   instance
-  
-    K₂G₁-instance : has-level 2 (K₂ G₁ η₁)
-    K₂G₁-instance = K₂-is-2type G₁
+    K₂G-instance : has-level 2 (K₂ G η)
+    K₂G-instance = K₂-is-2type G
 
-    K₂G₂-instance : has-level 2 (K₂ G₂ η₂)
-    K₂G₂-instance = K₂-is-2type G₂
+module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
 
-  open CohGrp {{...}}
   open CohGrpHom
   open WkMagHomStr
 
@@ -98,18 +98,15 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
 
 module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
   {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}} where
-  
-  K₂G₃-instance : has-level 2 (K₂ G₃ η₃)
-  K₂G₃-instance = K₂-is-2type G₃
 
   module _ {f₁ : G₁ → G₂} (σ₁ : WkMagHomStr f₁) {f₂ : G₂ → G₃} (σ₂ : WkMagHomStr f₂) where
 
     -- K₂-map respects composition
     K₂-map-∘ : K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}) ∼ K₂-map σ₂ ∘ K₂-map σ₁
-    K₂-map-∘ = {!!}
+    K₂-map-∘ = K₂-∼-ind (K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}})) (K₂-map σ₂ ∘ K₂-map σ₁) idp {!!} {!!}
 
-module _ {i} {G₁ : Type i} {{η₁ : CohGrp G₁}} where
+module _ {i} {G : Type i} {{η : CohGrp G}} where
 
-    -- K₂-map respects identity
-    K₂-map-idf : K₂-map idf2G ∼ idf (K₂ G₁ η₁)
-    K₂-map-idf = {!!}
+  -- K₂-map respects identity
+  K₂-map-idf : K₂-map idf2G ∼ idf (K₂ G η)
+  K₂-map-idf = K₂-∼-ind (K₂-map idf2G) (idf (K₂ G η)) idp {!!} {!!}

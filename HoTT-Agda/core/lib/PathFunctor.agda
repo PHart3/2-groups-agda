@@ -582,6 +582,9 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} (H 
   hmpty-nat-∙'-r : {x y : A} (p : x == y) →  ap f p == H x ∙ ap g p ∙' ! (H y)
   hmpty-nat-∙'-r {x} idp = ! (!-inv-r (H x)) ∙ ap (λ p → H x ∙ p) (! (∙'-unit-l (! (H x))))
 
+  hmpty-nat-∙ : {x y : A} (p : x == y) →  ap f p == H x ∙ ap g p ∙ ! (H y)
+  hmpty-nat-∙ {x} idp = ! (!-inv-r (H x))
+
   hmpty-nat-∙◃ : {x y : A} (p : x == y) →  ap f p ◃∎ =ₛ H x ◃∙ ap g p ◃∙ ! (H y) ◃∎
   hmpty-nat-∙◃ {x} idp = =ₛ-in (! (!-inv-r (H x)))
 
