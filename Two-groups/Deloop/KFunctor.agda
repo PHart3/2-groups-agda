@@ -6,7 +6,6 @@ open import 2Magma
 open import 2Grp
 open import Hmtpy2Grp
 open import Delooping
-open import K-hom-ind
 
 -- action of K₂ on maps
 
@@ -95,18 +94,3 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       ap2 mu (K₂-map-β-pts x) (K₂-map-β-pts y) ◃∙
       loop-comp G₂ (f x) (f y) ◃∙
       ap (loop G₂) (map-comp σ x y) ◃∎ ∎ₛ
-
-module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
-  {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}} where
-
-  module _ {f₁ : G₁ → G₂} (σ₁ : WkMagHomStr f₁) {f₂ : G₂ → G₃} (σ₂ : WkMagHomStr f₂) where
-
-    -- K₂-map respects composition
-    K₂-map-∘ : K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}) ∼ K₂-map σ₂ ∘ K₂-map σ₁
-    K₂-map-∘ = K₂-∼-ind (K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}})) (K₂-map σ₂ ∘ K₂-map σ₁) idp {!!} {!!}
-
-module _ {i} {G : Type i} {{η : CohGrp G}} where
-
-  -- K₂-map respects identity
-  K₂-map-idf : K₂-map idf2G ∼ idf (K₂ G η)
-  K₂-map-idf = K₂-∼-ind (K₂-map idf2G) (idf (K₂ G η)) idp {!!} {!!}

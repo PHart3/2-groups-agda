@@ -8,19 +8,6 @@ open import lib.cubical.PathPathOver
 
 module lib.cubical.PPOverId where
 
-module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
-
-  ∙-assoc2-!-inv-l-aux : {x z : A} {y w u : B} (p₃ : x == z) (p₀ : w == f x) (p₁ : y == f x) (p₂ : u == f z)
-    → (p₀ ∙ ! p₁) ∙ p₁ ∙ ap f p₃ ∙ ! p₂ == p₀ ∙ ap f p₃ ∙ ! p₂
-  ∙-assoc2-!-inv-l-aux idp p₀ p₁ p₂ =
-    ! (∙-assoc (p₀ ∙ ! p₁) p₁ (! p₂)) ∙
-    ap (λ p → p ∙ ! p₂) (∙-assoc p₀ (! p₁) p₁ ∙ ap (λ p → p₀ ∙ p) (!-inv-l p₁) ∙ ∙-unit-r p₀)
-
-  ∙-assoc2-!-inv-l : {x z : A} {y w : B}
-    (p₀ : w == f z) (p₁ : y == f x) (p₂ : z == x) (p₃ : x == z)
-    → (p₀ ∙ ap f p₂ ∙ ! p₁) ∙ p₁ ∙ ap f p₃ ∙ ! p₀ == p₀ ∙ ap f (p₂ ∙ p₃) ∙ ! p₀
-  ∙-assoc2-!-inv-l p₀ p₁ idp p₃ = ∙-assoc2-!-inv-l-aux p₃ p₀ p₁ p₀
-
 module _ {i} {A : Type i} where
 
   PPOver-from-hnat-aux5 :
