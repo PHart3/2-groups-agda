@@ -219,8 +219,7 @@ module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
               ((map F₂ ∘ map F₁) z)))
             _ _
             (map-comp (map F₁ x) (map F₁ (mu η₁ y z)))
-            (ap (map F₂) (map-comp x (mu η₁ y z)))
-             ∙
+            (ap (map F₂) (map-comp x (mu η₁ y z))) ∙
           ap (λ q →
             q ∙
             ap (mu η₃ ((map F₂ ∘ map F₁) x)) (ap (map F₂) (map-comp y z)) ∙
@@ -254,8 +253,7 @@ module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
         map-comp (mu η₂ (map F₁ x) (map F₁ y)) (map F₁ z) ∙
         ap (map F₂) (ap (λ v → mu η₂ v (map F₁ z)) (map-comp x y))
           ==
-        ap (λ v → mu η₃ v ((map F₂ ∘ map F₁) z))
-          (ap (map F₂) (map-comp x y)) ∙
+        ap (λ v → mu η₃ v ((map F₂ ∘ map F₁) z)) (ap (map F₂) (map-comp x y)) ∙
         map-comp (map F₁ (mu η₁ x y)) (map F₁ z)
       lemma1 = 
         map-comp (mu η₂ (map F₁ x) (map F₁ y)) (map F₁ z) ∙
