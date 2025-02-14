@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --lossy-unification #-}
 
 open import lib.Basics
 open import 2Magma
@@ -6,7 +6,6 @@ open import 2Grp
 open import Delooping
 open import K-hom-ind
 open import KFunctor
-open import KFunctor-aux
 
 -- K₂-map respects composition
 

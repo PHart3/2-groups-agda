@@ -38,6 +38,10 @@ _∙▹_ {a} {a'} {a''} s p = s ∙∙ (p ◃∙ [])
   ap (λ y → p ∙ y) (↯-∙∙ s t) ∙
   ! (∙-assoc p (↯ s) (↯ t))
 
-∙∙-suff=ₛ : {a a' a'' : A} (s : a =-= a') {t₁ t₂ : a' =-= a''} (σ : t₁ =ₛ t₂)
+∙∙-suff=ₛ : {a a' a'' : A} (s : a =-= a') {t₁ t₂ : a' =-= a''} (τ : t₁ =ₛ t₂)
   → s ∙∙ t₁ =ₛ s ∙∙ t₂
 ∙∙-suff=ₛ s {t₁} {t₂} (=ₛ-in e) = =ₛ-in (↯-∙∙ s t₁ ∙ ap (λ p → ↯ s ∙ p) e ∙ ! (↯-∙∙ s t₂)) 
+
+∙∙-pref=ₛ : {a a' a'' : A} {s₁ s₂ : a =-= a'} (t : a' =-= a'') (σ : s₁ =ₛ s₂)
+  → s₁ ∙∙ t =ₛ s₂ ∙∙ t
+∙∙-pref=ₛ {s₁ = s₁} {s₂ = s₂} t (=ₛ-in e) = =ₛ-in (↯-∙∙ s₁ t ∙ ap (λ p → p ∙ ↯ t) e ∙ ! (↯-∙∙ s₂ t))

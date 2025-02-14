@@ -152,3 +152,9 @@ module _ {i} {A : Type i} {a a' : A} where
   infix 15 _∎ₛ
   _∎ₛ : (s : a =-= a') → s =ₛ s
   _∎ₛ _ = =ₛ-in idp
+
+module _ {i} {A : Type i} where
+
+  ∙∙-=ₛ : {a a' a'' : A} {s₁ s₂ : a =-= a'} {t₁ t₂ : a' =-= a''} (σ : s₁ =ₛ s₂) (τ : t₁ =ₛ t₂)
+    → s₁ ∙∙ t₁ =ₛ s₂ ∙∙ t₂
+  ∙∙-=ₛ {s₂ = s₂} {t₁} σ τ = ∙∙-pref=ₛ t₁ σ ∙ₛ ∙∙-suff=ₛ s₂ τ
