@@ -15,8 +15,10 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
 
   module _ {f₁ : G₁ → G₂} (σ₁ : WkMagHomStr f₁) {f₂ : G₂ → G₃} (σ₂ : WkMagHomStr f₂) (x y : G₁) where
 
-    open WkMag hiding (mu)
     open WkMagHomStr
+
+    private
+      α = ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ (mu x y))))
 
     abstract
       K₂-map-∘-coher1 :
@@ -43,7 +45,7 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
         ap (λ z → ap (K₂-map σ₂) (loop G₂ z)) (map-comp σ₁ x y) ◃∙
         ! (ap (ap (K₂-map σ₂)) (K₂-map-β-pts σ₁ (mu x y))) ◃∙
         ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ (mu x y)) ◃∙
-        ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ (mu x y)))) ◃∎
+        α ◃∎
       K₂-map-∘-coher1 =
         ∙-ap (K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}})) (loop G₁ x) (loop G₁ y) ◃∙
         ap (ap (K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}))) (loop-comp G₁ x y) ◃∙
@@ -52,7 +54,7 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
           ! (K₂-map-β-pts σ₂ (f₁ (mu x y))) ∙
           ! (ap (ap (K₂-map σ₂)) (K₂-map-β-pts σ₁ (mu x y))) ∙
           ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ (mu x y)) ∙
-          ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ (mu x y))))) ◃∎
+          α) ◃∎
           =ₛ⟨ =ₛ-in
                 (ap
                   (λ p →
@@ -65,7 +67,7 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
         ! (K₂-map-β-pts σ₂ (f₁ (mu x y))) ◃∙
         ! (ap (ap (K₂-map σ₂)) (K₂-map-β-pts σ₁ (mu x y))) ◃∙
         ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ (mu x y)) ◃∙
-        ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ (mu x y)))) ◃∎
+        α ◃∎
           =ₛ⟨ 2 & 1 & K₂-map-β-comp (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}) x y ⟩
         ∙-ap (K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}})) (loop G₁ x) (loop G₁ y) ◃∙
         ap (ap (K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}))) (loop-comp G₁ x y) ◃∙
@@ -79,7 +81,7 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
         ! (K₂-map-β-pts σ₂ (f₁ (mu x y))) ◃∙
         ! (ap (ap (K₂-map σ₂)) (K₂-map-β-pts σ₁ (mu x y))) ◃∙
         ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ (mu x y)) ◃∙
-        ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ (mu x y)))) ◃∎
+        α ◃∎
           =ₛ⟨ 7 & 1 & apCommSq2◃! (K₂-map-β-pts σ₂) (map-comp σ₁ x y) ⟩
         ∙-ap (K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}})) (loop G₁ x) (loop G₁ y) ◃∙
         ap (ap (K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}))) (loop-comp G₁ x y) ◃∙
@@ -95,4 +97,4 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
         ap (λ z → ap (K₂-map σ₂) (loop G₂ z)) (map-comp σ₁ x y) ◃∙
         ! (ap (ap (K₂-map σ₂)) (K₂-map-β-pts σ₁ (mu x y))) ◃∙
         ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ (mu x y)) ◃∙
-        ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ (mu x y)))) ◃∎ ∎ₛ
+        α ◃∎ ∎ₛ

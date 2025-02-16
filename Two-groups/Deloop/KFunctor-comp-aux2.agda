@@ -13,9 +13,8 @@ open CohGrp {{...}}
 module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
   {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}} where
 
-  module K₂-map-∘-aux2 {f₁ : G₁ → G₂} (σ₁ : WkMagHomStr f₁) {f₂ : G₂ → G₃} (σ₂ : WkMagHomStr f₂) (x y : G₁) where
+  module _ {f₁ : G₁ → G₂} (σ₁ : WkMagHomStr f₁) {f₂ : G₂ → G₃} (σ₂ : WkMagHomStr f₂) (x y : G₁) where
 
-    open WkMag hiding (mu)
     open WkMagHomStr
 
     K₂-map-∘-coher2a =
