@@ -2,6 +2,5 @@ name: two-group
 depend: hott-core-group
 include:
   2Grps
-  Bicats
   Deloop
   Biequiv

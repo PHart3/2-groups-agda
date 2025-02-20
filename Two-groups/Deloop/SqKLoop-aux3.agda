@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --lossy-unification #-}
+{-# OPTIONS --without-K --rewriting --lossy-unification --overlapping-instances --instance-search-depth=4 #-}
 
 open import lib.Basics
 open import 2Magma

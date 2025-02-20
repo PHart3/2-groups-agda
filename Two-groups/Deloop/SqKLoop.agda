@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --lossy-unification #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=4 --lossy-unification #-}
 
 open import lib.Basics
 open import 2Magma
@@ -20,8 +20,6 @@ module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-lev
     K₂-rec-x₀ = K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)
     K₂-rec-y₀ = K₂-rec (y₀ == y₀) y₀ (loop' Λy₀) (loop-comp' Λy₀) (loop-assoc' Λy₀)
 
-  open Sq-aux10 x₀
-
   sq-KΩ : (f* : ⊙[ X , x₀ ] ⊙→ ⊙[ Y , y₀ ]) →
     f* ⊙∘ K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}})
       ⊙-comp
@@ -37,5 +35,10 @@ module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-lev
         ! (K₂-rec-hom-β-pts y₀ idf2G (ap f x)) ∙
         ! (ap (ap K₂-rec-y₀) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x)) ∙
         ! (ap-∘ K₂-rec-y₀ (K₂-map (Loop2Grp-map-str (f , idp))) (loop (x₀ == x₀) x)))
-      (SqKLoop-coher f)
+      κ
+        where
+          open Sq-aux10 x₀ f
+          abstract
+            κ : (x y : x₀ == x₀) → η₁ x y =ₛ η₂ x y
+            κ = SqKLoop-coher
   snd (sq-KΩ (f , idp)) = idp
