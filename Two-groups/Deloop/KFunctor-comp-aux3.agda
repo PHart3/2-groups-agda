@@ -23,27 +23,22 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
       {t₂ : K₂-map σ₂ (K₂-map σ₁ b) == base G₃}
       (d₁ : ap (K₂-map σ₂) (ap (K₂-map σ₁) p₁) == t₁)
       (d₂ : ap (K₂-map σ₂) (ap (K₂-map σ₁) p₂) == t₂)
-      → 
+      →
       ! (ap2 _∙_ d₁ d₂) ∙
       ! (! (∙-ap (K₂-map σ₂) (ap (K₂-map σ₁) p₁) (ap (K₂-map σ₁) p₂))) ∙
       ! (ap (ap (K₂-map σ₂)) (! (∙-ap (K₂-map σ₁) p₁ p₂) ∙ idp)) ∙
-      (∘-ap (K₂-map σ₂) (K₂-map σ₁) (p₁ ∙ p₂) ∙
-      ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (p₁ ∙ p₂)))) ∙ idp
+      ∘-ap (K₂-map σ₂) (K₂-map σ₁) (p₁ ∙ p₂) ∙ idp
         ==
       ap2 _∙_
-        (! d₁ ∙
-         ∘-ap (K₂-map σ₂) (K₂-map σ₁) p₁ ∙
-         ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) p₁)))
-        (! d₂ ∙
-         ∘-ap (K₂-map σ₂) (K₂-map σ₁) p₂ ∙
-         ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) p₂))) ∙
+        (! d₁ ∙ ∘-ap (K₂-map σ₂) (K₂-map σ₁) p₁)
+        (! d₂ ∙ ∘-ap (K₂-map σ₂) (K₂-map σ₁) p₂) ∙
       ∙-assoc2-!-inv-l (K₂-map σ₂ ∘ K₂-map σ₁) idp idp p₁ p₂ ∙ idp
     K₂-map-∘-coher3-aux4 idp p₂ idp idp = lemma p₂
       where
         lemma : {b : K₂ G₁ η₁} (p : b == base G₁) →
-          (∘-ap (K₂-map σ₂) (K₂-map σ₁) p ∙ ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) p))) ∙ idp
+          ∘-ap (K₂-map σ₂) (K₂-map σ₁) p ∙ idp
             ==
-          ap2 _∙_ idp (∘-ap (K₂-map σ₂) (K₂-map σ₁) p ∙ ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) p))) ∙
+          ap2 _∙_ idp (∘-ap (K₂-map σ₂) (K₂-map σ₁) p) ∙
           ∙-assoc2-!-inv-l-aux (K₂-map σ₂ ∘ K₂-map σ₁) p idp idp idp ∙ idp
         lemma idp = idp
 
@@ -73,14 +68,11 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
       ! (! (∙-ap (K₂-map σ₂) (ap (K₂-map σ₁) p₁) (ap (K₂-map σ₁) p₂))) ∙
       ! (! (ap (ap (K₂-map σ₂)) s)) ∙
       ! (ap (ap (K₂-map σ₂)) (! (∙-ap (K₂-map σ₁) p₁ p₂) ∙ s ∙ idp)) ∙
-      (∘-ap (K₂-map σ₂) (K₂-map σ₁) (p₁ ∙ p₂) ∙
-      ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (p₁ ∙ p₂)))) ∙ idp
+      (∘-ap (K₂-map σ₂) (K₂-map σ₁) (p₁ ∙ p₂)) ∙ idp
         ==
       ap2 _∙_
-        (! d₁ ∙ ∘-ap (K₂-map σ₂) (K₂-map σ₁) p₁ ∙
-         ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) p₁)))
-        (! d₂ ∙ ∘-ap (K₂-map σ₂) (K₂-map σ₁) p₂ ∙
-         ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) p₂))) ∙
+        (! d₁ ∙ ∘-ap (K₂-map σ₂) (K₂-map σ₁) p₁)
+        (! d₂ ∙ ∘-ap (K₂-map σ₂) (K₂-map σ₁) p₂) ∙
       ∙-assoc2-!-inv-l (K₂-map σ₂ ∘ K₂-map σ₁) idp idp p₁ p₂ ∙ idp
     K₂-map-∘-coher3-aux3 p₁ p₂ idp idp idp d₁ d₂ = K₂-map-∘-coher3-aux4 p₁ p₂ d₁ d₂
 
@@ -112,17 +104,14 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
           (! (∙-ap (K₂-map σ₁) p₁ p₂) ∙
           s ∙
           ap (loop G₂) μ₂)) ∙
-      (∘-ap (K₂-map σ₂) (K₂-map σ₁) (p₁ ∙ p₂) ∙
-      ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (p₁ ∙ p₂)))) ∙
+      (∘-ap (K₂-map σ₂) (K₂-map σ₁) (p₁ ∙ p₂)) ∙
       idp
         ==
       ap2 _∙_
         (! d₁ ∙
-         ∘-ap (K₂-map σ₂) (K₂-map σ₁) p₁ ∙
-         ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) p₁)))
+         ∘-ap (K₂-map σ₂) (K₂-map σ₁) p₁)
         (! d₂ ∙
-         ∘-ap (K₂-map σ₂) (K₂-map σ₁) p₂ ∙
-         ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) p₂))) ∙
+         ∘-ap (K₂-map σ₂) (K₂-map σ₁) p₂) ∙
       ∙-assoc2-!-inv-l (K₂-map σ₂ ∘ K₂-map σ₁) idp idp p₁ p₂ ∙
       idp
     K₂-map-∘-coher3-aux2 p₁ p₂ idp idp α s d₁ d₂ =
@@ -132,7 +121,7 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
 
     private
       δ' : {p₁ p₂ p₃ : base G₁ == base G₁} (r : p₁ ∙ p₂ == p₃) → _
-      δ' r = ap (λ p → ap (K₂-map σ₂ ∘ K₂-map σ₁) p ∙ idp) r
+      δ' r = ap (ap (K₂-map σ₂ ∘ K₂-map σ₁)) r
 
     K₂-map-∘-coher3-aux : (p₁ p₂ {p₃} : base G₁ == base G₁) (r : p₁ ∙ p₂ == p₃)
       {h₁ h₂ : base G₃ == base G₃}
@@ -166,21 +155,18 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
           s ∙
           ap (loop G₂) (map-comp σ₁ x y))) ∙
       ! (ap (λ z → ap (K₂-map σ₂) (ap (K₂-map σ₁) z)) r) ∙
-      (∘-ap (K₂-map σ₂) (K₂-map σ₁) (p₁ ∙ p₂) ∙
-      ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (p₁ ∙ p₂)))) ∙
+      (∘-ap (K₂-map σ₂) (K₂-map σ₁) (p₁ ∙ p₂)) ∙
       δ' r
         ==
       ap2 _∙_
         (t₁ ∙
          ! d₁ ∙
          ! (ap (ap (K₂-map σ₂)) c₁) ∙
-         ∘-ap (K₂-map σ₂) (K₂-map σ₁) p₁ ∙
-         ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) p₁)))
+         ∘-ap (K₂-map σ₂) (K₂-map σ₁) p₁)
         (t₂ ∙
          ! d₂ ∙
          ! (ap (ap (K₂-map σ₂)) c₂) ∙
-         ∘-ap (K₂-map σ₂) (K₂-map σ₁) p₂ ∙
-         ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) p₂))) ∙
+         ∘-ap (K₂-map σ₂) (K₂-map σ₁) p₂) ∙
       ∙-assoc2-!-inv-l (K₂-map σ₂ ∘ K₂-map σ₁) idp idp p₁ p₂ ∙
       δ' r
     K₂-map-∘-coher3-aux p₁ p₂ idp idp idp α idp idp s d₁ d₂ =
@@ -211,21 +197,18 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
              loop-comp G₂ (f₁ x) (f₁ y) ∙
              ap (loop G₂) (map-comp σ₁ x y))) ∙
            (! (ap (λ z → ap (K₂-map σ₂) (ap (K₂-map σ₁) z)) (loop-comp G₁ x y)) ∙
-           (∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x ∙ loop G₁ y) ∙
-           ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ x ∙ loop G₁ y)))) ∙
+           (∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x ∙ loop G₁ y)) ∙
            δ' (loop-comp G₁ x y))) ◃∎
           =ₛ
         ap2 _∙_
           ( K₂-map-β-pts (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}) x ∙
             ! (K₂-map-β-pts σ₂ (f₁ x)) ∙
             ! (ap (ap (K₂-map σ₂)) (K₂-map-β-pts σ₁ x)) ∙
-            ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x) ∙
-            ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ x))))
+            ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x))
           ( K₂-map-β-pts (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}) y ∙
             ! (K₂-map-β-pts σ₂ (f₁ y)) ∙
             ! (ap (ap (K₂-map σ₂)) (K₂-map-β-pts σ₁ y)) ∙
-            ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ y) ∙
-            ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ y)))) ◃∙
+            ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ y)) ◃∙
         ∙-assoc2-!-inv-l (K₂-map σ₂ ∘ K₂-map σ₁) idp idp (loop G₁ x) (loop G₁ y) ◃∙
         δ' (loop-comp G₁ x y) ◃∎
       K₂-map-∘-coher3 = =ₛ-in $

@@ -552,7 +552,7 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f g : A → B) (H 
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} (H : (x : A) → f x == g x) where
 
-  apCommSq◃ : {x y : A} (p : x == y) →  ap g p ◃∎ =ₛ ! (H x) ◃∙ ap f p ◃∙ H y ◃∎
+  apCommSq◃ : {x y : A} (p : x == y) → ap g p ◃∎ =ₛ ! (H x) ◃∙ ap f p ◃∙ H y ◃∎
   apCommSq◃ {x = x} idp = =ₛ-in (! (!-inv-l (H x)))
 
   apCommSq2◃ : {x y : A} (p : x == y) → H y ◃∎ =ₛ ! (ap f p) ◃∙ H x ◃∙ ap g p ◃∎
@@ -579,22 +579,22 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} (H 
   hmtpy-nat-!-sq : {x y : A} (p : x == y) → ! (H x) ∙ ap f p == ap g p ∙ ! (H y)
   hmtpy-nat-!-sq {x = x} idp = ∙-unit-r (! (H x))
 
-  hmpty-nat-∙'-r : {x y : A} (p : x == y) →  ap f p == H x ∙ ap g p ∙' ! (H y)
-  hmpty-nat-∙'-r {x} idp = ! (!-inv-r (H x)) ∙ ap (λ p → H x ∙ p) (! (∙'-unit-l (! (H x))))
+  hmpty-nat-∙' : {x y : A} (p : x == y) → ap f p == H x ∙ ap g p ∙' ! (H y)
+  hmpty-nat-∙' {x} idp = ! (!-inv-r (H x)) ∙ ap (λ p → H x ∙ p) (! (∙'-unit-l (! (H x))))
 
-  hmpty-nat-∙ : {x y : A} (p : x == y) →  ap f p == H x ∙ ap g p ∙ ! (H y)
+  hmpty-nat-∙ : {x y : A} (p : x == y) → ap f p == H x ∙ ap g p ∙ ! (H y)
   hmpty-nat-∙ {x} idp = ! (!-inv-r (H x))
 
-  hmpty-nat-∙◃ : {x y : A} (p : x == y) →  ap f p ◃∎ =ₛ H x ◃∙ ap g p ◃∙ ! (H y) ◃∎
+  hmpty-nat-∙◃ : {x y : A} (p : x == y) → ap f p ◃∎ =ₛ H x ◃∙ ap g p ◃∙ ! (H y) ◃∎
   hmpty-nat-∙◃ {x} idp = =ₛ-in (! (!-inv-r (H x)))
 
-  hmpty-nat-∙◃! : {x y : A} (p : x == y) →  ! (ap f p) ◃∎ =ₛ H y ◃∙ ! (ap g p) ◃∙ ! (H x) ◃∎
+  hmpty-nat-∙◃! : {x y : A} (p : x == y) → ! (ap f p) ◃∎ =ₛ H y ◃∙ ! (ap g p) ◃∙ ! (H x) ◃∎
   hmpty-nat-∙◃! {x} idp = =ₛ-in (! (!-inv-r (H x)))
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} where
 
-  hmpty-nat-∙'-r-idp : {x y : A} (p : x == y) → hmpty-nat-∙'-r {f = f} (λ x → idp) p == idp
-  hmpty-nat-∙'-r-idp idp = idp
+  hmpty-nat-∙'-idp : {x y : A} (p : x == y) → hmpty-nat-∙' {f = f} (λ x → idp) p == idp
+  hmpty-nat-∙'-idp idp = idp
 
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄}
   {f : A → B} {g : A → C} (v : B → D) (u : C → D)

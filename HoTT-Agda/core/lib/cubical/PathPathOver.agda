@@ -21,6 +21,14 @@ module _ {i j} {A : Type i} {B : A → Type j} where
     pinched together.
   -}
 
+  -- PPOver for a family of sets is always inhabited.
+  PPOver-0type : {{ρ : {a : A} → has-level 0 (B a)}}
+    {x y : A} {p₁ p₂ : x == y} {q : p₁ == p₂}
+    {u : B x} {v : B y}
+    (d : u == v [ B ↓ p₁ ]) (e : u == v [ B ↓ p₂ ])
+    → PPOver q d e
+  PPOver-0type {p₁ = idp} {q = idp} d e = prop-has-all-paths d e
+
   apᶜ² : {x y : A} {p₁ p₂ : x == y} {q : p₁ == p₂} {u : B x} {v : B y}
     {d₁ d₂ : u == v [ B ↓ p₁ ]} {e₁ e₂ : u == v [ B ↓ p₂ ]}
     → d₁ == d₂ → e₁ == e₂ → PPOver q d₁ e₁ → PPOver q d₂ e₂
@@ -78,13 +86,13 @@ module _ {i j} {A : Type i} {B : A → Type j} where
     → PPOver q₁ d e → PPOver q₂ d e → Type j
   PPPOver idp po₁ po₂ = po₁ == po₂
 
-  -- PPOver for a family of 1-types is always inhabited.
+  -- PPPOver for a family of 1-types is always inhabited.
   PPPOver-1type : {{ρ : {a : A} → has-level 1 (B a)}}
     {x y : A} {p₁ p₂ : x == y} {q₁ q₂ : p₁ == p₂} {u : B x} {v : B y}
     (r : q₁ == q₂) {d : u == v [ B ↓ p₁ ]} {e : u == v [ B ↓ p₂ ]} 
     (po₁ : PPOver q₁ d e) (po₂ : PPOver q₂ d e)
     → PPPOver r po₁ po₂
-  PPPOver-1type {p₁ = idp} {q₁ = idp} {u = u} {v} idp po₁ po₂ =
+  PPPOver-1type {p₁ = idp} {q₁ = idp} idp po₁ po₂ =
     prop-has-all-paths po₁ po₂
 
   -- sanity check on our definition of apdd-∙ᵈ

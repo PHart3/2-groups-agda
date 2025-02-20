@@ -28,22 +28,19 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
           K₂-map-β-pts (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}) (mu x y) ∙
           ! (K₂-map-β-pts σ₂ (f₁ (mu x y))) ∙
           ! (ap (ap (K₂-map σ₂)) (K₂-map-β-pts σ₁ (mu x y))) ∙
-          ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ (mu x y)) ∙
-          ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ (mu x y))))) ◃∎
+          ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ (mu x y))) ◃∎
           =ₛ
         ap2 _∙_
           ( K₂-map-β-pts (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}) x ∙
             ! (K₂-map-β-pts σ₂ (f₁ x)) ∙
             ! (ap (ap (K₂-map σ₂)) (K₂-map-β-pts σ₁ x)) ∙
-            ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x) ∙
-            ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ x))))
+            ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x))
           ( K₂-map-β-pts (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}) y ∙
             ! (K₂-map-β-pts σ₂ (f₁ y)) ∙
             ! (ap (ap (K₂-map σ₂)) (K₂-map-β-pts σ₁ y)) ∙
-            ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ y) ∙
-            ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ y)))) ◃∙
+            ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ y)) ◃∙
         ∙-assoc2-!-inv-l (K₂-map σ₂ ∘ K₂-map σ₁) idp idp (loop G₁ x) (loop G₁ y) ◃∙
-        ap (λ p → ap (K₂-map σ₂ ∘ K₂-map σ₁) p ∙ idp) (loop-comp G₁ x y) ◃∎
+        ap (ap (K₂-map σ₂ ∘ K₂-map σ₁)) (loop-comp G₁ x y) ◃∎
       K₂-map-∘-coher =
         K₂-map-∘-coher1 σ₁ σ₂ x y ∙ₛ
           (K₂-map-∘-coher2 σ₁ σ₂ x y ∙ₛ

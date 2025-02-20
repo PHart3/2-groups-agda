@@ -112,8 +112,7 @@ module _ {i} {A : Type i} where
     → ! (p₁ ∙ ! p₂) ◃∎ =ₛ p₂ ◃∙ ! p₁ ◃∎
   !-∙-! idp idp = =ₛ-in idp
 
-  ∙-idp-!-∙'-rot : {x y : A} (p : x == y) (q : x == y)
-    → idp == p ∙ idp ∙' ! q → p == q
+  ∙-idp-!-∙'-rot : {x y : A} (p q : x == y) → idp == p ∙ idp ∙' ! q → p == q
   ∙-idp-!-∙'-rot idp q e = ap ! (e ∙ ∙'-unit-l (! q)) ∙ !-! q
 
 {- a special induction rule for ∙-unit-r -}
@@ -286,17 +285,21 @@ module _ {i} {A : Type i} where
     → (idp {a = p}) ∙'2 (idp {a = q}) == idp
   idp∙'2idp idp idp = idp
 
+module _ {i} {A : Type i} where
+
+  ∙-assoc2-!-inv-l-aux2 : {x₁ x₂ x₃ x₄ : A} (p₀ : x₁ == x₂) (p₁ : x₃ == x₂) (p₂ : x₄ == x₂)
+    → (p₀ ∙ idp ∙' ! p₁) ∙ p₁ ∙ idp ∙' ! p₂ == p₀ ∙ idp ∙' ! p₂
+  ∙-assoc2-!-inv-l-aux2 p₀ idp idp = ∙-unit-r (p₀ ∙ idp)
+
 module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
 
   ∙-assoc2-!-inv-l-aux : {x z : A} {y w u : B} (p₃ : x == z) (p₀ : w == f x) (p₁ : y == f x) (p₂ : u == f z)
-    → (p₀ ∙ ! p₁) ∙ p₁ ∙ ap f p₃ ∙ ! p₂ == p₀ ∙ ap f p₃ ∙ ! p₂
-  ∙-assoc2-!-inv-l-aux idp p₀ p₁ p₂ =
-    ! (∙-assoc (p₀ ∙ ! p₁) p₁ (! p₂)) ∙
-    ap (λ p → p ∙ ! p₂) (∙-assoc p₀ (! p₁) p₁ ∙ ap (λ p → p₀ ∙ p) (!-inv-l p₁) ∙ ∙-unit-r p₀)
+    → (p₀ ∙ idp ∙' ! p₁) ∙ p₁ ∙ ap f p₃ ∙' ! p₂ == p₀ ∙ ap f p₃ ∙' ! p₂
+  ∙-assoc2-!-inv-l-aux idp p₀ p₁ p₂ = ∙-assoc2-!-inv-l-aux2 p₀ p₁ p₂ 
 
   ∙-assoc2-!-inv-l : {x z : A} {y w : B}
     (p₀ : w == f z) (p₁ : y == f x) (p₂ : z == x) (p₃ : x == z)
-    → (p₀ ∙ ap f p₂ ∙ ! p₁) ∙ p₁ ∙ ap f p₃ ∙ ! p₀ == p₀ ∙ ap f (p₂ ∙ p₃) ∙ ! p₀
+    → (p₀ ∙ ap f p₂ ∙' ! p₁) ∙ p₁ ∙ ap f p₃ ∙' ! p₀ == p₀ ∙ ap f (p₂ ∙ p₃) ∙' ! p₀
   ∙-assoc2-!-inv-l p₀ p₁ idp p₃ = ∙-assoc2-!-inv-l-aux p₃ p₀ p₁ p₀
 
 {- Coherence -}

@@ -69,6 +69,15 @@ module _ {{η : CohGrp G}} where
   map-wk K₂-loophom = loop
   map-comp-wk K₂-loophom = loop-comp
 
+  K₂-loophom-coh : Loop2Map-∙ {{mag η}} base
+  loop∙ K₂-loophom-coh = loop
+  loop-comp∙ K₂-loophom-coh = loop-comp
+  loop-assoc' K₂-loophom-coh = loop-assoc
+
+  K₂-loopmap : CohGrpHom {{η}} {{Loop2Grp base}}
+  CohGrpHom.map K₂-loopmap = loop
+  CohGrpHom.str K₂-loopmap = WkMagHom.str (loop-to-wkmag base K₂-loophom-coh)
+
   module K₂Elim {j} {P : K₂ η → Type j}
     {{p : {x : K₂ η} → has-level 2 (P x)}}
     (base* : P base)

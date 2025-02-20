@@ -17,18 +17,15 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
       ∙-ap (K₂-map idf2G) (loop G x) (loop G y) ◃∙
       ap (ap (K₂-map idf2G)) (loop-comp G x y) ◃∙
       (K₂-map-β-pts idf2G (mu x y) ∙
-      ! (ap-idf (loop G (mu x y))) ∙
-      ! (∙-unit-r (ap (idf (K₂ G η)) (loop G (mu x y))))) ◃∎
+      ! (ap-idf (loop G (mu x y)))) ◃∎
         =ₑ⟨ 2 & 1 &
           (K₂-map-β-pts idf2G (mu x y) ◃∙
-          ! (ap-idf (loop G (mu x y))) ◃∙
-          ! (∙-unit-r (ap (idf (K₂ G η)) (loop G (mu x y)))) ◃∎)
+          ! (ap-idf (loop G (mu x y))) ◃∎)
         % =ₛ-in idp ⟩
       ∙-ap (K₂-map idf2G) (loop G x) (loop G y) ◃∙
       ap (ap (K₂-map idf2G)) (loop-comp G x y) ◃∙
       K₂-map-β-pts idf2G (mu x y) ◃∙
-      ! (ap-idf (loop G (mu x y))) ◃∙
-      ! (∙-unit-r (ap (idf (K₂ G η)) (loop G (mu x y)))) ◃∎
+      ! (ap-idf (loop G (mu x y))) ◃∎
         =ₛ⟨ 2 & 1 & K₂-map-β-comp idf2G x y ⟩
       ∙-ap (K₂-map idf2G) (loop G x) (loop G y) ◃∙
       ap (ap (K₂-map idf2G)) (loop-comp G x y) ◃∙
@@ -37,8 +34,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
       ap2 _∙_ (K₂-map-β-pts idf2G x) (K₂-map-β-pts idf2G y) ◃∙
       loop-comp G x y ◃∙
       idp ◃∙
-      ! (ap-idf (loop G (mu x y))) ◃∙
-      ! (∙-unit-r (ap (idf (K₂ G η)) (loop G (mu x y)))) ◃∎
+      ! (ap-idf (loop G (mu x y))) ◃∎
         =ₛ₁⟨ 1 & 2 & !-inv-r (ap (ap (K₂-map idf2G)) (loop-comp G x y)) ⟩
       ∙-ap (K₂-map idf2G) (loop G x) (loop G y) ◃∙
       idp ◃∙
@@ -46,5 +42,4 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
       ap2 _∙_ (K₂-map-β-pts idf2G x) (K₂-map-β-pts idf2G y) ◃∙
       loop-comp G x y ◃∙
       idp ◃∙
-      ! (ap-idf (loop G (mu x y))) ◃∙
-      ! (∙-unit-r (ap (idf (K₂ G η)) (loop G (mu x y)))) ◃∎ ∎ₛ
+      ! (ap-idf (loop G (mu x y))) ◃∎ ∎ₛ

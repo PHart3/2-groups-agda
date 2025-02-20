@@ -22,7 +22,7 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
     K₂-map-∘-hnat : (x : G₁) →
       ap (K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}})) (loop G₁ x)
         ==
-      ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ x) ∙ idp
+      ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ x)
     K₂-map-∘-hnat x =
     -- ap (K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}})) (loop G₁ x)
       K₂-map-β-pts (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}) x ∙
@@ -31,10 +31,8 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
     -- ap (K₂-map σ₂) (loop G₂ (f₁ x))
       ! (ap (ap (K₂-map σ₂)) (K₂-map-β-pts σ₁ x)) ∙
     -- ap (K₂-map σ₂) (ap (K₂-map σ₁) (loop G₁ x))
-      ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x) ∙
+      ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x)
     -- ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ x)
-      ! (∙-unit-r (ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ x)))
-    -- ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ x) ∙ idp
 
     open K₂-map-∘-aux σ₁ σ₂
 
@@ -42,10 +40,11 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
       map₁ = K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}})
       map₂ = K₂-map σ₂ ∘ K₂-map σ₁
 
-    K₂-map-∘ : K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}) ∼ K₂-map σ₂ ∘ K₂-map σ₁
-    K₂-map-∘ =
+    K₂-map-∘ : K₂-map⊙ (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}) ⊙-comp K₂-map⊙ σ₂ ⊙∘ K₂-map⊙ σ₁ 
+    fst K₂-map-∘ =
       K₂-∼-ind
         map₁ map₂
         idp
         K₂-map-∘-hnat
         K₂-map-∘-coher
+    snd K₂-map-∘ = idp
