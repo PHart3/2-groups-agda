@@ -3,4 +3,5 @@ depend: hott-core-group
 include:
   2Grps
   Deloop
+  Bicats
   Biequiv

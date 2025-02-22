@@ -22,14 +22,14 @@ module Sq-aux6 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : h
 
   ζ₃-free : {b : _} (c : base (x₀ == x₀) == b)
     →
-    ap (f ∘ K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀)  (loop-assoc' Λx₀)) c
+    ap (f ∘ K₂-rec-x₀) c
       ==
     ap f (ap (fst (K₂-rec-hom x₀ idf2G)) c)
   ζ₃-free idp = idp
 
   ζ₄-free : {b : _} (c : b == base (x₀ == x₀))
     →
-    ap (K₂-rec (y₀ == y₀) y₀ (loop' Λy₀) (loop-comp' Λy₀) (loop-assoc' Λy₀) ∘ K₂-map (Loop2Grp-map-str (f , idp))) c
+    ap (K₂-rec-y₀ ∘ K₂-map (Loop2Grp-map-str (f , idp))) c
       ==
     ap (fst (K₂-rec-hom y₀ idf2G)) (ap (K₂-map (Loop2Grp-map-str (f , idp))) c)
   ζ₄-free idp = idp
@@ -38,21 +38,21 @@ module Sq-aux6 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : h
 
     ζ₃-red-aux : {b : _} (c₁ : b == base (x₀ == x₀)) (c₂ : base (x₀ == x₀) == b)
       →
-      ! (ap (λ u → u ∙ ap (f ∘ K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)) c₂)
-          (ap-∘ f (K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)) c₁)) ∙
-      ∙-ap (f ∘ K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)) c₁ c₂ ∙
-      ap-∘ f (K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)) (c₁ ∙ c₂) ∙
+      ! (ap (λ u → u ∙ ap (f ∘ K₂-rec-x₀) c₂)
+          (ap-∘ f K₂-rec-x₀ c₁)) ∙
+      ∙-ap (f ∘ K₂-rec-x₀) c₁ c₂ ∙
+      ap-∘ f K₂-rec-x₀ (c₁ ∙ c₂) ∙
       ap (ap f) (! (∙-ap (fst (K₂-rec-hom x₀ idf2G)) c₁ c₂ ∙ idp)) ∙
       ! (! (ap (λ z → z)
-          (ap-∙ f (ap (K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)) c₁)
+          (ap-∙ f (ap K₂-rec-x₀ c₁)
             (ap (fst (K₂-rec-hom x₀ idf2G)) c₂)))) ∙ idp
         ==
-      ap (_∙_ (ap f (ap (K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)) c₁)))
+      ap (_∙_ (ap f (ap K₂-rec-x₀ c₁)))
         (ζ₃-free c₂)
     ζ₃-red-aux idp c₂ = lemma c₂
       where
         lemma : {b : _} (c : base (x₀ == x₀) == b) →
-          ap-∘ f (K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)) c ∙ idp
+          ap-∘ f K₂-rec-x₀ c ∙ idp
             ==
           ap (λ q → q) (ζ₃-free c)
         lemma idp = idp
@@ -61,16 +61,16 @@ module Sq-aux6 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : h
       →
       ! (ap (_∙_
           (ap K₂-rec-y₀-∘  c₁))
-        (ap-∘ f (K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)) c₂)) ∙
-      ! (ap (λ u → u ∙ ap (f ∘  K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)) c₂)
-          (! (ap-∘ (K₂-rec (y₀ == y₀) y₀ (loop' Λy₀) (loop-comp' Λy₀) (loop-assoc' Λy₀)) (K₂-map (Loop2Grp-map-str (f , idp))) c₁))) ∙
+        (ap-∘ f K₂-rec-x₀ c₂)) ∙
+      ! (ap (λ u → u ∙ ap (f ∘  K₂-rec-x₀) c₂)
+          (! (ap-∘ K₂-rec-y₀ (K₂-map (Loop2Grp-map-str (f , idp))) c₁))) ∙
       ap (_∙_ (ap (fst (K₂-rec-hom y₀ idf2G)) (ap (K₂-map (Loop2Grp-map-str (f , idp))) c₁))) (ζ₃-free c₂) ∙ idp
         ==
       ap (λ q → q ∙ ap f (ap (fst (K₂-rec-hom x₀ idf2G)) c₂)) (ζ₄-free c₁)
     ζ₄-red-aux idp c₂ = lemma c₂
       where
         lemma : {b : _} (c : base (x₀ == x₀) == b) →
-          ! (ap (λ q → q) (ap-∘ f (K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀)  (loop-assoc' Λx₀)) c)) ∙
+          ! (ap (λ q → q) (ap-∘ f K₂-rec-x₀ c)) ∙
           ap (λ q → q) (ζ₃-free c) ∙ idp
             ==
           idp
@@ -84,15 +84,15 @@ module Sq-aux6 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : h
         (ζ :
           p
             ==
-          ap f (ap (K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)) c₁)) → 
-        ! (ap (λ u → u ∙ ap (f ∘  K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)) c₂) (! ζ)) ◃∙
-        ! (ap (λ u → u ∙ ap (f ∘  K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)) c₂)
-            (ap-∘ f (K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)) c₁)) ◃∙
-        ∙-ap (f ∘  K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)) c₁ c₂ ◃∙
-        ap-∘ f (K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)) (c₁ ∙ c₂) ◃∙
+          ap f (ap K₂-rec-x₀ c₁)) → 
+        ! (ap (λ u → u ∙ ap (f ∘  K₂-rec-x₀) c₂) (! ζ)) ◃∙
+        ! (ap (λ u → u ∙ ap (f ∘  K₂-rec-x₀) c₂)
+            (ap-∘ f K₂-rec-x₀ c₁)) ◃∙
+        ∙-ap (f ∘  K₂-rec-x₀) c₁ c₂ ◃∙
+        ap-∘ f K₂-rec-x₀ (c₁ ∙ c₂) ◃∙
         ap (ap f) (! (∙-ap (fst (K₂-rec-hom x₀ idf2G)) c₁ c₂ ∙ idp)) ◃∙
         ! (! (ap (λ z → z)
-          (ap-∙ f (ap (K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)) c₁) (ap (fst (K₂-rec-hom x₀ idf2G)) c₂)))) ◃∙
+          (ap-∙ f (ap K₂-rec-x₀ c₁) (ap (fst (K₂-rec-hom x₀ idf2G)) c₂)))) ◃∙
         ! (ap (λ u → u ∙ ap f (ap (fst (K₂-rec-hom x₀ idf2G)) c₂)) ζ) ◃∎
           =ₛ
         ap (λ q → p ∙ q) (ζ₃-free c₂) ◃∎

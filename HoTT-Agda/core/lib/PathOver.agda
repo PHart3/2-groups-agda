@@ -352,7 +352,7 @@ module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
         lemma idp n r = !-inj-rot n (r ∙ ∙-unit-r (ap ! (n ∙ idp)) ∙ ap (ap !) (∙-unit-r n))
 
     apd-to-hnat-∙ : {x y z : A} (p₁ : x == y) (p₂ : y == z)
-      {m₁ : ap f p₁ == K x ∙ ap g p₁  ∙' ! (K y)} {m₂ : ap f p₂ == K y ∙ ap g p₂  ∙' ! (K z)}
+      {m₁ : ap f p₁ == K x ∙ ap g p₁ ∙' ! (K y)} {m₂ : ap f p₂ == K y ∙ ap g p₂ ∙' ! (K z)}
       (τ₁ : hmpty-nat-∙' K p₁ == m₁) (τ₂ : hmpty-nat-∙' K p₂ == m₂)
       →
       hmpty-nat-∙' K (p₁ ∙ p₂)
@@ -365,7 +365,7 @@ module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
     apd-to-hnat-∙ {x} idp idp idp idp = assoc-tri-!-coher (K x)
 
     apd-to-hnat-! : {x y : A} (p : x == y)
-      {m : ap f p == K x ∙ ap g p  ∙' ! (K y)} (τ : hmpty-nat-∙' K p == m)
+      {m : ap f p == K x ∙ ap g p ∙' ! (K y)} (τ : hmpty-nat-∙' K p == m)
       → hmpty-nat-∙' K (! p) == ap-! f p ∙ ap ! m ∙ !-∙-ap-∙'-! g (K x) p (K y)
     apd-to-hnat-! {x} idp idp = !-∙-ap-∙'-!-coher g (K x)
 
