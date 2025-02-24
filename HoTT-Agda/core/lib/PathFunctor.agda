@@ -87,6 +87,10 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → ap f p ∙' ap f q == ap f (p ∙' q)
   ∙'-ap p idp = idp
 
+  ap-∙-∙'! : {x y z w : A} (p : x == y) (q : y == z) (r : w == z)
+    → ap f (p ∙ q ∙' ! r) == ap f p ∙ ap f q ∙' ! (ap f r)
+  ap-∙-∙'! idp q idp = idp
+
   -- note: ap-∙' is defined in PathGroupoid
 
   module _ {k} {C : Type k} (g : B → C) where
@@ -602,6 +606,10 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} where
 
 module _ {i} {A : Type i} where
 
+  hnat-∙'̇-!-aux : {x₁ x₂ x₃ x₄ : A} (p₁ : x₁ == x₂) (p₂ : x₃ == x₁) (p₃ : x₄ == x₂)
+    → p₁ == ! p₂ ∙ (p₂ ∙ p₁ ∙' ! p₃) ∙' ! (! p₃)
+  hnat-∙'̇-!-aux p₁ idp idp = idp
+
   hnat-∙'̇-∙-aux : {x₁ x₂ x₃ x₄ x₅ x₆ : A}
     (p₁ : x₁ == x₂) (p₂ : x₂ == x₃) (p₃ : x₃ == x₄) (p₄ : x₅ == x₄) (p₅ : x₆ == x₅)
     →
@@ -609,6 +617,27 @@ module _ {i} {A : Type i} where
       ==
     (p₁ ∙ p₂) ∙ p₃ ∙' ! (p₅ ∙ p₄)
   hnat-∙'̇-∙-aux p₁ p₂ idp idp idp = ! (∙-assoc p₁ p₂ idp)
+
+
+module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f₁ f₂ : A → B}
+  (H : (x : A) → f₁ x == f₂ x) where
+
+  hnat-∙'-! : {x y : A} (p : x == y)
+    →
+    hmpty-nat-∙' (λ x → ! (H x)) p ◃∎
+      =ₛ
+    hnat-∙'̇-!-aux (ap f₂ p) (H x) (H y) ◃∙
+    ! (ap (λ q → ! (H x) ∙ q ∙' ! (! (H y))) (hmpty-nat-∙' H p)) ◃∎
+  hnat-∙'-! {x} idp = =ₛ-in (lemma (H x))
+    where
+      lemma : {a b : B} (v : a == b) →
+        ! (!-inv-r (! v)) ∙
+        ap (_∙_ (! v)) (! (∙'-unit-l (! (! v))))
+          ==
+        hnat-∙'̇-!-aux idp v v ∙
+        ! (ap (λ q → ! v ∙ q ∙' ! (! v))
+            (! (!-inv-r v) ∙ ap (_∙_ v) (! (∙'-unit-l (! v)))))
+      lemma idp = idp
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f₁ f₂ f₃ : A → B}
   (H₁ : (x : A) → f₁ x == f₂ x) (H₂ : (x : A) →  f₂ x == f₃ x) {x y : A} where
@@ -631,7 +660,37 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f₁ f₂ f₃ : A
           (! (!-inv-r p₁) ∙ ap (_∙_ (p₁)) (! (∙'-unit-l (! p₁)))) ∙
         hnat-∙'̇-∙-aux p₂ p₁ idp p₁ p₂
       lemma idp idp = idp
-  
+
+module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {f₁ f₂ : A → B}
+  (H : (x : A) → f₁ x == f₂ x) where
+
+  hnat-∙'-pre : (g : C → A) {x y : C} (p : x == y)
+    →
+    hmpty-nat-∙' (λ x → H (g x)) p ◃∎
+      =ₛ
+    ap-∘ f₁ g p ◃∙
+    hmpty-nat-∙' H (ap g p) ◃∙
+    ap (λ q → H (g x) ∙ q ∙' ! (H (g y))) (∘-ap f₂ g p) ◃∎
+  hnat-∙'-pre _ idp = =ₛ-in (! (∙-unit-r _))
+
+  hnat-∙'-post : (g : B → C) {x y : A} (p : x == y)
+    →
+    hmpty-nat-∙' (λ x → ap g (H x)) p ◃∎
+      =ₛ
+    ap-∘ g f₁ p ◃∙
+    ap (ap g) (hmpty-nat-∙' H p) ◃∙
+    ap-∙-∙'! g (H x) (ap f₂ p) (H y) ◃∙
+    ap (λ q → ap g (H x) ∙ q ∙' ! (ap g (H y))) (∘-ap g f₂ p) ◃∎
+  hnat-∙'-post g {x} idp = =ₛ-in (lemma (H x))
+    where
+      lemma : {a b : _} (v : a == b) →
+        ! (!-inv-r (ap g v)) ∙
+        ap (_∙_ (ap g v)) (! (∙'-unit-l (! (ap g v))))
+          ==
+        ap (ap g) (! (!-inv-r v) ∙ ap (_∙_ v) (! (∙'-unit-l (! v)))) ∙
+        ap-∙-∙'! g v idp v ∙ idp
+      lemma idp = idp
+
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄}
   {f : A → B} {g : A → C} (v : B → D) (u : C → D)
   (H : (x : A) → v (f x) == u (g x)) where

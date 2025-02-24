@@ -11,6 +11,7 @@ open import Delooping
 open import LoopK
 open import KFunctor-comp
 open import SqKLoop
+open import apK
 
 module KLoop-ptr-comp where
 
@@ -36,7 +37,7 @@ module _ {i j k} {X : Type i} {Y : Type j} {Z : Type k}
       ⊙∘-assoc-comp (K₂-rec-hom z₀ (idf2G {{Loop2Grp z₀}})) (K₂-map⊙ (Loop2Grp-map-str g*)) (K₂-map⊙ (Loop2Grp-map-str f*)) ∙⊙∼
       !-⊙∼  (
         ⊙∘-post (K₂-rec-hom z₀ (idf2G {{Loop2Grp z₀}}))
-          ({!apK₂ (Loop2Grp-map-∘ g* f *)!} ∙⊙∼ K₂-map-∘ (Loop2Grp-map-str f*) (Loop2Grp-map-str g*)))
+          (apK₂ (Loop2Grp-map-∘ g* f *) ∙⊙∼ K₂-map-∘ (Loop2Grp-map-str f*) (Loop2Grp-map-str g*)))
         ⊙→∼
       ⊙∼-id (K₂-rec-hom z₀ (idf2G {{Loop2Grp z₀}}) ⊙∘ K₂-map⊙ (Loop2Grp-map-str (g* ⊙∘ f*)))
     fst (KLoop-∘ (f , idp) (g , idp)) = {!!}
