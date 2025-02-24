@@ -7,6 +7,7 @@ open import 2MagMap
 open import 2Grp
 open import 2GrpAutoEq
 open import Hmtpy2Grp
+open import Hmtpy2Grp2
 
 module Codes where
 

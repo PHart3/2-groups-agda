@@ -1,7 +1,8 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
 open import lib.NType2
+open import lib.FTID
 open import lib.types.Bool
 open import lib.types.Empty
 open import lib.types.Paths
@@ -128,6 +129,48 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
     field
       r-inv : Y ⊙→ X
       sect⊙-eq : f ⊙∘ r-inv == ⊙idf Y
+
+-- induction principle for ⊙-comp
+module _ {i j} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y) where
+
+  ⊙hom-contr-aux :
+    is-contr
+      (Σ (Σ (de⊙ X → de⊙ Y) (λ g → fst f ∼ g))
+        (λ (h , K) → Σ (h (pt X) == pt Y) (λ p → (! (K (pt X)) ∙ snd f == p))))
+  ⊙hom-contr-aux =
+    equiv-preserves-level
+      ((Σ-contr-red
+        {P = (λ (h , K) → Σ (h (pt X) == pt Y) (λ p → (! (K (pt X)) ∙ snd f == p)))}
+        (funhom-contr {f = fst f}))⁻¹)
+
+  ⊙hom-contr : is-contr (Σ (X ⊙→ Y) (λ g → f ⊙-comp g))
+  ⊙hom-contr = equiv-preserves-level lemma {{⊙hom-contr-aux }}
+    where
+      lemma :
+        Σ (Σ (de⊙ X → de⊙ Y) (λ g → fst f ∼ g))
+          (λ (h , K) → Σ (h (pt X) == pt Y) (λ p → (! (K (pt X)) ∙ snd f == p)))
+          ≃
+        Σ (X ⊙→ Y) (λ g → f ⊙-comp g)
+      lemma =
+        equiv
+          (λ ((g , K) , (p , H)) → (g , p) , (K , H))
+          (λ ((h , p) , (H , K)) → (h , H) , (p , K))
+          (λ ((h , p) , (H , K)) → idp)
+          λ ((g , K) , (p , H)) → idp
+
+  ⊙hom-cent : (r : Σ (X ⊙→ Y) (λ g → f ⊙-comp g))
+    → (f , ⊙∼-id f) == r
+  ⊙hom-cent r = contr-path ⊙hom-contr r
+
+  module _ {k}  where
+  
+    ⊙hom-ind : (P : (g : X ⊙→ Y) → (f ⊙-comp g →  Type k))
+      → P f (⊙∼-id f) → {g : X ⊙→ Y} (p : f ⊙-comp g) → P g p
+    ⊙hom-ind P r {g} p = ind (ID-ind {P = P} ⊙hom-cent) r g p
+
+    ⊙hom-ind-β : {P : (g : X ⊙→ Y) → (f ⊙-comp g →  Type k)}
+      → (r : P f (⊙∼-id f)) → ⊙hom-ind P r {f} (⊙∼-id f) == r
+    ⊙hom-ind-β {P} r = ind-eq (ID-ind ⊙hom-cent) r
 
 {- Pointed equivalences -}
 

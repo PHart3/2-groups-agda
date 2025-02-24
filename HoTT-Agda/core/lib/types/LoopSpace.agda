@@ -147,6 +147,42 @@ has-sect⊙.sect⊙-eq (⊙Ω-sect f (sect⊙ r-inv sect⊙-eq)) =
   → Ω-fmap F p ∙ Ω-fmap F q == Ω-fmap F (p ∙ q)
 ∙-Ω-fmap (f , idp) p q = ∙-ap f p q
 
+module _ {i} {X : Type i} where
+
+  Ω-fmap-ap-hnat-aux : {x₁ x₂ x₃ : X} (p₁ : x₂ == x₁) (p₂ : x₂ == x₃) (v : x₃ == x₃)
+    {p₃ : x₃ == x₁} (q : ! p₂ ∙ p₁ == p₃)
+    → ! p₁ ∙ (p₂ ∙ v ∙' ! p₂) ∙' p₁ == ! p₃ ∙ v ∙' p₃
+  Ω-fmap-ap-hnat-aux idp idp v idp = idp
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} where
+
+  Ω-fmap-ap : {f* g* : X ⊙→ Y} → (f* ⊙-comp g*) → Ω-fmap f* ∼ Ω-fmap g*
+  Ω-fmap-ap {f*@(f , idp)} =
+    ⊙hom-ind f*
+      (λ g* _ → Ω-fmap f* ∼ Ω-fmap g*)
+      λ x → idp
+
+  Ω-fmap-ap-hnat : {f g : X ⊙→ Y} (H : f ⊙-comp g) (p : Ω X)
+    →
+    Ω-fmap-ap H p
+      ==
+    Ω-fmap-β f p ∙
+    ap (λ q → ! (snd f) ∙ q ∙' snd f) (hmpty-nat-∙' (fst H) p) ∙'
+    Ω-fmap-ap-hnat-aux (snd f) (fst H (pt X)) (ap (fst g) p) (snd H) ∙'
+    ! (Ω-fmap-β g p)
+  Ω-fmap-ap-hnat {f@(f₀ , idp)} = 
+    ⊙hom-ind f
+      (λ g H → (p : Ω X) →
+        Ω-fmap-ap H p
+          ==
+        Ω-fmap-β f p ∙
+        ap (λ q → ! (snd f) ∙ q ∙' snd f) (hmpty-nat-∙' (fst H) p) ∙'
+        Ω-fmap-ap-hnat-aux (snd f) (fst H (pt X)) (ap (fst g) p) (snd H) ∙'
+        ! (Ω-fmap-β g p))
+     λ p →
+       app= (⊙hom-ind-β f {P = (λ g* _ → Ω-fmap f ∼ Ω-fmap g*)} (λ x → idp)) p ∙
+       ! (ap-idf (hmpty-nat-∙' (λ x → idp) p) ∙ hmpty-nat-∙'-idp p)   
+
 {- iterated loop spaces. [Ω^] and [Ω^'] iterates [Ω] from different sides:
    [Ω^ (S n) X = Ω (Ω^ n X)] and [Ω^' (S n) X = Ω^' n (Ω X)]. -}
 

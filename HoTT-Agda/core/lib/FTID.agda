@@ -58,11 +58,11 @@ module _ {i j} {A : Type i} {B : A → Type j} {f : Π A B} where
     → (f , λ (x : A) → idp {a = f x}) == r
   funhom-cent r = contr-path funhom-contr r
 
-  ∼-ind : ∀ {k} (P : (g : Π A B) → (f ∼ g →  Type k))
+  ∼-ind : ∀ {k} (P : (g : Π A B) → (f ∼ g → Type k))
     → P f (λ x → idp) → (g : Π A B) (p : f ∼ g) → P g p
   ∼-ind P r g p = ind (ID-ind {P = P} funhom-cent) r g p
 
-  ∼-ind-β : ∀ {k} {P : (g : Π A B) →  (f ∼ g →  Type k)} (r : P f (λ x → idp))
+  ∼-ind-β : ∀ {k} {P : (g : Π A B) → (f ∼ g → Type k)} (r : P f (λ x → idp))
     → ∼-ind P r f (λ x → idp) == r
   ∼-ind-β r = ind-eq (ID-ind funhom-cent) r
 

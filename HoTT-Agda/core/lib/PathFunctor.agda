@@ -530,10 +530,14 @@ module _ {i} {A : Type i} where
 
 module _ {i j k} {A : Type i} {B : Type j} {C : Type k}
          (f g : A → B → C) (h : ∀ a b → f a b == g a b) where
+         
   homotopy-naturality2 : {a₀ a₁ : A} {b₀ b₁ : B} (p : a₀ == a₁) (q : b₀ == b₁)
     → ap2 f p q ◃∙ h a₁ b₁ ◃∎ =ₛ h a₀ b₀ ◃∙ ap2 g p q ◃∎
-  homotopy-naturality2 {a₀ = a} {b₀ = b} idp idp =
-    =ₛ-in (! (∙-unit-r (h a b)))
+  homotopy-naturality2 {a₀ = a} {b₀ = b} idp idp = =ₛ-in (! (∙-unit-r (h a b)))
+         
+  ap2CommSq : {a₀ a₁ : A} {b₀ b₁ : B} (p : a₀ == a₁) (q : b₀ == b₁)
+    → h a₀ b₀ ◃∎ =ₛ ap2 f p q ◃∙ h a₁ b₁ ◃∙ ! (ap2 g p q) ◃∎
+  ap2CommSq {a₀ = a} {b₀ = b} idp idp = =ₛ-in (! (∙-unit-r (h a b)))
 
 module _ {i j k} {A : Type i} {B : Type j} {C : Type k}
          {f g : A → B → C} (h : ∀ a b → f a b == g a b) where

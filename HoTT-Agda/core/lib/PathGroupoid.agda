@@ -297,6 +297,10 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → (p₀ ∙ idp ∙' ! p₁) ∙ p₁ ∙ ap f p₃ ∙' ! p₂ == p₀ ∙ ap f p₃ ∙' ! p₂
   ∙-assoc2-!-inv-l-aux idp p₀ p₁ p₂ = ∙-assoc2-!-inv-l-aux2 p₀ p₁ p₂ 
 
+  ∙-assoc2-!-inv-l-aux-idp3 : {x z : A} (p : x == z)
+    → idp == ∙-assoc2-!-inv-l-aux p idp idp idp
+  ∙-assoc2-!-inv-l-aux-idp3 idp = idp
+
   ∙-assoc2-!-inv-l : {x z : A} {y w : B}
     (p₀ : w == f z) (p₁ : y == f x) (p₂ : z == x) (p₃ : x == z)
     → (p₀ ∙ ap f p₂ ∙' ! p₁) ∙ p₁ ∙ ap f p₃ ∙' ! p₀ == p₀ ∙ ap f (p₂ ∙ p₃) ∙' ! p₀

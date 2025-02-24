@@ -71,7 +71,6 @@ module _ {i} {A : Type i} {x y : A} where
     → (! p₁ ∙ idp == ! p₂ ∙ idp) → p₁ == p₂
   ap-post∙idp∘!-inv {p₁} {p₂} = <– (ap-equiv (post∙idp∘!-is-equiv) p₁ p₂)
 
-
 module _ {i j} {A : Type i} {B : Type j} {f g : A → B} where
 
   funext-nat : (a : A) {H₁ H₂ : f ∼ g} (K : H₁ == H₂)
