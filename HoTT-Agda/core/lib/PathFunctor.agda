@@ -157,7 +157,7 @@ module _ {i j} {A : Type i} {B : Type j} (g : A → B) where
 
   !-∙-ap-∙'-!-coher : {y : A} {x : B} (p : x == g y) →
     ! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p)))
-    ==
+      ==
     ap ! (! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p)))) ∙
     !-∙-ap-∙'-! p idp p
   !-∙-ap-∙'-!-coher idp = idp
@@ -169,7 +169,7 @@ module _ {i j} {A : Type i} {B : Type j} (g : A → B) where
   idp-ap-!-!-∙-∙'-coher : {x y : A} (p : x == y) →
     ! (!-inv-r (ap g (! p))) ∙
     ap (_∙_ (ap g (! p))) (! (∙'-unit-l (! (ap g (! p)))))
-    ==
+      ==
     idp-ap-!-!-∙-∙' p ∙
     ! (ap (λ q → ap g (! p) ∙ ap g q ∙' ! (ap g (! p)))
       (! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p))))) ∙ idp
@@ -180,11 +180,18 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
   ∘-ap : {x y : A} (p : x == y) → ap g (ap f p) == ap (g ∘ f) p
   ∘-ap idp = idp
 
+  ∘-∘-ap : ∀ {l} {D : Type l} (h : D → A) {x y : D} (p : x == y)
+    → ap g (ap f (ap h p)) == ap (g ∘ f ∘ h) p
+  ∘-∘-ap h idp = idp
+
   ap-∘ : {x y : A} (p : x == y) → ap (g ∘ f) p == ap g (ap f p)
   ap-∘ idp = idp
   
   !-ap-∘ : {x y : A} (p : x == y) → ! (ap (g ∘ f) p) == ap g (! (ap f p))
   !-ap-∘ idp = idp
+
+  !-∘-ap : {x y : A} (p : x == y) → ap g (! (ap f p)) == ! (ap (g ∘ f) p)
+  !-∘-ap idp = idp
 
   ∘-ap-!-inv-r : {x y : A} (p : x == y) → ap (g ∘ f) p ∙ ap g (! (ap f p)) == idp 
   ∘-ap-!-inv-r idp = idp
@@ -616,8 +623,7 @@ module _ {i} {A : Type i} where
     p₁ ∙ (p₂ ∙ p₃ ∙' ! p₄) ∙' ! p₅
       ==
     (p₁ ∙ p₂) ∙ p₃ ∙' ! (p₅ ∙ p₄)
-  hnat-∙'̇-∙-aux p₁ p₂ idp idp idp = ! (∙-assoc p₁ p₂ idp)
-
+  hnat-∙'̇-∙-aux p₁ p₂ p₃ idp idp = ! (∙-assoc p₁ p₂ p₃) 
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f₁ f₂ : A → B}
   (H : (x : A) → f₁ x == f₂ x) where
