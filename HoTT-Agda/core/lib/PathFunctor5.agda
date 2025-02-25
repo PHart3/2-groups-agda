@@ -17,7 +17,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : 
   {H₃ : (x : A) → g₁ (f₃ x) == g₂ (f₄ x)}
   {H₄ : (x : A) → f₅ x == f₆ x} {H₅ : (x : A) → f₆ x == f₄ x}
   {x y : A} (p : x == y)
-  {σ₁ : _} {σ₂ : _} {σ₃ : _} {σ₄ : _} {σ₅ : _}
+  (σ₁ : _) (σ₂ : _) (σ₃ : _) (σ₄ : _) (σ₅ : _)
   (e₁ : hmpty-nat-∙' H₁ p == ↯ σ₁) (e₂ : hmpty-nat-∙' H₂ p == ↯ σ₂)
   (e₃ : hmpty-nat-∙' H₃ p == ↯ σ₃) (e₄ : hmpty-nat-∙' H₄ p == ↯ σ₄) (e₅ : hmpty-nat-∙' H₅ p == ↯ σ₅) where
 
