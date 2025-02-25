@@ -10,7 +10,6 @@ open import Delooping
 open import LoopK
 open import KFunctor-comp
 open import SqKLoop
-open import KFunctor-comp-aux4
 open import apK-aux2
 
 module KLoop-ptr-comp-aux0 where
