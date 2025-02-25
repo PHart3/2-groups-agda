@@ -22,8 +22,8 @@ module _ {i j} {G : Type i} {{η : CohGrp G}} {X : Type j} {{_ : has-level 2 X}}
       hmpty-nat-∙' H₂ (loop x) ∙' ap2 (λ p₁ p₂ → p₁ ∙ ap g (loop x) ∙' ! p₂) (! base∼∼) (! base∼∼))
     where
 
-    K₂-∼-ind : H₁ ∼ H₂
-    K₂-∼-ind =
+    K₂-∼∼-ind : H₁ ∼ H₂
+    K₂-∼∼-ind =
       K₂-elim {P = λ x → H₁ x == H₂ x} base∼∼
       (λ x → from-hmpty-nat-d H₁ H₂ (loop x) (loop∼∼ x))
       (λ x y → PPOver-0type _ _)
