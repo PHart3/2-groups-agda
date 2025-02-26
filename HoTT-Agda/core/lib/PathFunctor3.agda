@@ -28,7 +28,8 @@ module PFunc3 {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} 
     ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘  (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘  (λ q → H₃ x ∙ q ∙' ! (H₃ y)))
       (hnat-∙'̇-!-aux (ap (g₂ ∘ f₄) p) (ap g₂ (H₄ x ∙ H₅ x)) (ap g₂ (H₄ y ∙ H₅ y))) ◃∙
     ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘ (λ q → H₃ x ∙ q ∙' ! (H₃ y)))
-      (! (ap (λ q → ! (ap g₂ (H₄ x ∙ H₅ x)) ∙ q ∙' ! (! (ap g₂ (H₄ y ∙ H₅ y)))) (ap (λ q → ap g₂ (H₄ x ∙ H₅ x) ∙ q ∙' ! (ap g₂ (H₄ y ∙ H₅ y))) (∘-ap g₂ f₄ p)))) ◃∙
+      (! (ap (λ q → ! (ap g₂ (H₄ x ∙ H₅ x)) ∙ q ∙' ! (! (ap g₂ (H₄ y ∙ H₅ y)))) (ap (λ q → ap g₂ (H₄ x ∙ H₅ x) ∙ q ∙' ! (ap g₂ (H₄ y ∙ H₅ y)))
+        (∘-ap g₂ f₄ p)))) ◃∙
     ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘ (λ q → H₃ x ∙ q ∙' ! (H₃ y)))
       (! (ap (λ q → ! (ap g₂ (H₄ x ∙ H₅ x)) ∙ q ∙' ! (! (ap g₂ (H₄ y ∙ H₅ y)))) (ap-∙-∙'! g₂ (H₄ x ∙ H₅ x) (ap f₄ p) (H₄ y ∙ H₅ y)))) ◃∙
     ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘ (λ q → H₃ x ∙ q ∙' ! (H₃ y)))
@@ -77,7 +78,8 @@ module PFunc3 {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} 
     ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘  (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘  (λ q → H₃ x ∙ q ∙' ! (H₃ y)))
       (hnat-∙'̇-!-aux (ap (g₂ ∘ f₄) p) (ap g₂ (H₄ x ∙ H₅ x)) (ap g₂ (H₄ y ∙ H₅ y))) ◃∙
     ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘ (λ q → H₃ x ∙ q ∙' ! (H₃ y)))
-      (! (ap (λ q → ! (ap g₂ (H₄ x ∙ H₅ x)) ∙ q ∙' ! (! (ap g₂ (H₄ y ∙ H₅ y)))) (ap (λ q → ap g₂ (H₄ x ∙ H₅ x) ∙ q ∙' ! (ap g₂ (H₄ y ∙ H₅ y))) (∘-ap g₂ f₄ p)))) ◃∙
+      (! (ap (λ q → ! (ap g₂ (H₄ x ∙ H₅ x)) ∙ q ∙' ! (! (ap g₂ (H₄ y ∙ H₅ y)))) (ap (λ q → ap g₂ (H₄ x ∙ H₅ x) ∙ q ∙' ! (ap g₂ (H₄ y ∙ H₅ y)))
+        (∘-ap g₂ f₄ p)))) ◃∙
     ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘ (λ q → H₃ x ∙ q ∙' ! (H₃ y)))
       (! (ap (λ q → ! (ap g₂ (H₄ x ∙ H₅ x)) ∙ q ∙' ! (! (ap g₂ (H₄ y ∙ H₅ y)))) (ap-∙-∙'! g₂ (H₄ x ∙ H₅ x) (ap f₄ p) (H₄ y ∙ H₅ y)))) ◃∙
     ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘ (λ q → H₃ x ∙ q ∙' ! (H₃ y)))
@@ -105,7 +107,8 @@ module PFunc3 {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} 
     ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘  (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘  (λ q → H₃ x ∙ q ∙' ! (H₃ y)))
       (hnat-∙'̇-!-aux (ap (g₂ ∘ f₄) p) (ap g₂ (H₄ x ∙ H₅ x)) (ap g₂ (H₄ y ∙ H₅ y))) ◃∙
     ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘ (λ q → H₃ x ∙ q ∙' ! (H₃ y)))
-      (! (ap (λ q → ! (ap g₂ (H₄ x ∙ H₅ x)) ∙ q ∙' ! (! (ap g₂ (H₄ y ∙ H₅ y)))) (ap (λ q → ap g₂ (H₄ x ∙ H₅ x) ∙ q ∙' ! (ap g₂ (H₄ y ∙ H₅ y))) (∘-ap g₂ f₄ p)))) ◃∙
+      (! (ap (λ q → ! (ap g₂ (H₄ x ∙ H₅ x)) ∙ q ∙' ! (! (ap g₂ (H₄ y ∙ H₅ y)))) (ap (λ q → ap g₂ (H₄ x ∙ H₅ x) ∙ q ∙' ! (ap g₂ (H₄ y ∙ H₅ y)))
+        (∘-ap g₂ f₄ p)))) ◃∙
     ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘ (λ q → H₃ x ∙ q ∙' ! (H₃ y)))
       (! (ap (λ q → ! (ap g₂ (H₄ x ∙ H₅ x)) ∙ q ∙' ! (! (ap g₂ (H₄ y ∙ H₅ y)))) (ap-∙-∙'! g₂ (H₄ x ∙ H₅ x) (ap f₄ p) (H₄ y ∙ H₅ y)))) ◃∙
     ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘ (λ q → H₃ x ∙ q ∙' ! (H₃ y)))

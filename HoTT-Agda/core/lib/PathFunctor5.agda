@@ -13,15 +13,15 @@ module lib.PathFunctor5 where
 
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {D : Type ℓ₄} (g₁ : B → C) (g₂ : D → C)
   {f₁ : A → C} {f₂ f₃ : A → B} {f₄ : A → D} {f₅ f₆ : A → D}
-  {H₁ : (x : A) → g₁ (f₂ x) == f₁ x} {H₂ : (x : A) → f₂ x == f₃ x}
-  {H₃ : (x : A) → g₁ (f₃ x) == g₂ (f₄ x)}
-  {H₄ : (x : A) → f₅ x == f₆ x} {H₅ : (x : A) → f₆ x == f₄ x}
   {x y : A} (p : x == y)
-  (σ₁ : _) (σ₂ : _) (σ₃ : _) (σ₄ : _) (σ₅ : _)
+  {H₁ : (x : A) → g₁ (f₂ x) == f₁ x} {H₂ : (x : A) → f₂ x == f₃ x}
+  (H₃ : (x : A) → g₁ (f₃ x) == g₂ (f₄ x))
+  {H₄ : (x : A) → f₅ x == f₆ x} {H₅ : (x : A) → f₆ x == f₄ x}
+  (σ₁ : _) (σ₂ : _) (σ₄ : _) (σ₅ : _)
   (e₁ : hmpty-nat-∙' H₁ p == ↯ σ₁) (e₂ : hmpty-nat-∙' H₂ p == ↯ σ₂)
-  (e₃ : hmpty-nat-∙' H₃ p == ↯ σ₃) (e₄ : hmpty-nat-∙' H₄ p == ↯ σ₄) (e₅ : hmpty-nat-∙' H₅ p == ↯ σ₅) where
+  (e₄ : hmpty-nat-∙' H₄ p == ↯ σ₄) (e₅ : hmpty-nat-∙' H₅ p == ↯ σ₅) where
 
-  open PFunc4 g₁ g₂ p e₁ e₂ e₃ e₄ e₅
+  open PFunc4 g₁ g₂ {H₃ = H₃} p e₁ e₂ e₄ e₅
 
   abstract
     hnat-∙'-!ap-!ap∙-=ₛ :
@@ -33,11 +33,12 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : 
       ap-seq (λ q → ! (H₁ x) ∙ ap g₁ q ∙' ! (! (H₁ y))) σ₂ ∙∙
       ap (λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) (ap-∙-∙'! g₁ (H₂ x) (ap f₃ p) (H₂ y)) ◃∙
       ap (λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) (ap (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) (∘-ap g₁ f₃ p)) ◃∙
-      ap-seq ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y)))) σ₃ ∙∙
+      ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y)))) (hmpty-nat-∙' H₃ p) ◃∙
       ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘  (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘  (λ q → H₃ x ∙ q ∙' ! (H₃ y)))
         (hnat-∙'̇-!-aux (ap (g₂ ∘ f₄) p) (ap g₂ (H₄ x ∙ H₅ x)) (ap g₂ (H₄ y ∙ H₅ y))) ◃∙
       ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘ (λ q → H₃ x ∙ q ∙' ! (H₃ y)))
-        (! (ap (λ q → ! (ap g₂ (H₄ x ∙ H₅ x)) ∙ q ∙' ! (! (ap g₂ (H₄ y ∙ H₅ y)))) (ap (λ q → ap g₂ (H₄ x ∙ H₅ x) ∙ q ∙' ! (ap g₂ (H₄ y ∙ H₅ y))) (∘-ap g₂ f₄ p)))) ◃∙
+        (! (ap (λ q → ! (ap g₂ (H₄ x ∙ H₅ x)) ∙ q ∙' ! (! (ap g₂ (H₄ y ∙ H₅ y)))) (ap (λ q → ap g₂ (H₄ x ∙ H₅ x) ∙ q ∙' ! (ap g₂ (H₄ y ∙ H₅ y)))
+          (∘-ap g₂ f₄ p)))) ◃∙
       ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘ (λ q → H₃ x ∙ q ∙' ! (H₃ y)))
         (! (ap (λ q → ! (ap g₂ (H₄ x ∙ H₅ x)) ∙ q ∙' ! (! (ap g₂ (H₄ y ∙ H₅ y)))) (ap-∙-∙'! g₂ (H₄ x ∙ H₅ x) (ap f₄ p) (H₄ y ∙ H₅ y)))) ◃∙
       ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘ (λ q → H₃ x ∙ q ∙' ! (H₃ y)))
