@@ -19,21 +19,6 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
 
   module _ {f₁ : G₁ → G₂} (σ₁ : WkMagHomStr f₁) {f₂ : G₂ → G₃} (σ₂ : WkMagHomStr f₂) where
 
-    K₂-map-∘-hnat : (x : G₁) →
-      ap (K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}})) (loop G₁ x)
-        ==
-      ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ x)
-    K₂-map-∘-hnat x =
-    -- ap (K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}})) (loop G₁ x)
-      K₂-map-β-pts (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}) x ∙
-    -- loop G₃ (f₂ (f₁ x))
-      ! (K₂-map-β-pts σ₂ (f₁ x)) ∙
-    -- ap (K₂-map σ₂) (loop G₂ (f₁ x))
-      ! (ap (ap (K₂-map σ₂)) (K₂-map-β-pts σ₁ x)) ∙
-    -- ap (K₂-map σ₂) (ap (K₂-map σ₁) (loop G₁ x))
-      ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x)
-    -- ap (K₂-map σ₂ ∘ K₂-map σ₁) (loop G₁ x)
-
     open K₂-map-∘-aux σ₁ σ₂
 
     map₁-∘ = K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}})
@@ -44,6 +29,10 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
       K₂-∼-ind
         map₁-∘ map₂-∘
         idp
-        K₂-map-∘-hnat
+        (λ x →
+          K₂-map-β-pts (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}) x ∙
+          ! (K₂-map-β-pts σ₂ (f₁ x)) ∙
+          ! (ap (ap (K₂-map σ₂)) (K₂-map-β-pts σ₁ x)) ∙
+          ∘-ap (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x))
         K₂-map-∘-coher
     snd K₂-map-∘ = idp
