@@ -2,6 +2,7 @@
 
 open import lib.Basics
 open import 2Grp
+open import 2Magma
 open import Hmtpy2Grp
 open import KFunctor
 open import Delooping

@@ -201,7 +201,10 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
 
   idf2G : CohGrpHomStr (idf G)
   map-comp idf2G x y = idp
-  map-al idf2G x y z = ∙-unit-r (! (al x y z)) ∙ ap ! (! (ap-idf (al x y z)))
+  map-al idf2G = map-al-idfG
+    where abstract
+      map-al-idfG : (x y z : G) → ! (al x y z) ∙ idp == ! (ap (idf G) (al x y z))
+      map-al-idfG x y z = ∙-unit-r (! (al x y z)) ∙ ap ! (! (ap-idf (al x y z)))
 
 module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
   {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}} where
