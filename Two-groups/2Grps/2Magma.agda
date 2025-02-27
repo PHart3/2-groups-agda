@@ -186,7 +186,10 @@ module _ {i} {G : Type i} {{η : WkMag G}} where
 
   idf2M : WkMagHomStr (idf G)
   map-comp idf2M x y = idp
-  map-al idf2M x y z = ∙-unit-r (! (al x y z)) ∙ ap ! (! (ap-idf (al x y z)))
+  map-al idf2M = map-al-idf
+    where abstract
+      map-al-idf : (x y z : G) → ! (al x y z) ∙ idp == ! (ap (idf G) (al x y z))
+      map-al-idf x y z = ∙-unit-r (! (al x y z)) ∙ ap ! (! (ap-idf (al x y z)))
 
 module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
   {{η₁ : WkMag G₁}} {{η₂ : WkMag G₂}} {{η₃ : WkMag G₃}} where

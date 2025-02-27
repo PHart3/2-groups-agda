@@ -39,6 +39,15 @@ module KLoop-ptr-comp-aux0 where
           ν₂
           _ x
 
+      K₂-β-3 : hmpty-nat-∙' (fst (sq-KΩ y₀ z₀ (g , idp))) (loop (y₀ == y₀) (ap f x)) ◃∎ =ₛ σ₃
+      K₂-β-3 = =ₛ-in $
+        K₂-∼-ind-β
+          (g ∘ K₂-rec-x₀ y₀ z₀)
+          (K₂-rec-y₀ y₀ z₀ ∘ K₂-map (Loop2Grp-map-str (g , idp)))
+          idp
+          ν₃
+          _ (ap f x)
+
       K₂-β-4 : hmpty-nat-∙' (fst (apK₂ (Loop2Grp-map-∘ (g , idp) (f , idp)))) (loop (x₀ == x₀) x) == ↯ σ₄
       K₂-β-4 =
         K₂-∼-ind-β

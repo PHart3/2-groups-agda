@@ -65,6 +65,14 @@ module KLoop-ptr-comp-defs  {i j k} {X : Type i} {Y : Type j} {Z : Type k}
       ! (ap (ap (K₂-rec-y₀ x₀ y₀)) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) v)) ∙
       ! (ap-∘ (K₂-rec-y₀ x₀ y₀) (K₂-map (Loop2Grp-map-str (f , idp))) (loop (x₀ == x₀) v)))
 
+  ν₃ =
+    (λ v → 
+      ap-∘ g (K₂-rec-x₀ y₀ z₀) (loop (y₀ == y₀) v) ∙
+      ap (ap g) (K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) v) ∙
+      ! (K₂-rec-hom-β-pts z₀ (idf2G {{Loop2Grp z₀}}) (ap g v)) ∙
+      ! (ap (ap (K₂-rec-y₀ y₀ z₀)) (K₂-map-β-pts (Loop2Grp-map-str (g , idp)) v)) ∙
+      ! (ap-∘ (K₂-rec-y₀ y₀ z₀) (K₂-map (Loop2Grp-map-str (g , idp))) (loop (y₀ == y₀) v)))
+
   ν₄ = 
     (λ v →
       K₂-map-β-pts (Loop2Grp-map-str (g ∘ f , idp)) v ∙

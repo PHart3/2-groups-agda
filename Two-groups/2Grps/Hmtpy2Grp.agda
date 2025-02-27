@@ -128,34 +128,36 @@ module _ {i} {X : Type i} where
 
 module _ {i j} {X : Type i} {Y : Type j} (f : X → Y) where
 
-  red-aux1 : {x y z w : X} (p₁ : x == y) (p₂ : y == z) (p₃ : z == w) →
-    ! (! (∙-assoc (ap f p₁) (ap f p₂) (ap f p₃))) ∙
-    ap (_∙_ (ap f p₁)) (∙-ap f p₂ p₃) ∙
-    ∙-ap f p₁ (p₂ ∙ p₃)
-    ==
-    ap (λ v → v ∙ ap f p₃) (∙-ap f p₁ p₂) ∙
-    ∙-ap f (p₁ ∙ p₂) p₃ ∙
-    ! (ap (ap f) (! (∙-assoc p₁ p₂ p₃)))
-  red-aux1 idp idp _ = idp
+  abstract
+    red-aux1 : {x y z w : X} (p₁ : x == y) (p₂ : y == z) (p₃ : z == w) →
+      ! (! (∙-assoc (ap f p₁) (ap f p₂) (ap f p₃))) ∙
+      ap (_∙_ (ap f p₁)) (∙-ap f p₂ p₃) ∙
+      ∙-ap f p₁ (p₂ ∙ p₃)
+      ==
+      ap (λ v → v ∙ ap f p₃) (∙-ap f p₁ p₂) ∙
+      ∙-ap f (p₁ ∙ p₂) p₃ ∙
+      ! (ap (ap f) (! (∙-assoc p₁ p₂ p₃)))
+    red-aux1 idp idp _ = idp
 
-  red-aux2 : ∀ {k} {Z : Type k} (g : Y → Z) {x y z : X}
-    (p₁ : x == y) (p₂ : y == z) → 
-    ∙-ap g (ap f p₁) (ap f p₂) ∙
-    ap (ap g) (∙-ap f p₁ p₂)
-    ==
-    ! (ap2 _∙_ (ap-∘ g f p₁) (ap-∘ g f p₂)) ∙
-    ∙-ap (g ∘ f) p₁ p₂ ∙
-    ap-∘ g f (p₁ ∙ p₂)
-  red-aux2 g idp idp = idp
+    red-aux2 : ∀ {k} {Z : Type k} (g : Y → Z) {x y z : X}
+      (p₁ : x == y) (p₂ : y == z) → 
+      ∙-ap g (ap f p₁) (ap f p₂) ∙
+      ap (ap g) (∙-ap f p₁ p₂)
+      ==
+      ! (ap2 _∙_ (ap-∘ g f p₁) (ap-∘ g f p₂)) ∙
+      ∙-ap (g ∘ f) p₁ p₂ ∙
+      ap-∘ g f (p₁ ∙ p₂)
+    red-aux2 g idp idp = idp
 
 module _ {i} {X : Type i} where
 
-  red-aux3 : {x y z : X} (p₁ : x == y) (p₂ : y == z)
-    →
-    idp
-    ==
-    ! (ap2 _∙_ (ap-idf p₁) (ap-idf p₂)) ∙ ∙-ap (λ x → x) p₁ p₂ ∙ ap-idf (p₁ ∙ p₂)
-  red-aux3 idp idp = idp
+  abstract
+    red-aux3 : {x y z : X} (p₁ : x == y) (p₂ : y == z)
+      →
+      idp
+      ==
+      ! (ap2 _∙_ (ap-idf p₁) (ap-idf p₂)) ∙ ∙-ap (λ x → x) p₁ p₂ ∙ ap-idf (p₁ ∙ p₂)
+    red-aux3 idp idp = idp
 
 open CohGrpHom
 open WkMagHomStr
