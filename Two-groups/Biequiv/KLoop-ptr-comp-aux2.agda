@@ -76,8 +76,13 @@ module KLoop-ptr-comp-aux2 where
           ap (λ q → q) (ap (λ q → q) (∘-ap (fst (K₂-rec-hom z₀ idf2G ⊙∘ K₂-map⊙ (Loop2Grp-map-str (g , idp)))) (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp)))) (loop (x₀ == x₀) x))) ◃∎ ∎ₛ
 
     abstract
-      KLoop-∘-coher : Λ₁ =ₛ Λ₂
+      KLoop-∘-coher : Λ₁ =ₛ Λ₃
       KLoop-∘-coher =
         Λ₁
           =ₛ⟨ 14 & 1 & τ ⟩
-        Λ₂ ∎ₛ
+        Λ₂
+          =ₛ₁⟨ 30 & 2 &
+            ap-!-!-inv
+              (ap (fst (K₂-rec-hom z₀ idf2G)))
+              (K₂-map-β-pts (cohmaghom (ap g) {{Loop2Grp-map-str (g , idp)}} ∘2Mσ cohmaghom (ap f) {{Loop2Grp-map-str (f , idp)}}) x) ⟩
+        Λ₃ ∎ₛ

@@ -24,6 +24,10 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → ap f (! p) ∙ ap f p == idp
   ap-!-inv-l idp = idp
 
+  ap-!-!-inv : {x y : A} (p : x == y)
+    → ! (ap f p) ∙ ! (ap f (! p)) == idp
+  ap-!-!-inv idp = idp
+
   ∙-ap : {x y z : A} (p : x == y) (q : y == z)
     → ap f p ∙ ap f q == ap f (p ∙ q)
   ∙-ap idp q = idp
