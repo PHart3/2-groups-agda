@@ -17,7 +17,7 @@ module KLoop-ptr-comp-aux1 where
 {-
     abstract
       KLoop-∘-coher :
-        hmpty-nat-∙'
+        hmtpy-nat-∙'
           (λ u →
             ! (fst (sq-KΩ x₀ z₀ (g ∘ f , idp)) u) ∙
             ap g (fst (sq-KΩ x₀ y₀ (f , idp)) u) ∙
@@ -26,6 +26,6 @@ module KLoop-ptr-comp-aux1 where
               fst (K₂-map-∘ (Loop2Grp-map-str (f , idp)) (Loop2Grp-map-str (g , idp))) u)))
           (loop (x₀ == x₀) x) ◃∎
           =ₛ
-        hmpty-nat-∙' (λ u → idp) (loop (x₀ == x₀) x) ◃∎ 
+        hmtpy-nat-∙' (λ u → idp) (loop (x₀ == x₀) x) ◃∎ 
       KLoop-∘-coher = ?
 -}

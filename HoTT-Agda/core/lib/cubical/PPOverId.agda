@@ -55,9 +55,9 @@ module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
     (q₁ : idp == e₃ ∙ idp ∙' ! e₂)
     (q₂ : ap f r₂ == e₂ ∙ ap g r₂ ∙' ! e₁)
     → 
-    ∙-idp-!-∙'-rot e₃ e₂ q₁ ∙ᵈ from-hmpty-nat f g r₂ q₂
+    ∙-idp-!-∙'-rot e₃ e₂ q₁ ∙ᵈ from-hmtpy-nat f g r₂ q₂
       ==
-    from-hmpty-nat f g r₂ (ap2 _∙_ q₁ q₂ ∙ ∙-assoc2-!-inv-l-aux g r₂ e₃ e₂ e₁ ∙ idp)
+    from-hmtpy-nat f g r₂ (ap2 _∙_ q₁ q₂ ∙ ∙-assoc2-!-inv-l-aux g r₂ e₃ e₂ e₁ ∙ idp)
   PPOver-from-hnat-aux3 idp q₁ q₂ = PPOver-from-hnat-aux4 q₁ q₂
 
   PPOver-from-hnat-aux2 :
@@ -68,9 +68,9 @@ module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
     →
     q₃ == ap2 _∙_ q₁ q₂ ∙ ∙-assoc2-!-inv-l g e₁ e₂ idp r₂ ∙ idp
     →
-    ∙-idp-!-∙'-rot e₁ e₂ q₁ ∙ᵈ from-hmpty-nat f g r₂ q₂
+    ∙-idp-!-∙'-rot e₁ e₂ q₁ ∙ᵈ from-hmtpy-nat f g r₂ q₂
       ==
-    from-hmpty-nat f g r₂ q₃
+    from-hmtpy-nat f g r₂ q₃
   PPOver-from-hnat-aux2 r₂ q₁ q₂ idp = PPOver-from-hnat-aux3 r₂ q₁ q₂
 
   PPOver-from-hnat-aux :
@@ -81,7 +81,7 @@ module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
     →
     ∙-ap f r₁ r₂ ∙ q₃ == ap2 _∙_ q₁ q₂ ∙ ∙-assoc2-!-inv-l g e₁ e₂ r₁ r₂ ∙ idp
     →
-    from-hmpty-nat f g r₁ {e₁ = e₁} q₁ ∙ᵈ from-hmpty-nat f g r₂ q₂ == from-hmpty-nat f g (r₁ ∙ r₂) q₃
+    from-hmtpy-nat f g r₁ {e₁ = e₁} q₁ ∙ᵈ from-hmtpy-nat f g r₂ q₂ == from-hmtpy-nat f g (r₁ ∙ r₂) q₃
   PPOver-from-hnat-aux idp r₂ q₁ q₂ q₃ τ = PPOver-from-hnat-aux2 r₂ q₁ q₂ τ
 
   PPOver-from-hnat :
@@ -94,5 +94,5 @@ module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
       ==
     ap2 _∙_ q₁ q₂ ∙ ∙-assoc2-!-inv-l g e e r₁ r₂ ∙ ap (λ p → e ∙ ap g p ∙' ! e) s
     → 
-    PPOver s (from-hmpty-nat f g r₁ {e₁ = e} q₁ ∙ᵈ from-hmpty-nat f g r₂ q₂) (from-hmpty-nat f g r₃ q₃) 
+    PPOver s (from-hmtpy-nat f g r₁ {e₁ = e} q₁ ∙ᵈ from-hmtpy-nat f g r₂ q₂) (from-hmtpy-nat f g r₃ q₃) 
   PPOver-from-hnat r₁ r₂ idp q₁ q₂ q₃ τ = PPOver-from-hnat-aux r₁ r₂ q₁ q₂ q₃ τ 

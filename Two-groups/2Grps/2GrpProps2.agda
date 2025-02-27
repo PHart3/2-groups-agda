@@ -42,7 +42,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
       al y x id ◃∎
         =ₛ₁⟨ 4 & 1 & ∘-ap (mu y) (mu x) (lam id) ⟩
       _
-        =ₛ⟨ 4 & 1 & hmpty-nat-∙◃ (al y x) (lam id) ⟩
+        =ₛ⟨ 4 & 1 & hmtpy-nat-∙◃ (al y x) (lam id) ⟩
       ! (ap (λ z → mu z id) (rho (mu y x))) ◃∙
       ! (ap (λ z → mu z id) (al y x id)) ◃∙
       ! (al y (mu x id) id) ◃∙
@@ -205,7 +205,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         ! (al (inv x) x id) ◃∙
         ! (ap (λ z → mu (inv x) (mu x z)) (linv x)) ◃∙
         ap (mu (inv x)) (ap (mu x) (linv x) ∙ rho x) ◃∎
-          =ₛ⟨ 2 & 1 & hmpty-nat-∙◃! rho (linv x) ⟩
+          =ₛ⟨ 2 & 1 & hmtpy-nat-∙◃! rho (linv x) ⟩
         ap (λ z → z) (linv x) ◃∙
         ! (lam id) ◃∙
         rho id ◃∙

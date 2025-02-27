@@ -21,7 +21,7 @@ module KLoop-ptr-comp-defs2  {i j k} {X : Type i} {Y : Type j} {Z : Type k}
   open import KLoop-ptr-comp-defs f g x₀ x
 
   Λ₀ =
-    hmpty-nat-∙'
+    hmtpy-nat-∙'
       (λ u →
         ! (fst (sq-KΩ x₀ z₀ (g ∘ f , idp)) u) ∙
         ap g (fst (sq-KΩ x₀ y₀ (f , idp)) u) ∙
@@ -45,7 +45,7 @@ module KLoop-ptr-comp-defs2  {i j k} {X : Type i} {Y : Type j} {Z : Type k}
     ap (ap g) (! (ap-∘ (K₂-rec-y₀ x₀ y₀) (K₂-map (Loop2Grp-map-str (f , idp))) (loop (x₀ == x₀) x))) ◃∙
     idp ◃∙
     ap (λ q → q) (ap (λ q → q) (∘-ap g (λ z → fst (K₂-rec-hom y₀ idf2G ⊙∘ K₂-map⊙ (Loop2Grp-map-str (f , idp))) z) (loop (x₀ == x₀) x))) ◃∙
-    ap (λ q → q) (hmpty-nat-∙' (λ u → fst (sq-KΩ y₀ z₀ (g , idp)) (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp))) u)) (loop (x₀ == x₀) x)) ◃∙
+    ap (λ q → q) (hmtpy-nat-∙' (λ u → fst (sq-KΩ y₀ z₀ (g , idp)) (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp))) u)) (loop (x₀ == x₀) x)) ◃∙
     idp ◃∙
     ap (λ q → q)
       (! (ap (λ q → q) (ap (λ q → q) (∘-ap (fst (K₂-rec-hom z₀ idf2G)) (λ z → fst (K₂-map⊙ (Loop2Grp-map-str (g , idp)) ⊙∘ K₂-map⊙ (Loop2Grp-map-str (f , idp))) z)

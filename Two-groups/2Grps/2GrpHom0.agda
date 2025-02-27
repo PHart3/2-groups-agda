@@ -280,7 +280,7 @@ module MapInv0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
       ! (al (map (inv x)) (map x) (inv (map x))) ◃∙
       ! (ap (mu (map (inv x))) (rinv (map x))) ◃∙
       rho (map (inv x)) ◃∎
-        =ₛ⟨ 23 & 1 & hmpty-nat-∙◃! (λ z → ap (λ v → mu v z) map-id) (map-inv x) ⟩
+        =ₛ⟨ 23 & 1 & hmtpy-nat-∙◃! (λ z → ap (λ v → mu v z) map-id) (map-inv x) ⟩
       _
         =ₛ₁⟨ 17 & 1 & !-ap-∘ (mu (map (inv x))) (mu (map x)) (map-inv x) ⟩
       _

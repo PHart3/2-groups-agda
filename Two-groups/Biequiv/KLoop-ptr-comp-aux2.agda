@@ -22,7 +22,7 @@ module KLoop-ptr-comp-aux2 where
 
     abstract
       K₂-β-3-β-pts :
-        hmpty-nat-∙' (fst (sq-KΩ y₀ z₀ (g , idp))) (ap (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp)))) (loop (x₀ == x₀) x)) ◃∎
+        hmtpy-nat-∙' (fst (sq-KΩ y₀ z₀ (g , idp))) (ap (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp)))) (loop (x₀ == x₀) x)) ◃∎
           =ₛ
         ap (ap (λ z → fst ((g , idp) ⊙∘ K₂-rec-hom y₀ idf2G) z)) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x) ◃∙
         ap-∘ g (K₂-rec-x₀ y₀ z₀) (loop (y₀ == y₀) (ap f x)) ◃∙
@@ -32,10 +32,10 @@ module KLoop-ptr-comp-aux2 where
         ! (ap-∘ (K₂-rec-y₀ y₀ z₀) (K₂-map (Loop2Grp-map-str (g , idp))) (loop (y₀ == y₀) (ap f x))) ◃∙
         ! (ap (ap (λ z → fst (K₂-rec-hom z₀ idf2G ⊙∘ K₂-map⊙ (Loop2Grp-map-str (g , idp))) z)) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x)) ◃∎
       K₂-β-3-β-pts =
-        hmpty-nat-∙' (fst (sq-KΩ y₀ z₀ (g , idp))) (ap (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp)))) (loop (x₀ == x₀) x)) ◃∎
-          =ₛ⟨ apCommSq2◃' (λ (p : base (y₀ == y₀) == base (y₀ == y₀)) → hmpty-nat-∙' (fst (sq-KΩ y₀ z₀ (g , idp))) p) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x) ⟩
+        hmtpy-nat-∙' (fst (sq-KΩ y₀ z₀ (g , idp))) (ap (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp)))) (loop (x₀ == x₀) x)) ◃∎
+          =ₛ⟨ apCommSq2◃' (λ (p : base (y₀ == y₀) == base (y₀ == y₀)) → hmtpy-nat-∙' (fst (sq-KΩ y₀ z₀ (g , idp))) p) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x) ⟩
         ap (ap (fst ((g , idp) ⊙∘ K₂-rec-hom y₀ idf2G))) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x) ◃∙
-        hmpty-nat-∙' (fst (sq-KΩ y₀ z₀ (g , idp))) (loop (y₀ == y₀) (ap f x)) ◃∙
+        hmtpy-nat-∙' (fst (sq-KΩ y₀ z₀ (g , idp))) (loop (y₀ == y₀) (ap f x)) ◃∙
         ! (ap (ap (λ z → fst (K₂-rec-hom z₀ idf2G ⊙∘ K₂-map⊙ (Loop2Grp-map-str (g , idp))) z)) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x)) ◃∎
           =ₛ⟨ 1 & 1 & K₂-β-3 ⟩
         ap (ap (fst ((g , idp) ⊙∘ K₂-rec-hom y₀ idf2G))) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x) ◃∙
@@ -49,7 +49,7 @@ module KLoop-ptr-comp-aux2 where
     private
       abstract
         τ :
-          ap (λ q → q) (hmpty-nat-∙' (λ u → fst (sq-KΩ y₀ z₀ (g , idp)) (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp))) u)) (loop (x₀ == x₀) x)) ◃∎
+          ap (λ q → q) (hmtpy-nat-∙' (λ u → fst (sq-KΩ y₀ z₀ (g , idp)) (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp))) u)) (loop (x₀ == x₀) x)) ◃∎
             =ₛ
           ap (λ q → q) (ap-∘ (fst ((g , idp) ⊙∘ K₂-rec-hom y₀ idf2G)) (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp)))) (loop (x₀ == x₀) x)) ◃∙
           ap (λ q → q) (ap (ap (fst ((g , idp) ⊙∘ K₂-rec-hom y₀ idf2G))) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x)) ◃∙
@@ -61,7 +61,7 @@ module KLoop-ptr-comp-aux2 where
           ap (λ q → q) (! (ap (ap (λ z → fst (K₂-rec-hom z₀ idf2G ⊙∘ K₂-map⊙ (Loop2Grp-map-str (g , idp))) z)) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x))) ◃∙
           ap (λ q → q) (ap (λ q → q) (∘-ap (fst (K₂-rec-hom z₀ idf2G ⊙∘ K₂-map⊙ (Loop2Grp-map-str (g , idp)))) (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp)))) (loop (x₀ == x₀) x))) ◃∎
         τ =
-          ap (λ q → q) (hmpty-nat-∙' (λ u → fst (sq-KΩ y₀ z₀ (g , idp)) (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp))) u)) (loop (x₀ == x₀) x)) ◃∎
+          ap (λ q → q) (hmtpy-nat-∙' (λ u → fst (sq-KΩ y₀ z₀ (g , idp)) (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp))) u)) (loop (x₀ == x₀) x)) ◃∎
             =ₛ⟨ ap-seq-=ₛ (λ q → q) ρ₂ ⟩
           _
             =ₛ⟨ 1 & 1 & ap-seq-=ₛ (λ q → q) K₂-β-3-β-pts ⟩

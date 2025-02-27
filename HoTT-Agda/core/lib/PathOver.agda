@@ -331,19 +331,19 @@ module _ {i j} {A : Type i} where
     → apd f p == from-transp-g B p s → apd-tr f p == s
   apd-to-tr B f idp s h = h
 
--- hmpty-nat conversion
+-- hmtpy-nat conversion
 
 module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
 
-  from-hmpty-nat : {x y : A} (p : x == y) {e₁ : f x == g x} {e₂ : f y == g y} 
+  from-hmtpy-nat : {x y : A} (p : x == y) {e₁ : f x == g x} {e₂ : f y == g y} 
     → ap f p == e₁ ∙ ap g p  ∙' ! e₂
     → e₁ == e₂ [ (λ z → f z == g z) ↓ p ]
-  from-hmpty-nat idp {e₁} {e₂} v = ∙-idp-!-∙'-rot e₁ e₂ v
+  from-hmtpy-nat idp {e₁} {e₂} v = ∙-idp-!-∙'-rot e₁ e₂ v
 
   module _ (K : (z : A) → f z == g z) where
     
     apd-to-hnat : {x y : A} (p : x == y) (m : ap f p == K x ∙ ap g p  ∙' ! (K y))
-      → apd K p == from-hmpty-nat p m → hmpty-nat-∙' K p == m
+      → apd K p == from-hmtpy-nat p m → hmtpy-nat-∙' K p == m
     apd-to-hnat {x} idp m q = lemma (K x) m q
       where
         lemma : {x₁ x₂ : B} (v : x₁ == x₂) (n : idp == v ∙ idp ∙' ! v)
@@ -353,9 +353,9 @@ module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
 
     apd-to-hnat-∙ : {x y z : A} (p₁ : x == y) (p₂ : y == z)
       {m₁ : ap f p₁ == K x ∙ ap g p₁ ∙' ! (K y)} {m₂ : ap f p₂ == K y ∙ ap g p₂ ∙' ! (K z)}
-      (τ₁ : hmpty-nat-∙' K p₁ == m₁) (τ₂ : hmpty-nat-∙' K p₂ == m₂)
+      (τ₁ : hmtpy-nat-∙' K p₁ == m₁) (τ₂ : hmtpy-nat-∙' K p₂ == m₂)
       →
-      hmpty-nat-∙' K (p₁ ∙ p₂)
+      hmtpy-nat-∙' K (p₁ ∙ p₂)
         ==
       ↯ (ap-∙ f p₁ p₂ ◃∙
       ap (λ p → p ∙ ap f p₂) m₁ ◃∙
@@ -365,14 +365,14 @@ module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
     apd-to-hnat-∙ {x} idp idp idp idp = assoc-tri-!-coher (K x)
 
     apd-to-hnat-! : {x y : A} (p : x == y)
-      {m : ap f p == K x ∙ ap g p ∙' ! (K y)} (τ : hmpty-nat-∙' K p == m)
-      → hmpty-nat-∙' K (! p) == ap-! f p ∙ ap ! m ∙ !-∙-ap-∙'-! g (K x) p (K y)
+      {m : ap f p == K x ∙ ap g p ∙' ! (K y)} (τ : hmtpy-nat-∙' K p == m)
+      → hmtpy-nat-∙' K (! p) == ap-! f p ∙ ap ! m ∙ !-∙-ap-∙'-! g (K x) p (K y)
     apd-to-hnat-! {x} idp idp = !-∙-ap-∙'-!-coher g (K x)
 
     apd-to-hnat-ap! : ∀ {l} {C : Type l} (h : B → C) {x y : A} (p : x == y)
-      {m : ap f p == K x ∙ ap g p  ∙' ! (K y)} (τ : hmpty-nat-∙' K p == m)
+      {m : ap f p == K x ∙ ap g p  ∙' ! (K y)} (τ : hmtpy-nat-∙' K p == m)
       →
-      hmpty-nat-∙' (λ z → ap h (! (K z))) p
+      hmtpy-nat-∙' (λ z → ap h (! (K z))) p
         ==
       ap-∘-long h g f K p ∙
       ! (ap (λ q → ap h (! (K x)) ∙ ap h q ∙' ! (ap h (! (K y)))) m) ∙
@@ -382,10 +382,10 @@ module _ {i j} {A : Type i} {B : Type j} (f g : A → B) where
 
 module _ {i j} {A : Type i} {B : Type j} {f g : A → B} where
 
-  from-hmpty-nat-d : (H₁ H₂ : f ∼ g) {x y : A} (p : x == y) {e₁ : H₁ x == H₂ x} {e₂ : H₁ y == H₂ y} 
-    → hmpty-nat-∙' H₁ p == hmpty-nat-∙' H₂ p ∙' ap2 (λ p₁ p₂ → p₁ ∙ ap g p ∙' ! p₂) (! e₁) (! e₂)
+  from-hmtpy-nat-d : (H₁ H₂ : f ∼ g) {x y : A} (p : x == y) {e₁ : H₁ x == H₂ x} {e₂ : H₁ y == H₂ y} 
+    → hmtpy-nat-∙' H₁ p == hmtpy-nat-∙' H₂ p ∙' ap2 (λ p₁ p₂ → p₁ ∙ ap g p ∙' ! p₂) (! e₁) (! e₂)
     → e₁ == e₂ [ (λ z → H₁ z == H₂ z) ↓ p ]
-  from-hmpty-nat-d _ _ idp {e₁} {e₂} v = lemma e₁ e₂ v
+  from-hmtpy-nat-d _ _ idp {e₁} {e₂} v = lemma e₁ e₂ v
     where
       lemma : {b₁ b₂ : B} {t₁ t₂ : b₁ == b₂} (c₁ c₂ : t₁ == t₂) →
         ! (!-inv-r t₁) ∙ ap (_∙_ t₁) (! (∙'-unit-l (! t₁)))

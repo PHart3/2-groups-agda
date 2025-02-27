@@ -21,7 +21,7 @@ module KLoop-ptr-comp-aux0 where
 
     abstract
 
-      K₂-β-1 : hmpty-nat-∙' (fst (sq-KΩ x₀ z₀ (g ∘ f , idp))) (loop (x₀ == x₀) x) == ↯ σ₁
+      K₂-β-1 : hmtpy-nat-∙' (fst (sq-KΩ x₀ z₀ (g ∘ f , idp))) (loop (x₀ == x₀) x) == ↯ σ₁
       K₂-β-1 =
         K₂-∼-ind-β
           (g ∘ f ∘ K₂-rec-x₀ x₀ z₀)
@@ -30,7 +30,7 @@ module KLoop-ptr-comp-aux0 where
           ν₁
           _ x
 
-      K₂-β-2 : hmpty-nat-∙' (fst (sq-KΩ x₀ y₀ (f , idp))) (loop (x₀ == x₀) x) == ↯ σ₂
+      K₂-β-2 : hmtpy-nat-∙' (fst (sq-KΩ x₀ y₀ (f , idp))) (loop (x₀ == x₀) x) == ↯ σ₂
       K₂-β-2 =
         K₂-∼-ind-β
           (f ∘ K₂-rec-x₀ x₀ y₀)
@@ -39,7 +39,7 @@ module KLoop-ptr-comp-aux0 where
           ν₂
           _ x
 
-      K₂-β-3 : hmpty-nat-∙' (fst (sq-KΩ y₀ z₀ (g , idp))) (loop (y₀ == y₀) (ap f x)) ◃∎ =ₛ σ₃
+      K₂-β-3 : hmtpy-nat-∙' (fst (sq-KΩ y₀ z₀ (g , idp))) (loop (y₀ == y₀) (ap f x)) ◃∎ =ₛ σ₃
       K₂-β-3 = =ₛ-in $
         K₂-∼-ind-β
           (g ∘ K₂-rec-x₀ y₀ z₀)
@@ -48,7 +48,7 @@ module KLoop-ptr-comp-aux0 where
           ν₃
           _ (ap f x)
 
-      K₂-β-4 : hmpty-nat-∙' (fst (apK₂ (Loop2Grp-map-∘ (g , idp) (f , idp)))) (loop (x₀ == x₀) x) == ↯ σ₄
+      K₂-β-4 : hmtpy-nat-∙' (fst (apK₂ (Loop2Grp-map-∘ (g , idp) (f , idp)))) (loop (x₀ == x₀) x) == ↯ σ₄
       K₂-β-4 =
         K₂-∼-ind-β
           (fst (K₂-map⊙ (Loop2Grp-map-str (g ∘ f , idp))))
@@ -57,7 +57,7 @@ module KLoop-ptr-comp-aux0 where
           ν₄
           _ x
 
-      K₂-β-5 : hmpty-nat-∙' (fst (K₂-map-∘ (Loop2Grp-map-str (f , idp)) (Loop2Grp-map-str (g , idp)))) (loop (x₀ == x₀) x) == ↯ σ₅
+      K₂-β-5 : hmtpy-nat-∙' (fst (K₂-map-∘ (Loop2Grp-map-str (f , idp)) (Loop2Grp-map-str (g , idp)))) (loop (x₀ == x₀) x) == ↯ σ₅
       K₂-β-5 =
         K₂-∼-ind-β
           (map₁-∘ (Loop2Grp-map-str (f , idp)) (Loop2Grp-map-str (g , idp)))

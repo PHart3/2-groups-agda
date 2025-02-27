@@ -39,7 +39,7 @@ module MapUnit0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{
     _
       =ₛ⟨ 0 & 2 & !ₛ (zz₁-rinv (map x)) ⟩
     _
-      =ₛ⟨ 1 & 1 & hmpty-nat-∙◃ (λ z → ap (mu z) (map-inv x)) (! (ap map (lam x)) ∙ ! (map-comp id x)) ⟩
+      =ₛ⟨ 1 & 1 & hmtpy-nat-∙◃ (λ z → ap (mu z) (map-inv x)) (! (ap map (lam x)) ∙ ! (map-comp id x)) ⟩
     rinv (map x) ◃∙
     ap (mu (map x)) (map-inv x) ◃∙
     ap (λ z → mu z (map (inv x)))

@@ -45,7 +45,7 @@ module MapUnit3 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{
     al (inv (map x)) (map x) (map id) ◃∙
     ap2 mu (linv (map x)) idp ◃∙
     lam (map id) ◃∎
-      =ₛ⟨ 1 & 1 & hmpty-nat-∙◃ (λ z → ap (λ v → mu v z) (map-inv x)) (! (ap map (rho x)) ∙ ! (map-comp x id)) ⟩
+      =ₛ⟨ 1 & 1 & hmtpy-nat-∙◃ (λ z → ap (λ v → mu v z) (map-inv x)) (! (ap map (rho x)) ∙ ! (map-comp x id)) ⟩
     _
       =ₛ⟨ 2 & 1 & ap-∙-!-!◃ (mu (map (inv x))) (ap map (rho x)) (map-comp x id) ⟩
     ! (linv (map x)) ◃∙

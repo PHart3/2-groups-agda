@@ -18,14 +18,14 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : 
   (H₃ : (x : A) → g₁ (f₃ x) == g₂ (f₄ x))
   {H₄ : (x : A) → f₅ x == f₆ x} {H₅ : (x : A) → f₆ x == f₄ x}
   (σ₁ : _) (σ₂ : _) (σ₄ : _) (σ₅ : _)
-  (e₁ : hmpty-nat-∙' H₁ p == ↯ σ₁) (e₂ : hmpty-nat-∙' H₂ p == ↯ σ₂)
-  (e₄ : hmpty-nat-∙' H₄ p == ↯ σ₄) (e₅ : hmpty-nat-∙' H₅ p == ↯ σ₅) where
+  (e₁ : hmtpy-nat-∙' H₁ p == ↯ σ₁) (e₂ : hmtpy-nat-∙' H₂ p == ↯ σ₂)
+  (e₄ : hmtpy-nat-∙' H₄ p == ↯ σ₄) (e₅ : hmtpy-nat-∙' H₅ p == ↯ σ₅) where
 
   open PFunc4 g₁ g₂ {H₃ = H₃} p e₁ e₂ e₄ e₅
 
   abstract
     hnat-∙'-!ap-!ap∙-=ₛ :
-      hmpty-nat-∙' (λ x → ! (H₁ x) ∙ ap g₁ (H₂ x) ∙ H₃ x ∙ ! (ap g₂ (H₄ x ∙ H₅ x))) p ◃∎
+      hmtpy-nat-∙' (λ x → ! (H₁ x) ∙ ap g₁ (H₂ x) ∙ H₃ x ∙ ! (ap g₂ (H₄ x ∙ H₅ x))) p ◃∎
         =ₛ
       hnat-∙'̇-!-aux (ap f₁ p) (H₁ x) (H₁ y) ◃∙
       seq-! (ap-seq (λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) σ₁) ∙∙
@@ -33,7 +33,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {A : Type ℓ₁} {B : Type ℓ₂} {C : 
       ap-seq (λ q → ! (H₁ x) ∙ ap g₁ q ∙' ! (! (H₁ y))) σ₂ ∙∙
       ap (λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) (ap-∙-∙'! g₁ (H₂ x) (ap f₃ p) (H₂ y)) ◃∙
       ap (λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) (ap (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) (∘-ap g₁ f₃ p)) ◃∙
-      ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y)))) (hmpty-nat-∙' H₃ p) ◃∙
+      ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y)))) (hmtpy-nat-∙' H₃ p) ◃∙
       ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘  (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘  (λ q → H₃ x ∙ q ∙' ! (H₃ y)))
         (hnat-∙'̇-!-aux (ap (g₂ ∘ f₄) p) (ap g₂ (H₄ x ∙ H₅ x)) (ap g₂ (H₄ y ∙ H₅ y))) ◃∙
       ap ((λ q → ! (H₁ x) ∙ q ∙' ! (! (H₁ y))) ∘ (λ q → ap g₁ (H₂ x) ∙ q ∙' ! (ap g₁ (H₂ y))) ∘ (λ q → H₃ x ∙ q ∙' ! (H₃ y)))

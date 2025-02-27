@@ -30,17 +30,17 @@ module _ {i j} {G : Type i} {{η : CohGrp G}} {X : Type j} {{_ : has-level 2 X}}
     K₂-∼-ind : f ∼ g
     K₂-∼-ind =
       K₂-elim {P = λ x → f x == g x} base∼
-      (λ x → from-hmpty-nat f g (loop x) (loop∼  x))
+      (λ x → from-hmtpy-nat f g (loop x) (loop∼  x))
       (λ x y → PPOver-from-hnat f g (loop x) (loop y) (loop-comp x y) (loop∼ x) (loop∼ y) (loop∼ (mu x y)) (=ₛ-out (loop-comp∼ x y)))
       λ x y z → PPPOver-1type (loop-assoc x y z) _ _
 
     abstract
-      K₂-∼-ind-β : (x : G) → hmpty-nat-∙' K₂-∼-ind (loop x) == loop∼ x
+      K₂-∼-ind-β : (x : G) → hmtpy-nat-∙' K₂-∼-ind (loop x) == loop∼ x
       K₂-∼-ind-β x =
         apd-to-hnat f g K₂-∼-ind (loop x) (loop∼ x)
         (loop-β
           base∼
-          (λ x → from-hmpty-nat f g (loop x) (loop∼  x))
+          (λ x → from-hmtpy-nat f g (loop x) (loop∼  x))
           (λ x y → PPOver-from-hnat f g (loop x) (loop y) (loop-comp x y) (loop∼ x) (loop∼ y) (loop∼ (mu x y)) (=ₛ-out (loop-comp∼ x y)))
           (λ x y z → PPPOver-1type (loop-assoc x y z) _ _)
         x)

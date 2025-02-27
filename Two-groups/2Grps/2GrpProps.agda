@@ -50,7 +50,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
             ∘-ap (mu id) (λ z → mu z y) (! (lam x))
             ∙ ap-! (λ z → mu id (mu z y)) (lam x) ⟩
         _
-          =ₛ⟨ 0 & 1 & hmpty-nat-∙◃! (λ z → al id z y) (lam x) ⟩
+          =ₛ⟨ 0 & 1 & hmtpy-nat-∙◃! (λ z → al id z y) (lam x) ⟩
         _
           =ₛ⟨ 0 & 1 & apCommSq2◃ (λ z → al z x y) (rho id) ⟩
         _
@@ -194,7 +194,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
     ap (mu id) (lam id) ◃∙
     ap (λ x → x) (! (! (rho id))) ◃∙
     idp ◃∎
-      =ₛ⟨ 2 & 1 & hmpty-nat-∙◃ lam (lam id) ⟩
+      =ₛ⟨ 2 & 1 & hmtpy-nat-∙◃ lam (lam id) ⟩
     _
       =ₛ₁⟨ 3 & 1 & ap-idf (lam id) ⟩
     _
@@ -323,7 +323,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
       ! (ap (mu id) (rinv x)) ◃∙
       rho id ◃∙
       ap (λ z → z) (rinv x) ◃∎
-        =ₛ⟨ 3 & 1 & hmpty-nat-∙◃! lam (rinv x) ⟩
+        =ₛ⟨ 3 & 1 & hmtpy-nat-∙◃! lam (rinv x) ⟩
       ap (λ z → mu z (inv x))
         (! (lam x) ∙ ap (λ z → mu z x) (rinv x)) ◃∙
       ! (ap (λ z → mu (mu z x) (inv x)) (rinv x)) ◃∙

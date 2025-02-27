@@ -598,22 +598,22 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} (H 
   hmtpy-nat-!-sq : {x y : A} (p : x == y) → ! (H x) ∙ ap f p == ap g p ∙ ! (H y)
   hmtpy-nat-!-sq {x = x} idp = ∙-unit-r (! (H x))
 
-  hmpty-nat-∙' : {x y : A} (p : x == y) → ap f p == H x ∙ ap g p ∙' ! (H y)
-  hmpty-nat-∙' {x} idp = ! (!-inv-r (H x)) ∙ ap (λ p → H x ∙ p) (! (∙'-unit-l (! (H x))))
+  hmtpy-nat-∙' : {x y : A} (p : x == y) → ap f p == H x ∙ ap g p ∙' ! (H y)
+  hmtpy-nat-∙' {x} idp = ! (!-inv-r (H x)) ∙ ap (λ p → H x ∙ p) (! (∙'-unit-l (! (H x))))
 
-  hmpty-nat-∙ : {x y : A} (p : x == y) → ap f p == H x ∙ ap g p ∙ ! (H y)
-  hmpty-nat-∙ {x} idp = ! (!-inv-r (H x))
+  hmtpy-nat-∙ : {x y : A} (p : x == y) → ap f p == H x ∙ ap g p ∙ ! (H y)
+  hmtpy-nat-∙ {x} idp = ! (!-inv-r (H x))
 
-  hmpty-nat-∙◃ : {x y : A} (p : x == y) → ap f p ◃∎ =ₛ H x ◃∙ ap g p ◃∙ ! (H y) ◃∎
-  hmpty-nat-∙◃ {x} idp = =ₛ-in (! (!-inv-r (H x)))
+  hmtpy-nat-∙◃ : {x y : A} (p : x == y) → ap f p ◃∎ =ₛ H x ◃∙ ap g p ◃∙ ! (H y) ◃∎
+  hmtpy-nat-∙◃ {x} idp = =ₛ-in (! (!-inv-r (H x)))
 
-  hmpty-nat-∙◃! : {x y : A} (p : x == y) → ! (ap f p) ◃∎ =ₛ H y ◃∙ ! (ap g p) ◃∙ ! (H x) ◃∎
-  hmpty-nat-∙◃! {x} idp = =ₛ-in (! (!-inv-r (H x)))
+  hmtpy-nat-∙◃! : {x y : A} (p : x == y) → ! (ap f p) ◃∎ =ₛ H y ◃∙ ! (ap g p) ◃∙ ! (H x) ◃∎
+  hmtpy-nat-∙◃! {x} idp = =ₛ-in (! (!-inv-r (H x)))
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} where
 
-  hmpty-nat-∙'-idp : {x y : A} (p : x == y) → hmpty-nat-∙' {f = f} (λ x → idp) p == idp
-  hmpty-nat-∙'-idp idp = idp
+  hmtpy-nat-∙'-idp : {x y : A} (p : x == y) → hmtpy-nat-∙' {f = f} (λ x → idp) p == idp
+  hmtpy-nat-∙'-idp idp = idp
 
 module _ {i} {A : Type i} where
 
@@ -634,10 +634,10 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f₁ f₂ : A → 
 
   hnat-∙'-! : {x y : A} (p : x == y)
     →
-    hmpty-nat-∙' (λ x → ! (H x)) p ◃∎
+    hmtpy-nat-∙' (λ x → ! (H x)) p ◃∎
       =ₛ
     hnat-∙'̇-!-aux (ap f₂ p) (H x) (H y) ◃∙
-    ! (ap (λ q → ! (H x) ∙ q ∙' ! (! (H y))) (hmpty-nat-∙' H p)) ◃∎
+    ! (ap (λ q → ! (H x) ∙ q ∙' ! (! (H y))) (hmtpy-nat-∙' H p)) ◃∎
   hnat-∙'-! {x} idp = =ₛ-in (lemma (H x))
     where
       lemma : {a b : B} (v : a == b) →
@@ -654,10 +654,10 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f₁ f₂ f₃ : A
 
   hnat-∙'-∙ : (p : x == y)
     →
-    hmpty-nat-∙' (λ x → H₁ x ∙ H₂ x) p ◃∎
+    hmtpy-nat-∙' (λ x → H₁ x ∙ H₂ x) p ◃∎
       =ₛ
-    hmpty-nat-∙' H₁ p ◃∙
-    ap (λ q → H₁ x ∙ q ∙' ! (H₁ y)) (hmpty-nat-∙' H₂ p) ◃∙
+    hmtpy-nat-∙' H₁ p ◃∙
+    ap (λ q → H₁ x ∙ q ∙' ! (H₁ y)) (hmtpy-nat-∙' H₂ p) ◃∙
     hnat-∙'̇-∙-aux (H₁ x) (H₂ x) (ap f₃ p) (H₂ y) (H₁ y) ◃∎
   hnat-∙'-∙ idp = =ₛ-in (lemma (H₂ x) (H₁ x))
     where
@@ -676,19 +676,19 @@ module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type �
 
   hnat-∙'-pre : (g : C → A) {x y : C} (p : x == y)
     →
-    hmpty-nat-∙' (λ x → H (g x)) p ◃∎
+    hmtpy-nat-∙' (λ x → H (g x)) p ◃∎
       =ₛ
     ap-∘ f₁ g p ◃∙
-    hmpty-nat-∙' H (ap g p) ◃∙
+    hmtpy-nat-∙' H (ap g p) ◃∙
     ap (λ q → H (g x) ∙ q ∙' ! (H (g y))) (∘-ap f₂ g p) ◃∎
   hnat-∙'-pre _ idp = =ₛ-in (! (∙-unit-r _))
 
   hnat-∙'-post : (g : B → C) {x y : A} (p : x == y)
     →
-    hmpty-nat-∙' (λ x → ap g (H x)) p ◃∎
+    hmtpy-nat-∙' (λ x → ap g (H x)) p ◃∎
       =ₛ
     ap-∘ g f₁ p ◃∙
-    ap (ap g) (hmpty-nat-∙' H p) ◃∙
+    ap (ap g) (hmtpy-nat-∙' H p) ◃∙
     ap-∙-∙'! g (H x) (ap f₂ p) (H y) ◃∙
     ap (λ q → ap g (H x) ∙ q ∙' ! (ap g (H y))) (∘-ap g f₂ p) ◃∎
   hnat-∙'-post g {x} idp = =ₛ-in (lemma (H x))

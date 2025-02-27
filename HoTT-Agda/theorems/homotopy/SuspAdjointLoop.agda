@@ -46,7 +46,7 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
   ap-comp-into-coher-aux : {f g : Susp (de⊙ X) → de⊙ U} (H₀ : f ∼ g)
     {x : Susp (de⊙ X)} (v : x == right unit)
     → ! (
-        (hmpty-nat-∙'-r H₀ (v ∙ ! v) ∙
+        (hmtpy-nat-∙'-r H₀ (v ∙ ! v) ∙
           ap (λ p → p ∙ ap g (v ∙ ! v) ∙' ! (H₀ x))
             (! (!-! (H₀ x)) ∙ ! (!-∙ (! (H₀ x)) idp)) ∙
           ap (λ p → ! (! (H₀ x) ∙ idp) ∙ ap g (v ∙ ! v) ∙' p)
@@ -74,7 +74,7 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
   ap-comp-into-coher : {f g : Susp (de⊙ X) → de⊙ U} (H₀ : f ∼ g)
     {gₚ : g (left unit) == f (left unit)} (H₁ : ! (H₀ (left unit)) ∙ idp == gₚ)
     → ! (
-        (hmpty-nat-∙'-r H₀ (glue (pt X) ∙ ! (glue (pt X))) ∙
+        (hmtpy-nat-∙'-r H₀ (glue (pt X) ∙ ! (glue (pt X))) ∙
         ap (λ p → p ∙ ap g (glue (pt X) ∙ ! (glue (pt X))) ∙' ! (H₀ (left unit)))
           (! (!-! (H₀ (left unit))) ∙ ! (!-∙ (! (H₀ (left unit))) idp)) ∙
         ap (λ p → ! (! (H₀ (left unit)) ∙ idp) ∙ ap g (glue (pt X) ∙ ! (glue (pt X))) ∙' p)
@@ -88,7 +88,7 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
 
   ap-comp-into : {f₁ f₂ : ⊙Susp X ⊙→ U} (H : f₁ ⊙-comp f₂) → into f₁ ⊙-comp into f₂
   fst (ap-comp-into {f₁ = (f , idp)} {f₂} H) x =
-    (hmpty-nat-∙'-r (fst H) (glue x ∙ ! (glue (pt X))) ∙
+    (hmtpy-nat-∙'-r (fst H) (glue x ∙ ! (glue (pt X))) ∙
       ap (λ p → p ∙ ap (λ z → fst f₂ z) (glue x ∙ ! (glue (pt X))) ∙' ! (fst H (left unit)))
         (! (!-! (fst H (left unit))) ∙ ! (!-∙ (! (fst H (left unit))) idp)) ∙
       ap (λ p → (! (! (fst H (left unit)) ∙ idp)) ∙ ap (fst f₂) (glue x ∙ ! (glue (pt X))) ∙' p)
@@ -104,16 +104,16 @@ module _ {i j} (X : Ptd i) (U : Ptd j) where
 
   ap-comp-into-id : (f* : ⊙Susp X ⊙→ U) → ap-comp-into (⊙∼-id f*) ⊙→∼ ⊙∼-id (into f*)
   fst (ap-comp-into-id (f , idp)) x = 
-    ∙-unit-r (hmpty-nat-∙'-r (λ x₁ → idp) (glue x ∙ ! (glue (pt X))) ∙ idp) ∙
-    ∙-unit-r (hmpty-nat-∙'-r (λ x₁ → idp) (glue x ∙ ! (glue (pt X)))) ∙
-    hmpty-nat-∙'-r-idp (glue x ∙ ! (glue (pt X)))
+    ∙-unit-r (hmtpy-nat-∙'-r (λ x₁ → idp) (glue x ∙ ! (glue (pt X))) ∙ idp) ∙
+    ∙-unit-r (hmtpy-nat-∙'-r (λ x₁ → idp) (glue x ∙ ! (glue (pt X)))) ∙
+    hmtpy-nat-∙'-r-idp (glue x ∙ ! (glue (pt X)))
   snd (ap-comp-into-id (f , idp)) = =ₛ-in (lemma (glue (pt X)))
     where
       lemma : {x : Susp (de⊙ X)} (v : x == right unit) →
         ap (λ p → ! p ∙ ap (ap f) (!-inv-r v) ∙ idp)
-        (∙-unit-r (hmpty-nat-∙'-r (λ x₁ → idp) (v ∙ ! v) ∙ idp) ∙
-        ∙-unit-r (hmpty-nat-∙'-r (λ x₁ → idp) (v ∙ ! v)) ∙
-        hmpty-nat-∙'-r-idp (v ∙ ! v)) ∙ idp
+        (∙-unit-r (hmtpy-nat-∙'-r (λ x₁ → idp) (v ∙ ! v) ∙ idp) ∙
+        ∙-unit-r (hmtpy-nat-∙'-r (λ x₁ → idp) (v ∙ ! v)) ∙
+        hmtpy-nat-∙'-r-idp (v ∙ ! v)) ∙ idp
         ==
         ap-comp-into-coher-aux (λ x → idp) v
       lemma idp = idp
@@ -512,7 +512,7 @@ module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W :
     β-red6 idp idp idp = idp
 
     Susp-fmap-∘-sq-rw : 
-      (hmpty-nat-∙'-r (λ z → ap f₁ (! (Susp-fmap-∘-∼ f₂ f₃ z)))
+      (hmtpy-nat-∙'-r (λ z → ap f₁ (! (Susp-fmap-∘-∼ f₂ f₃ z)))
         (merid x ∙ ! (merid (pt W))) ∙ idp) ∙ idp
         ==
       ((ap-∘-long f₁ (Susp-fmap f₂ ∘ Susp-fmap f₃) (Susp-fmap (f₂ ∘ f₃))
@@ -562,7 +562,7 @@ module _ {i₁ i₂ i₃ i₄} {X : Ptd i₁} {Y : Ptd i₂} {Z : Ptd i₃} {W :
         (! (merid (pt W))))))
       (! (ap (λ q → q) (ap-∘ f₁ (Susp-fmap (f₂ ∘ f₃))
         (merid x ∙ ! (merid (pt W))))))
-      ((hmpty-nat-∙'-r (λ z → ap f₁ (! (Susp-fmap-∘-∼ f₂ f₃ z)))
+      ((hmtpy-nat-∙'-r (λ z → ap f₁ (! (Susp-fmap-∘-∼ f₂ f₃ z)))
         (merid x ∙ ! (merid (pt W))) ∙ idp) ∙ idp)
       (ap-∙ f₁ (merid (f₂ (f₃ x))) (! (merid (f₂ (f₃ (pt W))))))
       (ap-∙ (f₁ ∘ (Susp-fmap f₂)) (merid (f₃ x)) (! (merid (f₃ (pt W)))))

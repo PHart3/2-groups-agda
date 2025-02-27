@@ -72,21 +72,21 @@ module _ {i j} {A : Type i} {B : Type j} (f g : Susp A → B)
   (c : (a : A) → ap f (merid a) == n ∙ ap g (merid a) ∙' ! s) where
 
   SuspMapEq : f ∼ g
-  SuspMapEq = Susp-elim n s λ a → from-hmpty-nat f g (merid a) (c a)
+  SuspMapEq = Susp-elim n s λ a → from-hmtpy-nat f g (merid a) (c a)
 
-  SuspMapEq-β : (a : A) → hmpty-nat-∙'-r SuspMapEq (merid a) == c a
+  SuspMapEq-β : (a : A) → hmtpy-nat-∙'-r SuspMapEq (merid a) == c a
   SuspMapEq-β a =
     apd-to-hnat f g SuspMapEq (merid a) (c a)
-      (SuspElim.merid-β n s (λ z → from-hmpty-nat f g (merid z) (c z)) a)
+      (SuspElim.merid-β n s (λ z → from-hmtpy-nat f g (merid z) (c z)) a)
 
   SuspMapEq-!-β : (a : A) →
-   hmpty-nat-∙'-r SuspMapEq (! (merid a))
+   hmtpy-nat-∙'-r SuspMapEq (! (merid a))
    ==
    ap-! f (merid a) ∙ ap ! (c a) ∙ !-∙-ap-∙'-! g n (merid a) s
   SuspMapEq-!-β a = apd-to-hnat-! f g SuspMapEq (merid a) (SuspMapEq-β a)
 
   SuspMapEq-β-∙ : (a b : A) →
-    hmpty-nat-∙'-r SuspMapEq (merid a ∙ ! (merid b))
+    hmtpy-nat-∙'-r SuspMapEq (merid a ∙ ! (merid b))
     ==
     ap-∙ f (merid a) (! (merid b)) ∙
     ap (λ p → p ∙ ap f (! (merid b))) (c a) ∙
@@ -100,7 +100,7 @@ module _ {i j} {A : Type i} {B : Type j} (f g : Susp A → B)
     apd-to-hnat-∙ f g SuspMapEq (merid a) (! (merid b)) (SuspMapEq-β a) (SuspMapEq-!-β b)
 
   SuspMapEq-β-∙-ap! : ∀ {l} {C : Type l} (k : B → C) (a b : A) →
-    hmpty-nat-∙'-r (λ z → ap k (! (SuspMapEq z))) (merid a ∙ ! (merid b))
+    hmtpy-nat-∙'-r (λ z → ap k (! (SuspMapEq z))) (merid a ∙ ! (merid b))
     ==
     ap-∘-long k g f SuspMapEq (merid a ∙ ! (merid b)) ∙
     ! (ap (λ q → ap k (! (SuspMapEq north)) ∙ ap k q ∙' ! (ap k (! (SuspMapEq north))))

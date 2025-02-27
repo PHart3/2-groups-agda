@@ -373,7 +373,7 @@ ap-ua-∘e {C = C} {A} =
         =ₛ₁⟨ 0 & 1 & ∘-ap coe-equiv ua (∘e-unit-r e₂) ⟩
       ap (coe-equiv ∘ ua) (∘e-unit-r e₂) ◃∙
       ap coe-equiv (ap (λ w → w ∙ ua e₂) (! (ua-η idp))) ◃∎
-        =ₛ⟨ 0 & 1 & hmpty-nat-∙◃ coe-equiv-β (∘e-unit-r e₂) ⟩
+        =ₛ⟨ 0 & 1 & hmtpy-nat-∙◃ coe-equiv-β (∘e-unit-r e₂) ⟩
       coe-equiv-β (e₂ ∘e ide A) ◃∙
       ap (λ z → z) (∘e-unit-r e₂) ◃∙
       ! (coe-equiv-β e₂) ◃∙

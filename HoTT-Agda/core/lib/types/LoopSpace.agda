@@ -167,7 +167,7 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
     Ω-fmap-ap H p
       ==
     Ω-fmap-β f p ∙
-    ap (λ q → ! (snd f) ∙ q ∙' snd f) (hmpty-nat-∙' (fst H) p) ∙'
+    ap (λ q → ! (snd f) ∙ q ∙' snd f) (hmtpy-nat-∙' (fst H) p) ∙'
     Ω-fmap-ap-hnat-aux (snd f) (fst H (pt X)) (ap (fst g) p) (snd H) ∙'
     ! (Ω-fmap-β g p)
   Ω-fmap-ap-hnat {f@(f₀ , idp)} = 
@@ -176,12 +176,12 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
         Ω-fmap-ap H p
           ==
         Ω-fmap-β f p ∙
-        ap (λ q → ! (snd f) ∙ q ∙' snd f) (hmpty-nat-∙' (fst H) p) ∙'
+        ap (λ q → ! (snd f) ∙ q ∙' snd f) (hmtpy-nat-∙' (fst H) p) ∙'
         Ω-fmap-ap-hnat-aux (snd f) (fst H (pt X)) (ap (fst g) p) (snd H) ∙'
         ! (Ω-fmap-β g p))
      λ p →
        app= (⊙hom-ind-β f {P = (λ g* _ → Ω-fmap f ∼ Ω-fmap g*)} (λ x → idp)) p ∙
-       ! (ap-idf (hmpty-nat-∙' (λ x → idp) p) ∙ hmpty-nat-∙'-idp p)   
+       ! (ap-idf (hmtpy-nat-∙' (λ x → idp) p) ∙ hmtpy-nat-∙'-idp p)   
 
 {- iterated loop spaces. [Ω^] and [Ω^'] iterates [Ω] from different sides:
    [Ω^ (S n) X = Ω (Ω^ n X)] and [Ω^' (S n) X = Ω^' n (Ω X)]. -}
