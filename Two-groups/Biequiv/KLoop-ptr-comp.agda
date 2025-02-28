@@ -19,7 +19,7 @@ module KLoop-ptr-comp where
 module _ {i j k} {X : Type i} {Y : Type j} {Z : Type k}
   {{ηX : has-level 2 X}} {{ηY : has-level 2 Y}} {{ηZ : has-level 2 Z}}
   (x₀ : X) (y₀ : Y) (z₀ : Z) where
-
+{-
     KLoop-∘ : (f* : ⊙[ X , x₀ ] ⊙→ ⊙[ Y , y₀ ]) (g* : ⊙[ Y , y₀ ] ⊙→ ⊙[ Z , z₀ ]) →
       !-⊙∼ (sq-KΩ x₀ z₀ (g* ⊙∘ f*)) ∙⊙∼
       ⊙∘-pre (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}})) (⊙∼-id (g* ⊙∘ f*)) ∙⊙∼
@@ -35,3 +35,4 @@ module _ {i j k} {X : Type i} {Y : Type j} {Z : Type k}
       ⊙∼-id (K₂-rec-hom z₀ (idf2G {{Loop2Grp z₀}}) ⊙∘ K₂-map⊙ (Loop2Grp-map-str (g* ⊙∘ f*)))
     fst (KLoop-∘ (f , idp) (g , idp)) = K₂-∼∼-ind idp (KLoop-∘-coher-out f g x₀)
     snd (KLoop-∘ (f , idp) (g , idp)) = =ₛ-in idp
+-}

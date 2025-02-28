@@ -1,8 +1,6 @@
 {-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=4 --lossy-unification #-}
 
 open import lib.Basics
-open import lib.types.LoopSpace
-open import 2Magma
 open import 2Grp
 open import Hmtpy2Grp
 open import KFunctor
@@ -21,38 +19,42 @@ module KLoop-ptr-comp-aux3 where
     open import KLoop-ptr-comp-defs f g x₀ x
 
     -- red-step1
-    β-pts-free1 : 
-      ap (ap g) (! (ap (ap (K₂-rec-y₀ x₀ y₀)) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x))) ◃∙
-      ap (ap g) (! (ap-∘ (K₂-rec-y₀ x₀ y₀) (K₂-map (Loop2Grp-map-str (f , idp))) (loop (x₀ == x₀) x))) ◃∙
-      ap (λ q → q) (ap (λ q → q) (∘-ap g (λ z → fst (K₂-rec-hom y₀ idf2G ⊙∘ K₂-map⊙ (Loop2Grp-map-str (f , idp))) z) (loop (x₀ == x₀) x))) ◃∙
-      ap (λ q → q) (ap-∘ (fst ((g , idp) ⊙∘ K₂-rec-hom y₀ idf2G)) (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp)))) (loop (x₀ == x₀) x)) ◃∙
-      ap (λ q → q) (ap (ap (fst ((g , idp) ⊙∘ K₂-rec-hom y₀ idf2G))) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x)) ◃∎
-        =ₛ
-      {!!}
-    β-pts-free1 = {!!}
 
+    β-pts-red1-aux : {c₁ c₂ : K₂ (y₀ == y₀) (Loop2Grp y₀)} {p₁ p₂ : c₁ == c₂} (τ : p₁ == p₂)
+      →
+      ap (ap g) (! (ap (ap (K₂-rec-y₀ x₀ y₀)) τ)) ∙
+      ∘-ap g (K₂-rec-y₀ x₀ y₀) p₁ ∙
+      ap (λ q → q) (ap (ap (fst ((g , idp) ⊙∘ K₂-rec-hom y₀ idf2G))) τ)
+        ==
+      ∘-ap g (K₂-rec-y₀ x₀ y₀) p₂
+    β-pts-red1-aux {p₁ = idp} idp = idp
 
-    -- red-step3
-    β-pts-free3 : 
-      ap (λ q → q) (! (ap (ap (λ z → fst (K₂-rec-hom z₀ idf2G ⊙∘ K₂-map⊙ (Loop2Grp-map-str (g , idp))) z)) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x))) ◃∙
-      ap (λ q → q)
-        (ap (λ q → q) (∘-ap (fst (K₂-rec-hom z₀ idf2G ⊙∘ K₂-map⊙ (Loop2Grp-map-str (g , idp)))) (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp)))) (loop (x₀ == x₀) x))) ◃∙
-      ap (λ q → q)
-        (! (ap (λ q → q) (ap (λ q → q) (∘-ap (fst (K₂-rec-hom z₀ idf2G)) (λ z → fst (K₂-map⊙ (Loop2Grp-map-str (g , idp)) ⊙∘ K₂-map⊙ (Loop2Grp-map-str (f , idp))) z)
-          (loop (x₀ == x₀) x))))) ◃∙
-      ! (ap (ap (fst (K₂-rec-hom z₀ idf2G))) (∘-ap (K₂-map (Loop2Grp-map-str (g , idp))) (K₂-map (Loop2Grp-map-str (f , idp))) (loop (x₀ == x₀) x))) ◃∙
-      ! (ap (ap (fst (K₂-rec-hom z₀ idf2G))) (! (ap (ap (K₂-map (Loop2Grp-map-str (g , idp)))) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x)))) ◃∎
-        =ₛ
-      {!!}
-    β-pts-free3 = {!!}
-
-  -- red-step5
-    β-pts-free5 : 
-      ! (ap (λ q → q) (ap (ap (g ∘ f)) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) x))) ◃∙
-      ! (ap (λ q → q) (ap-∘ (g ∘ f) (K₂-rec-x₀ x₀ z₀) (loop (x₀ == x₀) x))) ◃∙
-      ap (λ q → q) (ap-∘ g (λ z → f (fst (K₂-rec-hom x₀ idf2G) z)) (loop (x₀ == x₀) x)) ◃∙
-      ap (ap g) (ap-∘ f (K₂-rec-x₀ x₀ y₀) (loop (x₀ == x₀) x)) ◃∙
-      ap (ap g) (ap (ap f) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) x)) ◃∎
-        =ₛ
-      {!!}
-    β-pts-free5 = {!!}
+    abstract
+      β-pts-red1 : 
+        ap (ap g) (! (ap (ap (K₂-rec-y₀ x₀ y₀)) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x))) ◃∙
+        ap (ap g) (! (ap-∘ (K₂-rec-y₀ x₀ y₀) (K₂-map (Loop2Grp-map-str (f , idp))) (loop (x₀ == x₀) x))) ◃∙
+        ap (λ q → q) (ap (λ q → q) (∘-ap g (λ z → fst (K₂-rec-hom y₀ idf2G ⊙∘ K₂-map⊙ (Loop2Grp-map-str (f , idp))) z) (loop (x₀ == x₀) x))) ◃∙
+        ap (λ q → q) (ap-∘ (fst ((g , idp) ⊙∘ K₂-rec-hom y₀ idf2G)) (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp)))) (loop (x₀ == x₀) x)) ◃∙
+        ap (λ q → q) (ap (ap (fst ((g , idp) ⊙∘ K₂-rec-hom y₀ idf2G))) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x)) ◃∎
+          =ₛ
+        ∘-ap g (K₂-rec-y₀ x₀ y₀) (loop (y₀ == y₀) (ap f x)) ◃∎
+      β-pts-red1 =
+        ap (ap g) (! (ap (ap (K₂-rec-y₀ x₀ y₀)) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x))) ◃∙
+        ap (ap g) (! (ap-∘ (K₂-rec-y₀ x₀ y₀) (K₂-map (Loop2Grp-map-str (f , idp))) (loop (x₀ == x₀) x))) ◃∙
+        ap (λ q → q) (ap (λ q → q) (∘-ap g (λ z → fst (K₂-rec-hom y₀ idf2G ⊙∘ K₂-map⊙ (Loop2Grp-map-str (f , idp))) z) (loop (x₀ == x₀) x))) ◃∙
+        ap (λ q → q) (ap-∘ (fst ((g , idp) ⊙∘ K₂-rec-hom y₀ idf2G)) (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp)))) (loop (x₀ == x₀) x)) ◃∙
+        ap (λ q → q) (ap (ap (fst ((g , idp) ⊙∘ K₂-rec-hom y₀ idf2G))) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x)) ◃∎
+          =ₛ⟨ 1 & 3 & lemma (loop (x₀ == x₀) x) ⟩
+        ap (ap g) (! (ap (ap (K₂-rec-y₀ x₀ y₀)) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x))) ◃∙
+        ∘-ap g (K₂-rec-y₀ x₀ y₀) (ap (K₂-map (Loop2Grp-map-str (f , idp))) (loop (x₀ == x₀) x)) ◃∙
+        ap (λ q → q) (ap (ap (fst ((g , idp) ⊙∘ K₂-rec-hom y₀ idf2G))) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x)) ◃∎
+          =ₛ₁⟨ β-pts-red1-aux (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x) ⟩
+        ∘-ap g (K₂-rec-y₀ x₀ y₀) (loop (y₀ == y₀) (ap f x)) ◃∎ ∎ₛ
+          where
+            lemma : {b : _} (p : base (x₀ == x₀) == b) →
+              ap (ap g) (! (ap-∘ (K₂-rec-y₀ x₀ y₀) (K₂-map (Loop2Grp-map-str (f , idp))) p)) ◃∙
+              ap (λ q → q) (ap (λ q → q) (∘-ap g (λ z → fst (K₂-rec-hom y₀ idf2G ⊙∘ K₂-map⊙ (Loop2Grp-map-str (f , idp))) z) p)) ◃∙
+              ap (λ q → q) (ap-∘ (fst ((g , idp) ⊙∘ K₂-rec-hom y₀ idf2G)) (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp)))) p) ◃∎
+                =ₛ
+              ∘-ap g (K₂-rec-y₀ x₀ y₀) (ap (K₂-map (Loop2Grp-map-str (f , idp))) p) ◃∎
+            lemma idp = =ₛ-in idp
