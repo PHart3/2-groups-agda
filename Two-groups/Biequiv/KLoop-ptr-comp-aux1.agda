@@ -9,6 +9,7 @@ module KLoop-ptr-comp-aux1 where
     (f : X → Y) (g : Y → Z) (x₀ : X) (x : x₀ == x₀) where
     
     open import KLoop-ptr-comp-defs2 f g x₀ x
+    open import KLoop-ptr-comp-defs3 f g x₀ x
 
     abstract
       KLoop-∘-coher0 : Λ₀ =ₛ Λ₁

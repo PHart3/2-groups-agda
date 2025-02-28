@@ -1,8 +1,6 @@
 {-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=4 --lossy-unification #-}
 
 open import lib.Basics
-open import lib.types.LoopSpace
-open import 2Magma
 open import 2Grp
 open import Hmtpy2Grp
 open import KFunctor
