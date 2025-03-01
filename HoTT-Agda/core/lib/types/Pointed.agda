@@ -55,6 +55,16 @@ module lib.types.Pointed where
   → (f : Y ⊙→ Z) → f ⊙∘ (⊙cst :> (X ⊙→ Y)) ⊙∼ ⊙cst
 ⊙∘-cst-r {X = X} f = (λ _ → snd f) , ↓-idf=cst-in' idp
 
+module _ {i j} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y) where
+
+  ⊙∘-lunit : f ⊙-comp ⊙idf Y ⊙∘ f
+  fst ⊙∘-lunit x = idp
+  snd ⊙∘-lunit = ! (∙-unit-r (ap (λ x → x) (snd f)) ∙ ap-idf (snd f))
+
+  ⊙∘-runit : f ⊙-comp f ⊙∘ ⊙idf X
+  fst ⊙∘-runit x = idp
+  snd ⊙∘-runit = idp
+
 module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where 
 
   ⊙∘-assoc-comp : ∀ {l} {W : Ptd l} (h : Z ⊙→ W) (g : Y ⊙→ Z) (f : X ⊙→ Y)

@@ -181,7 +181,7 @@ module _ {i j k} {X₁ : Ptd i} {X₂ : Ptd j} {X₃ : Ptd k} {{tr₁ : has-leve
   WkMagNatIso.θ (Loop2Grp-map-∘ (f₂ , idp) (f₁ , idp)) = λ p → ap-∘ f₂ f₁ p
   WkMagNatIso.θ-comp (Loop2Grp-map-∘ (f₂ , idp) (f₁ , idp)) = λ p₁ p₂ → red-aux2 f₁ f₂ p₁ p₂
 
-module _ {i} {X : Ptd i} {{tr : has-level 2 (de⊙ X)}} where
+module _ {i} (X : Ptd i) {{tr : has-level 2 (de⊙ X)}} where
 
   Loop2Grp-map-idf : CohGrpNatIso (Loop2Grp-map (⊙idf X)) (cohgrphom _ {{idf2G}})
   WkMagNatIso.θ Loop2Grp-map-idf p = ap-idf p

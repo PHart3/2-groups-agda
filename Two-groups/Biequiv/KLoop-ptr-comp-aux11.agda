@@ -2,13 +2,20 @@
 
 open import lib.Basics
 open import 2Grp
+open import Hmtpy2Grp
+open import KFunctor
+open import Delooping
+open import LoopK
+open import KFunctor-comp
+open import SqKLoop
+open import apK
 open import KLoop-ptr-comp-aux1
 open import KLoop-ptr-comp-aux2
 open import KLoop-ptr-comp-aux10
 
 module KLoop-ptr-comp-aux11 where
 
-  module KLPC-aux11 {i j k} {X : Type i} {Y : Type j} {Z : Type k}
+  module _ {i j k} {X : Type i} {Y : Type j} {Z : Type k}
     {{ηX : has-level 2 X}} {{ηY : has-level 2 Y}} {{ηZ : has-level 2 Z}}
     (f : X → Y) (g : Y → Z) (x₀ : X) (x : x₀ == x₀) where
 
