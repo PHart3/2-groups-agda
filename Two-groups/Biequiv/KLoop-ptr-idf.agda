@@ -40,16 +40,3 @@ hmtpy-nat-∙'
   ==
 hmtpy-nat-∙' (λ x₁ → idp) (loop (x₀ == x₀) x)
 -}
-
-      ap-∘ (idf X) (K₂-rec-x₀ x₀ x₀) (loop (x₀ == x₀) x) ◃∙
-      ap (ap (idf X)) (K₂-rec-hom-β-pts x₀ (Loop2Grp-map-idf ⊙[ X , x₀ ]) x) ◃∙
-      ! (K₂-rec-hom-β-pts x₀ (Loop2Grp-map-idf ⊙[ X , x₀ ]) (ap (idf X) x)) ◃∙
-      ! (ap (ap (K₂-rec-y₀ x₀ x₀)) (K₂-map-β-pts (Loop2Grp-map-str (idf X , idp)) x)) ◃∙
-      ! (ap-∘ (K₂-rec-y₀ x₀ x₀) (K₂-map (Loop2Grp-map-str (idf X , idp))) (loop (x₀ == x₀) x)) ◃∎
-
-
--- ap (fst (K₂-rec-hom x₀ idf2G))
-        K₂-map-β-pts (Loop2Grp-map-str (idf X , idp)) x ◃∙
-        ap (loop (x₀ == x₀)) (ap-idf x) ◃∙
-        ! (K₂-map-β-pts (Loop2Grp-map-idf ⊙[ X , x₀ ]) x) ◃∙
-        K₂-map-β-pts (Loop2Grp-map-idf ⊙[ X , x₀ ]) x ∙ ! (ap-idf (loop (x₀ == x₀) x)) ◃∎
