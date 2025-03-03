@@ -10,10 +10,13 @@ open import KFunctor
 open import KFunctor-idf
 open import KFunctor-comp
 open import apK
+open import KFunctor-comp-lunit-aux3
 
 module KFunctor-comp-lunit where
 
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {f : G₁ → G₂} (σ : WkMagHomStr f) where
+
+  open KFCLU3 σ
 
   abstract
     KFunc-runit :
@@ -22,5 +25,5 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       ⊙∘-post (K₂-map⊙ σ) (K₂-map-idf {{η₁}})
         ⊙→∼
       ⊙∘-runit (K₂-map⊙ σ)
-    fst KFunc-runit = K₂-∼∼-ind idp {!!} -- KFunc-runit-coher
+    fst KFunc-runit = K₂-∼∼-ind idp KFunc-runit-coher
     snd KFunc-runit = =ₛ-in idp

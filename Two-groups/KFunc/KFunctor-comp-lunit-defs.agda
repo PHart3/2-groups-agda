@@ -24,3 +24,15 @@ module KFunctor-comp-lunit-defs
     ap (λ q → q) (ap (λ q → q) (∘-ap (K₂-map σ) (λ z → z) (loop G₁ x))) ◃∙
     idp ◃∙
     idp ◃∎
+
+  Λ₂ =
+    K₂-map-β-pts σ x ◃∙
+    ! (K₂-map-β-pts (cohmaghom f {{σ}} ∘2Mσ cohmaghom (λ z → z) {{idf2G}}) x) ◃∙
+    ap (λ q → q) (K₂-map-β-pts (cohgrphom f {{σ}} ∘2Gσ cohgrphom (idf G₁) {{idf2G}}) x) ◃∙
+    ap (λ q → q) (! (K₂-map-β-pts σ x)) ◃∙
+    idp ◃∙
+    ap (ap (K₂-map σ)) (! (ap-idf (loop G₁ x))) ◃∙
+    idp ◃∙
+    ap (λ q → q) (ap (λ q → q) (∘-ap (K₂-map σ) (λ z → z) (loop G₁ x))) ◃∙
+    idp ◃∙
+    idp ◃∎
