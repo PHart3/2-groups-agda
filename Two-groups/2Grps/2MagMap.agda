@@ -62,6 +62,10 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : 
   θ-comp (unit-wkmaghom μ) x y =
     ! (ap (λ p → p ∙ idp) (ap-idf (map-comp-wk μ x y)) ∙ ∙-unit-r (map-comp-wk μ x y))
 
+  unit-wkmaghom-r : (μ : WkMagWkHom {{η₁}} {{η₂}}) → WkMagNatIso μ (μ ∘2Mw idf2Mw {{η₁}})
+  θ (unit-wkmaghom-r μ) x = idp
+  θ-comp (unit-wkmaghom-r μ) x y = idp
+
   module _ {μ : WkMagWkHom {{η₁}} {{η₂}}} where
 
     natiso-contr-aux :
