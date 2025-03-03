@@ -10,16 +10,16 @@ open import KFunctor
 open import KFunctor-idf
 open import KFunctor-comp
 open import apK
-open import KFunctor-comp-lunit-aux0
+open import KFunctor-comp-runit-aux0
 
-module KFunctor-comp-lunit-aux1 where
+module KFunctor-comp-runit-aux1 where
 
-module KFCLU1 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}
+module KFCRU1 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}
   {f : G₁ → G₂} (σ : WkMagHomStr f) (x : G₁) where
 
-  open KFCLU0 σ x
+  open KFCRU0 σ x
 
-  open import KFunctor-comp-lunit-defs σ x
+  open import KFunctor-comp-runit-defs σ x
 
   abstract
     KFunc-runit-coher0 :

@@ -57,14 +57,16 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : 
         → p₃ == ! (ap2 mu (! p₁) (! p₂)) ∙ p₀ ∙ ! p₄
       aux {p₁ = idp} {p₂ = idp} {p₃ = idp} {p₄ = idp} idp = idp
 
-  unit-wkmaghom : (μ : WkMagWkHom {{η₁}} {{η₂}}) → WkMagNatIso (idf2Mw {{η₂}} ∘2Mw μ) μ
-  θ (unit-wkmaghom μ) x = idp
-  θ-comp (unit-wkmaghom μ) x y =
-    ! (ap (λ p → p ∙ idp) (ap-idf (map-comp-wk μ x y)) ∙ ∙-unit-r (map-comp-wk μ x y))
+  unit-wkmaghom-l : (μ : WkMagWkHom {{η₁}} {{η₂}}) → WkMagNatIso μ (idf2Mw {{η₂}} ∘2Mw μ)
+  θ (unit-wkmaghom-l μ) x = idp
+  θ-comp (unit-wkmaghom-l μ) x y = ap-idf (map-comp-wk μ x y) ∙ ! (∙-unit-r (map-comp-wk μ x y))
 
   unit-wkmaghom-r : (μ : WkMagWkHom {{η₁}} {{η₂}}) → WkMagNatIso μ (μ ∘2Mw idf2Mw {{η₁}})
   θ (unit-wkmaghom-r μ) x = idp
   θ-comp (unit-wkmaghom-r μ) x y = idp
+
+  unit-wkmaghom : (μ : WkMagWkHom {{η₁}} {{η₂}}) → WkMagNatIso (idf2Mw {{η₂}} ∘2Mw μ) μ
+  unit-wkmaghom μ = !ʷ (unit-wkmaghom-l μ)
 
   module _ {μ : WkMagWkHom {{η₁}} {{η₂}}} where
 

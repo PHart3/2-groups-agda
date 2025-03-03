@@ -9,12 +9,12 @@ open import KFunctor-idf
 open import KFunctor-comp
 open import apK
 
-module KFunctor-comp-lunit-aux2 where
+module KFunctor-comp-runit-aux2 where
 
-module KFCLU2 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}
+module KFCRU2 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}
   {f : G₁ → G₂} (σ : WkMagHomStr f) (x : G₁) where
 
-  open import KFunctor-comp-lunit-defs σ x
+  open import KFunctor-comp-runit-defs σ x
   
   private
     κ = cohmaghom f {{σ}} ∘2Mσ cohmaghom (idf G₁) {{idf2G}}
@@ -23,7 +23,7 @@ module KFCLU2 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η
     KFunc-runit-coher1 : Λ₁ =ₛ Λ₂
     KFunc-runit-coher1 =
       Λ₁
-      =ₑ⟨ 5 & 2 & idp ◃∎ % ap-seq-=ₛ (λ q → q) (=ₛ-in (∘-ap-ap-∘-inv (K₂-map σ) (K₂-map idf2G) (loop G₁ x))) ⟩
+        =ₑ⟨ 5 & 2 & idp ◃∎ % ap-seq-=ₛ (λ q → q) (=ₛ-in (∘-ap-ap-∘-inv (K₂-map σ) (K₂-map idf2G) (loop G₁ x))) ⟩
       _
         =ₛ₁⟨ 4 & 3 & ap2 _∙_ (ap-idf (! (ap (ap (K₂-map σ)) (K₂-map-β-pts idf2G x)))) idp ∙ !-inv-l (ap (ap (K₂-map σ)) (K₂-map-β-pts idf2G x)) ⟩
       Λ₂ ∎ₛ

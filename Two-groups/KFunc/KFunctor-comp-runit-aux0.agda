@@ -11,9 +11,9 @@ open import KFunctor-idf
 open import KFunctor-comp
 open import apK
 
-module KFunctor-comp-lunit-aux0 where
+module KFunctor-comp-runit-aux0 where
 
-module KFCLU0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}
+module KFCRU0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}
   {f : G₁ → G₂} (σ : WkMagHomStr f) (x : G₁) where
 
   private

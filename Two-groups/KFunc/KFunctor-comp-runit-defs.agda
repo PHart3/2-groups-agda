@@ -6,7 +6,7 @@ open import 2Grp
 open import Delooping
 open import KFunctor
 
-module KFunctor-comp-lunit-defs
+module KFunctor-comp-runit-defs
   {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}
   {f : G₁ → G₂} (σ : WkMagHomStr f) (x : G₁) where
 
