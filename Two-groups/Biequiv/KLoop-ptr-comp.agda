@@ -24,11 +24,11 @@ module _ {i j k} {X : Type i} {Y : Type j} {Z : Type k}
     KLoop-∘ : (f* : ⊙[ X , x₀ ] ⊙→ ⊙[ Y , y₀ ]) (g* : ⊙[ Y , y₀ ] ⊙→ ⊙[ Z , z₀ ]) →
       !-⊙∼ (sq-KΩ x₀ z₀ (g* ⊙∘ f*)) ∙⊙∼
       ⊙∘-pre (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}})) (⊙∼-id (g* ⊙∘ f*)) ∙⊙∼
-      ⊙∘-assoc-comp g* f* (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}})) ∙⊙∼ 
+      !-⊙∼ (⊙∘-α-comp g* f* (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}}))) ∙⊙∼ 
       ⊙∘-post g* (sq-KΩ x₀ y₀ f*) ∙⊙∼
-      !-⊙∼ (⊙∘-assoc-comp g* (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) (K₂-map⊙ (Loop2Grp-map-str f*))) ∙⊙∼
+      ⊙∘-α-comp g* (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) (K₂-map⊙ (Loop2Grp-map-str f*)) ∙⊙∼
       ⊙∘-pre (K₂-map⊙ (Loop2Grp-map-str f*)) (sq-KΩ y₀ z₀ g*) ∙⊙∼
-      ⊙∘-assoc-comp (K₂-rec-hom z₀ (idf2G {{Loop2Grp z₀}})) (K₂-map⊙ (Loop2Grp-map-str g*)) (K₂-map⊙ (Loop2Grp-map-str f*)) ∙⊙∼
+      !-⊙∼ (⊙∘-α-comp (K₂-rec-hom z₀ (idf2G {{Loop2Grp z₀}})) (K₂-map⊙ (Loop2Grp-map-str g*)) (K₂-map⊙ (Loop2Grp-map-str f*))) ∙⊙∼
       !-⊙∼  (
         ⊙∘-post (K₂-rec-hom z₀ (idf2G {{Loop2Grp z₀}}))
           (apK₂ (Loop2Grp-map-∘ g* f*) ∙⊙∼ K₂-map-∘ (Loop2Grp-map-str f*) (Loop2Grp-map-str g*)))

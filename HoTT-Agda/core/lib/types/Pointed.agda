@@ -65,6 +65,24 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y) where
   fst ⊙∘-runit x = idp
   snd ⊙∘-runit = idp
 
+-- inverse of homotopy of pointed maps
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} where
+
+  !-⊙∼ : {f₁ f₂ : X ⊙→ Y} (H : f₁ ⊙-comp f₂) → f₂ ⊙-comp f₁
+  fst (!-⊙∼ (H₀ , H₁)) x = ! (H₀ x)
+  snd (!-⊙∼ {f₁} {f₂} (H₀ , H₁)) =
+    ap (λ p → p ∙ snd f₂) (!-! (H₀ (pt (X)))) ∙
+    ap (λ p → H₀ (pt X) ∙ p) (! H₁) ∙
+    ! (∙-assoc (H₀ (pt X)) (! (H₀ (pt X))) (snd f₁)) ∙
+    ap (λ p → p ∙ snd f₁) (!-inv-r (H₀ (pt X)))
+
+-- identity homotopy of pointed maps
+
+  ⊙∼-id : (f : X ⊙→ Y) → f ⊙-comp f
+  fst (⊙∼-id (f , fₚ)) x = idp
+  snd (⊙∼-id (f , fₚ)) = idp
+
 module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where 
 
   ⊙∘-assoc-comp : ∀ {l} {W : Ptd l} (h : Z ⊙→ W) (g : Y ⊙→ Z) (f : X ⊙→ Y)
@@ -74,6 +92,10 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
     ! (∙-assoc (ap (h ∘ g) fpt) (ap h gpt) hpt) ∙
     ap (λ p → p ∙ hpt) (ap (λ p → p ∙ ap h gpt) (ap-∘ h g fpt)) ∙
     ap (λ p → p ∙ hpt) (∙-ap h (ap g fpt) gpt)
+
+  ⊙∘-α-comp : ∀ {l} {W : Ptd l} (h : Z ⊙→ W) (g : Y ⊙→ Z) (f : X ⊙→ Y)
+    → h ⊙∘ (g ⊙∘ f) ⊙-comp (h ⊙∘ g) ⊙∘ f
+  ⊙∘-α-comp h g f = !-⊙∼ (⊙∘-assoc-comp h g f)
 
 -- pre- and post-comp on (unfolded) homotopies of pointed maps
 
@@ -103,24 +125,6 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} {f₁ f₂ f₃ : X ⊙→ Y} where
     ap (λ p → ! (p ∙ fst H₂ (pt X)) ∙ snd f₁) (tri-exch (snd H₁)) ∙ 
     ap (λ p → ! ((snd f₁ ∙ ! (snd f₂)) ∙ p) ∙ snd f₁) (tri-exch (snd H₂)) ∙
     !3-∙3 (snd f₁) (snd f₂) (snd f₃)
-
--- inverse of homotopy of pointed maps
-
-module _ {i j} {X : Ptd i} {Y : Ptd j} where
-
-  !-⊙∼ : {f₁ f₂ : X ⊙→ Y} (H : f₁ ⊙-comp f₂) → f₂ ⊙-comp f₁
-  fst (!-⊙∼ (H₀ , H₁)) x = ! (H₀ x)
-  snd (!-⊙∼ {f₁} {f₂} (H₀ , H₁)) =
-    ap (λ p → p ∙ snd f₂) (!-! (H₀ (pt (X)))) ∙
-    ap (λ p → H₀ (pt X) ∙ p) (! H₁) ∙
-    ! (∙-assoc (H₀ (pt X)) (! (H₀ (pt X))) (snd f₁)) ∙
-    ap (λ p → p ∙ snd f₁) (!-inv-r (H₀ (pt X)))
-
--- identity homotopy of pointed maps
-
-  ⊙∼-id : (f : X ⊙→ Y) → f ⊙-comp f
-  fst (⊙∼-id (f , fₚ)) x = idp
-  snd (⊙∼-id (f , fₚ)) = idp
 
 -- homotopies of homotopies of pointed maps
 
