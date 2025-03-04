@@ -126,16 +126,36 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ 
 
   natiso-whisk-r : {ν₁ ν₂ : WkMagWkHom {{η₂}} {{η₃}}} (τ : WkMagNatIso ν₁ ν₂)
     → WkMagNatIso (ν₁ ∘2Mw μ) (ν₂ ∘2Mw μ)
-  natiso-whisk-r {ν₁} {ν₂} τ =
-    natiso-ind (λ ν τ → WkMagNatIso (ν₁ ∘2Mw μ) (ν ∘2Mw μ)) (natiso-id _) ν₂ τ
+  θ (natiso-whisk-r {ν₁} {ν₂} τ) x = θ τ (map-wk μ x)
+  θ-comp (natiso-whisk-r {ν₁} {ν₂} τ) x y =
+    natiso-ind
+      (λ ν τ →
+        map-comp-wk ν (map-wk μ x) (map-wk μ y) ∙
+        ap (map-wk ν) (map-comp-wk μ x y)
+          ==
+        ! (ap2 mu (θ τ (map-wk μ x)) (θ τ (map-wk μ y))) ∙
+        (map-comp-wk ν₁ (map-wk μ x) (map-wk μ y) ∙
+        ap (map-wk ν₁) (map-comp-wk μ x y)) ∙
+        θ τ (map-wk μ (mu x y)))
+      (! (∙-unit-r _)) ν₂ τ
 
 module _ {i j k} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : WkMag G₂}}
   {G₃ : Type k} {{η₃ : WkMag G₃}} {μ : WkMagWkHom {{η₂}} {{η₃}}} where
 
   natiso-whisk-l : {ν₁ ν₂ : WkMagWkHom {{η₁}} {{η₂}}} (τ : WkMagNatIso ν₁ ν₂)
     → WkMagNatIso (μ ∘2Mw ν₁) (μ ∘2Mw ν₂)
-  natiso-whisk-l {ν₁} {ν₂} τ =
-    natiso-ind (λ ν τ → WkMagNatIso (μ ∘2Mw ν₁) (μ ∘2Mw ν)) (natiso-id _) ν₂ τ
+  θ (natiso-whisk-l {ν₁} {ν₂} τ) x = ap (map-wk μ) (θ τ x)
+  θ-comp (natiso-whisk-l {ν₁} {ν₂} τ) x y =
+    natiso-ind
+      (λ ν τ →
+        map-comp-wk μ (map-wk ν x) (map-wk ν y) ∙
+        ap (map-wk μ) (map-comp-wk ν x y)
+          ==
+        ! (ap2 mu (ap (map-wk μ) (θ τ x)) (ap (map-wk μ) (θ τ y))) ∙
+        (map-comp-wk μ (map-wk ν₁ x) (map-wk ν₁ y) ∙
+        ap (map-wk μ) (map-comp-wk ν₁ x y))
+        ∙ ap (map-wk μ) (θ τ (mu x y)))
+      (! (∙-unit-r _)) ν₂ τ
 
 -- composite of triangles
 module _ {i j k l} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k} {G₄ : Type l}

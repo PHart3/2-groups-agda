@@ -45,9 +45,10 @@ module _ {i} {X : Ptd i} where
   → Ω-fmap F p == ! (snd F) ∙ ap (fst F) p ∙ snd F
 Ω-fmap-β∙ (f , idp) p = ! (∙-unit-r (ap f p))
 
-Ω-fmap-pt-β : ∀ {i j} {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y)
-  → snd (⊙Ω-fmap F) ==
-    Ω-fmap-β F idp ∙ ap (λ p → ! (snd F) ∙ p) (∙'-unit-l (snd F)) ∙ !-inv-l (snd F) 
+Ω-fmap-pt-β : ∀ {i j} {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y) →
+  snd (⊙Ω-fmap F)
+    ==
+  Ω-fmap-β F idp ∙ ap (λ p → ! (snd F) ∙ p) (∙'-unit-l (snd F)) ∙ !-inv-l (snd F) 
 Ω-fmap-pt-β (_ , idp) = idp
 
 Ω-isemap : ∀ {i j} {X : Ptd i} {Y : Ptd j}
@@ -164,24 +165,22 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
 
   Ω-fmap-ap-hnat : {f g : X ⊙→ Y} (H : f ⊙-comp g) (p : Ω X)
     →
-    Ω-fmap-ap H p
-      ==
-    Ω-fmap-β f p ∙
-    ap (λ q → ! (snd f) ∙ q ∙' snd f) (hmtpy-nat-∙' (fst H) p) ∙'
-    Ω-fmap-ap-hnat-aux (snd f) (fst H (pt X)) (ap (fst g) p) (snd H) ∙'
-    ! (Ω-fmap-β g p)
+    Ω-fmap-ap H p ◃∎
+      =ₛ
+    Ω-fmap-β f p ◃∙
+    ap (λ q → ! (snd f) ∙ q ∙' snd f) (hmtpy-nat-∙' (fst H) p) ◃∙
+    (Ω-fmap-ap-hnat-aux (snd f) (fst H (pt X)) (ap (fst g) p) (snd H) ∙' ! (Ω-fmap-β g p)) ◃∎
   Ω-fmap-ap-hnat {f@(f₀ , idp)} = 
     ⊙hom-ind f
       (λ g H → (p : Ω X) →
-        Ω-fmap-ap H p
-          ==
-        Ω-fmap-β f p ∙
-        ap (λ q → ! (snd f) ∙ q ∙' snd f) (hmtpy-nat-∙' (fst H) p) ∙'
-        Ω-fmap-ap-hnat-aux (snd f) (fst H (pt X)) (ap (fst g) p) (snd H) ∙'
-        ! (Ω-fmap-β g p))
-     λ p →
+        Ω-fmap-ap H p ◃∎
+          =ₛ
+        Ω-fmap-β f p ◃∙
+        ap (λ q → ! (snd f) ∙ q ∙' snd f) (hmtpy-nat-∙' (fst H) p) ◃∙
+        (Ω-fmap-ap-hnat-aux (snd f) (fst H (pt X)) (ap (fst g) p) (snd H) ∙' ! (Ω-fmap-β g p)) ◃∎)
+     λ p → =ₛ-in $
        app= (⊙hom-ind-β f {P = (λ g* _ → Ω-fmap f ∼ Ω-fmap g*)} (λ x → idp)) p ∙
-       ! (ap-idf (hmtpy-nat-∙' (λ x → idp) p) ∙ hmtpy-nat-∙'-idp p)   
+       ! (∙-unit-r _ ∙ ap-idf (hmtpy-nat-∙' (λ x → idp) p) ∙ hmtpy-nat-∙'-idp p)
 
 {- iterated loop spaces. [Ω^] and [Ω^'] iterates [Ω] from different sides:
    [Ω^ (S n) X = Ω (Ω^ n X)] and [Ω^' (S n) X = Ω^' n (Ω X)]. -}
