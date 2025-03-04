@@ -12,7 +12,7 @@ module lib.PathFunctor2 where
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {x y : A} (p : x == y) where
 
     hnat-∙'-∙3 : {f₁ f₂ f₃ f₄ : A → B}
-      (H₁ : (x : A) → f₁ x == f₂ x) (H₂ : (x : A) →  f₂ x == f₃ x) (H₃ : (x : A) → f₃ x == f₄ x)
+      (H₁ : (x : A) → f₁ x == f₂ x) (H₂ : (x : A) → f₂ x == f₃ x) (H₃ : (x : A) → f₃ x == f₄ x)
       →
       hmtpy-nat-∙' (λ x → H₁ x ∙ H₂ x ∙ H₃ x) p ◃∎
         =ₛ
@@ -35,10 +35,10 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {x y : A} (p : x ==
       hnat-∙'̇-∙-aux (H₁ x) (H₂ x ∙ H₃ x) (ap (λ z → f₄ z) p) (H₂ y ∙ H₃ y) (H₁ y) ◃∎ ∎ₛ
 
     hnat-∙'-∙4 : {f₁ f₂ f₃ f₄ f₅ : A → B}
-      (H₁ : (x : A) → f₁ x == f₂ x) (H₂ : (x : A) →  f₂ x == f₃ x) (H₃ : (x : A) → f₃ x == f₄ x)
+      (H₁ : (x : A) → f₁ x == f₂ x) (H₂ : (x : A) → f₂ x == f₃ x) (H₃ : (x : A) → f₃ x == f₄ x)
       (H₄ : (x : A) → f₄ x == f₅ x)
       →
-      hmtpy-nat-∙' (λ x →  H₁ x ∙ H₂ x ∙ H₃ x ∙ H₄ x) p ◃∎
+      hmtpy-nat-∙' (λ x → H₁ x ∙ H₂ x ∙ H₃ x ∙ H₄ x) p ◃∎
         =ₛ
       hmtpy-nat-∙' H₁ p ◃∙
       ap (λ q → H₁ x ∙ q ∙' ! (H₁ y)) (hmtpy-nat-∙' H₂ p) ◃∙
@@ -71,10 +71,10 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {x y : A} (p : x ==
       hnat-∙'̇-∙-aux (H₁ x) (H₂ x ∙ H₃ x ∙ H₄ x) (ap (λ z → f₅ z) p) (H₂ y ∙ H₃ y ∙ H₄ y) (H₁ y) ◃∎ ∎ₛ
 
     hnat-∙'-∙5 : {f₁ f₂ f₃ f₄ f₅ f₆ : A → B}
-      (H₁ : (x : A) → f₁ x == f₂ x) (H₂ : (x : A) →  f₂ x == f₃ x) (H₃ : (x : A) → f₃ x == f₄ x)
+      (H₁ : (x : A) → f₁ x == f₂ x) (H₂ : (x : A) → f₂ x == f₃ x) (H₃ : (x : A) → f₃ x == f₄ x)
       (H₄ : (x : A) → f₄ x == f₅ x) (H₅ : (x : A) → f₅ x == f₆ x)
       →
-      hmtpy-nat-∙' (λ x →  H₁ x ∙ H₂ x ∙ H₃ x ∙ H₄ x ∙ H₅ x) p ◃∎
+      hmtpy-nat-∙' (λ x → H₁ x ∙ H₂ x ∙ H₃ x ∙ H₄ x ∙ H₅ x) p ◃∎
         =ₛ
       hmtpy-nat-∙' H₁ p ◃∙
       ap (λ q → H₁ x ∙ q ∙' ! (H₁ y)) (hmtpy-nat-∙' H₂ p) ◃∙
@@ -94,7 +94,7 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {x y : A} (p : x ==
         (hnat-∙'̇-∙-aux (H₂ x) (H₃ x ∙ H₄ x ∙ H₅ x) (ap (λ z → f₆ z) p) (H₃ y ∙ H₄ y ∙ H₅ y) (H₂ y)) ◃∙
       hnat-∙'̇-∙-aux (H₁ x) (H₂ x ∙ H₃ x ∙ H₄ x ∙ H₅ x) (ap (λ z → f₆ z) p) (H₂ y ∙ H₃ y ∙ H₄ y ∙ H₅ y) (H₁ y) ◃∎
     hnat-∙'-∙5 {f₆ = f₆} H₁ H₂ H₃ H₄ H₅ =
-      hmtpy-nat-∙' (λ x →  H₁ x ∙ H₂ x ∙ H₃ x ∙ H₄ x ∙ H₅ x) p ◃∎
+      hmtpy-nat-∙' (λ x → H₁ x ∙ H₂ x ∙ H₃ x ∙ H₄ x ∙ H₅ x) p ◃∎
         =ₛ⟨ hnat-∙'-∙ H₁ (λ x → H₂ x ∙ H₃ x ∙ H₄ x ∙ H₅ x) p ⟩
       _
         =ₛ⟨ 1 & 1 & ap-seq-=ₛ (λ q → H₁ x ∙ q ∙' ! (H₁ y)) (hnat-∙'-∙4 H₂ H₃ H₄ H₅) ⟩
@@ -123,7 +123,7 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {x y : A} (p : x ==
       hnat-∙'̇-∙-aux (H₁ x) (H₂ x ∙ H₃ x ∙ H₄ x ∙ H₅ x) (ap (λ z → f₆ z) p) (H₂ y ∙ H₃ y ∙ H₄ y ∙ H₅ y) (H₁ y) ◃∎ ∎ₛ
 
 module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} (g : B → C)
-  {f₁ f₂ f₃ : A → B} (H₁ : (x : A) → f₁ x == f₂ x) (H₂ : (x : A) →  f₂ x == f₃ x)
+  {f₁ f₂ f₃ : A → B} (H₁ : (x : A) → f₁ x == f₂ x) (H₂ : (x : A) → f₂ x == f₃ x)
   {x y : A} (p : x == y) where
 
   private
