@@ -176,15 +176,18 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y) where
     → (f , ⊙∼-id f) == r
   ⊙hom-cent r = contr-path ⊙hom-contr r
 
-  module _ {k}  where
-  
-    ⊙hom-ind : (P : (g : X ⊙→ Y) → (f ⊙-comp g →  Type k))
-      → P f (⊙∼-id f) → {g : X ⊙→ Y} (p : f ⊙-comp g) → P g p
-    ⊙hom-ind P r {g} p = ind (ID-ind {P = P} ⊙hom-cent) r g p
+  ⊙hom-ind : ∀ {k} (P : (g : X ⊙→ Y) → (f ⊙-comp g →  Type k))
+    → P f (⊙∼-id f) → {g : X ⊙→ Y} (p : f ⊙-comp g) → P g p
+  ⊙hom-ind P r {g} p = ind (ID-ind {P = P} ⊙hom-cent) r g p
 
-    ⊙hom-ind-β : {P : (g : X ⊙→ Y) → (f ⊙-comp g →  Type k)}
-      → (r : P f (⊙∼-id f)) → ⊙hom-ind P r {f} (⊙∼-id f) == r
-    ⊙hom-ind-β {P} r = ind-eq (ID-ind ⊙hom-cent) r
+  ⊙hom-ind-β : ∀ {k} {P : (g : X ⊙→ Y) → (f ⊙-comp g →  Type k)}
+    → (r : P f (⊙∼-id f)) → ⊙hom-ind P r {f} (⊙∼-id f) == r
+  ⊙hom-ind-β {P} r = ind-eq (ID-ind ⊙hom-cent) r
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} {f : X ⊙→ Y} where
+
+  ⊙-comp-to-== : {g : X ⊙→ Y} → f ⊙-comp g → f == g
+  ⊙-comp-to-== = ⊙hom-ind f (λ g _ → f == g) idp 
 
 {- Pointed equivalences -}
 

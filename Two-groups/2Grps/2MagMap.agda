@@ -109,6 +109,9 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : 
       → P μ (natiso-id μ) → (ν : WkMagWkHom {{η₁}} {{η₂}}) (p : WkMagNatIso μ ν) → P ν p
     natiso-ind P r ν p = ind (ID-ind {P = P} natiso-cent) r ν p
 
+    natiso-to-== : {ν : WkMagWkHom {{η₁}} {{η₂}}} → WkMagNatIso μ ν → μ == ν
+    natiso-to-== {ν} = natiso-ind (λ δ _ → μ == δ) idp ν
+
   -- equational reasoning for nat isos.
 
   infixr 10 _=⟦_⟧_
