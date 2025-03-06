@@ -134,7 +134,11 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
   _⊙→∼_ : {f g : X ⊙→ Y} (H₁ H₂ : f ⊙-comp g) → Type (lmax i j)
   _⊙→∼_ {f = f} H₁ H₂ =
     Σ (fst H₁ ∼ fst H₂)
-      (λ K → ap (λ p →  ! p ∙ snd f) (K (pt X)) ◃∙ snd H₂ ◃∎ =ₛ snd H₁ ◃∎)
+      (λ K → ap (λ p →  ! p ∙ snd f) (K (pt X)) ∙ snd H₂ == snd H₁)
+
+  ⊙→∼-id : {f g : X ⊙→ Y} (H : f ⊙-comp g) → H ⊙→∼ H
+  fst (⊙→∼-id H) = λ x → idp
+  snd (⊙→∼-id H) = idp
 
 -- pointed sections
 
@@ -154,7 +158,7 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y) where
   ⊙hom-contr-aux =
     equiv-preserves-level
       ((Σ-contr-red
-        {P = (λ (h , K) → Σ (h (pt X) == pt Y) (λ p → (! (K (pt X)) ∙ snd f == p)))}
+        {P = λ (h , K) → Σ (h (pt X) == pt Y) (λ p → (! (K (pt X)) ∙ snd f == p))}
         (funhom-contr {f = fst f}))⁻¹)
 
   ⊙hom-contr : is-contr (Σ (X ⊙→ Y) (λ g → f ⊙-comp g))
@@ -188,6 +192,48 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} {f : X ⊙→ Y} where
 
   ⊙-comp-to-== : {g : X ⊙→ Y} → f ⊙-comp g → f == g
   ⊙-comp-to-== = ⊙hom-ind f (λ g _ → f == g) idp 
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} {f₁ f₂ : X ⊙→ Y} {H : f₁ ⊙-comp f₂} where
+
+  ⊙→∼-contr-aux :
+    is-contr $
+      Σ (Σ (fst f₁ ∼ fst f₂) (λ h → fst H ∼ h))
+        (λ (h , k) → Σ (! (h (pt X)) ∙ snd f₁ == snd f₂)
+          (λ L → ap (λ p →  ! p ∙ snd f₁) (k (pt X)) ∙ L == snd H))
+  ⊙→∼-contr-aux =
+    equiv-preserves-level
+      ((Σ-contr-red
+        {P = λ (h , k) →
+          Σ (! (h (pt X)) ∙ snd f₁ == snd f₂) (λ L → ap (λ p →  ! p ∙ snd f₁) (k (pt X)) ∙ L == snd H)}
+        (funhom-contr {f = fst H}))⁻¹)
+
+  ⊙→∼-contr : is-contr (Σ (f₁ ⊙-comp f₂) (λ K → H ⊙→∼ K))
+  ⊙→∼-contr = equiv-preserves-level lemma {{⊙→∼-contr-aux}}
+    where
+      lemma :
+        Σ (Σ (fst f₁ ∼ fst f₂) (λ h → fst H ∼ h))
+          (λ (h , k) → Σ (! (h (pt X)) ∙ snd f₁ == snd f₂)
+            (λ L → ap (λ p →  ! p ∙ snd f₁) (k (pt X)) ∙ L == snd H))
+          ≃
+        Σ (f₁ ⊙-comp f₂) (λ K → H ⊙→∼ K)
+      lemma =
+        equiv
+          (λ ((h , k) , (L , c)) → (h , L) , (k , c))
+          (λ ((K₁ , K₂) , (c₁ , c₂)) → (K₁ , c₁) , (K₂ , c₂))
+          (λ ((K₁ , K₂) , (c₁ , c₂)) → idp)
+          λ ((h , k) , (L , c)) → idp
+
+  ⊙→∼-cent : (r : Σ (f₁ ⊙-comp f₂) (λ K → H ⊙→∼ K)) → (H , ⊙→∼-id H) == r
+  ⊙→∼-cent r = contr-path ⊙→∼-contr r
+
+  ⊙→∼-ind : ∀ {k} (P : (K : f₁ ⊙-comp f₂) → (H ⊙→∼ K →  Type k))
+    → P H (⊙→∼-id H) → {K : f₁ ⊙-comp f₂} (p : H ⊙→∼ K) → P K p
+  ⊙→∼-ind P r {K} p = ind (ID-ind {P = P} ⊙→∼-cent) r K p
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} {f g : X ⊙→ Y} {H₁ H₂ : f ⊙-comp g} where
+
+  ⊙→∼-to-== : H₁ ⊙→∼ H₂ → H₁ == H₂
+  ⊙→∼-to-== = ⊙→∼-ind {H = H₁} (λ H₂ _ → H₁ == H₂) idp 
 
 {- Pointed equivalences -}
 

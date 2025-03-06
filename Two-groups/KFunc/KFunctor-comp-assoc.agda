@@ -31,7 +31,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {G₁ : Type ℓ₁} {G₂ : Type ℓ₂}
         ⊙→∼
       ⊙∘-α-comp (K₂-map⊙ σ₃) (K₂-map⊙ σ₂) (K₂-map⊙ σ₁)
     fst KFunc-assoc = K₂-∼∼-ind idp {!!} -- KFunc-assoc-coher-out
-    snd KFunc-assoc = =ₛ-in idp
+    snd KFunc-assoc = idp
 
 {-
 

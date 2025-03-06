@@ -28,4 +28,4 @@ module _ {i} {X : Type i} {{ηX : has-level 2 X}} (x₀ : X) where
         ⊙→∼
       ⊙∘-runit (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}}))
     fst KLoop-idf = K₂-∼∼-ind idp KLoop-ptr-idf-coher
-    snd KLoop-idf = =ₛ-in idp
+    snd KLoop-idf = idp

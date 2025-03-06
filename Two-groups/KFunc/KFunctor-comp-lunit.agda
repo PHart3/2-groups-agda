@@ -26,4 +26,4 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         ⊙→∼
       ⊙∘-lunit (K₂-map⊙ σ)
     fst KFunc-lunit = K₂-∼∼-ind idp KFunc-lunit-coher
-    snd KFunc-lunit = =ₛ-in idp
+    snd KFunc-lunit = idp

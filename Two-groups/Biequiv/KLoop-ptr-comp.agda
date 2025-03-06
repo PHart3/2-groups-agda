@@ -35,4 +35,4 @@ module _ {i j k} {X : Type i} {Y : Type j} {Z : Type k}
         ⊙→∼
       ⊙∼-id (K₂-rec-hom z₀ (idf2G {{Loop2Grp z₀}}) ⊙∘ K₂-map⊙ (Loop2Grp-map-str (g* ⊙∘ f*)))
     fst (KLoop-∘ (f , idp) (g , idp)) = K₂-∼∼-ind idp (KLoop-∘-coher-out f g x₀)
-    snd (KLoop-∘ (f , idp) (g , idp)) = =ₛ-in idp
+    snd (KLoop-∘ (f , idp) (g , idp)) = idp

@@ -26,4 +26,4 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         ⊙→∼
       ⊙∘-runit (K₂-map⊙ σ)
     fst KFunc-runit = K₂-∼∼-ind idp KFunc-runit-coher
-    snd KFunc-runit = =ₛ-in idp
+    snd KFunc-runit = idp

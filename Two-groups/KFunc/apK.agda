@@ -59,4 +59,4 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
   abstract
     apK₂-idp : apK₂ (natiso-id (maghom-forg (cohmaghom f {{σ}}))) ⊙→∼ ⊙∼-id (K₂-map⊙ σ)
     fst apK₂-idp = K₂-∼∼-ind idp apK₂-idp-coher
-    snd apK₂-idp = =ₛ-in idp
+    snd apK₂-idp = idp
