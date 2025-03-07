@@ -61,20 +61,5 @@ module KFCA3 {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {G₁ : Type ℓ₁} {G₂ : Type ℓ
            fst (K₂-map-∘ σ₂ σ₃) (K₂-map σ₁ z))
         (loop G₁ x) ◃∎
         =ₛ
-      hmtpy-nat-∙' (λ z → idp) (loop G₁ x) ◃∎
-    KFunc-assoc-coher = KFunc-assoc-coher0 ∙ₛ (KFunc-assoc-coher1 ∙ₛ KFunctor-assoc-coher2)
-
-
-  abstract
-    KFunc-assoc-coher-out :
-      hmtpy-nat-∙'
-        (λ z →
-           ! (ap (K₂-map σ₃) (fst (K₂-map-∘ σ₁ σ₂) z)) ∙
-           ! (fst (K₂-map-∘ (m₂ ∘2Mσ m₁) σ₃) z) ∙
-           fst (apK₂ (assoc-wkmaghom (maghom-forg m₃) (maghom-forg m₂) (maghom-forg m₁))) z ∙
-           fst (K₂-map-∘ σ₁ (m₃ ∘2Mσ m₂)) z ∙
-           fst (K₂-map-∘ σ₂ σ₃) (K₂-map σ₁ z))
-        (loop G₁ x)
-        ==
-      hmtpy-nat-∙' (λ z → idp) (loop G₁ x)
-    KFunc-assoc-coher-out = =ₛ-out KFunc-assoc-coher
+      hmtpy-nat-∙' (λ z → idp {a = K₂-map σ₃ (K₂-map σ₂ (K₂-map σ₁ z))}) (loop G₁ x) ◃∎
+    KFunc-assoc-coher = KFunc-assoc-coher0 ∙ₛ (KFunc-assoc-coher1 ∙ₛ KFunc-assoc-coher2)
