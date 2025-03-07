@@ -191,7 +191,7 @@ module _ {i} {G : Type i} {{η : WkMag G}} where
       map-al-idf : (x y z : G) → ! (al x y z) ∙ idp == ! (ap (idf G) (al x y z))
       map-al-idf x y z = ∙-unit-r (! (al x y z)) ∙ ap ! (! (ap-idf (al x y z)))
 
-module _{i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
+module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
   {{η₁ : WkMag G₁}} {{η₂ : WkMag G₂}} {{η₃ : WkMag G₃}} where
 
   open WkMagHom
