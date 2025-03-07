@@ -94,7 +94,7 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
     ap (λ p → p ∙ hpt) (∙-ap h (ap g fpt) gpt)
 
   ⊙∘-α-comp : ∀ {l} {W : Ptd l} (h : Z ⊙→ W) (g : Y ⊙→ Z) (f : X ⊙→ Y)
-    → h ⊙∘ (g ⊙∘ f) ⊙-comp (h ⊙∘ g) ⊙∘ f
+    → h ⊙∘ g ⊙∘ f ⊙-comp (h ⊙∘ g) ⊙∘ f
   ⊙∘-α-comp h g f = !-⊙∼ (⊙∘-assoc-comp h g f)
 
 -- pre- and post-comp on (unfolded) homotopies of pointed maps

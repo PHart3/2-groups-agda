@@ -20,6 +20,8 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {G₁ : Type ℓ₁} {G₂ : Type ℓ₂}
 
   open import KFunctor-comp-assoc-defs σ₁ σ₂ σ₃
 
+  open KFCA3 σ₁ σ₂ σ₃
+
   abstract
     KFunc-assoc :
       !-⊙∼ (⊙∘-post (K₂-map⊙ σ₃) (K₂-map-∘ σ₁ σ₂)) ∙⊙∼
@@ -29,7 +31,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {G₁ : Type ℓ₁} {G₂ : Type ℓ₂}
       ⊙∘-pre (K₂-map⊙ σ₁) (K₂-map-∘ σ₂ σ₃)
         ⊙→∼
       ⊙∘-α-comp (K₂-map⊙ σ₃) (K₂-map⊙ σ₂) (K₂-map⊙ σ₁)
-    fst KFunc-assoc = K₂-∼∼-ind idp (KFunc-assoc-coher-out σ₁ σ₂ σ₃)
+    fst KFunc-assoc = K₂-∼∼-ind idp KFunc-assoc-coher-out
     snd KFunc-assoc = idp
 
 {-
