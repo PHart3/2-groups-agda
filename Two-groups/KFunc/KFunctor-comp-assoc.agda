@@ -9,17 +9,16 @@ open import K-hom2-ind
 open import KFunctor
 open import KFunctor-comp
 open import apK
+open import KFunctor-comp-assoc-aux3
 
 module KFunctor-comp-assoc where
 
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {G₁ : Type ℓ₁} {G₂ : Type ℓ₂} {G₃ : Type ℓ₃} {G₄ : Type ℓ₄}
   {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}} {{η₄ : CohGrp G₄}}
   {f₁ : G₁ → G₂} (σ₁ : WkMagHomStr f₁) {f₂ : G₂ → G₃}
-  (σ₂ : WkMagHomStr f₂) {f₃ : G₃ → G₄} (σ₃ : WkMagHomStr f₃)  where
+  (σ₂ : WkMagHomStr f₂) {f₃ : G₃ → G₄} (σ₃ : WkMagHomStr f₃) where
 
-  m₁ = cohmaghom f₁ {{σ₁}}
-  m₂ = cohmaghom f₂ {{σ₂}}
-  m₃ = cohmaghom f₃ {{σ₃}}
+  open import KFunctor-comp-assoc-defs σ₁ σ₂ σ₃
 
   abstract
     KFunc-assoc :
@@ -30,7 +29,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {G₁ : Type ℓ₁} {G₂ : Type ℓ₂}
       ⊙∘-pre (K₂-map⊙ σ₁) (K₂-map-∘ σ₂ σ₃)
         ⊙→∼
       ⊙∘-α-comp (K₂-map⊙ σ₃) (K₂-map⊙ σ₂) (K₂-map⊙ σ₁)
-    fst KFunc-assoc = K₂-∼∼-ind idp {!!} -- KFunc-assoc-coher-out
+    fst KFunc-assoc = K₂-∼∼-ind idp (KFunc-assoc-coher-out σ₁ σ₂ σ₃)
     snd KFunc-assoc = idp
 
 {-

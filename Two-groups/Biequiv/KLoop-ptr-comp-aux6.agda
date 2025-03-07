@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=4 --lossy-unification #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=3 --lossy-unification #-}
 
 open import lib.Basics
 open import 2Grp
@@ -29,7 +29,11 @@ module KLPC-aux6 {i j k} {X : Type i} {Y : Type j} {Z : Type k}
       ∘-ap g (K₂-rec-y₀ x₀ y₀) (loop (y₀ == y₀) (ap f x)) ◃∙
       ap (λ q → q) (ap-∘ g (K₂-rec-x₀ y₀ z₀) (loop (y₀ == y₀) (ap f x))) ◃∙
       ap (λ q → q) (ap (ap g) (K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f x))) ◃∎
-        =ₛ⟨ 2 & 2 & =ₛ-in (ap2 _∙_ (ap-idf (ap-∘ g (K₂-rec-x₀ y₀ z₀) (loop (y₀ == y₀) (ap f x)))) (ap-idf (ap (ap g) (K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f x)))))  ⟩
+        =ₛ⟨ 2 & 2 &
+          =ₛ-in
+            (ap2 _∙_
+              (ap-idf (ap-∘ g (K₂-rec-x₀ y₀ z₀) (loop (y₀ == y₀) (ap f x))))
+              (ap-idf (ap (ap g) (K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f x))))) ⟩
       ap (ap g) (! (K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f x))) ◃∙
       ∘-ap g (K₂-rec-y₀ x₀ y₀) (loop (y₀ == y₀) (ap f x)) ◃∙
       ap-∘ g (K₂-rec-x₀ y₀ z₀) (loop (y₀ == y₀) (ap f x)) ◃∙

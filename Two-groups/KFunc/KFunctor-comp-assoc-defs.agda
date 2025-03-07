@@ -68,10 +68,12 @@ module KFunctor-comp-assoc-defs
       ! (ap (ap (K₂-map (m₃ ∘2Mσ m₂))) (K₂-map-β-pts σ₁ x)) ◃∙
       ∘-ap (K₂-map (m₃ ∘2Mσ m₂)) (K₂-map σ₁) (loop G₁ x) ◃∎
     δ₅ =
+      ap (ap (K₂-map (m₃ ∘2Mσ m₂))) (K₂-map-β-pts σ₁ x) ◃∙
       K₂-map-β-pts (m₃ ∘2Mσ m₂) (f₁ x) ◃∙
       ! (K₂-map-β-pts σ₃ (f₂ (f₁ x))) ◃∙
       ! (ap (ap (K₂-map σ₃)) (K₂-map-β-pts σ₂ (f₁ x))) ◃∙
-      ∘-ap (K₂-map σ₃) (K₂-map σ₂) (loop G₂ (f₁ x)) ◃∎
+      ∘-ap (K₂-map σ₃) (K₂-map σ₂) (loop G₂ (f₁ x)) ◃∙
+      ! (ap (ap (K₂-map σ₃ ∘ K₂-map σ₂)) (K₂-map-β-pts σ₁ x)) ◃∎
 
 {-
 
