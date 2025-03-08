@@ -49,13 +49,23 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
       F-id₁ : (a : B₀) → F₁ (id₁ a) == id₁ (F₀ a)
       F-◻ : {a b c : B₀} (f : hom a b) (g : hom b c)
         → F₁ (⟦ ξB ⟧ g ◻ f) == ⟦ ξC ⟧ F₁ g ◻ F₁ f  -- somehow Agda gets stuck on the two instance candidates (make GitHub issue)
-      F-ρ : {a b : B₀} (f : hom a b) → ap F₁ (ρ f) ∙ F-◻ (id₁ a) f ∙ ap (λ m → F₁ f ◻ m) (F-id₁ a) == ρ (F₁ f)
-      F-λ : {a b : B₀} (f : hom a b) → ap F₁ (lamb f) ∙ F-◻ f (id₁ b) ∙ ap (λ m → m ◻ F₁ f) (F-id₁ b) == lamb (F₁ f)
+      F-ρ : {a b : B₀} (f : hom a b) → ρ (F₁ f) == ap F₁ (ρ f) ∙ F-◻ (id₁ a) f ∙ ap (λ m → F₁ f ◻ m) (F-id₁ a)
+      F-λ : {a b : B₀} (f : hom a b) → lamb (F₁ f) == ap F₁ (lamb f) ∙ F-◻ f (id₁ b) ∙ ap (λ m → m ◻ F₁ f) (F-id₁ b)
       F-α : {a b c d : B₀} (h : hom c d) (g : hom b c) (f : hom a b)
         →
-        ! (ap (λ m → F₁ h ◻ m) (F-◻ f g)) ∙ ! (F-◻ (⟦ ξB ⟧ g ◻ f) h) ∙ ap F₁ (α h g f) ∙ F-◻ f (⟦ ξB ⟧ h ◻ g) ∙ ap (λ m → m ◻ F₁ f) (F-◻ g h)
-          ==
         α (F₁ h) (F₁ g) (F₁ f)
+          ==
+        ! (ap (λ m → F₁ h ◻ m) (F-◻ f g)) ∙
+        ! (F-◻ (⟦ ξB ⟧ g ◻ f) h) ∙
+        ap F₁ (α h g f) ∙
+        F-◻ f (⟦ ξB ⟧ h ◻ g) ∙
+        ap (λ m → m ◻ F₁ f) (F-◻ g h)
+    F-◻-nat-l : {a b c : B₀} {m₁ m₂ : hom a b} (m₃ : hom b c) (q : m₁ == m₂)
+      → F-◻ m₁ m₃ == ap (λ m → F₁ (⟦ ξB ⟧ m₃ ◻ m)) q ∙ F-◻ m₂ m₃ ∙' ! (ap (λ m → ⟦ ξC ⟧ F₁ m₃ ◻ F₁ m) q)
+    F-◻-nat-l m₃ q = apCommSq2-∙' (λ m → F-◻ m m₃) q
+    F-◻-nat-r : {a b c : B₀} (m₁ : hom a b) {m₂ m₃ : hom b c} (q : m₂ == m₃)
+      → F-◻ m₁ m₂ == ap (λ m → F₁ (⟦ ξB ⟧ m ◻ m₁)) q ∙ F-◻ m₁ m₃ ∙' ! (ap (λ m → ⟦ ξC ⟧ F₁ m ◻ F₁ m₁) q)
+    F-◻-nat-r m₁ q = apCommSq2-∙' (F-◻ m₁) q
 
   record Psfunctor : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
     constructor psfunctor
@@ -72,9 +82,9 @@ module _ {i j} {B₀ : Type i} {{ξ : BicatStr j B₀}} where
   F₁ idfBC = λ f → f
   F-id₁ idfBC = λ a → idp
   F-◻ idfBC = λ f g → idp
-  F-ρ idfBC = λ f → ∙-unit-r (ap (λ z → z) (ρ f)) ∙ ap-idf (ρ f)
-  F-λ idfBC = λ f → ∙-unit-r (ap (λ z → z) (lamb f)) ∙ ap-idf (lamb f)
-  F-α idfBC = λ h g f → ∙-unit-r (ap (λ z → z) (α h g f)) ∙ ap-idf (α h g f)
+  F-ρ idfBC = λ f → ! (∙-unit-r (ap (λ z → z) (ρ f)) ∙ ap-idf (ρ f))
+  F-λ idfBC = λ f → ! (∙-unit-r (ap (λ z → z) (lamb f)) ∙ ap-idf (lamb f))
+  F-α idfBC = λ h g f → ! (∙-unit-r (ap (λ z → z) (α h g f)) ∙ ap-idf (α h g f))
 
 module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {D₀ : Type i₃}
   {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}} {{ξD : BicatStr j₃ D₀}} where
@@ -88,8 +98,90 @@ module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {
   PsfunctorStr.F₁ (φ₂ ∘BCσ φ₁) = F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)
   PsfunctorStr.F-id₁ (φ₂ ∘BCσ φ₁) a = ap (F₁ (str-pf φ₂)) (F-id₁ (str-pf φ₁) a) ∙ F-id₁ (str-pf φ₂) (map-pf φ₁ a)
   PsfunctorStr.F-◻ (φ₂ ∘BCσ φ₁) f g = ap (F₁ (str-pf φ₂)) (F-◻ (str-pf φ₁) f g) ∙ F-◻ (str-pf φ₂) (F₁ (str-pf φ₁) f) (F₁ (str-pf φ₁) g)
-  PsfunctorStr.F-ρ (φ₂ ∘BCσ φ₁) f = {!!}
-  PsfunctorStr.F-λ (φ₂ ∘BCσ φ₁) f = {!!}
+  PsfunctorStr.F-ρ (φ₂ ∘BCσ φ₁) {a} {b} f =
+    F-ρ (str-pf φ₂) (F₁ (str-pf φ₁) f) ∙
+    ap
+      (λ p →
+        ap (F₁ (str-pf φ₂)) p ∙
+        F-◻ (str-pf φ₂) (id₁ (map-pf φ₁ a)) (F₁ (str-pf φ₁) f) ∙
+        ap (λ m → F₁ (str-pf φ₂) (F₁ (str-pf φ₁) f) ◻ m) (F-id₁ (str-pf φ₂) (map-pf φ₁ a)))
+      (F-ρ (str-pf φ₁) f) ∙
+    ! (ap
+        (λ q →
+          ap (F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)) (ρ f) ∙
+          (ap (F₁ (str-pf φ₂)) (F-◻ (str-pf φ₁) (id₁ a) f) ∙ q) ∙
+          ap (λ m → (F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)) f ◻ m)
+            (ap (F₁ (str-pf φ₂)) (F-id₁ (str-pf φ₁) a) ∙ F-id₁ (str-pf φ₂) (map-pf φ₁ a)))
+        (F-◻-nat-l (str-pf φ₂) (F₁ (str-pf φ₁) f) (F-id₁ (str-pf φ₁) a)) ∙
+      lemma (ρ f) (F-◻ (str-pf φ₁) (id₁ a) f) (F-id₁ (str-pf φ₁) a)
+        (F-id₁ (str-pf φ₁) a) (F-id₁ (str-pf φ₂) (map-pf φ₁ a))
+        (F-◻ (str-pf φ₂) (id₁ (map-pf φ₁ a)) (F₁ (str-pf φ₁) f)))
+    where abstract
+      lemma : {x : B₀} {g₁ g₂ : hom x b} (p₁ : g₁ == g₂)
+        {k₁ k₂ k₃ k₄ : hom (map-pf φ₁ x) (map-pf φ₁ a)}
+        (p₂ : F₁ (str-pf φ₁) g₂ == F₁ (str-pf φ₁) f ◻ k₁)
+        (p₃ : k₁ == k₂) (p₅ : k₃ == k₄)
+        {v : hom (map-pf φ₂ (map-pf φ₁ x)) (map-pf φ₂ (map-pf φ₁ a))}
+        (p₆ : F₁ (str-pf φ₂) k₄ == v) (p₄ : _)  
+        → 
+        ap (F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)) p₁ ∙
+        (ap (F₁ (str-pf φ₂)) p₂ ∙
+        ap (λ m → F₁ (str-pf φ₂) (F₁ (str-pf φ₁) f ◻ m)) p₃ ∙ p₄ ∙'
+        ! (ap (λ m → F₁ (str-pf φ₂) (F₁ (str-pf φ₁) f) ◻ F₁ (str-pf φ₂) m) p₅)) ∙
+        ap (λ m → F₁ (str-pf φ₂) (F₁ (str-pf φ₁) f) ◻ m)
+          (ap (F₁ (str-pf φ₂)) p₅ ∙ p₆)
+          ==
+        ap (F₁ (str-pf φ₂))
+          (ap (F₁ (str-pf φ₁)) p₁ ∙ p₂ ∙ ap (λ m → F₁ (str-pf φ₁) f ◻ m) p₃) ∙ p₄ ∙
+        ap (λ m → F₁ (str-pf φ₂) (F₁ (str-pf φ₁) f) ◻ m) p₆
+      lemma idp p₂ idp idp idp p₄ = aux (F₁ (str-pf φ₂)) p₂ p₄
+        where
+          aux : ∀ {i j} {A : Type i} {B : Type j} (g : A → B)
+            {x₁ x₂ : A} (q₁ : x₁ == x₂) {b : B} (q₂ : g x₂ == b)
+            → (ap g q₁ ∙ q₂) ∙ idp == ap g (q₁ ∙ idp) ∙ q₂ ∙ idp
+          aux _ idp idp = idp
+  PsfunctorStr.F-λ (φ₂ ∘BCσ φ₁) {a} {b} f =
+    F-λ (str-pf φ₂) (F₁ (str-pf φ₁) f) ∙
+    ap
+      (λ p →
+        ap (F₁ (str-pf φ₂)) p ∙
+        F-◻ (str-pf φ₂) (F₁ (str-pf φ₁) f) (id₁ (map-pf φ₁ b)) ∙
+        ap (λ m → m ◻ F₁ (str-pf φ₂) (F₁ (str-pf φ₁) f)) (F-id₁ (str-pf φ₂) (map-pf φ₁ b)))
+      (F-λ (str-pf φ₁) f) ∙
+    ! (ap
+        (λ q →
+          ap (F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)) (lamb f) ∙
+          (ap (F₁ (str-pf φ₂)) (F-◻ (str-pf φ₁) f (id₁ b)) ∙ q) ∙
+          ap (λ m → m ◻ (F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)) f)
+            (ap (F₁ (str-pf φ₂)) (F-id₁ (str-pf φ₁) b) ∙ F-id₁ (str-pf φ₂) (map-pf φ₁ b)))
+        (F-◻-nat-r (str-pf φ₂) (F₁ (str-pf φ₁) f) (F-id₁ (str-pf φ₁) b)) ∙
+      lemma (lamb f) (F-id₁ (str-pf φ₁) b) (F-id₁ (str-pf φ₁) b)
+        (F-◻ (str-pf φ₁) f (id₁ b)) (F-id₁ (str-pf φ₂) (map-pf φ₁ b))
+        (F-◻ (str-pf φ₂) (F₁ (str-pf φ₁) f) (id₁ (map-pf φ₁ b))))
+    where abstract
+      lemma : {x : B₀} {g₁ g₂ : hom a x} (p₁ : g₁ == g₂)
+        {k₁ k₂ k₃ k₄ : hom (map-pf φ₁ b) (map-pf φ₁ x)}
+        (p₃ : k₁ == k₂) (p₅ : k₃ == k₄)
+        (p₂ : F₁ (str-pf φ₁) g₂ == k₁ ◻ F₁ (str-pf φ₁) f)
+        {t : hom (map-pf φ₂ (map-pf φ₁ b)) (map-pf φ₂ (map-pf φ₁ x))}
+        (p₆ : F₁ (str-pf φ₂) k₄ == t) (p₄ : _)  
+        → 
+        ap (F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)) p₁ ∙
+        (ap (F₁ (str-pf φ₂)) p₂ ∙
+        ap (λ m → F₁ (str-pf φ₂) (m ◻ F₁ (str-pf φ₁) f)) p₃ ∙ p₄ ∙'
+        ! (ap (λ m → F₁ (str-pf φ₂) m ◻ F₁ (str-pf φ₂) (F₁ (str-pf φ₁) f)) p₅)) ∙
+        ap (λ m → m ◻ F₁ (str-pf φ₂) (F₁ (str-pf φ₁) f))
+          (ap (F₁ (str-pf φ₂)) p₅ ∙ p₆)
+          ==
+        ap (F₁ (str-pf φ₂))
+          (ap (F₁ (str-pf φ₁)) p₁ ∙ p₂ ∙ ap (λ m → m ◻ F₁ (str-pf φ₁) f) p₃) ∙ p₄ ∙
+        ap (λ m → m ◻ F₁ (str-pf φ₂) (F₁ (str-pf φ₁) f)) p₆
+      lemma idp idp idp p₂ idp p₄ = aux (F₁ (str-pf φ₂)) p₂ p₄
+        where
+          aux : ∀ {i j} {A : Type i} {B : Type j} (g : A → B)
+            {x₁ x₂ : A} (q₁ : x₁ == x₂) {b : B} (q₂ : g x₂ == b)
+            → (ap g q₁ ∙ q₂) ∙ idp == ap g (q₁ ∙ idp) ∙ q₂ ∙ idp
+          aux _ idp idp = idp
   PsfunctorStr.F-α (φ₂ ∘BCσ φ₁) h g f = {!!}
 
 -- equivalences str between two pseudofucntors (skip pseudotransf definition itself)
