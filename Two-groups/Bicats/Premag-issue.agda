@@ -1,6 +1,6 @@
 {-# OPTIONS --without-K #-}
 
-module Bicat-issue where
+module Premag-issue where
 
 open import Agda.Primitive renaming (_⊔_ to lmax; lsuc to lsucc)
 open import Agda.Builtin.Equality renaming (_≡_ to _==_)
@@ -17,7 +17,7 @@ open PreMagStr {{...}}
 
 module _ {i₁ i₂ j₁ j₂} {B₀ : Set i₁} {C₀ : Set i₂} {{ξB : PreMagStr j₁ B₀}} {{ξC : PreMagStr j₂ C₀}} where
 
-  record FunctorStr (F₀ : B₀ → C₀) : Set (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
+  record MorphStr (F₀ : B₀ → C₀) : Set (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
     field
       F₁ : {a b : B₀} → hom a b → hom (F₀ a) (F₀ b)
       F-◻ : {a b c : B₀} (f : hom a b) (g : hom b c) → F₁ (g ◻ f) == F₁ g ◻ F₁ f
@@ -35,7 +35,7 @@ Failed to solve the following constraints:
                                     ==
                                     (_r_66 (F₀ = F₀) (F₁ = F₁) (f = f) (g = g) PreMagStr.◻ F₁ g)
                                     (F₁ f)) →
-                                 FunctorStr F₀
+                                 MorphStr F₀
     (blocked on _a_48)
   Resolve instance argument _r_53 : PreMagStr _j_50 _B₀_52
   Candidates
