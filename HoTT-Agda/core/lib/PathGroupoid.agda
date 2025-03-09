@@ -234,6 +234,9 @@ module _ {i} {A : Type i} where
     → p == r → ! p ∙ q ∙' p == ! r ∙ q ∙' r
   ∙-∙'-= q idp = idp
 
+  rot-in-flip : {x y z : A} (q : y == x) (r : y == z) {p : _} → p == ! q ∙ r → r ◃∎ =ₛ q ◃∙ p ◃∎
+  rot-in-flip idp idp idp = =ₛ-in idp
+
   bi-rot : {x y z w : A} {p : y == x} {q : y == z} {s : z == w} {r : x == w}
     → r == ! p ∙ q ∙ s → s == ! q ∙ p ∙ r
   bi-rot {p = idp} {q = idp} {s = idp} idp = idp

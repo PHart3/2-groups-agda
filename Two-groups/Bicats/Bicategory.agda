@@ -17,19 +17,11 @@ module _ (j : ULevel) where
       ρ : {a b : B₀} (f : hom a b) → f == f ◻ id₁ a
       lamb : {a b : B₀} (f : hom a b) → f == id₁ b ◻ f
       α : {a b c d : B₀} (h : hom c d) (g : hom b c) (f : hom a b) → h ◻ g ◻ f == (h ◻ g) ◻ f
-      id₁-r : {a b : B₀} {f g : hom a b} (θ : g == f) →  ρ g ∙ ap (λ m → m ◻ id₁ a) θ == θ ∙ ρ f  
-      id₁-l : {a b : B₀} {f g : hom a b} (θ : g == f) →  lamb g ∙ ap (λ m → id₁ b ◻ m) θ == θ ∙ lamb f
-      α-law1 : {a b c d : B₀} (f : hom a b) (g : hom b c) {h i : hom c d} (θ : h == i)
-        → α h g f ∙ ap (λ m → m ◻ f) (ap (λ m → m ◻ g) θ) == ap (λ m → m ◻ (g ◻ f)) θ ∙ α i g f
-      α-law2 : {a b c d : B₀} (f : hom a b) {g h : hom b c} {i : hom c d} (θ : g == h)
-        → α i g f ∙ ap (λ m → m ◻ f) (ap (λ m → i ◻ m) θ) == ap (λ m → i ◻ m) (ap (λ m → m ◻ f) θ) ∙ α i h f
-      α-law3 : {a b c d : B₀} {f g : hom a b} (h : hom b c) (i : hom c d) (θ : f == g)
-        → α i h f ∙ ap (λ m → (i ◻ h) ◻ m) θ == ap (λ m → i ◻ m) (ap (λ m → h ◻ m) θ) ∙ α i h g 
       tri-bc : {a b c : B₀} (f : hom a b) (g : hom b c)
-        → ap (λ m → g ◻ m) (lamb f) ∙ α g (id₁ b) f == ap (λ m → m ◻ f) (ρ g)
+        → α g (id₁ b) f == ! (ap (λ m → g ◻ m) (lamb f)) ∙ ap (λ m → m ◻ f) (ρ g)
       pent-bc : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e)
-        →  α i h (g ◻ f) ∙ α (i ◻ h) g f == ap (λ m → i ◻ m) (α h g f) ∙ α i (h ◻ g) f ∙ ap (λ m → m ◻ f) (α i h g)
-      instance {{hom-trunc}} : {a b : B₀} → has-level 1 (hom a b)
+        → α i h (g ◻ f) ∙ α (i ◻ h) g f == ap (λ m → i ◻ m) (α h g f) ∙ α i (h ◻ g) f ∙ ap (λ m → m ◻ f) (α i h g)
+      {{hom-trunc}} : {a b : B₀} → has-level 1 (hom a b)
 
 open BicatStr {{...}}
 
@@ -74,25 +66,27 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
     field
       map-pf : B₀ → C₀
       {{str-pf}} : PsfunctorStr map-pf
-      
-module _ {i j} {B₀ : Type i} {{ξ : BicatStr j B₀}} where
 
-  open PsfunctorStr
+open PsfunctorStr
+open Psfunctor
+
+module _ {i j} {B₀ : Type i} {{ξ : BicatStr j B₀}} where
   
   -- identity pseudofunctor
-  idfBC : PsfunctorStr (idf B₀)
-  F₁ idfBC = λ f → f
-  F-id₁ idfBC = λ a → idp
-  F-◻ idfBC = λ f g → idp
-  F-ρ idfBC = λ f → ! (∙-unit-r (ap (λ z → z) (ρ f)) ∙ ap-idf (ρ f))
-  F-λ idfBC = λ f → ! (∙-unit-r (ap (λ z → z) (lamb f)) ∙ ap-idf (lamb f))
-  F-α idfBC = λ h g f → ! (∙-unit-r (ap (λ z → z) (α h g f)) ∙ ap-idf (α h g f))
+  idfBCσ : PsfunctorStr (idf B₀)
+  F₁ idfBCσ = λ f → f
+  F-id₁ idfBCσ = λ a → idp
+  F-◻ idfBCσ = λ f g → idp
+  F-ρ idfBCσ = λ f → ! (∙-unit-r (ap (λ z → z) (ρ f)) ∙ ap-idf (ρ f))
+  F-λ idfBCσ = λ f → ! (∙-unit-r (ap (λ z → z) (lamb f)) ∙ ap-idf (lamb f))
+  F-α idfBCσ = λ h g f → ! (∙-unit-r (ap (λ z → z) (α h g f)) ∙ ap-idf (α h g f))
+
+  idfBC : Psfunctor
+  map-pf idfBC = idf B₀
+  str-pf idfBC = idfBCσ
 
 module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {D₀ : Type i₃}
   {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}} {{ξD : BicatStr j₃ D₀}} where
-
-  open PsfunctorStr
-  open Psfunctor
 
   -- composition of pseudofunctors  
   infixr 60 _∘BCσ_
@@ -318,9 +312,7 @@ module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {
                 ! q₁ ∙ ap g (! q₂ ∙ q₃ ∙ idp) ∙ q₄ ∙ idp == ! (ap g q₂ ∙ q₁) ∙ (ap g q₃ ∙ q₄) ∙ idp
               aux2-α _ idp idp idp idp = idp
 
-
--- adjoint equivalence str and example of id map
-
--- equivalences str between two pseudofunctors (skip pseudotransf definition itself)
-
--- biequiv strucutre between two bicats
+  infixr 50 _∘BC_
+  _∘BC_ :  (φ₂ : Psfunctor {{ξC}} {{ξD}}) (φ₁ : Psfunctor {{ξB}} {{ξC}}) → Psfunctor {{ξB}} {{ξD}}
+  map-pf (φ₂ ∘BC φ₁) = map-pf φ₂ ∘ map-pf φ₁
+  str-pf (φ₂ ∘BC φ₁) = φ₂ ∘BCσ φ₁

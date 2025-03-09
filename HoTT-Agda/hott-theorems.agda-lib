@@ -1,3 +1,0 @@
-name: hott-theorems-group
-depend: hott-core-group
-include: theorems
