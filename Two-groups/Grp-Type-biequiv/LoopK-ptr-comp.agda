@@ -71,10 +71,18 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
       (Ω-fmap-ap (K₂-map-∘ σ₁ σ₂) (loop G₁ x) ∙
       ap-∘ (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x)) ◃∙
       ap (Ω-fmap (K₂-map⊙ σ₂)) (K₂-map-β-pts σ₁ x) ◃∙
-      K₂-map-β-pts σ₂ (f₁ x) ◃∎
+      K₂-map-β-pts σ₂ (f₁ x) ◃∙
+      idp ◃∎
         =ₛ
       idp ◃∎
     LoopK-∘ =
+      ! (K₂-map-β-pts (m₂ ∘2Gσ m₁) x) ◃∙
+      (Ω-fmap-ap (K₂-map-∘ σ₁ σ₂) (loop G₁ x) ∙
+      ap-∘ (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x)) ◃∙
+      ap (Ω-fmap (K₂-map⊙ σ₂)) (K₂-map-β-pts σ₁ x) ◃∙
+      K₂-map-β-pts σ₂ (f₁ x) ◃∙
+      idp ◃∎
+        =ₛ₁⟨ 3 & 2 & ∙-unit-r (K₂-map-β-pts σ₂ (f₁ x)) ⟩
       ! (K₂-map-β-pts (m₂ ∘2Gσ m₁) x) ◃∙
       (Ω-fmap-ap (K₂-map-∘ σ₁ σ₂) (loop G₁ x) ∙
       ap-∘ (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x)) ◃∙

@@ -15,12 +15,13 @@ module LoopK-ptr-idf where
 module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
 
   abstract
-    LoopK-idf :
-      Ω-fmap-ap K₂-map-idf (loop G x) ◃∙
-      ap-idf (loop G x) ◃∎
+    LoopK-idf-pre :
+      (Ω-fmap-ap K₂-map-idf (loop G x) ∙ ap-idf (loop G x)) ◃∎
         =ₛ
       K₂-map-β-pts idf2G x ◃∎
-    LoopK-idf =
+    LoopK-idf-pre =
+      (Ω-fmap-ap K₂-map-idf (loop G x) ∙ ap-idf (loop G x)) ◃∎
+        =ₛ⟨ =ₛ-in (idp {a = Ω-fmap-ap K₂-map-idf (loop G x) ∙ ap-idf (loop G x)}) ⟩
       Ω-fmap-ap K₂-map-idf (loop G x) ◃∙
       ap-idf (loop G x) ◃∎
         =ₛ⟨ 0 & 1 & Ω-fmap-ap-hnat K₂-map-idf (loop G x) ⟩
@@ -48,3 +49,25 @@ module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
       idp ◃∎
         =ₛ₁⟨ ∙-unit-r (K₂-map-β-pts idf2G x) ⟩
       K₂-map-β-pts idf2G x ◃∎ ∎ₛ
+
+  private
+    γ = ∙-unit-r (! (Ω-fmap-ap K₂-map-idf (loop G x) ∙ ap-idf (loop G x)))
+
+  abstract
+    LoopK-idf :
+      K₂-map-β-pts idf2G x ◃∙
+      ! (Ω-fmap-ap K₂-map-idf (loop G x) ∙ ap-idf (loop G x)) ◃∙
+      idp ◃∎
+        =ₛ
+      idp ◃∎
+    LoopK-idf =
+      K₂-map-β-pts idf2G x ◃∙
+      ! (Ω-fmap-ap K₂-map-idf (loop G x) ∙ ap-idf (loop G x)) ◃∙
+      idp ◃∎
+        =ₛ₁⟨ 1 & 2 & γ ⟩
+      K₂-map-β-pts idf2G x ◃∙
+      ! (Ω-fmap-ap K₂-map-idf (loop G x) ∙ ap-idf (loop G x)) ◃∎
+        =ₛ⟨ !ₛ (post-rotate-in {q = Ω-fmap-ap K₂-map-idf (loop G x) ∙ ap-idf (loop G x)} LoopK-idf-pre) ⟩
+      []
+        =ₛ₁⟨ idp ⟩
+      idp ◃∎ ∎ₛ
