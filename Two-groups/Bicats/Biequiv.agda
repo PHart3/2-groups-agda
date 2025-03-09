@@ -27,7 +27,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
   record Pstrans (R S : Psfunctor {{ξB}} {{ξC}}) : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
     field
       η₀ : (a : B₀) → hom (map-pf R a) (map-pf S a)
-      η₁ : {a b : B₀} (f : hom a b) → F₁ (str-pf S) f ◻ η₀ a == η₀ b ◻ F₁ (str-pf R) f
+      η₁ : {a b : B₀} (f : hom a b) → F₁ (str-pf S) f ◻ η₀ a == ⟦ ξC ⟧ η₀ b ◻ F₁ (str-pf R) f
       coher-unit : {a : B₀} →
         lamb (η₀ a) ∙
         ap (λ m → m ◻ η₀ a) (! (F-id₁ (str-pf S) a)) ∙
@@ -36,7 +36,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
           ==
         ρ (η₀ a)
       coher-assoc : {a b c : B₀} (f : hom a b) (g : hom b c) →
-        ! (η₁ (g ◻ f)) ∙
+        ! (η₁ (⟦ ξB ⟧ g ◻ f)) ∙
         ap (λ m → m ◻ η₀ a) (F-◻ (str-pf S) f g) ∙
         ! (α (F₁ (str-pf S) g) (F₁ (str-pf S) f) (η₀ a)) ∙
         ap (λ m → F₁ (str-pf S) g ◻ m) (η₁ f) ∙
@@ -59,8 +59,8 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}  where
       Ψ₂ : Psfunctor {{ξC}} {{ξB}}
       τ₁ : Pstrans (Ψ₁ ∘BC Ψ₂) idfBC
       τ₂ : Pstrans idfBC (Ψ₂ ∘BC Ψ₁)
-      lev-eq₁ : (a : C₀) → Adjequiv (η₀ τ₁ a)
-      lev-eq₂ : (a : B₀) → Adjequiv (η₀ τ₂ a)
+      lev-eq₁ : (a : C₀) → Adjequiv {{ξC}} (η₀ τ₁ a)
+      lev-eq₂ : (a : B₀) → Adjequiv {{ξB}} (η₀ τ₂ a)
 
   -- for clarity of final theorem statement
   BiequivStr : (ξB : BicatStr j₁ B₀) (ξC : BicatStr j₂ C₀) → Type (lmax (lmax i₁ j₁) (lmax i₂ j₂))

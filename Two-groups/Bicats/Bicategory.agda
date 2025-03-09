@@ -27,6 +27,7 @@ open BicatStr {{...}}
 
 module _ {i j} {B₀ : Type i} where
 
+  -- to aid instance search in Agda 2.6.4.3
   infixr 82 ⟦_⟧_◻_
   ⟦_⟧_◻_ : (ξ : BicatStr j B₀) {a b c : B₀} → hom {{ξ}} b c → hom {{ξ}} a b → hom {{ξ}} a c
   ⟦_⟧_◻_ ξ g f = _◻_ {{ξ}} g f 
@@ -40,7 +41,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
       F₁ : {a b : B₀} → hom a b → hom (F₀ a) (F₀ b)
       F-id₁ : (a : B₀) → F₁ (id₁ a) == id₁ (F₀ a)
       F-◻ : {a b c : B₀} (f : hom a b) (g : hom b c)
-        → F₁ (⟦ ξB ⟧ g ◻ f) == ⟦ ξC ⟧ F₁ g ◻ F₁ f  -- somehow Agda gets stuck on the two instance candidates (make GitHub issue)
+        → F₁ (⟦ ξB ⟧ g ◻ f) == ⟦ ξC ⟧ F₁ g ◻ F₁ f
       F-ρ : {a b : B₀} (f : hom a b) → ρ (F₁ f) == ap F₁ (ρ f) ∙ F-◻ (id₁ a) f ∙ ap (λ m → F₁ f ◻ m) (F-id₁ a)
       F-λ : {a b : B₀} (f : hom a b) → lamb (F₁ f) == ap F₁ (lamb f) ∙ F-◻ f (id₁ b) ∙ ap (λ m → m ◻ F₁ f) (F-id₁ b)
       F-α : {a b c d : B₀} (h : hom c d) (g : hom b c) (f : hom a b)
@@ -115,7 +116,7 @@ module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {
     where abstract
       lemma-ρ : {x : B₀} {g₁ g₂ : hom x b} (p₁ : g₁ == g₂)
         {k₁ k₂ k₃ k₄ : hom (map-pf φ₁ x) (map-pf φ₁ a)}
-        (p₂ : F₁ (str-pf φ₁) g₂ == F₁ (str-pf φ₁) f ◻ k₁)
+        (p₂ : F₁ (str-pf φ₁) g₂ == ⟦ ξC ⟧ F₁ (str-pf φ₁) f ◻ k₁)
         (p₃ : k₁ == k₂) (p₅ : k₃ == k₄)
         {v : hom (map-pf φ₂ (map-pf φ₁ x)) (map-pf φ₂ (map-pf φ₁ a))}
         (p₆ : F₁ (str-pf φ₂) k₄ == v) (p₄ : _)  
@@ -158,7 +159,7 @@ module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {
       lemma-λ : {x : B₀} {g₁ g₂ : hom a x} (p₁ : g₁ == g₂)
         {k₁ k₂ k₃ k₄ : hom (map-pf φ₁ b) (map-pf φ₁ x)}
         (p₃ : k₁ == k₂) (p₅ : k₃ == k₄)
-        (p₂ : F₁ (str-pf φ₁) g₂ == k₁ ◻ F₁ (str-pf φ₁) f)
+        (p₂ : F₁ (str-pf φ₁) g₂ == ⟦ ξC ⟧ k₁ ◻ F₁ (str-pf φ₁) f)
         {t : hom (map-pf φ₂ (map-pf φ₁ b)) (map-pf φ₂ (map-pf φ₁ x))}
         (p₆ : F₁ (str-pf φ₂) k₄ == t) (p₄ : _)  
         → 
@@ -282,10 +283,10 @@ module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {
             {g₁ g₂ : hom a d}
             {k₅ : hom (map-pf φ₂ (map-pf φ₁ b)) (map-pf φ₂ (map-pf φ₁ d))}
             (p₁ : F₁ (str-pf φ₂) h₂ == k₁) (p₂ : h₁ == h₂)
-            (p₃ : F₁ (str-pf φ₂) (⟦ ξC ⟧ F₁ (str-pf φ₁) h ◻ h₁) == F₁ (str-pf φ₂) (F₁ (str-pf φ₁) h) ◻ F₁ (str-pf φ₂) h₁)
-            (p₄ : F₁ (str-pf φ₁) g₁ == F₁ (str-pf φ₁) h ◻ h₁)
-            (p₅ : g₁ == g₂) (p₆ : F₁ (str-pf φ₁) g₂ == h₆ ◻ F₁ (str-pf φ₁) f) (p₇ : h₆ == h₇)
-            (p₈ : F₁ (str-pf φ₂) (⟦ ξC ⟧ h₆ ◻ F₁ (str-pf φ₁) f) == F₁ (str-pf φ₂) h₆ ◻ F₁ (str-pf φ₂) (F₁ (str-pf φ₁) f))
+            (p₃ : F₁ (str-pf φ₂) (⟦ ξC ⟧ F₁ (str-pf φ₁) h ◻ h₁) == ⟦ ξD ⟧ F₁ (str-pf φ₂) (F₁ (str-pf φ₁) h) ◻ F₁ (str-pf φ₂) h₁)
+            (p₄ : F₁ (str-pf φ₁) g₁ == ⟦ ξC ⟧ F₁ (str-pf φ₁) h ◻ h₁)
+            (p₅ : g₁ == g₂) (p₆ : F₁ (str-pf φ₁) g₂ == ⟦ ξC ⟧ h₆ ◻ F₁ (str-pf φ₁) f) (p₇ : h₆ == h₇)
+            (p₈ : F₁ (str-pf φ₂) (⟦ ξC ⟧ h₆ ◻ F₁ (str-pf φ₁) f) == ⟦ ξD ⟧ F₁ (str-pf φ₂) h₆ ◻ F₁ (str-pf φ₂) (F₁ (str-pf φ₁) f))
             (p₉ : F₁ (str-pf φ₂) h₇ == k₅) →
             ! (ap (λ m → F₁ (str-pf φ₂) (F₁ (str-pf φ₁) h) ◻ m) p₁) ∙
             ! (ap (λ m → F₁ (str-pf φ₂) (⟦ ξC ⟧ F₁ (str-pf φ₁) h ◻ m)) (! p₂) ∙ p₃ ∙'
