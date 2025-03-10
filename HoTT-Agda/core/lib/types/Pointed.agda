@@ -351,8 +351,7 @@ module _ {i} {X : Ptd i} where
   ⊙≃-contr-aux =
     equiv-preserves-level
       ((Σ-contr-red
-        {P = λ (A , e) → Σ A (λ a₀ → fst e (pt X) == a₀)}
-        (equiv-preserves-level (Σ-emap-r (λ A → (ua-equiv {A = de⊙ X} {B = A})⁻¹))))⁻¹)
+        {P = λ (A , e) → Σ A (λ a₀ → fst e (pt X) == a₀)} ≃-tot-contr)⁻¹)
       {{pathfrom-is-contr-instance}}
 
   ⊙≃-contr : is-contr (Σ (Ptd i) (λ Y → X ⊙≃ Y))

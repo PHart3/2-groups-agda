@@ -5,6 +5,8 @@ open import lib.types.Sigma
 
 module lib.FTID where
 
+-- Identity system and associated induction principle
+
 module _ {i j} (A : Type i) (B : A → Type j) (a : A) (b : B a) where
 
   ID-sys : Type (lmax i j)
