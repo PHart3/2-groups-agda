@@ -177,17 +177,13 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y) where
           (λ ((h , p) , (H , K)) → idp)
           λ ((g , K) , (p , H)) → idp
 
-  ⊙hom-cent : (r : Σ (X ⊙→ Y) (λ g → f ⊙-comp g))
-    → (f , ⊙∼-id f) == r
-  ⊙hom-cent r = contr-path ⊙hom-contr r
-
   ⊙hom-ind : ∀ {k} (P : (g : X ⊙→ Y) → (f ⊙-comp g →  Type k))
     → P f (⊙∼-id f) → {g : X ⊙→ Y} (p : f ⊙-comp g) → P g p
-  ⊙hom-ind P r {g} p = ind (ID-ind {P = P} ⊙hom-cent) r g p
+  ⊙hom-ind P = ID-ind-map P ⊙hom-contr
 
   ⊙hom-ind-β : ∀ {k} (P : (g : X ⊙→ Y) → (f ⊙-comp g →  Type k))
     → (r : P f (⊙∼-id f)) → ⊙hom-ind P r {f} (⊙∼-id f) == r
-  ⊙hom-ind-β _ r = ind-eq (ID-ind ⊙hom-cent) r
+  ⊙hom-ind-β P = ID-ind-map-β P ⊙hom-contr
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} {f : X ⊙→ Y} where
 
@@ -226,12 +222,9 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} {f₁ f₂ : X ⊙→ Y} {H : f₁ ⊙-co
           (λ ((K₁ , K₂) , (c₁ , c₂)) → idp)
           λ ((h , k) , (L , c)) → idp
 
-  ⊙→∼-cent : (r : Σ (f₁ ⊙-comp f₂) (λ K → H ⊙→∼ K)) → (H , ⊙→∼-id H) == r
-  ⊙→∼-cent r = contr-path ⊙→∼-contr r
-
   ⊙→∼-ind : ∀ {k} (P : (K : f₁ ⊙-comp f₂) → (H ⊙→∼ K →  Type k))
     → P H (⊙→∼-id H) → {K : f₁ ⊙-comp f₂} (p : H ⊙→∼ K) → P K p
-  ⊙→∼-ind P r {K} p = ind (ID-ind {P = P} ⊙→∼-cent) r K p
+  ⊙→∼-ind P = ID-ind-map P ⊙→∼-contr
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} {f g : X ⊙→ Y} {H₁ H₂ : f ⊙-comp g} where
 
@@ -368,12 +361,9 @@ module _ {i} {X : Ptd i} where
           (λ (Y , ⊙e) → idp)
           λ ((A , e) , (a , p)) → idp
 
-  ⊙≃-cent : (r : Σ (Ptd i) (λ Y → X ⊙≃ Y)) → (X , ⊙ide X) == r
-  ⊙≃-cent r = contr-path ⊙≃-contr r
-
   ⊙≃-ind : ∀ {k} (P : (Y : Ptd i) → (X ⊙≃ Y →  Type k))
     → P X (⊙ide X) → {Y : Ptd i} (e : X ⊙≃ Y) → P Y e
-  ⊙≃-ind P r {Y} e = ind (ID-ind {P = P} ⊙≃-cent) r Y e
+  ⊙≃-ind P = ID-ind-map P ⊙≃-contr
 
 {- Pointed maps out of bool -}
 

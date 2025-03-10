@@ -28,45 +28,50 @@ module _ {i j} (A : Type i) (B : A → Type j) (a : A) (b : B a) where
       fib-pr-eq x y = transport (λ (x , y) → P x y) (s (x , y)) 
 
       ID-sys-ind : has-sec {f = depEval}
-      ID-sys-ind = sect (λ z → (λ x → λ y →  fib-pr-eq x y z)) const-dp
+      ID-sys-ind = sect (λ z x y → fib-pr-eq x y z) const-dp
 
-ID-ind : ∀ {i j k} {A : Type i} {B : A → Type j} {a : A} {b : B a}
-  {P : (x : A) → (B x → Type k)} (s : ID-sys A B a b)
-  → has-sec {f = depEval A B a b P}
-ID-ind {A = A} {B = B} {a = a} {b = b} {P = P} s = ID-sys-ind A B a b P s
+module _ {i j k} {A : Type i} {B : A → Type j} {a : A} {b : B a} (P : (x : A) → (B x → Type k)) where
+
+  ID-ind : ID-sys A B a b → has-sec {f = depEval A B a b P}
+  ID-ind s = ID-sys-ind A B a b P s
+
+  module _ (σ : is-contr (Σ A B)) where
+
+    private
+      tot-cent : ID-sys A B a b
+      tot-cent r = ! (contr-path σ (a , b)) ∙ contr-path σ r
+
+    ID-ind-map : P a b → {x : A} (d : B x) → P x d
+    ID-ind-map r {a} p = ind (ID-ind tot-cent) r a p
+
+    ID-ind-map-β : (r : P a b) → ID-ind-map r b == r 
+    ID-ind-map-β r = ind-eq (ID-ind tot-cent) r
 
 module _ {i} {A : Type i} where
 
   ≃-tot-contr : is-contr (Σ (Type i) (λ B → A ≃ B))
   ≃-tot-contr = equiv-preserves-level (Σ-emap-r (λ B → ua-equiv ⁻¹)) {{pathfrom-is-contr A}}
 
-  ≃-tot-cent : (r : Σ (Type i) (λ B → A ≃ B)) → (A , ide A) == r
-  ≃-tot-cent r = contr-path ≃-tot-contr r
-
   equiv-induction-b : ∀ {k} (P : {B : Type i} → (A ≃ B → Type k))
     → P (ide A) → {B : Type i} (e : A ≃ B) → P e
-  equiv-induction-b P r {B} e = ind (ID-ind {P = λ B → P {B}} ≃-tot-cent) r B e  
+  equiv-induction-b P = ID-ind-map (λ B → P {B}) ≃-tot-contr
 
   equiv-induction-β : ∀ {k} {P : {B : Type i} → (A ≃ B → Type k)} (r : P (ide A))
     → equiv-induction-b P r (ide A) == r
-  equiv-induction-β r = ind-eq (ID-ind ≃-tot-cent) r
+  equiv-induction-β {P = P} = ID-ind-map-β (λ B → P {B}) ≃-tot-contr
 
 module _ {i j} {A : Type i} {B : A → Type j} {f : Π A B} where
 
   funhom-contr : is-contr (Σ (Π A B) (λ g → f ∼ g))
   funhom-contr = equiv-preserves-level (Σ-emap-r (λ g → app=-equiv)) {{pathfrom-is-contr f}}
 
-  funhom-cent : (r : Σ (Π A B) (λ g → f ∼ g))
-    → (f , λ (x : A) → idp {a = f x}) == r
-  funhom-cent r = contr-path funhom-contr r
-
   ∼-ind : ∀ {k} (P : (g : Π A B) → (f ∼ g → Type k))
     → P f (λ x → idp) → (g : Π A B) (p : f ∼ g) → P g p
-  ∼-ind P r g p = ind (ID-ind {P = P} funhom-cent) r g p
+  ∼-ind P r g p = ID-ind-map P funhom-contr r {g} p
 
   ∼-ind-β : ∀ {k} {P : (g : Π A B) → (f ∼ g → Type k)} (r : P f (λ x → idp))
     → ∼-ind P r f (λ x → idp) == r
-  ∼-ind-β r = ind-eq (ID-ind funhom-cent) r
+  ∼-ind-β {P = P} = ID-ind-map-β P funhom-contr
 
 module _ {i j l} {A : Type i} {B : Type j} {C : Type l} {f g : A → B} where
 

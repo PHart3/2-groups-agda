@@ -65,13 +65,9 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : 
 
   module _ {ι : WkMagNatIso μ₁ μ₂} where
 
-    natiso∼-cent : (r : Σ (WkMagNatIso μ₁ μ₂) (λ ρ → θ ι ∼ θ ρ))
-      → (ι , λ z → idp) == r
-    natiso∼-cent r = ! (contr-path (natiso∼-contr ι) (ι , λ z → idp)) ∙ contr-path (natiso∼-contr ι) r
-
     natiso∼-ind : ∀ {k} (P : (ρ : WkMagNatIso μ₁ μ₂) → θ ι ∼ θ ρ →  Type k)
       → P ι (λ z → idp) → {ρ : WkMagNatIso μ₁ μ₂} (p : θ ι ∼ θ ρ) → P ρ p
-    natiso∼-ind P r {ρ} p = ind (ID-ind {P = P} natiso∼-cent) r ρ p
+    natiso∼-ind P = ID-ind-map P (natiso∼-contr ι)
 
     natiso∼-to-== : {ρ : WkMagNatIso μ₁ μ₂} → θ ι ∼ θ ρ → ι == ρ
     natiso∼-to-== = natiso∼-ind (λ ρ _ → ι == ρ) idp
