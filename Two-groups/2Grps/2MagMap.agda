@@ -109,6 +109,10 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : 
       → P μ (natiso-id μ) → (ν : WkMagWkHom {{η₁}} {{η₂}}) (p : WkMagNatIso μ ν) → P ν p
     natiso-ind P r ν p = ind (ID-ind {P = P} natiso-cent) r ν p
 
+    natiso-ind-β : ∀ {k} (P : (ν : WkMagWkHom {{η₁}} {{η₂}}) → WkMagNatIso μ ν →  Type k)
+      → (r : P μ (natiso-id μ)) → natiso-ind P r μ (natiso-id μ) == r
+    natiso-ind-β _ r = ind-eq (ID-ind natiso-cent) r 
+
     natiso-to-== : {ν : WkMagWkHom {{η₁}} {{η₂}}} → WkMagNatIso μ ν → μ == ν
     natiso-to-== {ν} = natiso-ind (λ δ _ → μ == δ) idp ν
 

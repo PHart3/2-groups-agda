@@ -149,6 +149,7 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
       sect⊙-eq : f ⊙∘ r-inv == ⊙idf Y
 
 -- induction principle for ⊙-comp
+
 module _ {i j} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y) where
 
   ⊙hom-contr-aux :
@@ -184,14 +185,16 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y) where
     → P f (⊙∼-id f) → {g : X ⊙→ Y} (p : f ⊙-comp g) → P g p
   ⊙hom-ind P r {g} p = ind (ID-ind {P = P} ⊙hom-cent) r g p
 
-  ⊙hom-ind-β : ∀ {k} {P : (g : X ⊙→ Y) → (f ⊙-comp g →  Type k)}
+  ⊙hom-ind-β : ∀ {k} (P : (g : X ⊙→ Y) → (f ⊙-comp g →  Type k))
     → (r : P f (⊙∼-id f)) → ⊙hom-ind P r {f} (⊙∼-id f) == r
-  ⊙hom-ind-β {P} r = ind-eq (ID-ind ⊙hom-cent) r
+  ⊙hom-ind-β _ r = ind-eq (ID-ind ⊙hom-cent) r
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} {f : X ⊙→ Y} where
 
   ⊙-comp-to-== : {g : X ⊙→ Y} → f ⊙-comp g → f == g
   ⊙-comp-to-== = ⊙hom-ind f (λ g _ → f == g) idp 
+
+-- induction principle for ⊙∼→
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} {f₁ f₂ : X ⊙→ Y} {H : f₁ ⊙-comp f₂} where
 
@@ -337,6 +340,41 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} (⊙e : X ⊙≃ Y) where
 
   pre⊙∘-equiv : (Y ⊙→ Z) ≃ (X ⊙→ Z)
   pre⊙∘-equiv = _ , pre⊙∘-is-equiv
+
+-- induction principle for ⊙≃
+
+module _ {i} {X : Ptd i} where
+ 
+  ⊙≃-contr-aux :
+    is-contr
+      (Σ (Σ (Type i) (λ A → de⊙ X ≃ A)) (λ (A , e) → Σ A (λ a₀ → fst e (pt X) == a₀)))
+  ⊙≃-contr-aux =
+    equiv-preserves-level
+      ((Σ-contr-red
+        {P = λ (A , e) → Σ A (λ a₀ → fst e (pt X) == a₀)}
+        (equiv-preserves-level (Σ-emap-r (λ A → (ua-equiv {A = de⊙ X} {B = A})⁻¹))))⁻¹)
+      {{pathfrom-is-contr-instance}}
+
+  ⊙≃-contr : is-contr (Σ (Ptd i) (λ Y → X ⊙≃ Y))
+  ⊙≃-contr = equiv-preserves-level lemma {{⊙≃-contr-aux }}
+    where
+      lemma :
+        Σ (Σ (Type i) (λ A → de⊙ X ≃ A)) (λ (A , e) → Σ A (λ a₀ → fst e (pt X) == a₀))
+          ≃
+        Σ (Ptd i) (λ Y → X ⊙≃ Y)
+      lemma =
+        equiv
+          (λ ((A , e) , (a , p)) → ⊙[ A , a ] , ≃-to-⊙≃ e p)
+          (λ (Y , ⊙e) → ((de⊙ Y) , (⊙≃-to-≃ ⊙e)) , ((pt Y) , (⊙–>-pt ⊙e)))
+          (λ (Y , ⊙e) → idp)
+          λ ((A , e) , (a , p)) → idp
+
+  ⊙≃-cent : (r : Σ (Ptd i) (λ Y → X ⊙≃ Y)) → (X , ⊙ide X) == r
+  ⊙≃-cent r = contr-path ⊙≃-contr r
+
+  ⊙≃-ind : ∀ {k} (P : (Y : Ptd i) → (X ⊙≃ Y →  Type k))
+    → P X (⊙ide X) → {Y : Ptd i} (e : X ⊙≃ Y) → P Y e
+  ⊙≃-ind P r {Y} e = ind (ID-ind {P = P} ⊙≃-cent) r Y e
 
 {- Pointed maps out of bool -}
 
