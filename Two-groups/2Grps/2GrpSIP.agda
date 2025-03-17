@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.types.Unit
 open import lib.FTID
 open import lib.NType2
 open import 2Magma
