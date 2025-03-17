@@ -214,6 +214,9 @@ record Σ {i j} (A : Type i) (B : A → Type j) : Type (lmax i j) where
     snd : B fst
 open Σ public
 
+infixr 40 Σ
+syntax Σ A (λ x → B) = [ x ∈ A ] × B
+
 pair= : ∀ {i j} {A : Type i} {B : A → Type j}
   {a a' : A} (p : a == a') {b : B a} {b' : B a'}
   (q : b == b' [ B ↓ p ])
