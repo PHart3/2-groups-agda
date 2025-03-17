@@ -2,6 +2,7 @@
 
 open import lib.Basics
 open import lib.FTID
+open import lib.NType2
 open import 2Magma
 open import 2Grp
 open import 2GrpHomEq
@@ -25,7 +26,7 @@ module _ {i} (G₁ : Type i) (η₁ : CohGrp G₁) where
   open CohGrp η₁
 
   2grphomf-Σ-≃ :
-    [ ( G₂ , ( map , _ ) ) ∈ Σ (Type i) (λ G₂ → G₁ ≃ G₂) ] ×
+    [ ( ( G₂ , _ ) , ( map , _ ) ) ∈ Σ (1 -Type i) (λ ( G₂ , _ ) → G₁ ≃ G₂) ] ×
       [ ( mu₂ , map-comp ) ∈ Σ (G₂ → G₂ → G₂) (λ mu₂ → (x y : G₁) → mu₂ (map x) (map y) == map (mu x y)) ] ×
         [ ( id₂ , map-id ) ∈ Σ G₂ (λ id₂ → id₂ == map id) ] ×
           [ ( lam₂ , map-lam ) ∈
@@ -77,7 +78,26 @@ module _ {i} (G₁ : Type i) (η₁ : CohGrp G₁) where
                               ap (λ z → mu₂ z (inv₂ x)) (linv₂ x))
       ≃
     Σ (Σ (Type i) (λ G₂ → CohGrp G₂)) (λ (_ , η₂) → η₁ 2g≃-f η₂)
-  2grphomf-Σ-≃ = {!!}
+  2grphomf-Σ-≃ =
+    equiv
+      (λ
+        (( ( G₂ , 1trunc₂ ) , φ ) , ( mu₂ , map-comp ) , (id₂ , map-id) , ( lam₂ , map-lam ) , ( rho₂ , map-rho ) ,
+          ( al₂ , map-al ) , tr₂ , pent₂ , ( inv₂ , map-inv ) , ( linv₂ , map-linv ) , ( rinv₂ , map-rinv ) , zz₁₂ , zz₂₂ )
+        → (G₂ , cohgrp {{1trunc₂}} id₂ mu₂ lam₂ rho₂ al₂ tr₂ pent₂ inv₂ linv₂ rinv₂ zz₁₂ zz₂₂) ,
+          φ , (cohgrphomstrfull map-comp map-al map-id map-rho map-lam map-inv map-rinv map-linv))
+      (λ
+        (( G₂ , cohgrp {{1trunc₂}} id₂ mu₂ lam₂ rho₂ al₂ tr₂ pent₂ inv₂ linv₂ rinv₂ zz₁₂ zz₂₂ ) ,
+          ( φ , cohgrphomstrfull map-comp map-al map-id map-rho map-lam map-inv map-rinv map-linv ) )
+        → ((G₂ , 1trunc₂) , φ) , ((mu₂ , map-comp) , ((id₂ , map-id) , (lam₂ , map-lam) , ((rho₂ , map-rho) ,
+          ((al₂ , map-al) , (tr₂ , (pent₂ , ((inv₂ , map-inv) , (linv₂ , map-linv) , ((rinv₂ , map-rinv) , (zz₁₂ , zz₂₂))))))))))
+      (λ
+        (( G₂ , cohgrp {{1trunc₂}} id₂ mu₂ lam₂ rho₂ al₂ tr₂ pent₂ inv₂ linv₂ rinv₂ zz₁₂ zz₂₂ ) ,
+          ( φ , cohgrphomstrfull map-comp map-al map-id map-rho map-lam map-inv map-rinv map-linv ) )
+        → idp)
+      λ
+        (( ( G₂ , 1trunc₂ ) , φ ) , ( mu₂ , map-comp ) , (id₂ , map-id) , ( lam₂ , map-lam ) , ( rho₂ , map-rho ) ,
+          ( al₂ , map-al ) , tr₂ , pent₂ , ( inv₂ , map-inv ) , ( linv₂ , map-linv ) , ( rinv₂ , map-rinv ) , zz₁₂ , zz₂₂ )
+        → idp
 
 {-
   2grphomf-contr : is-contr (Σ (Σ (Type i) (λ G₂ → CohGrp G₂)) (λ (_ , η₂) → η₁ 2g≃-f η₂))
