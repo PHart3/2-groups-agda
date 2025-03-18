@@ -115,11 +115,22 @@ module _ {i} {A : Type i} where
   ∙-idp-!-∙'-rot : {x y : A} (p q : x == y) → idp == p ∙ idp ∙' ! q → p == q
   ∙-idp-!-∙'-rot idp q e = ap ! (e ∙ ∙'-unit-l (! q)) ∙ !-! q
 
-{- a special induction rule for ∙-unit-r -}
+{- induction rules for !-! -}
+module _ {i j} {A : Type i} {x y : A} {p : x == y} where
+
+  !-!-r-ind : {B : {q : y == x} → (p == ! q) → Type j}
+    → ({q : x == y} (r : p == q) → B (r ∙ ! (!-! q))) → ((q : y == x) (r : p == ! q) → B r)
+  !-!-r-ind {B} e idp idp = e idp
+
+  !-!-l-ind : {B : {q : y == x} → (! q == p) → Type j}
+    → ({q : x == y} (r : p == q) → B (!-! q ∙ ! r)) → ((q : y == x) (r : ! q == p) → B r)
+  !-!-l-ind {B} e idp idp = e idp
+
+{- induction rule for ∙-unit-r -}
 module _ {i j} {A : Type i} {x y : A} {q : x == y} (B : {p : x == y} → (q == p ∙ idp) → Type j) where
 
   ∙-unit-r-ind : ({p : x == y} (r : q == p) → B (r ∙ ! (∙-unit-r p))) → ({p : x == y} (r : q == p ∙ idp) → B r)
-  ∙-unit-r-ind e {p = idp} r = coe (ap B (∙-unit-r r)) (e r)
+  ∙-unit-r-ind e {p = idp} idp = e idp
   
 {- additional algebraic lemmas -}
 

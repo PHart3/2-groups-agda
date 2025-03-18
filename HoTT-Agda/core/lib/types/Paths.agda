@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.types.Sigma
 
 module lib.types.Paths where
 
@@ -61,6 +62,26 @@ module _ {i} {A : Type i} {x y z : A} where
 
   post∙'-equiv : (p : y == z) → (x == y) ≃ (x == z)
   post∙'-equiv p = ((λ q → q ∙' p) , post∙'-is-equiv p)
+
+module _ {i} {A : Type i} where
+
+  pathfrom-is-contr-! : {x y : A} (p : x == y) → is-contr (Σ (y == x) (λ t → p == ! t))
+  pathfrom-is-contr-! {x} idp = has-level-in ((idp , idp) , pathfrom-unique-path)
+    where
+      pathfrom-unique-path : (p : Σ (x == x) (λ z → idp == ! z)) → (idp , idp) == p
+      pathfrom-unique-path = uncurry (!-!-r-ind {B = λ {q} r → (idp , idp) == (q , r)} λ { idp → idp }) 
+
+  pathfrom-is-contr-!-idp : {x y : A} (p : x == y) → is-contr (Σ (y == x) (λ t → p == ! t ∙ idp))
+  pathfrom-is-contr-!-idp p = equiv-preserves-level (Σ-emap-r (λ t → post∙-equiv (! (∙-unit-r (! t))))) {{pathfrom-is-contr-! p}}
+
+  pathto-is-contr-! : {x y : A} (p : x == y) → is-contr (Σ (y == x) (λ t → ! t == p))
+  pathto-is-contr-! {x} idp = has-level-in ((idp , idp) , pathto-unique-path)
+    where
+      pathto-unique-path : (p : Σ (x == x) (λ z → ! z == idp)) → (idp , idp) == p
+      pathto-unique-path = uncurry (!-!-l-ind {B = λ {q} r → (idp , idp) == (q , r)} λ { idp → idp })
+
+  pathto-is-contr-!-idp : {x y : A} (p : x == y) → is-contr (Σ (y == x) (λ t → ! t ∙ idp == p))
+  pathto-is-contr-!-idp p = equiv-preserves-level (Σ-emap-r (λ t → pre∙-equiv (∙-unit-r (! t)))) {{pathto-is-contr-! p}}
 
 module _ {i} {A : Type i} {x y : A} where
 

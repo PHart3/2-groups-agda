@@ -2,7 +2,6 @@
 
 open import lib.Base
 open import lib.PathGroupoid
-
 open import lib.path-seq.Concat
 open import lib.path-seq.Inversion
 open import lib.path-seq.Reasoning

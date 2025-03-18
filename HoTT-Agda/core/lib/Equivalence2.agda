@@ -38,8 +38,7 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k}
   post∘-equiv : (C → A) ≃ (C → B)
   post∘-equiv = (_ , post∘-is-equiv (snd e))
 
-is-contr-map : ∀ {i j} {A : Type i} {B : Type j} (f : A → B)
-  → Type (lmax i j)
+is-contr-map : ∀ {i j} {A : Type i} {B : Type j} (f : A → B) → Type (lmax i j)
 is-contr-map {A = A} {B = B} f = (y : B) → is-contr (hfiber f y)
 
 equiv-is-contr-map : ∀ {i j} {A : Type i} {B : Type j} {f : A → B}
@@ -472,3 +471,15 @@ replace-inverse : ∀ {i j} {A : Type i} {B : Type j} {f : A → B}
 replace-inverse {f = f} f-ise {g₁ = g₁} g∼ =
   is-eq f g₁ (λ b → ap f (! (g∼ b)) ∙ f-g b) (λ a → ! (g∼ (f a)) ∙ g-f a)
   where open is-equiv f-ise
+
+-- some lemmas for rearranging identity types
+
+module _ {i} {A : Type i} where
+
+  pre-rotate-in-≃ : {a a' a'' : A} (q : a' == a'') {p : a == a'} {r : a == a''}
+    → (r == p ∙ q) ≃ (! p ∙' r == q)
+  pre-rotate-in-≃ q {p = idp} {r = idp} = equiv (λ c → c) (λ c → c) (λ _ → idp) λ _ → idp
+
+  pre-rotate-in-!≃ : {a a' a'' : A} (q : a' == a'') {p : a' == a} {r : a == a''}
+    → (r == ! p ∙ q) ≃ (p ∙' r == q)
+  pre-rotate-in-!≃ q {p = idp} {r = idp} = equiv (λ c → c) (λ c → c) (λ _ → idp) λ _ → idp
