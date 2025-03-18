@@ -3,6 +3,7 @@
 open import lib.Basics
 open import lib.Equivalence2
 open import lib.Relation2
+open import lib.FTID
 open import lib.types.Paths
 open import lib.types.Pi
 open import lib.types.Sigma
@@ -93,9 +94,7 @@ module _ {i j} {A : Type i} (P : SubtypeProp {A = A} {j}) where
   open SubtypeProp
 
   instance
-    Subtype-level : ∀ {n : ℕ₋₂}
-      {{_ : has-level (S n) A}}
-      → has-level (S n) (Subtype P)
+    Subtype-level : ∀ {n : ℕ₋₂} {{_ : has-level (S n) A}} → has-level (S n) (Subtype P)
     Subtype-level = Σ-level ⟨⟩ (λ x → prop-has-level-S (level P {x}))
 
   Subtype= : (x y : Subtype P) → Type i
@@ -122,21 +121,17 @@ module _ {i j} {A : Type i} (P : SubtypeProp {A = A} {j}) where
   Subtype=-econv : (x y : Subtype P) → (Subtype= x y) ≃ (x == y)
   Subtype=-econv x y = equiv Subtype=-out fst= Subtype=-η Subtype=-β
 
-  Subtype==-out : ∀ {x y : Subtype P} {p q : x == y}
-    → Subtype== p q → p == q
+  Subtype==-out : ∀ {x y : Subtype P} {p q : x == y} → Subtype== p q → p == q
   Subtype==-out {p = idp} {q} (=ₛ-in e) = ! (equiv-is-inj (snd ((Subtype=-econv _ _ ) ⁻¹)) q idp (! e) ) 
 
-  Subtype===-out : ∀ {x y : Subtype P} {p q : x == y} {r s : p == q}
-    → Subtype=== r s → r == s
+  Subtype===-out : ∀ {x y : Subtype P} {p q : x == y} {r s : p == q} → Subtype=== r s → r == s
   Subtype===-out {p = idp} {q} {r = idp} {s} e =
     ! (equiv-is-inj {f = ap (ap fst)}
       (snd (ap-equiv ((Subtype=-econv _ _ ) ⁻¹) _ _)) s idp (! (=ₛ-out e)) )
 
   abstract
-    Subtype-∙ : ∀ {x y z : Subtype P}
-      (p : Subtype= x y) (q : Subtype= y z)
-      → (Subtype=-out {x} {y} p ∙ Subtype=-out {y} {z} q)
-      == Subtype=-out {x} {z} (p ∙ q)
+    Subtype-∙ : ∀ {x y z : Subtype P} (p : Subtype= x y) (q : Subtype= y z)
+      → (Subtype=-out {x} {y} p ∙ Subtype=-out {y} {z} q) == Subtype=-out {x} {z} (p ∙ q)
     Subtype-∙ {x} {y} {z} p q =
       Subtype=-out p ∙ Subtype=-out q
         =⟨ Σ-∙ {p = p} {p' = q} (prop-has-all-paths-↓ {{level P {fst y}}}) (prop-has-all-paths-↓ {{level P {fst z}}}) ⟩
@@ -220,24 +215,26 @@ module _ {i} {n} where
   nType=-out : {A B : n -Type i} → nType= A B → A == B
   nType=-out = Subtype=-out prop
 
-  abstract
-    nType=-β : {A B : n -Type i} (p : nType= A B)
-      → fst= (nType=-out {A = A} {B = B} p) == p
-    nType=-β = Subtype=-β prop
+  nType=-β : {A B : n -Type i} (p : nType= A B)
+    → fst= (nType=-out {A = A} {B = B} p) == p
+  nType=-β = Subtype=-β prop
 
-    nType=-η : {A B : n -Type i} (p : A == B)
-      → nType=-out (fst= p) == p
-    nType=-η = Subtype=-η prop
+  nType=-η : {A B : n -Type i} (p : A == B)
+    → nType=-out (fst= p) == p
+  nType=-η = Subtype=-η prop
 
-    nType=-econv : (A B : n -Type i) → (nType= A B) ≃ (A == B)
-    nType=-econv = Subtype=-econv prop
+  nType=-econv : (A B : n -Type i) → (nType= A B) ≃ (A == B)
+  nType=-econv = Subtype=-econv prop
 
-    nType-∙ : {A B C : n -Type i}
-      (p : nType= A B) (q : nType= B C)
-      → (nType=-out {A = A} p ∙ nType=-out {A = B} q)
-      == nType=-out {A = A} {B = C} (p ∙ q)
-    nType-∙ = Subtype-∙ prop
+  nType=-contr : (A : n -Type i) → is-contr (Σ (n -Type i) (λ B → fst A ≃ fst B))
+  nType=-contr A = equiv-preserves-level (Σ-emap-r (λ B → (nType=-econv A B ∘e ua-equiv)⁻¹))
 
+  nType-∙ : {A B C : n -Type i}
+    (p : nType= A B) (q : nType= B C)
+    → (nType=-out {A = A} p ∙ nType=-out {A = B} q)
+    == nType=-out {A = A} {B = C} (p ∙ q)
+  nType-∙ = Subtype-∙ prop
+  
 abstract
   _-Type-level_ : (n : ℕ₋₂) (i : ULevel)
     → has-level (S n) (n -Type i)
@@ -250,7 +247,6 @@ abstract
         e = pA
         f : has-level n B
         f = pB
-
 
 instance
   Type-level-instance : {n : ℕ₋₂} {i : ULevel}

@@ -268,6 +268,10 @@ Nat = ℕ
 
 {-# BUILTIN NATURAL ℕ #-}
 
+-- positive nats
+data ℕ-ₚ : Type₀ where
+  I : ℕ-ₚ
+  S : (n : ℕ-ₚ) → ℕ-ₚ
 
 {- Lifting to a higher universe level
 

@@ -9,13 +9,19 @@ module lib.types.Sigma where
 ⊙Σ ⊙[ A , a₀ ] Y = ⊙[ Σ A (de⊙ ∘ Y) , (a₀ , pt (Y a₀)) ]
 
 -- Cartesian product
+
+infixr 80 _×_ _⊙×_
+infix 81 ×⦅_⦆_
+
 _×_ : ∀ {i j} (A : Type i) (B : Type j) → Type (lmax i j)
 A × B = Σ A (λ _ → B)
 
+×⦅_⦆_ : ∀ {i} → ℕ-ₚ → Type i → Type i
+×⦅ I ⦆ A = A
+×⦅ S n ⦆ A = A × ×⦅ n ⦆ A
+
 _⊙×_ : ∀ {i j} → Ptd i → Ptd j → Ptd (lmax i j)
 X ⊙× Y = ⊙Σ X (λ _ → Y)
-
-infixr 80 _×_ _⊙×_
 
 -- XXX Do we really need two versions of [⊙fst]?
 ⊙fstᵈ : ∀ {i j} {X : Ptd i} (Y : de⊙ X → Ptd j) → ⊙Σ X Y ⊙→ X

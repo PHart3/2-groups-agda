@@ -61,7 +61,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : 
           Σ (WkMagNatIso μ₁ μ₂) (λ ρ → ι == ρ)
           ≃
           Σ (WkMagNatIso μ₁ μ₂) (λ ρ → θ ι ∼ θ ρ)
-        aux = coe-equiv (Σ= idp (λ= λ ρ → ua (=WkMagNatIso∼ ∘e =WkMagNatIso-econv)))
+        aux = Σ-emap-r (λ _ → =WkMagNatIso∼ ∘e =WkMagNatIso-econv)
 
   module _ {ι : WkMagNatIso μ₁ μ₂} where
 

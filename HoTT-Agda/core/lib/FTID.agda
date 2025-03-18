@@ -60,6 +60,8 @@ module _ {i} {A : Type i} where
     → equiv-induction-b P r (ide A) == r
   equiv-induction-β {P = P} = ID-ind-map-β (λ B → P {B}) ≃-tot-contr
 
+-- induction principle arising from funext
+
 module _ {i j} {A : Type i} {B : A → Type j} {f : Π A B} where
 
   funhom-contr : is-contr (Σ (Π A B) (λ g → f ∼ g))

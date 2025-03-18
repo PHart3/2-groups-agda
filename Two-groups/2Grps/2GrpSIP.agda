@@ -45,26 +45,26 @@ module _ {i} (G₁ : Type i) (η₁ : CohGrp G₁) where
                       ! (al₂ (map x) (map y) (map z)) ∙ ap (mu₂ (map x)) (map-comp y z) ∙ map-comp x (mu y z)
                         ==
                       ap (λ v → mu₂ v (map z)) (map-comp x y) ∙ map-comp (mu x y) z ∙ ! (ap map (al x y z))) ] ×
-                [ tr₂ ∈ ((x y : G₂) → ap (λ z → mu₂ z y) (rho₂ x) == ! (al₂ x id₂ y) ∙ ap (mu₂ x) (lam₂ y)) ] ×
-                  [ pent₂ ∈ ((w x y z : G₂) →
-                      al₂ w x (mu₂ y z) ∙ al₂ (mu₂ w x) y z
-                        ==
-                      ap (mu₂ w) (al₂ x y z) ∙ al₂ w (mu₂ x y) z ∙ ap (λ v → mu₂ v z) (al₂ w x y)) ] ×
-                    [ ( inv₂ , map-inv ) ∈ Σ (G₂ → G₂) (λ inv₂ → (x : G₁) → inv₂ (map x) == map (inv x)) ] ×
-                      [ ( linv₂ , map-linv ) ∈
-                        Σ ((x : G₂) → mu₂ (inv₂ x) x == id₂)
-                          (λ linv₂ →
-                            (x : G₁) →
-                              ! (ap (λ z → mu₂ z (map x)) (map-inv x))
-                                ==
-                              map-comp (inv x) x ∙ ap map (linv x) ∙ ! map-id ∙ ! (linv₂ (map x))) ] ×
-                        [ ( rinv₂ , map-rinv ) ∈
-                          Σ ((x : G₂) → id₂ == mu₂ x (inv₂ x))
-                            (λ rinv₂ →
-                              (x : G₁) →
-                                ! (ap (mu₂ (map x)) (map-inv x))
-                                  ==
-                                map-comp x (inv x) ∙ ! (ap map (rinv x)) ∙ ! map-id ∙ rinv₂ (map x)) ] ×
+                [ ( inv₂ , map-inv ) ∈ Σ (G₂ → G₂) (λ inv₂ → (x : G₁) → inv₂ (map x) == map (inv x)) ] ×
+                  [ ( linv₂ , map-linv ) ∈
+                    Σ ((x : G₂) → mu₂ (inv₂ x) x == id₂)
+                      (λ linv₂ →
+                        (x : G₁) →
+                          ! (ap (λ z → mu₂ z (map x)) (map-inv x))
+                            ==
+                          map-comp (inv x) x ∙ ap map (linv x) ∙ ! map-id ∙ ! (linv₂ (map x))) ] ×
+                    [ ( rinv₂ , map-rinv ) ∈
+                      Σ ((x : G₂) → id₂ == mu₂ x (inv₂ x))
+                        (λ rinv₂ →
+                          (x : G₁) →
+                            ! (ap (mu₂ (map x)) (map-inv x))
+                              ==
+                            map-comp x (inv x) ∙ ! (ap map (rinv x)) ∙ ! map-id ∙ rinv₂ (map x)) ] ×
+                      [ tr₂ ∈ ((x y : G₂) → ap (λ z → mu₂ z y) (rho₂ x) == ! (al₂ x id₂ y) ∙ ap (mu₂ x) (lam₂ y)) ] ×
+                        [ pent₂ ∈ ((w x y z : G₂) →
+                            al₂ w x (mu₂ y z) ∙ al₂ (mu₂ w x) y z
+                              ==
+                            ap (mu₂ w) (al₂ x y z) ∙ al₂ w (mu₂ x y) z ∙ ap (λ v → mu₂ v z) (al₂ w x y)) ] ×
                           [ zz₁₂ ∈
                               ((x : G₂) →
                                 lam₂ x
@@ -83,21 +83,21 @@ module _ {i} (G₁ : Type i) (η₁ : CohGrp G₁) where
     equiv
       (λ
         (( ( G₂ , 1trunc₂ ) , φ ) , ( mu₂ , map-comp ) , (id₂ , map-id) , ( lam₂ , map-lam ) , ( rho₂ , map-rho ) ,
-          ( al₂ , map-al ) , tr₂ , pent₂ , ( inv₂ , map-inv ) , ( linv₂ , map-linv ) , ( rinv₂ , map-rinv ) , zz₁₂ , zz₂₂ )
+          ( al₂ , map-al ) , ( inv₂ , map-inv ) , ( linv₂ , map-linv ) , ( rinv₂ , map-rinv ) , tr₂ , pent₂ , zz₁₂ , zz₂₂ )
         → (G₂ , cohgrp {{1trunc₂}} id₂ mu₂ lam₂ rho₂ al₂ tr₂ pent₂ inv₂ linv₂ rinv₂ zz₁₂ zz₂₂) ,
           φ , (cohgrphomstrfull map-comp map-al map-id map-rho map-lam map-inv map-rinv map-linv))
       (λ
         (( G₂ , cohgrp {{1trunc₂}} id₂ mu₂ lam₂ rho₂ al₂ tr₂ pent₂ inv₂ linv₂ rinv₂ zz₁₂ zz₂₂ ) ,
           ( φ , cohgrphomstrfull map-comp map-al map-id map-rho map-lam map-inv map-rinv map-linv ) )
         → ((G₂ , 1trunc₂) , φ) , ((mu₂ , map-comp) , ((id₂ , map-id) , (lam₂ , map-lam) , ((rho₂ , map-rho) ,
-          ((al₂ , map-al) , (tr₂ , (pent₂ , ((inv₂ , map-inv) , (linv₂ , map-linv) , ((rinv₂ , map-rinv) , (zz₁₂ , zz₂₂))))))))))
+          ((al₂ , map-al) , ((inv₂ , map-inv) , (linv₂ , map-linv) , ((rinv₂ , map-rinv) , tr₂ , pent₂ , zz₁₂ , zz₂₂)))))))
       (λ
         (( G₂ , cohgrp {{1trunc₂}} id₂ mu₂ lam₂ rho₂ al₂ tr₂ pent₂ inv₂ linv₂ rinv₂ zz₁₂ zz₂₂ ) ,
           ( φ , cohgrphomstrfull map-comp map-al map-id map-rho map-lam map-inv map-rinv map-linv ) )
         → idp)
       λ
         (( ( G₂ , 1trunc₂ ) , φ ) , ( mu₂ , map-comp ) , (id₂ , map-id) , ( lam₂ , map-lam ) , ( rho₂ , map-rho ) ,
-          ( al₂ , map-al ) , tr₂ , pent₂ , ( inv₂ , map-inv ) , ( linv₂ , map-linv ) , ( rinv₂ , map-rinv ) , zz₁₂ , zz₂₂ )
+          ( al₂ , map-al ) , ( inv₂ , map-inv ) , ( linv₂ , map-linv ) , ( rinv₂ , map-rinv ) , tr₂ , pent₂ , zz₁₂ , zz₂₂ )
         → idp
 
 {-
