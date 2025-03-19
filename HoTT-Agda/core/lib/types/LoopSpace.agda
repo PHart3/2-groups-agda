@@ -179,7 +179,7 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
         ap (λ q → ! (snd f) ∙ q ∙' snd f) (hmtpy-nat-∙' (fst H) p) ◃∙
         (Ω-fmap-ap-hnat-aux (snd f) (fst H (pt X)) (ap (fst g) p) (snd H) ∙' ! (Ω-fmap-β g p)) ◃∎)
      λ p → =ₛ-in $
-       app= (⊙hom-ind-β f {P = (λ g* _ → Ω-fmap f ∼ Ω-fmap g*)} (λ x → idp)) p ∙
+       app= (⊙hom-ind-β f (λ g* _ → Ω-fmap f ∼ Ω-fmap g*) (λ x → idp)) p ∙
        ! (∙-unit-r _ ∙ ap-idf (hmtpy-nat-∙' (λ x → idp) p) ∙ hmtpy-nat-∙'-idp p)
 
 {- iterated loop spaces. [Ω^] and [Ω^'] iterates [Ω] from different sides:

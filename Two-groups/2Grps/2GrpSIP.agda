@@ -27,6 +27,10 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} where
   2g≃-f-≃ : (η₁ : CohGrp G₁) (η₂ : CohGrp G₂) → (η₁ 2g≃-f η₂) ≃ (η₁ 2g≃ η₂)
   2g≃-f-≃ η₁ η₂ = Σ-emap-r λ e → 2GrpHomf-≃ {{η₁}} {{η₂}} (fst e)  
 
+ide2G : ∀ {i} {G : Type i} (η : CohGrp G) → η 2g≃ η
+fst (ide2G {G = G} η) = ide G
+snd (ide2G η) = idf2G {{η}}
+
 module _ {i} (G₁ : Type i) (η₁ : CohGrp G₁) where
 
   open CohGrp η₁
@@ -111,3 +115,12 @@ module _ {i} (G₁ : Type i) (η₁ : CohGrp G₁) where
 
   2grphom-contr : is-contr (Σ (Σ (Type i) (λ G₂ → CohGrp G₂)) (λ (_ , η₂) → η₁ 2g≃ η₂))
   2grphom-contr = equiv-preserves-level (Σ-emap-r (λ (_ , η₂) → 2g≃-f-≃ η₁ η₂)) {{2grphomf-contr}}
+
+module _ {i} {G₁ : Type i} {η₁ : CohGrp G₁} where
+
+  2grphom-ind : ∀ {k} (P : ((_ , η₂) : Σ (Type i) (λ G₂ → CohGrp G₂)) → η₁ 2g≃ η₂ → Type k)
+    → P (G₁ , η₁) (ide2G η₁) → {(G₂ , η₂) : Σ (Type i) (λ G₂ → CohGrp G₂)} (m : η₁ 2g≃ η₂) → P (G₂ , η₂) m
+  2grphom-ind P = ID-ind-map P (2grphom-contr G₁ η₁)
+
+  2grphom-to-== : {(G₂ , η₂) : Σ (Type i) (λ G₂ → CohGrp G₂)} → η₁ 2g≃ η₂ → (G₁ , η₁) == (G₂ , η₂)
+  2grphom-to-== = 2grphom-ind (λ (G₂ , η₂) _ → (G₁ , η₁) == (G₂ , η₂)) idp

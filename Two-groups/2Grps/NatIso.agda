@@ -65,7 +65,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : 
 
   module _ {ι : WkMagNatIso μ₁ μ₂} where
 
-    natiso∼-ind : ∀ {k} (P : (ρ : WkMagNatIso μ₁ μ₂) → θ ι ∼ θ ρ →  Type k)
+    natiso∼-ind : ∀ {k} (P : (ρ : WkMagNatIso μ₁ μ₂) → θ ι ∼ θ ρ → Type k)
       → P ι (λ z → idp) → {ρ : WkMagNatIso μ₁ μ₂} (p : θ ι ∼ θ ρ) → P ρ p
     natiso∼-ind P = ID-ind-map P (natiso∼-contr ι)
 
