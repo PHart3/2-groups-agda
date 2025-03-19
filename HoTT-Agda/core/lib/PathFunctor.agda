@@ -282,6 +282,9 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
 ap-idf : ∀ {i} {A : Type i} {u v : A} (p : u == v) → ap (idf A) p == p
 ap-idf idp = idp
 
+!-!-ap-idf : ∀ {i} {A : Type i} {u v : A} (p : u == v) → ! (! (ap (idf A) p)) == p
+!-!-ap-idf idp = idp
+
 {- Functoriality of [coe] -}
 coe-∙ : ∀ {i} {A B C : Type i} (p : A == B) (q : B == C) (a : A)
   → coe (p ∙ q) a == coe q (coe p a)

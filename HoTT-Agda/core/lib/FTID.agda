@@ -75,6 +75,9 @@ module _ {i j} {A : Type i} {B : A → Type j} {f : Π A B} where
     → ∼-ind P r f (λ x → idp) == r
   ∼-ind-β {P = P} = ID-ind-map-β P funhom-contr
 
+  funhom-contr-to : is-contr (Σ (Π A B) (λ g → g ∼ f))
+  funhom-contr-to = equiv-preserves-level (Σ-emap-r (λ g → app=-equiv)) {{pathto-is-contr f}}
+
 module _ {i j l} {A : Type i} {B : Type j} {C : Type l} {f g : A → B} where
 
   pre∘-λ= : (h : C → A) (H : f ∼ g) → ap (λ k z → k (h z)) (λ= H) == λ= (λ z → H (h z))

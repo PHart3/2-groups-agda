@@ -121,3 +121,6 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
           ! (ap map (rinv z)) ◃∙
           ! (map-id {{r = FreeMap {{ForgMap α}}}}) ◃∙
           rinv (map z) ◃∎ ∎ₛ
+
+  2GrpHomf-≃ : CohGrpHomStrFull map ≃ CohGrpHomStr map
+  2GrpHomf-≃ = ForgMap , Forg-equiv

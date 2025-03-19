@@ -476,10 +476,18 @@ replace-inverse {f = f} f-ise {g₁ = g₁} g∼ =
 
 module _ {i} {A : Type i} where
 
-  pre-rotate-in-≃ : {a a' a'' : A} (q : a' == a'') {p : a == a'} {r : a == a''}
+  pre-rotate-in-≃ : {a a' a'' : A} (q : a' == a'') (p : a == a') {r : a == a''}
     → (r == p ∙ q) ≃ (! p ∙' r == q)
-  pre-rotate-in-≃ q {p = idp} {r = idp} = equiv (λ c → c) (λ c → c) (λ _ → idp) λ _ → idp
+  pre-rotate-in-≃ q idp {r = idp} = equiv (λ c → c) (λ c → c) (λ _ → idp) λ _ → idp
 
-  pre-rotate-in-!≃ : {a a' a'' : A} (q : a' == a'') {p : a' == a} {r : a == a''}
+  pre-rotate-in-≃-back : {a a' a'' : A} (q : a' == a'') (p : a == a') {r : a == a''}
+    → (! p ∙' r == q) ≃ (r == p ∙ q)
+  pre-rotate-in-≃-back q p = (pre-rotate-in-≃ q p)⁻¹
+
+  pre-rotate-in-!≃ : {a a' a'' : A} (q : a' == a'') (p : a' == a) {r : a == a''}
     → (r == ! p ∙ q) ≃ (p ∙' r == q)
-  pre-rotate-in-!≃ q {p = idp} {r = idp} = equiv (λ c → c) (λ c → c) (λ _ → idp) λ _ → idp
+  pre-rotate-in-!≃ q idp {r = idp} = equiv (λ c → c) (λ c → c) (λ _ → idp) λ _ → idp
+
+  pre-rotate-in-!≃-back : {a a' a'' : A} (q : a' == a'') (p : a' == a) {r : a == a''}
+    → (p ∙' r == q) ≃ (r == ! p ∙ q)
+  pre-rotate-in-!≃-back q p = (pre-rotate-in-!≃ q p)⁻¹

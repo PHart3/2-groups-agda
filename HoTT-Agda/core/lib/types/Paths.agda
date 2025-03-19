@@ -66,22 +66,38 @@ module _ {i} {A : Type i} {x y z : A} where
 module _ {i} {A : Type i} where
 
   pathfrom-is-contr-! : {x y : A} (p : x == y) → is-contr (Σ (y == x) (λ t → p == ! t))
-  pathfrom-is-contr-! {x} idp = has-level-in ((idp , idp) , pathfrom-unique-path)
+  pathfrom-is-contr-! {x} {y} p = has-level-in ((! p , ! (!-! p)) , pathfrom-unique-path)
     where
-      pathfrom-unique-path : (p : Σ (x == x) (λ z → idp == ! z)) → (idp , idp) == p
-      pathfrom-unique-path = uncurry (!-!-r-ind {B = λ {q} r → (idp , idp) == (q , r)} λ { idp → idp }) 
+      pathfrom-unique-path : (c : Σ (y == x) (λ z → p == ! z)) → (! p , ! (!-! p)) == c
+      pathfrom-unique-path = uncurry λ { idp → λ { idp → idp } }
 
-  pathfrom-is-contr-!-idp : {x y : A} (p : x == y) → is-contr (Σ (y == x) (λ t → p == ! t ∙ idp))
-  pathfrom-is-contr-!-idp p = equiv-preserves-level (Σ-emap-r (λ t → post∙-equiv (! (∙-unit-r (! t))))) {{pathfrom-is-contr-! p}}
+  pathfrom-is-contr-!idp : {x y : A} (p : x == y) → is-contr (Σ (y == x) (λ t → p == ! t ∙ idp))
+  pathfrom-is-contr-!idp p =
+    equiv-preserves-level (Σ-emap-r (λ t → post∙-equiv (! (∙-unit-r (! t))))) {{pathfrom-is-contr-! p}}
 
   pathto-is-contr-! : {x y : A} (p : x == y) → is-contr (Σ (y == x) (λ t → ! t == p))
-  pathto-is-contr-! {x} idp = has-level-in ((idp , idp) , pathto-unique-path)
+  pathto-is-contr-! {x} {y} p = has-level-in ((! p , !-! p) , pathto-unique-path)
     where
-      pathto-unique-path : (p : Σ (x == x) (λ z → ! z == idp)) → (idp , idp) == p
-      pathto-unique-path = uncurry (!-!-l-ind {B = λ {q} r → (idp , idp) == (q , r)} λ { idp → idp })
+      pathto-unique-path : (c : Σ (y == x) (λ z → ! z == p)) → (! p , !-! p) == c
+      pathto-unique-path = uncurry λ { idp → λ { idp → idp } }
 
-  pathto-is-contr-!-idp : {x y : A} (p : x == y) → is-contr (Σ (y == x) (λ t → ! t ∙ idp == p))
-  pathto-is-contr-!-idp p = equiv-preserves-level (Σ-emap-r (λ t → pre∙-equiv (∙-unit-r (! t)))) {{pathto-is-contr-! p}}
+  pathto-is-contr-!idp : {x y : A} (p : x == y) → is-contr (Σ (y == x) (λ t → ! t ∙ idp == p))
+  pathto-is-contr-!idp p = equiv-preserves-level (Σ-emap-r (λ t → pre∙-equiv (∙-unit-r (! t)))) {{pathto-is-contr-! p}}
+
+  instance
+  
+    pathfrom-is-contr-!-instance : {x y : A} {p : x == y} → is-contr (Σ (y == x) (λ t → p == ! t))
+    pathfrom-is-contr-!-instance = pathfrom-is-contr-! _
+
+    pathfrom-is-contr-!idp-instance : {x y : A} {p : x == y} → is-contr (Σ (y == x) (λ t → p == ! t ∙ idp))
+    pathfrom-is-contr-!idp-instance = pathfrom-is-contr-!idp _
+
+    pathto-is-contr-!-instance : {x y : A} {p : x == y} → is-contr (Σ (y == x) (λ t → ! t == p))
+    pathto-is-contr-!-instance = pathto-is-contr-! _
+
+    pathto-is-contr-!idp-instance : {x y : A} {p : x == y} → is-contr (Σ (y == x) (λ t → ! t ∙ idp == p))
+    pathto-is-contr-!idp-instance = pathto-is-contr-!idp _
+
 
 module _ {i} {A : Type i} {x y : A} where
 
