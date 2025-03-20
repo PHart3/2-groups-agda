@@ -22,10 +22,10 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
   loop-encode : loop ∘ encode base ∼ idf (base == base)
   loop-encode = decode-encode base
 
-  -- main delooping theorem
   loop-equiv : is-equiv loop
   loop-equiv = is-eq loop (encode base) loop-encode encode-loop
 
+  -- Main delooping theorem: loop is an equivalence of 2-groups.
   loop-2g≃ : η 2g≃ Loop2Grp base
   fst loop-2g≃ = loop , loop-equiv
   snd loop-2g≃ = CohGrpHom.str K₂-loopmap
