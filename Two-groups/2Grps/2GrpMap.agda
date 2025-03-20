@@ -92,18 +92,18 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
               (λ (ν , iso) → idp)
               λ ((f , H) , (map-comp' , c) , al) → idp
 
-    natiso2G-ind : ∀ {k} (P : (ν : CohGrpHom {{η₁}} {{η₂}}) → WkMagNatIso (grphom-forg μ) (grphom-forg ν) →  Type k)
+    natiso2G-ind : ∀ {k} (P : (ν : CohGrpHom {{η₁}} {{η₂}}) → WkMagNatIso (grphom-forg μ) (grphom-forg ν) → Type k)
       → P μ (natiso-id (grphom-forg μ))
-      → (ν : CohGrpHom {{η₁}} {{η₂}}) (p : WkMagNatIso (grphom-forg μ) (grphom-forg ν)) → P ν p
-    natiso2G-ind P r ν p = ID-ind-map P natiso2G-contr r {ν} p
+      → {ν : CohGrpHom {{η₁}} {{η₂}}} (p : WkMagNatIso (grphom-forg μ) (grphom-forg ν)) → P ν p
+    natiso2G-ind P r {ν} p = ID-ind-map P natiso2G-contr r {ν} p
 
-    natiso2G-ind-β : ∀ {k} (P : (ν : CohGrpHom {{η₁}} {{η₂}}) → WkMagNatIso (grphom-forg μ) (grphom-forg ν) →  Type k)
+    natiso2G-ind-β : ∀ {k} (P : (ν : CohGrpHom {{η₁}} {{η₂}}) → WkMagNatIso (grphom-forg μ) (grphom-forg ν) → Type k)
       → (r : P μ (natiso-id (grphom-forg μ)))
-      → natiso2G-ind P r μ (natiso-id (grphom-forg μ)) == r
+      → natiso2G-ind P r (natiso-id (grphom-forg μ)) == r
     natiso2G-ind-β P = ID-ind-map-β P natiso2G-contr
 
     natiso2G-to-== : {ν : CohGrpHom {{η₁}} {{η₂}}} → WkMagNatIso (grphom-forg μ) (grphom-forg ν) → μ == ν
-    natiso2G-to-== {ν} = natiso2G-ind (λ δ _ → μ == δ) idp ν
+    natiso2G-to-== = natiso2G-ind (λ δ _ → μ == δ) idp
 
 -- conversion of CohGrpHom to Σ-type
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
