@@ -76,30 +76,32 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : 
           (λ c → ((x , y) : G₁ × G₁) →
             c (x , y) == ! (ap2 mu (H x) (H y)) ∙ uncurry (map-comp-wk μ) (x , y) ∙ H (mu x y))))
     natiso-contr-aux = equiv-preserves-level (
-      (Σ-contr-red {P = λ (f , H) → Σ (((x , y) : G₁ × G₁) → mu (f x) (f y) == f (mu x y))
-        (λ c → ((x , y) : G₁ × G₁) →
-          c (x , y) == ! (ap2 mu (H x) (H y)) ∙ uncurry (map-comp-wk μ) (x , y) ∙ H (mu x y))}
+      (Σ-contr-red
+        {P = λ (f , H) → Σ (((x , y) : G₁ × G₁) → mu (f x) (f y) == f (mu x y))
+          (λ c → ((x , y) : G₁ × G₁) →
+            c (x , y) == ! (ap2 mu (H x) (H y)) ∙ uncurry (map-comp-wk μ) (x , y) ∙ H (mu x y))}
         (funhom-contr {f = map-wk μ}))⁻¹ )
-      {{equiv-preserves-level ((Σ-emap-r (λ c → Π-emap-r (λ (x , y)
-        → post∙-equiv (! (∙-unit-r (map-comp-wk μ x y)))) ∘e app=-equiv)))
+      {{equiv-preserves-level
+        ((Σ-emap-r (λ c → Π-emap-r (λ (x , y) → post∙-equiv (! (∙-unit-r (map-comp-wk μ x y)))) ∘e app=-equiv)))
         {{pathto-is-contr (uncurry (map-comp-wk μ))}}}}
 
-    natiso-contr : is-contr (Σ (WkMagWkHom {{η₁}} {{η₂}}) (λ ν → WkMagNatIso μ ν))
-    natiso-contr = equiv-preserves-level aux {{natiso-contr-aux}}
-      where
-        aux :
-          (Σ (Σ (G₁ → G₂) (λ f → map-wk μ ∼ f))
-            (λ (f , H) → Σ (((x , y) : G₁ × G₁) → mu (f x) (f y) == f (mu x y))
-              (λ c → ((x , y) : G₁ × G₁) →
-                c (x , y) == ! (ap2 mu (H x) (H y)) ∙ uncurry (map-comp-wk μ) (x , y) ∙ H (mu x y))))
-          ≃
-          Σ (WkMagWkHom {{η₁}} {{η₂}}) (λ ν → WkMagNatIso μ ν)
-        aux =
-          equiv
-            (λ ((f , H) , (q , c)) → (wkmaghom f (curry q)) , (cohgrpnatiso H (λ x y → c (x , y))))
-            (λ (ν , ρ) → ((map-wk ν) , (θ ρ)) , ((λ (x , y) → map-comp-wk ν x y) , (λ (x , y) → θ-comp ρ x y)))
-            (λ b → idp)
-            λ a → idp
+    abstract
+      natiso-contr : is-contr (Σ (WkMagWkHom {{η₁}} {{η₂}}) (λ ν → WkMagNatIso μ ν))
+      natiso-contr = equiv-preserves-level aux {{natiso-contr-aux}}
+        where
+          aux :
+            Σ (Σ (G₁ → G₂) (λ f → map-wk μ ∼ f))
+              (λ (f , H) → Σ (((x , y) : G₁ × G₁) → mu (f x) (f y) == f (mu x y))
+                (λ c → ((x , y) : G₁ × G₁) →
+                  c (x , y) == ! (ap2 mu (H x) (H y)) ∙ uncurry (map-comp-wk μ) (x , y) ∙ H (mu x y)))
+            ≃
+            Σ (WkMagWkHom {{η₁}} {{η₂}}) (λ ν → WkMagNatIso μ ν)
+          aux =
+            equiv
+              (λ ((f , H) , (q , c)) → (wkmaghom f (curry q)) , (cohgrpnatiso H (λ x y → c (x , y))))
+              (λ (ν , ρ) → ((map-wk ν) , (θ ρ)) , ((λ (x , y) → map-comp-wk ν x y) , (λ (x , y) → θ-comp ρ x y)))
+              (λ b → idp)
+              λ a → idp
 
     natiso-ind : ∀ {k} (P : (ν : WkMagWkHom {{η₁}} {{η₂}}) → WkMagNatIso μ ν →  Type k)
       → P μ (natiso-id μ) → (ν : WkMagWkHom {{η₁}} {{η₂}}) (p : WkMagNatIso μ ν) → P ν p
@@ -156,8 +158,8 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ 
           ==
         ! (ap2 mu (ap (map-wk μ) (θ τ x)) (ap (map-wk μ) (θ τ y))) ∙
         (map-comp-wk μ (map-wk ν₁ x) (map-wk ν₁ y) ∙
-        ap (map-wk μ) (map-comp-wk ν₁ x y))
-        ∙ ap (map-wk μ) (θ τ (mu x y)))
+        ap (map-wk μ) (map-comp-wk ν₁ x y)) ∙
+        ap (map-wk μ) (θ τ (mu x y)))
       (! (∙-unit-r _)) ν₂ τ
 
 -- composite of triangles
