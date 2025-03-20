@@ -1,8 +1,10 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
 open import 2Grp
 open import Codes
+open import Hmtpy2Grp
+open import 2GrpSIP
 open import Decode0
 open import Decode16
 
@@ -23,3 +25,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
   -- main delooping theorem
   loop-equiv : is-equiv loop
   loop-equiv = is-eq loop (encode base) loop-encode encode-loop
+
+  loop-2g≃ : η 2g≃ Loop2Grp base
+  fst loop-2g≃ = loop , loop-equiv
+  snd loop-2g≃ = CohGrpHom.str K₂-loopmap
