@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=6 #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
 open import lib.FTID
@@ -15,6 +15,7 @@ open WkMagHomStr
 open CohGrpHom
 open WkMagNatIso
 
+-- induction principle for nat isos between 2-groups
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
 
   module _ {μ : CohGrpHom {{η₁}} {{η₂}}} where
@@ -103,3 +104,29 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
 
     natiso2G-to-== : {ν : CohGrpHom {{η₁}} {{η₂}}} → WkMagNatIso (grphom-forg μ) (grphom-forg ν) → μ == ν
     natiso2G-to-== {ν} = natiso2G-ind (λ δ _ → μ == δ) idp ν
+
+-- conversion of CohGrpHom to Σ-type
+module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
+
+  CohGrpHom-Σ :
+    [ map ∈ (G₁ → G₂) ] ×
+      [ map-comp ∈ ((x y : G₁) → mu (map x) (map y) == map (mu x y)) ] ×
+        ((x y z : G₁) →
+          ! (al (map x) (map y) (map z)) ∙
+          ap (mu (map x)) (map-comp y z) ∙
+          map-comp x (mu y z)
+            ==
+          ap (λ v → mu v (map z)) (map-comp x y) ∙
+          map-comp (mu x y) z ∙
+          ! (ap map (al x y z)))
+      ≃
+    CohGrpHom {{η₁}} {{η₂}}
+  CohGrpHom-Σ =
+   equiv
+     (λ (map , map-comp , map-al) → cohgrphom map {{cohmaghomstr map-comp map-al}})
+     (λ (cohgrphom map {{cohmaghomstr map-comp map-al}}) → map , (map-comp , map-al))
+     (λ (cohgrphom map {{cohmaghomstr map-comp map-al}}) → idp)
+     λ (map , map-comp , map-al) → idp
+
+  CohGrpHom-1trunc : has-level 1 (CohGrpHom {{η₁}} {{η₂}})
+  CohGrpHom-1trunc = equiv-preserves-level CohGrpHom-Σ

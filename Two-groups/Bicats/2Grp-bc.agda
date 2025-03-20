@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.types.Sigma
 open import Bicategory
 open import 2Grp
 open import 2MagMap
@@ -31,8 +32,8 @@ module _ {i : ULevel} where
       (grphom-forg {{η₃}} {{η₄}} f₃)
       (grphom-forg {{η₂}} {{η₃}} f₂)
       (grphom-forg {{η₁}} {{η₂}} f₁)
-  tri-bc 2grp-bicat {(_ , η₁)} {(_ , η₂)} {(_ , η₃)} f₁ f₂ = {!natiso∼-to-== {{_}} {{_}} ?!}
+  tri-bc 2grp-bicat {(_ , η₁)} {(_ , η₂)} {(_ , η₃)} f₁ f₂ = {!!}
   pent-bc 2grp-bicat = {!!}
-  hom-trunc 2grp-bicat = {!!}
+  hom-trunc 2grp-bicat {(_ , η₁)} {(_ , η₂)} = CohGrpHom-1trunc {{η₁}} {{η₂}}
 
   -- loop is adj equiv
