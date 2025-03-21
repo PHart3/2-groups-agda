@@ -23,6 +23,11 @@ _∼_ : ∀ {i j} {A : Type i} {B : A → Type j}
   (f g : (a : A) → B a) → Type (lmax i j)
 f ∼ g = ∀ x → f x == g x
 
+infix 29 _∼-∙_
+_∼-∙_ : ∀ {i j} {A : Type i} {B : A → Type j} {f g h : (a : A) → B a}
+  → f ∼ g → g ∼ h → f ∼ h
+_∼-∙_ H₁ H₂ = λ x → H₁ x ∙ H₂ x
+
 _⊙∼_ : ∀ {i j} {X : Ptd i} {Y : Ptd j}
   (f g : X ⊙→ Y) → Type (lmax i j)
 _⊙∼_ {X = X} {Y = Y} (f , f-pt) (g , g-pt) =

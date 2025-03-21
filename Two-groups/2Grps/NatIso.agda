@@ -74,3 +74,20 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : 
 
     natiso∼-to-== : {ρ : WkMagNatIso μ₁ μ₂} → θ ι ∼ θ ρ → ι == ρ
     natiso∼-to-== = natiso∼-ind (λ ρ _ → ι == ρ) idp
+
+module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : WkMag G₂}} where
+
+  !ʷ-id : (μ : WkMagWkHom {{η₁}} {{η₂}}) → !ʷ (natiso-id μ) == natiso-id μ
+  !ʷ-id _ = natiso∼-to-== λ x → idp
+
+module _ {i j k} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : WkMag G₂}}
+  {μ : WkMagWkHom {{η₁}} {{η₂}}} {G₃ : Type k} {{η₃ : WkMag G₃}} where
+  
+  natiso-whisk-r-id : (ν : WkMagWkHom {{η₂}} {{η₃}}) → natiso-whisk-r (natiso-id ν) == natiso-id (ν ∘2Mw μ) 
+  natiso-whisk-r-id _ = natiso∼-to-== λ x → idp
+
+module _ {i j k} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : WkMag G₂}}
+  {G₃ : Type k} {{η₃ : WkMag G₃}} {μ : WkMagWkHom {{η₂}} {{η₃}}} where
+
+  natiso-whisk-l-id : (ν : WkMagWkHom {{η₁}} {{η₂}}) → natiso-whisk-l {μ = μ} (natiso-id ν) == natiso-id (μ ∘2Mw ν)
+  natiso-whisk-l-id ν = natiso∼-to-== λ x → idp

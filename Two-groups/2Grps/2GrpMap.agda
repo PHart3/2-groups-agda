@@ -6,7 +6,9 @@ open import lib.types.Sigma
 open import lib.types.Pi
 open import lib.types.Paths
 open import 2Magma
+open import 2MagMap
 open import 2Grp
+open import NatIso
 
 module 2GrpMap where
 
@@ -14,6 +16,14 @@ open CohGrp {{...}}
 open WkMagHomStr
 open CohGrpHom
 open WkMagNatIso
+
+module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
+
+  WkMagNatIso-forg : (f g : CohGrpHom {{η₁}} {{η₂}}) → Type (lmax i j)
+  WkMagNatIso-forg f g = WkMagNatIso (grphom-forg f) (grphom-forg g)
+
+  natiso-id2G : (μ : CohGrpHom {{η₁}} {{η₂}}) → WkMagNatIso-forg μ μ
+  natiso-id2G μ = natiso-id (grphom-forg μ)
 
 -- induction principle for nat isos between 2-groups
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
@@ -64,7 +74,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         {{inhab-prop-is-contr (map-al (str μ))}}}} 
 
     abstract
-      natiso2G-contr : is-contr (Σ (CohGrpHom {{η₁}} {{η₂}}) (λ ν → WkMagNatIso (grphom-forg μ) (grphom-forg ν)))
+      natiso2G-contr : is-contr (Σ (CohGrpHom {{η₁}} {{η₂}}) (λ ν → WkMagNatIso-forg μ ν))
       natiso2G-contr = equiv-preserves-level aux {{natiso2G-contr-aux}}
         where
           aux : 
@@ -82,7 +92,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
                     map-comp' ((mu x y) , z) ∙
                     ! (ap f (al x y z))))
             ≃
-            Σ (CohGrpHom {{η₁}} {{η₂}}) (λ ν → WkMagNatIso (grphom-forg μ) (grphom-forg ν))
+            Σ (CohGrpHom {{η₁}} {{η₂}}) (λ ν → WkMagNatIso-forg μ ν)
           aux = 
             equiv
               (λ ((f , H) , (map-comp' , c) , al) → (cohgrphom f {{cohmaghomstr (curry map-comp') al}}) ,
@@ -92,40 +102,48 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
               (λ (ν , iso) → idp)
               λ ((f , H) , (map-comp' , c) , al) → idp
 
-    natiso2G-ind : ∀ {k} (P : (ν : CohGrpHom {{η₁}} {{η₂}}) → WkMagNatIso (grphom-forg μ) (grphom-forg ν) → Type k)
-      → P μ (natiso-id (grphom-forg μ))
-      → {ν : CohGrpHom {{η₁}} {{η₂}}} (p : WkMagNatIso (grphom-forg μ) (grphom-forg ν)) → P ν p
+    natiso2G-ind : ∀ {k} (P : (ν : CohGrpHom {{η₁}} {{η₂}}) → WkMagNatIso-forg μ ν → Type k)
+      → P μ (natiso-id2G μ)
+      → {ν : CohGrpHom {{η₁}} {{η₂}}} (p : WkMagNatIso-forg μ ν) → P ν p
     natiso2G-ind P r {ν} p = ID-ind-map P natiso2G-contr r {ν} p
 
-    natiso2G-ind-β : ∀ {k} (P : (ν : CohGrpHom {{η₁}} {{η₂}}) → WkMagNatIso (grphom-forg μ) (grphom-forg ν) → Type k)
-      → (r : P μ (natiso-id (grphom-forg μ)))
-      → natiso2G-ind P r (natiso-id (grphom-forg μ)) == r
+    natiso2G-ind-β : ∀ {k} (P : (ν : CohGrpHom {{η₁}} {{η₂}}) → WkMagNatIso-forg μ ν → Type k)
+      → (r : P μ (natiso-id2G μ))
+      → natiso2G-ind P r (natiso-id2G μ) == r
     natiso2G-ind-β P = ID-ind-map-β P natiso2G-contr
 
-    natiso2G-to-== : {ν : CohGrpHom {{η₁}} {{η₂}}} → WkMagNatIso (grphom-forg μ) (grphom-forg ν) → μ == ν
+    natiso2G-to-== : {ν : CohGrpHom {{η₁}} {{η₂}}} → WkMagNatIso-forg μ ν → μ == ν
     natiso2G-to-== = natiso2G-ind (λ δ _ → μ == δ) idp
 
-  natiso2G-to-==-β : (μ : CohGrpHom {{η₁}} {{η₂}}) → natiso2G-to-== (natiso-id (grphom-forg μ)) == idp
+  natiso2G-to-==-β : (μ : CohGrpHom {{η₁}} {{η₂}}) → natiso2G-to-== (natiso-id2G μ) == idp
   natiso2G-to-==-β μ = natiso2G-ind-β (λ δ _ → μ == δ) idp  
 
+  natiso2G-! : {μ ν : CohGrpHom {{η₁}} {{η₂}}} (iso : WkMagNatIso-forg μ ν)
+    → natiso2G-to-== {μ = ν} {ν = μ} (!ʷ iso) == ! (natiso2G-to-== iso)
+  natiso2G-! {μ} =
+    natiso2G-ind {μ = μ}
+      (λ ν iso → natiso2G-to-== {μ = ν} {ν = μ} (!ʷ iso) == ! (natiso2G-to-== iso))
+    ((ap (natiso2G-to-==) (!ʷ-id (grphom-forg μ)) ∙ natiso2G-to-==-β μ) ∙
+      ! (ap ! (natiso2G-to-==-β μ)))
+
 -- iterated induction
-module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
-  {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}}
-  {f₁ : CohGrpHom {{η₁}} {{η₂}}} {f₂ : CohGrpHom {{η₂}} {{η₃}}} where
+module _ {i j k l} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k} {G₄ : Type l}
+  {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}}  {{η₄ : CohGrp G₄}}
+  {f₁ : CohGrpHom {{η₁}} {{η₂}}} {f₂ : CohGrpHom {{η₃}} {{η₄}}} where
 
   abstract
     natiso2G-ind-bi : ∀ {ℓ}
-      (P : (f₁' : CohGrpHom {{η₁}} {{η₂}}) (f₂' : CohGrpHom {{η₂}} {{η₃}}) →
-        WkMagNatIso (grphom-forg f₁) (grphom-forg f₁') → WkMagNatIso (grphom-forg f₂) (grphom-forg f₂') → Type ℓ)
-      → P f₁ f₂ (natiso-id (grphom-forg f₁)) (natiso-id (grphom-forg f₂))
-      → {f₁' : CohGrpHom {{η₁}} {{η₂}}} {f₂' : CohGrpHom {{η₂}} {{η₃}}}
-        (p₁ : WkMagNatIso (grphom-forg f₁) (grphom-forg f₁')) (p₂ : WkMagNatIso (grphom-forg f₂) (grphom-forg f₂'))
+      (P : (f₁' : CohGrpHom {{η₁}} {{η₂}}) (f₂' : CohGrpHom {{η₃}} {{η₄}}) →
+        WkMagNatIso-forg f₁ f₁' → WkMagNatIso-forg f₂ f₂' → Type ℓ)
+      → P f₁ f₂ (natiso-id2G f₁) (natiso-id2G f₂)
+      → {f₁' : CohGrpHom {{η₁}} {{η₂}}} {f₂' : CohGrpHom {{η₃}} {{η₄}}}
+        (p₁ : WkMagNatIso-forg f₁ f₁') (p₂ : WkMagNatIso-forg f₂ f₂')
         → P f₁' f₂' p₁ p₂
     natiso2G-ind-bi P r {f₁'} {f₂'} p₁ p₂ = natiso2G-ind
-      (λ f ν → {f' : CohGrpHom {{η₂}} {{η₃}}} (μ : WkMagNatIso (grphom-forg f₂) (grphom-forg f')) → P f f' ν μ)
+      (λ f ν → {f' : CohGrpHom {{η₃}} {{η₄}}} (μ : WkMagNatIso-forg f₂ f') → P f f' ν μ)
       (natiso2G-ind
-        (λ (f' : CohGrpHom) (μ : WkMagNatIso (grphom-forg f₂) (grphom-forg f')) →
-          P (cohgrphom (λ z → map f₁ z)) f' (natiso-id (grphom-forg (cohgrphom (λ z → map f₁ z)))) μ)
+        (λ (f' : CohGrpHom) (μ : WkMagNatIso-forg f₂ f') →
+          P (cohgrphom (λ z → map f₁ z)) f' (natiso-id2G f₁) μ)
         r)
       {f₁'} p₁ {f₂'} p₂
 
@@ -154,3 +172,31 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
 
   CohGrpHom-1trunc : has-level 1 (CohGrpHom {{η₁}} {{η₂}})
   CohGrpHom-1trunc = equiv-preserves-level CohGrpHom-Σ
+
+module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
+
+  natiso2G-to-==-∙ : {f₁ : CohGrpHom {{η₁}} {{η₂}}} {f₂ f₃ : CohGrpHom {{η₁}} {{η₂}}}
+    (iso₂ : WkMagNatIso-forg f₁ f₂) (iso₁ : WkMagNatIso-forg f₁ f₃) (iso₃ : WkMagNatIso-forg f₂ f₃) 
+    → ∼WkMagNatIso iso₁ (iso₃ natiso-∘ iso₂)
+    → natiso2G-to-== {μ = f₁} {ν = f₃} iso₁ == natiso2G-to-== {ν = f₂} iso₂ ∙ natiso2G-to-== iso₃
+  natiso2G-to-==-∙ {f₁} {f₂} =
+    natiso2G-ind-bi {f₂ = f₁}
+      (λ f₂' f₃' iso₂ iso₁ →
+        (iso₃ : WkMagNatIso-forg f₂' f₃') → ∼WkMagNatIso iso₁ (iso₃ natiso-∘ iso₂)
+          → natiso2G-to-== {μ = f₁} {ν = f₃'} iso₁ == natiso2G-to-== {ν = f₂'} iso₂ ∙ natiso2G-to-== iso₃)
+      (λ iso₃ e → aux {iso = iso₃} (natiso∼-to-== e))
+      {f₂}
+      where
+        aux : {iso : WkMagNatIso-forg f₁ f₁} (p : natiso-id2G f₁ == iso) →
+          natiso2G-to-== (natiso-id2G f₁) == natiso2G-to-== (natiso-id2G f₁) ∙ natiso2G-to-== iso
+        aux idp = ! (ap (λ p → p ∙ natiso2G-to-== (natiso-id2G f₁)) (natiso2G-to-==-β f₁))
+
+  natiso2G-to-==-! : {f : CohGrpHom {{η₁}} {{η₂}}}
+    (iso₁ iso₂ : WkMagNatIso-forg f f) → ∼WkMagNatIso iso₁ (!ʷ iso₂)
+    → natiso2G-to-== {μ = f} {ν = f} iso₁ == ! (natiso2G-to-== iso₂)
+  natiso2G-to-==-! {f} iso₁ iso₂ e =
+    natiso2G-to-== {μ = f} {ν = f} iso₁
+      =⟨ ap (natiso2G-to-==) (natiso∼-to-== {ι = iso₁} {ρ = !ʷ iso₂} e) ⟩
+    natiso2G-to-== {μ = f} {ν = f} (!ʷ iso₂)
+      =⟨ natiso2G-! iso₂ ⟩
+    ! (natiso2G-to-== iso₂) =∎
