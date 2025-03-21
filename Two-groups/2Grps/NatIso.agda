@@ -20,6 +20,9 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : 
   =WkMagNatIso : (ι ρ : WkMagNatIso μ₁ μ₂) → Type (lmax i j)
   =WkMagNatIso ι ρ = Σ (θ ι == θ ρ) (λ e → θ-comp ι == θ-comp ρ [ _ ↓ e ])
 
+  ∼WkMagNatIso : (ι ρ : WkMagNatIso μ₁ μ₂) → Type (lmax i j)
+  ∼WkMagNatIso ι ρ = θ ι ∼ θ ρ
+
   module _ {ι ρ : WkMagNatIso μ₁ μ₂} where
 
     =WkMagNatIso→ : (ι == ρ) → =WkMagNatIso ι ρ

@@ -105,6 +105,30 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
     natiso2G-to-== : {ν : CohGrpHom {{η₁}} {{η₂}}} → WkMagNatIso (grphom-forg μ) (grphom-forg ν) → μ == ν
     natiso2G-to-== = natiso2G-ind (λ δ _ → μ == δ) idp
 
+  natiso2G-to-==-β : (μ : CohGrpHom {{η₁}} {{η₂}}) → natiso2G-to-== (natiso-id (grphom-forg μ)) == idp
+  natiso2G-to-==-β μ = natiso2G-ind-β (λ δ _ → μ == δ) idp  
+
+-- iterated induction
+module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
+  {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}}
+  {f₁ : CohGrpHom {{η₁}} {{η₂}}} {f₂ : CohGrpHom {{η₂}} {{η₃}}} where
+
+  abstract
+    natiso2G-ind-bi : ∀ {ℓ}
+      (P : (f₁' : CohGrpHom {{η₁}} {{η₂}}) (f₂' : CohGrpHom {{η₂}} {{η₃}}) →
+        WkMagNatIso (grphom-forg f₁) (grphom-forg f₁') → WkMagNatIso (grphom-forg f₂) (grphom-forg f₂') → Type ℓ)
+      → P f₁ f₂ (natiso-id (grphom-forg f₁)) (natiso-id (grphom-forg f₂))
+      → {f₁' : CohGrpHom {{η₁}} {{η₂}}} {f₂' : CohGrpHom {{η₂}} {{η₃}}}
+        (p₁ : WkMagNatIso (grphom-forg f₁) (grphom-forg f₁')) (p₂ : WkMagNatIso (grphom-forg f₂) (grphom-forg f₂'))
+        → P f₁' f₂' p₁ p₂
+    natiso2G-ind-bi P r {f₁'} {f₂'} p₁ p₂ = natiso2G-ind
+      (λ f ν → {f' : CohGrpHom {{η₂}} {{η₃}}} (μ : WkMagNatIso (grphom-forg f₂) (grphom-forg f')) → P f f' ν μ)
+      (natiso2G-ind
+        (λ (f' : CohGrpHom) (μ : WkMagNatIso (grphom-forg f₂) (grphom-forg f')) →
+          P (cohgrphom (λ z → map f₁ z)) f' (natiso-id (grphom-forg (cohgrphom (λ z → map f₁ z)))) μ)
+        r)
+      {f₁'} p₁ {f₂'} p₂
+
 -- conversion of CohGrpHom to Σ-type
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
 
