@@ -12,11 +12,14 @@ open import 2GrpMap-conv
 
 module 2Grp-bc where
 
+2Grp-tot : (i : ULevel) → Type (lsucc i)
+2Grp-tot i = Σ (Type i) (λ G → CohGrp G)
+
 module _ {i : ULevel} where
 
   open BicatStr
 
-  2grp-bicat : BicatStr i (Σ (Type i) (λ G → CohGrp G))
+  2grp-bicat : BicatStr i (2Grp-tot i) 
   hom 2grp-bicat (G₁ , η₁) (G₂ , η₂) = CohGrpHom {{η₁}} {{η₂}}
   id₁ 2grp-bicat (G , η) = cohgrphom (idf G) {{idf2G {{η}}}}
   _◻_ 2grp-bicat {(_ , η₁)} {(_ , η₂)} {(_ , η₃)} f₂ f₁ = _∘2G_ {{η₁}} {{η₂}} {{η₃}} f₂ f₁
@@ -35,5 +38,5 @@ module _ {i : ULevel} where
   hom-trunc 2grp-bicat {(_ , η₁)} {(_ , η₂)} = CohGrpHom-1trunc {{η₁}} {{η₂}}
 
 instance
-  2grp-bicat-instance : ∀ {i} → BicatStr i (Σ (Type i) (λ G → CohGrp G))
+  2grp-bicat-instance : ∀ {i} → BicatStr i (2Grp-tot i)
   2grp-bicat-instance {i} = 2grp-bicat {i}

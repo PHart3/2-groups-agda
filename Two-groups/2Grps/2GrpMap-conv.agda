@@ -7,13 +7,13 @@ open import 2Grp
 open import 2GrpMap
 open import NatIso
 
--- converting from homotopies of nat isos of 2-groups to equalities
+-- preservation of groupoid structure by natiso2G-to-==
 
 module 2GrpMap-conv where
 
 open CohGrp {{...}}
 
-module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}  where
+module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
 
   abstract
   
@@ -57,6 +57,8 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         natiso2G-to-== (natiso-whisk-l {μ = grphom-forg f₂} iso) == ap (λ m → f₂ ∘2G m) (natiso2G-to-== iso)
       whisk2G-conv-l {f₂} iso = natiso2G-to-==-whisk-l iso (natiso-whisk-l {μ = grphom-forg f₂} iso) (λ _ → idp)
 
+-- triangle identity
+
 module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
   {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}}
   {f₁ f₁' : CohGrpHom {{η₁}} {{η₂}}} {f₂ f₂' : CohGrpHom {{η₂}} {{η₃}}} where
@@ -99,6 +101,8 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
       (assoc-wkmaghom (grphom-forg f₂) idf2Mw (grphom-forg f₁))
       λ _ → idp
 
+-- pentagon identity
+
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {G₁ : Type ℓ₁} {G₂ : Type ℓ₂} {G₃ : Type ℓ₃} {G₄ : Type ℓ₄} {G₅ : Type ℓ₅}
   {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}} {{η₄ : CohGrp G₄}} {{η₅ : CohGrp G₅}}
   {f₁ : CohGrpHom {{η₁}} {{η₂}}} {f₂ : CohGrpHom {{η₁}} {{η₅}}} {f₃ f₆ : CohGrpHom {{η₁}} {{η₃}}}
@@ -140,7 +144,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {G₁ : Type ℓ₁} {G₂ : Type 
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {G₁ : Type ℓ₁} {G₂ : Type ℓ₂} {G₃ : Type ℓ₃} {G₄ : Type ℓ₄} {G₅ : Type ℓ₅}
   {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}} {{η₄ : CohGrp G₄}} {{η₅ : CohGrp G₅}}
   (f₁ : CohGrpHom {{η₁}} {{η₂}}) (f₂ : CohGrpHom {{η₂}} {{η₃}}) (f₃ : CohGrpHom {{η₃}} {{η₄}})
-  (f₄ : CohGrpHom {{η₄}} {{η₅}})  where
+  (f₄ : CohGrpHom {{η₄}} {{η₅}}) where
 
   abstract
     pent-2G : 

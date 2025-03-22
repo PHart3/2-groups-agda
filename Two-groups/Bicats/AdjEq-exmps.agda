@@ -1,6 +1,9 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.NConnected
+open import lib.types.Pointed
+open import lib.types.PtdMap-conv
 open import Biequiv
 open import 2Grp
 open import 2Magma
@@ -10,22 +13,58 @@ open import 2GrpMap
 open import 2GrpMap-conv
 open import 2GrpSIP
 open import 2Grp-bc
+open import Ptd-bc
 
-module 2Grp-ae where
+module AdjEq-exmps where
+
+open Adjequiv
+
+-- an equivalence of pointed types is an adjoint equivalence
+module _ {i} {X : Ptd02 i} where
+
+  abstract
+    ⊙≃-to-tadjeq : {Y : Ptd i} ((φ , _) : fst X ⊙≃ Y) {c : is-connected 0 (de⊙ Y)} {t : has-level 2 (de⊙ Y)}
+      → Adjequiv {a = X} {b = (Y , c , t)} φ
+    ⊙≃-to-tadjeq = 
+      ⊙≃-ind {X = fst X}
+        (λ Y (φ , _) → {c : is-connected 0 (de⊙ Y)} {t : has-level 2 (de⊙ Y)} → Adjequiv {a = X} {b = (Y , c , t)} φ)
+        adj-str
+        where
+          adj-str : {c : is-connected 0 (de⊙ (fst X))} {t : has-level 2 (de⊙ (fst X))}
+            → Adjequiv {a = X} {b =  ((fst X) , c , t)} (⊙idf (fst X))
+          inv adj-str = ⊙idf (fst X)
+          eta adj-str = idp
+          eps adj-str = idp
+          coher-map adj-str = =ₛ-out $
+            ⊙-comp-to-== (⊙∘-runit (⊙idf (fst X))) ◃∙
+            ⊙-comp-to-== (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
+              =ₛ⟨ !ₛ (⊙∘-conv (⊙∘-runit (⊙idf (fst X))) (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X)))) ⟩
+            ⊙-comp-to-== (⊙∘-runit (⊙idf (fst X)) ∙⊙∼ ⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
+              =ₛ₁⟨ ap ⊙-comp-to-== (⊙→∼-to-== ((λ _ → idp) , idp)) ⟩
+            ⊙-comp-to-== (⊙∘-lunit (⊙idf (fst X))) ◃∎
+              =ₛ₁⟨ ! (∙-unit-r (⊙-comp-to-== (⊙∘-lunit (⊙idf (fst X))))) ⟩
+            (⊙-comp-to-== (⊙∘-lunit (⊙idf (fst X))) ∙ idp) ◃∎ ∎ₛ
+          coher-inv adj-str = =ₛ-out $
+            (⊙-comp-to-== (⊙∘-lunit (⊙idf (fst X))) ∙ idp) ◃∎
+              =ₛ₁⟨ ∙-unit-r (⊙-comp-to-== (⊙∘-lunit (⊙idf (fst X)))) ⟩
+            ⊙-comp-to-== (⊙∘-lunit (⊙idf (fst X))) ◃∎
+              =ₛ₁⟨ ap ⊙-comp-to-== (⊙→∼-to-== ((λ _ → idp) , idp)) ⟩
+            ⊙-comp-to-== (⊙∘-runit (⊙idf (fst X)) ∙⊙∼ ⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
+              =ₛ⟨ ⊙∘-conv (⊙∘-runit (⊙idf (fst X))) (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ⟩
+           ⊙-comp-to-== (⊙∘-runit (⊙idf (fst X))) ◃∙
+           ⊙-comp-to-== (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎ ∎ₛ 
 
 -- an equivalence of 2-groups is an adjoint equivalence
-
 module _ {i} {G₁ : Type i} {η₁ : CohGrp G₁} where
 
   open CohGrpHom
-  open Adjequiv
 
   abstract
-    2g≃-to-adjeq : {(_ , η₂) : Σ (Type i) (λ G₂ → CohGrp G₂)} →
+    2g≃-to-adjeq : {(_ , η₂) : 2Grp-tot i} →
       (((map , _) , σ) : η₁ 2g≃ η₂) → Adjequiv (cohgrphom {{η₁}} {{η₂}} map {{σ}})
     2g≃-to-adjeq = 
       2grphom-ind
-        (λ ((_ , η₂) : Σ (Type i) (λ G₂ → CohGrp G₂)) (((map , _) , σ) : η₁ 2g≃ η₂)
+        (λ ((_ , η₂) : 2Grp-tot i) (((map , _) , σ) : η₁ 2g≃ η₂)
           → Adjequiv (cohgrphom {{η₁}} {{η₂}} map {{σ}}))
         (adj-str {{η₁}})
         where
