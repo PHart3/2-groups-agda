@@ -200,3 +200,43 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
     natiso2G-to-== {μ = f} {ν = f} (!ʷ iso₂)
       =⟨ natiso2G-! iso₂ ⟩
     ! (natiso2G-to-== iso₂) =∎
+
+  module _ {k} {G₃ : Type k} {{η₃ : CohGrp G₃}} where
+
+    natiso2G-to-==-whisk-r : {f₁ : CohGrpHom {{η₁}} {{η₂}}} {f₂ f₂' : CohGrpHom {{η₂}} {{η₃}}}
+      (iso₂ : WkMagNatIso-forg f₂ f₂') (iso₁ : WkMagNatIso-forg (f₂ ∘2G f₁) (f₂' ∘2G f₁)) →
+      ∼WkMagNatIso iso₁ (natiso-whisk-r iso₂)
+      → natiso2G-to-== iso₁ == ap (λ m → m ∘2G f₁) (natiso2G-to-== {μ = f₂} {ν = f₂'} iso₂)
+    natiso2G-to-==-whisk-r {f₁} {f₂} = 
+      natiso2G-ind
+        (λ f₂' iso₂ → 
+          (iso₁ : WkMagNatIso-forg (f₂ ∘2G f₁) (f₂' ∘2G f₁)) →
+          ∼WkMagNatIso iso₁ (natiso-whisk-r iso₂)
+          → natiso2G-to-== iso₁ == ap (λ m → m ∘2G f₁) (natiso2G-to-== {μ = f₂} {ν = f₂'} iso₂))
+        λ iso₁ e → 
+          natiso2G-to-== iso₁
+            =⟨ ap natiso2G-to-== (natiso∼-to-== e) ⟩
+          natiso2G-to-== (natiso-id2G (f₂ ∘2G f₁))
+            =⟨ natiso2G-to-==-β (f₂ ∘2G f₁) ⟩
+          idp
+            =⟨ ap (ap (λ m → m ∘2G f₁)) (! (natiso2G-to-==-β f₂)) ⟩
+          ap (λ m → m ∘2G f₁) (natiso2G-to-== (natiso-id2G f₂)) =∎
+
+    natiso2G-to-==-whisk-l : {f₂ : CohGrpHom {{η₂}} {{η₃}}} {f₁ f₁' : CohGrpHom {{η₁}} {{η₂}}}
+      (iso₂ : WkMagNatIso-forg f₁ f₁') (iso₁ : WkMagNatIso-forg (f₂ ∘2G f₁) (f₂ ∘2G f₁')) →
+      ∼WkMagNatIso iso₁ (natiso-whisk-l {μ = grphom-forg f₂} iso₂)
+      → natiso2G-to-== iso₁ == ap (λ m → f₂ ∘2G m) (natiso2G-to-== {μ = f₁} {ν = f₁'} iso₂)
+    natiso2G-to-==-whisk-l {f₂} {f₁} = 
+      natiso2G-ind
+        (λ f₁' iso₂ → 
+          (iso₁ : WkMagNatIso-forg (f₂ ∘2G f₁) (f₂ ∘2G f₁')) →
+          ∼WkMagNatIso iso₁ (natiso-whisk-l {μ = grphom-forg f₂} iso₂)
+          → natiso2G-to-== iso₁ == ap (λ m → f₂ ∘2G m) (natiso2G-to-== {μ = f₁} {ν = f₁'} iso₂))
+        λ iso₁ e → 
+          natiso2G-to-== iso₁
+            =⟨ ap natiso2G-to-== (natiso∼-to-== e) ⟩
+          natiso2G-to-== (natiso-id2G (f₂ ∘2G f₁))
+            =⟨ natiso2G-to-==-β (f₂ ∘2G f₁) ⟩
+          idp
+            =⟨ ap (ap (λ m → f₂ ∘2G m)) (! (natiso2G-to-==-β f₁)) ⟩
+          ap (λ m → f₂ ∘2G m) (natiso2G-to-== (natiso-id2G f₁)) =∎

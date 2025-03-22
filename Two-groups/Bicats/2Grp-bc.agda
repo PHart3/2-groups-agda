@@ -35,32 +35,8 @@ module _ {i : ULevel} where
       (grphom-forg {{η₂}} {{η₃}} f₂)
       (grphom-forg {{η₁}} {{η₂}} f₁)
   tri-bc 2grp-bicat {(_ , η₁)} {(_ , η₂)} {(_ , η₃)} f₁ f₂ = tri-2G {{η₁}} {{η₂}} {{η₃}} f₁ f₂
-  pent-bc 2grp-bicat {(_ , η₁)} {(_ , η₂)} {(_ , η₃)} {(_ , η₄)} {(_ , η₅)} f₁ f₂ f₃ f₄ = {!
-    pent {{η₁}} {{η₂}} {{η₃}} {{η₄}} {{η₅}} f₁ f₂ f₃ f₄ !}
+  pent-bc 2grp-bicat {(_ , η₁)} {(_ , η₂)} {(_ , η₃)} {(_ , η₄)} {(_ , η₅)} f₁ f₂ f₃ f₄ =
+    pent-2G {{η₁}} {{η₂}} {{η₃}} {{η₄}} {{η₅}} f₁ f₂ f₃ f₄
   hom-trunc 2grp-bicat {(_ , η₁)} {(_ , η₂)} = CohGrpHom-1trunc {{η₁}} {{η₂}}
-
-{-
-
-(natiso2G-to-== $
- assoc-wkmaghom (grphom-forg f₄) (grphom-forg f₃)
- (grphom-forg (f₂ ∘2G f₁)))
-∙
-(natiso2G-to-== $
- assoc-wkmaghom (grphom-forg (f₄ ∘2G f₃)) (grphom-forg f₂)
- (grphom-forg f₁))
-==
-ap (λ m → f₄ ∘2G m)
-(natiso2G-to-== $
- assoc-wkmaghom (grphom-forg f₃) (grphom-forg f₂) (grphom-forg f₁))
-∙
-(natiso2G-to-== $
- assoc-wkmaghom (grphom-forg f₄) (grphom-forg (f₃ ∘2G f₂))
- (grphom-forg f₁))
-∙
-ap (λ m → m ∘2G f₁)
-(natiso2G-to-== $
- assoc-wkmaghom (grphom-forg f₄) (grphom-forg f₃) (grphom-forg f₂))
-
--}
 
   -- loop is adj equiv
