@@ -4,18 +4,13 @@ open import lib.Basics
 open import lib.types.Sigma
 open import Bicategory
 open import 2Grp
-open import 2Magma
 open import 2MagMap
 open import 2GrpMap
 open import 2GrpMap-conv
-open import NatIso
-open import 2GrpSIP
 
 -- the bicategory of 2-groups
 
 module 2Grp-bc where
-
-open import 2Grp
 
 module _ {i : ULevel} where
 
@@ -39,4 +34,6 @@ module _ {i : ULevel} where
     pent-2G {{η₁}} {{η₂}} {{η₃}} {{η₄}} {{η₅}} f₁ f₂ f₃ f₄
   hom-trunc 2grp-bicat {(_ , η₁)} {(_ , η₂)} = CohGrpHom-1trunc {{η₁}} {{η₂}}
 
-  -- loop is adj equiv
+instance
+  2grp-bicat-instance : ∀ {i} → BicatStr i (Σ (Type i) (λ G → CohGrp G))
+  2grp-bicat-instance {i} = 2grp-bicat {i}

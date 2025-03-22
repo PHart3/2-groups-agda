@@ -1,10 +1,6 @@
 {-# OPTIONS --without-K --rewriting --overlapping-instances --lossy-unification #-}
 
 open import lib.Basics
-open import lib.FTID
-open import lib.types.Sigma
-open import lib.types.Pi
-open import lib.types.Paths
 open import 2Magma
 open import 2MagMap
 open import 2Grp
