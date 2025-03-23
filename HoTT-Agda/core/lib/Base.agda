@@ -51,7 +51,7 @@ of-type : ∀ {i} (A : Type i) (u : A) → A
 of-type A u = u
 
 infix 40 of-type
-syntax of-type A u =  u :> A
+syntax of-type A u = u :> A
 
 {- Instance search -}
 

@@ -11,6 +11,7 @@ open import lib.types.Pointed
 open import lib.types.Sigma
 open import lib.types.TLevel
 open import lib.types.Truncation
+open import lib.types.Group
 open import lib.groups.Homomorphism
 open import lib.groups.Isomorphism
 open import lib.groups.LoopSpace
@@ -174,6 +175,12 @@ abstract
     0ᴳ
       ≃ᴳ∎
 
+  πS->level-trivial : ∀ {i} (n : ℕ) (m : ℕ₋₂) (X : Ptd i)
+    → (m <T ⟨ S n ⟩) → {{_ : has-level m (de⊙ X)}}
+    → is-trivialᴳ (πS n X)
+  πS->level-trivial n m X lt =
+    iso-preserves'-trivial (πS->level-econv n m X lt) Unit-group-is-trivial  
+
   π'S->level-econv : ∀ {i} (n : ℕ) (m : ℕ₋₂) (X : Ptd i)
     → (m <T ⟨ S n ⟩) → {{_ : has-level m (de⊙ X)}}
     → π'S n X ≃ᴳ 0ᴳ
@@ -184,3 +191,9 @@ abstract
       ≃ᴳ⟨ π'S-Trunc-fuse->-iso n m X lt ⟩
     0ᴳ
       ≃ᴳ∎
+
+  π'S->level-trivial : ∀ {i} (n : ℕ) (m : ℕ₋₂) (X : Ptd i)
+    → (m <T ⟨ S n ⟩) → {{_ : has-level m (de⊙ X)}}
+    → is-trivialᴳ (π'S n X)
+  π'S->level-trivial n m X lt =
+    iso-preserves'-trivial (π'S->level-econv n m X lt) Unit-group-is-trivial  

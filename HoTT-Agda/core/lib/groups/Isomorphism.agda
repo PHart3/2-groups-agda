@@ -308,6 +308,13 @@ iso-preserves'-trivial iso H-is-trivial g =
   ∙ ap (GroupIso.g iso) (H-is-trivial _)
   ∙ GroupHom.pres-ident (GroupIso.g-hom iso)
 
+trivial-iso-trivial : ∀ {i j} {G : Group i} {H : Group j}
+  → is-trivialᴳ G → is-trivialᴳ H → G ≃ᴳ H
+fst (trivial-iso-trivial {H = H} _ _) =
+  group-hom (λ _ → Group.ident H) (λ _ _ → ! (Group.unit-l H (Group.ident H)))
+snd (trivial-iso-trivial {G = G} p q) =
+  is-eq _ (λ _ → Group.ident G) (λ b → ! (q b)) λ a → ! (p a)
+
 -- a surjective and injective homomorphism is an isomorphism
 module _ {i j} {G : Group i} {H : Group j} (φ : G →ᴳ H)
   (surj : is-surjᴳ φ) (inj : is-injᴳ φ) where
