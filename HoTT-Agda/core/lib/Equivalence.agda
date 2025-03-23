@@ -241,6 +241,9 @@ module _ {i} {A : Type i} (h : is-contr A) where
   contr-equiv-LiftUnit : ∀ {j} → A ≃ Lift {j = j} Unit
   contr-equiv-LiftUnit = lower-equiv ⁻¹ ∘e contr-equiv-Unit
 
+abstract
+  contr-equiv-contr : ∀ {i j} {A : Type i} (h : is-contr A) {B : Type j} (k : is-contr B) → A ≃ B
+  contr-equiv-contr h k = (contr-equiv-Unit k)⁻¹ ∘e contr-equiv-Unit h
 
 {- An equivalence induces an equivalence on the path spaces -}
 module _ {i j} {A : Type i} {B : Type j} where
