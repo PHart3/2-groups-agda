@@ -6,6 +6,7 @@ open import lib.FTID
 open import lib.types.Paths
 open import lib.types.Sigma
 open import lib.types.Pointed
+open import lib.types.LoopSpace
 
 -- sections of fibrations of pointed types
 
@@ -21,7 +22,7 @@ module _ {i j} (X : Ptd i)  where
 
 module _ {i j} {X : Ptd i} where
 
-  infixr 10 ⟨_⟩_⊙Π∼_
+  infixr 50 ⟨_⟩_⊙Π∼_
   ⟨_⟩_⊙Π∼_ : (Y : de⊙ X → Ptd j) → Π⊙ X Y → Π⊙ X Y → Type (lmax i j)
   ⟨ Y ⟩ f₁ ⊙Π∼ f₂ = [ H ∈ fst f₁ ∼ fst f₂ ] × (! (H (pt X)) ∙ snd f₁ == snd f₂) 
 
@@ -79,3 +80,29 @@ module _ {i j} {X : Ptd i} {Y : de⊙ X → Ptd j} (f : Π⊙ X Y) where
       
       map1-map2 : {k : Π⊙ X Y} (p : ⟨ Y ⟩ f ⊙Π∼ k) → map2 (map1 p) == p
       map1-map2 = ⊙Π-ind (λ k p → map2 (map1 p) == p) (ap map2 (⊙Π-ind-β (λ k _ →  f == k) idp))
+
+  ⊙Π∼-Ω : Π⊙ X (λ x → ⊙Ω ⊙[ de⊙ (Y x) , fst f x ]) ≃ (f == f)
+  ⊙Π∼-Ω = 
+    Π⊙ X (λ x → ⊙Ω ⊙[ de⊙ (Y x) , fst f x ])
+      ≃⟨ equiv (λ k → fst k , idp-canc-l-! (snd f) (snd k)) (λ k → fst k , canc-l-!-idp (snd f) (snd k))
+           (λ k → ap (λ c → fst k , c) (aux1 {k = k} (snd f) (snd k)))
+           (λ k → ap (λ c → fst k , c) (aux2 {k = k} (snd f) (snd k))) ⟩
+    ⟨ Y ⟩ f ⊙Π∼ f
+      ≃⟨ ⊙Π∼-== f ⟩
+    f == f ≃∎
+    where
+      aux1 : {k : ⟨ Y ⟩ f ⊙Π∼ f} {x : de⊙ (Y (pt X))}
+        (p : fst f (pt X) == x) (q : ! (fst k (pt X)) ∙ p == p)
+        → idp-canc-l-! p (canc-l-!-idp p q) == q
+      aux1 {k} idp q = lemma q
+        where
+          lemma : {x : de⊙ (Y (pt X))} {r : x == x} (t : ! r ∙ idp == idp)
+            → ap (λ c → ! c ∙ idp) (!-idp r (! (∙-unit-r (! r)) ∙ t)) == t
+          lemma =
+            !-!-∙-unit-r-ind (λ {r} t → ap (λ c → ! c ∙ idp) (!-idp r (! (∙-unit-r (! r)) ∙ t)) == t)
+              (λ { idp → idp })
+
+      aux2 : {k : Π⊙ X (λ x → ⊙Ω ⊙[ de⊙ (Y x) , fst f x ])} {x : de⊙ (Y (pt X))}
+        (p : x == pt (Y (pt X))) {r : x == x} (q : r == idp)
+        → canc-l-!-idp p (idp-canc-l-! p q) == q
+      aux2 idp idp = idp

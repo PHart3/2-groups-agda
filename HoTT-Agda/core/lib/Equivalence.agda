@@ -242,8 +242,12 @@ module _ {i} {A : Type i} (h : is-contr A) where
   contr-equiv-LiftUnit = lower-equiv ⁻¹ ∘e contr-equiv-Unit
 
 abstract
-  contr-equiv-contr : ∀ {i j} {A : Type i} (h : is-contr A) {B : Type j} (k : is-contr B) → A ≃ B
-  contr-equiv-contr h k = (contr-equiv-Unit k)⁻¹ ∘e contr-equiv-Unit h
+  contr-equiv-contr : ∀ {i j} {A : Type i} (h : is-contr A) {B : Type j} (k : is-contr B)
+    (f : A → B) → is-equiv f
+  contr-equiv-contr h k f =
+    is-eq f (λ _ → contr-center h)
+      (λ _ → contr-has-all-paths {{k}} _ _)
+      λ _ → contr-has-all-paths {{h}} _ _
 
 {- An equivalence induces an equivalence on the path spaces -}
 module _ {i j} {A : Type i} {B : Type j} where

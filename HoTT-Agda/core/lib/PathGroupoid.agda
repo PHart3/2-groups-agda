@@ -131,10 +131,20 @@ module _ {i j} {A : Type i} {x y : A} {q : x == y} (B : {p : x == y} → (q == p
 
   ∙-unit-r-ind : ({p : x == y} (r : q == p) → B (r ∙ ! (∙-unit-r p))) → ({p : x == y} (r : q == p ∙ idp) → B r)
   ∙-unit-r-ind e {p = idp} idp = e idp
-  
+
+{- combined induction rule -}
+module _ {i j} {A : Type i} {x y : A} {q : y == x} (B : {p : x == y} → (! p ∙ idp == q) → Type j) where
+
+  !-!-∙-unit-r-ind : ({p : y == x} (r : p == q) → B (∙-unit-r (! (! p)) ∙ !-! p ∙ r))
+    → ({p : x == y} (r : ! p ∙ idp == q) → B r)
+  !-!-∙-unit-r-ind e {p = idp} idp = e idp
+
 {- additional algebraic lemmas -}
 
 module _ {i} {A : Type i} where
+
+  !-idp : {x : A} (p : x == x) → ! p == idp → p == idp
+  !-idp p e = ! (!-! p) ∙ ap ! e
 
   !-unit-r-inv : {x : A} {v : x == x} (p : idp == v)
     → ! p ∙ ap (λ v → v ∙ idp) p == ! (∙-unit-r v)
@@ -162,6 +172,12 @@ module _ {i} {A : Type i} where
       ∙-assoc p (q ∙ r) s ◃∙
       ap (λ u → p ∙ u) (∙-assoc q r s) ◃∎
   ∙-assoc-pentagon idp idp r s = =ₛ-in idp
+
+  idp-canc-l-! : {x y : A} {p : x == x} (q : x == y) → p == idp → ! p ∙ q == q
+  idp-canc-l-! idp e = ap (λ c → ! c ∙ idp) e
+
+  canc-l-!-idp : {x y : A} {p : x == x} (q : x == y) → ! p ∙ q == q → p == idp
+  canc-l-!-idp {p = p} idp e = !-idp p (! (∙-unit-r (! p)) ∙ e) 
 
   tri-id : {x y z : A} (p : x == y) (q : y == z)
     → ap (λ v → v ∙ q) (∙-unit-r p) == ! (! (∙-assoc p idp q)) ∙ idp
