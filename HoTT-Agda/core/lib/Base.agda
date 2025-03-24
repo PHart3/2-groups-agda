@@ -476,6 +476,8 @@ data TLevel : Type₀ where
 ⟨ O ⟩₋₂ = ⟨-2⟩
 ⟨ S n ⟩₋₂ = S ⟨ n ⟩₋₂
 
+tl = ⟨_⟩₋₂
+
 {- Coproducts and case analysis -}
 
 data Coprod {i j} (A : Type i) (B : Type j) : Type (lmax i j) where
