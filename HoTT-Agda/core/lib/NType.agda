@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Base
 open import lib.PathGroupoid
@@ -191,6 +191,16 @@ module _ {i} where
     contr-has-section : ∀ {j} {A : Type i} {B : A → Type j}
       → (is-contr A → (x : A) → (u : B x) → Π A B)
     contr-has-section {B = B} p x₀ y₀ t = transport B (! (contr-path p x₀) ∙ contr-path p t) y₀
+
+  UIP-loops : {n : ℕ₋₂} {A : Type i} → {{{x : A} → has-level (S n) (x == x)}} → has-level (S (S n)) A
+  UIP-loops {⟨-2⟩} {A} = has-level-in (λ x y → all-paths-is-prop aux)
+    where
+      aux : {x y : A} (p q : x == y) → p == q
+      aux idp q = prop-has-all-paths idp q
+  UIP-loops {S n} {A} {{t}} = has-level-in (λ _ _ → has-level-in aux)
+    where
+      aux : {x y : A} (p q : x == y) → has-level (S n) (p == q)
+      aux {x} {y} idp q = has-level-apply (UIP-loops {n}) idp q 
 
 {- Subtypes -}
 

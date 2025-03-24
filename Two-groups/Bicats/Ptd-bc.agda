@@ -5,6 +5,7 @@ open import lib.NConnected
 open import lib.types.Sigma
 open import lib.types.Pointed
 open import lib.types.PtdMap-conv
+open import lib.types.PtdFibration
 open import Bicategory
 
 -- the bicategory of pointed connected 2-types
@@ -60,9 +61,7 @@ module _ {i : ULevel} where
     ap (λ m → k ⊙∘ m) (⊙-comp-to-== (⊙∘-α-comp h g f)) ◃∙
     ⊙-comp-to-== (⊙∘-α-comp k (h ⊙∘ g) f) ◃∙
     ap (λ m → m ⊙∘ f) (⊙-comp-to-== (⊙∘-α-comp k h g)) ◃∎ ∎ₛ
-  hom-trunc Ptd02-bicat = prove-later
-    where
-      postulate prove-later : _
+  hom-trunc Ptd02-bicat {X₁ , c₁ , _} {X₂ , _ , t₂} = ptd-conn-tr-hom-tr X₁ X₂ c₁ t₂
 
 instance
   Ptd02-bicat-instance : ∀ {i} → BicatStr i (Ptd02 i)

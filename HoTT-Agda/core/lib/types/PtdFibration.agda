@@ -3,10 +3,10 @@
 open import lib.Basics
 open import lib.NConnected
 open import lib.FTID
-open import lib.types.Paths
 open import lib.types.Sigma
 open import lib.types.Pointed
 open import lib.types.LoopSpace
+open import lib.types.TLevel
 
 -- sections of fibrations of pointed types
 
@@ -66,20 +66,20 @@ module _ {i j} {X : Ptd i} {Y : de⊙ X → Ptd j} (f : Π⊙ X Y) where
     → (r : P f (⊙Π∼-id Y f)) → ⊙Π-ind P r {f} (⊙Π∼-id Y f) == r
   ⊙Π-ind-β P = ID-ind-map-β P ⊙Π-contr
 
-  ⊙Π∼-== : (g : Π⊙ X Y) → (⟨ Y ⟩ f ⊙Π∼ g) ≃ (f == g)
-  ⊙Π∼-== g = equiv (map1 {g}) (map2 {g}) map2-map1 map1-map2
-    where
-      map1 : {k : Π⊙ X Y} → ⟨ Y ⟩ f ⊙Π∼ k → f == k
-      map1 = ⊙Π-ind (λ k _ →  f == k) idp
-      
-      map2 : {k : Π⊙ X Y} → f == k → ⟨ Y ⟩ f ⊙Π∼ k
-      map2 idp = ⊙Π∼-id Y f
+  ⊙Π∼-to-== : {k : Π⊙ X Y} → ⟨ Y ⟩ f ⊙Π∼ k → f == k
+  ⊙Π∼-to-== = ⊙Π-ind (λ k _ →  f == k) idp
 
-      map2-map1 : {k : Π⊙ X Y} (p : f == k) → map1 (map2 p) == p
-      map2-map1 idp = ⊙Π-ind-β (λ k _ →  f == k) idp
+  ⊙Π∼-== : (g : Π⊙ X Y) → (⟨ Y ⟩ f ⊙Π∼ g) ≃ (f == g)
+  ⊙Π∼-== g = equiv (⊙Π∼-to-== {g}) (can {g}) can-⊙Π∼-to-== ⊙Π∼-to-==-can
+    where
+      can : {k : Π⊙ X Y} → f == k → ⟨ Y ⟩ f ⊙Π∼ k
+      can idp = ⊙Π∼-id Y f
+
+      can-⊙Π∼-to-== : {k : Π⊙ X Y} (p : f == k) → ⊙Π∼-to-== (can p) == p
+      can-⊙Π∼-to-== idp = ⊙Π-ind-β (λ k _ →  f == k) idp
       
-      map1-map2 : {k : Π⊙ X Y} (p : ⟨ Y ⟩ f ⊙Π∼ k) → map2 (map1 p) == p
-      map1-map2 = ⊙Π-ind (λ k p → map2 (map1 p) == p) (ap map2 (⊙Π-ind-β (λ k _ →  f == k) idp))
+      ⊙Π∼-to-==-can : {k : Π⊙ X Y} (p : ⟨ Y ⟩ f ⊙Π∼ k) → can (⊙Π∼-to-== p) == p
+      ⊙Π∼-to-==-can = ⊙Π-ind (λ k p → can (⊙Π∼-to-== p) == p) (ap can (⊙Π-ind-β (λ k _ →  f == k) idp))
 
   ⊙Π∼-Ω : Π⊙ X (λ x → ⊙Ω ⊙[ de⊙ (Y x) , fst f x ]) ≃ (f == f)
   ⊙Π∼-Ω = 
@@ -106,3 +106,30 @@ module _ {i j} {X : Ptd i} {Y : de⊙ X → Ptd j} (f : Π⊙ X Y) where
         (p : x == pt (Y (pt X))) {r : x == x} (q : r == idp)
         → canc-l-!-idp p (idp-canc-l-! p q) == q
       aux2 idp idp = idp
+
+-- Theorem 4.2 of the paper "Higher Groups in Homotopy Type Theory"
+module _ {i j} (X : Ptd i) {n₁ : TLevel} {{_ : is-connected (S n₁) (de⊙ X)}} where
+
+  abstract
+    ptd-conn-tr-dhom-tr : (Y : de⊙ X → Ptd j) {n₂ : TLevel}
+      {{_ : {x : de⊙ X} → has-level (n₂ +2+ (S n₁)) (de⊙ (Y x))}}
+      → has-level (S n₂) (Π⊙ X Y)
+    ptd-conn-tr-dhom-tr Y {⟨-2⟩} {{trY}} =
+      contr-is-prop (has-level-in (((λ x → pt (Y x)) , idp) ,
+        λ k → ⊙Π∼-to-== {Y = Y} ((λ x → pt (Y x)) , idp)
+          (aux k ,
+            ap (λ v → ! v ∙ idp) (conn-extend-ptd-β (pt X) (λ x → pt (Y x) == fst k x) (! (snd k))) ∙
+            (ap (λ v → v ∙ idp) (!-! (snd k)) ∙ ∙-unit-r (snd k)))))
+        where
+          aux : (k : Π⊙ X Y) → (λ x → pt (Y x)) ∼ fst k
+          aux k = conn-extend-ptd (pt X) (λ x → pt (Y x) == fst k x) (! (snd k))
+    ptd-conn-tr-dhom-tr Y {S n₂} =
+      UIP-loops {{λ {k} → equiv-preserves-level (⊙Π∼-Ω {Y = Y} k)
+        {{ptd-conn-tr-dhom-tr λ x → ⊙Ω ⊙[ de⊙ (Y x) , fst k x ]}}}}
+
+module _ {i j} (X : Ptd i) (Y : Ptd j) {n₁ n₂ : TLevel}
+  (cX : is-connected (S n₁) (de⊙ X)) (trY : has-level (n₂ +2+ (S n₁)) (de⊙ Y)) where
+
+  abstract
+    ptd-conn-tr-hom-tr : has-level (S n₂) (X ⊙→ Y)
+    ptd-conn-tr-hom-tr = ptd-conn-tr-dhom-tr X {{cX}} (λ _ → Y) {{trY}}

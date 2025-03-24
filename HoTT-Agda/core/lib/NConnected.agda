@@ -189,3 +189,12 @@ prop-over-connected :  ∀ {i j} {A : Type i} {a : A} {{p : is-connected 0 A}}
   → (P : A → hProp j)
   → fst (P a) → Π A (fst ∘ P)
 prop-over-connected P x = conn-extend (pointed-conn-out _ _) P (λ _ → x)
+
+module _ {i k} {A : Type i} (a : A) {n : ℕ₋₂} {{_ : is-connected (S n) A}} (P : A → Type k)
+  {{tr : {x : A} → has-level n (P x)}} where
+
+  conn-extend-ptd : P a → (x : A) → P x
+  conn-extend-ptd b = conn-out (pointed-conn-out A a) (λ x → P x , tr) (λ _ → b)
+
+  conn-extend-ptd-β : (b : P a) → conn-extend-ptd b a == b 
+  conn-extend-ptd-β b = conn-extend-β (pointed-conn-out A a) (λ x → P x , tr) (λ _ → b) tt
