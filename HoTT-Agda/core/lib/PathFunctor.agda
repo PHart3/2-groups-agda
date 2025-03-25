@@ -290,6 +290,9 @@ coe-∙ : ∀ {i} {A B C : Type i} (p : A == B) (q : B == C) (a : A)
   → coe (p ∙ q) a == coe q (coe p a)
 coe-∙ idp q a = idp
 
+coe-!-eq : ∀ {i} {A B : Type i} (p : A == B) → coe (! p) == coe! p
+coe-!-eq idp = idp
+
 coe-! : ∀ {i} {A B : Type i} (p : A == B) (b : B) → coe (! p) b == coe! p b
 coe-! idp b = idp
 
@@ -830,6 +833,10 @@ module _ {i j} {A : Type i} {B : Type j} {f : A → B} where
     → transport (λ x → f x == g x) p q ◃∎ =ₛ (! (ap f p)) ◃∙ q ◃∙ (ap g p) ◃∎
   transp-pth-s idp q = =ₛ-in (! (∙-unit-r q))
 
+  transport-Path-pre' : {x y : A} (p₁ : x == y) {b : B} (p₂ : f x == b)
+    → transport (λ v → f v == b) p₁ p₂ == p₂ ∙ʳ ! (ap f p₁)
+  transport-Path-pre' idp p₂ = idp
+
   transp-pth!-!◃ : {x y : A} {g : A → B} (p : x == y) (q : f y == g y)
     → ! (transport (λ x → f x == g x) (! p) q) ◃∎ =ₛ ap g p ◃∙ ! q ◃∙ ! (ap f p) ◃∎
   transp-pth!-!◃ idp q = =ₛ-in (! (∙-unit-r (! q)))
@@ -856,7 +863,8 @@ module _ {i j} {A : Type i} {B : Type j} {f : A → B} where
     → transport (λ x → f x == g x) p q ◃∎ =ₛ ((! (ap f p)) ∙ q) ◃∙ (ap g p) ◃∎
   transp-pth-l-s idp q = =ₛ-in (! (∙-unit-r q))
 
-  transp-pth-cmpR : ∀ {k l m} {C : Type k} {D : Type l} {Z : Type m} {t : C → Z} {h : Z → A} {v : C → D} {u : D → B}
+  transp-pth-cmpR : ∀ {k l m} {C : Type k} {D : Type l} {Z : Type m}
+    {t : C → Z} {h : Z → A} {v : C → D} {u : D → B}
     {x y : C} (p : x == y) (q : u (v x) == f (h (t x)))
     →  transport (λ x → u (v x) == f (h (t x))) p q == (! (ap u (ap v p))) ∙ q ∙ (ap f (ap h (ap t p)))
   transp-pth-cmpR idp q = ! (∙-unit-r q)
@@ -886,10 +894,12 @@ module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type �
   apd-tr-refl : {x y : B} (p : x == y) → transport (λ z → f (h z) == f (h z)) p idp == idp
   apd-tr-refl idp = idp
 
-module _ {i j k l} {A : Type i} {B : Type j} {f : A → B} {C : Type k} {D : Type l} {h : C → A} {v : C → D} {u : D → B} {x y : C} where 
+module _ {i j k l} {A : Type i} {B : Type j} {f : A → B} {C : Type k} {D : Type l}
+  {h : C → A} {v : C → D} {u : D → B} {x y : C} where 
 
   transpRevSlice : (p : x == y) (q : u (v x) == f (h x)) {r : u (v y) == f (h y)}
-    → (((! (ap u (ap v p))) ∙ q) ∙ (ap f (ap h p)) == r) →  ((! (ap f (ap h p))) ∙ ! q ∙ (ap u (ap v p)) == ! r)
+    → ((! (ap u (ap v p))) ∙ q) ∙ (ap f (ap h p)) == r
+    → (! (ap f (ap h p))) ∙ ! q ∙ (ap u (ap v p)) == ! r
   transpRevSlice idp q idp = ∙-unit-r (! q) ∙ ap (λ p → ! p) (! (∙-unit-r q))
 
   DecompTrRev : (p : x == y) (q : u (v x) == f (h x)) {r : u (v y) == f (h y)}
@@ -900,8 +910,10 @@ module _ {i j k l} {A : Type i} {B : Type j} {f : A → B} {C : Type k} {D : Typ
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : A → Type ℓ₂} where
 
   transp-id-concat : (f g : (x : A) → B x) {x y : A} (p : x == y) {c : B x} (q₁ : f x == c) (q₂ : c == g x)
-    {r : f y == transport B p (f x)} (R : ! (apd-tr f p) == r)
-    → transport (λ z → f z == g z) p (q₁ ∙ q₂) ◃∎ =ₛ r ◃∙ ap (transport B p) q₁ ◃∙ ap (transport B p) q₂ ◃∙ apd-tr g p ◃∎
+    {r : f y == transport B p (f x)} (R : ! (apd-tr f p) == r) →
+    transport (λ z → f z == g z) p (q₁ ∙ q₂) ◃∎
+      =ₛ
+    r ◃∙ ap (transport B p) q₁ ◃∙ ap (transport B p) q₂ ◃∙ apd-tr g p ◃∎
   transp-id-concat f g {x = x} idp idp q₂ idp = =ₛ-in (lemma q₂)
     where lemma : {a b : B x} (q : a == b) → q == ap (transport B idp) q ∙ idp
           lemma idp = idp

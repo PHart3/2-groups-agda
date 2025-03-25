@@ -25,6 +25,9 @@ module _ {i} where
 
   πS : (n : ℕ) (X : Ptd i) → Group i
   πS n X = Trunc-group (Ω^S-group-structure n X)
+  
+  π-tyₚ : (n : ℕ-ₚ) (X : Type i) (x : X) → Type i
+  π-tyₚ n X x = Trunc 0 (Ω^ (pnat n) ⊙[ X , x ])
 
   π'S : (n : ℕ) (X : Ptd i) → Group i
   π'S n X = Trunc-group (Ω^'S-group-structure n X)

@@ -195,6 +195,10 @@ module _ {i} where
   Ω^ : (n : ℕ) → Ptd i → Type i
   Ω^ n X = de⊙ (⊙Ω^ n X)
 
+  rebase-Loop-Path : ∀ k {A} {x x' : A} (α : x == x')
+    → Ω^ k (⊙[ x == x' , α ]) == Ω^ k (⊙[ x == x , idp ])
+  rebase-Loop-Path k idp = idp
+
   ⊙Ω^' : (n : ℕ) → Ptd i → Ptd i
   ⊙Ω^' O X = X
   ⊙Ω^' (S n) X = (⊙Ω^' n (⊙Ω X))
@@ -212,6 +216,10 @@ module _ {i} where
 Ω^-fmap : ∀ {i j} (n : ℕ) {X : Ptd i} {Y : Ptd j}
   → X ⊙→ Y → (de⊙ (⊙Ω^ n X) → de⊙ (⊙Ω^ n Y))
 Ω^-fmap n F = fst (⊙Ω^-fmap n F)
+
+Ω^-fmapₚ : ∀ {i j} {X : Type i} {Y : Type j} (n : ℕ-ₚ) {x : X} (f : X → Y)
+  → de⊙ (⊙Ω^ (pnat n) ⊙[ X , x ]) → de⊙ (⊙Ω^ (pnat n) ⊙[ Y , f x ])
+Ω^-fmapₚ n f = Ω^-fmap (pnat n) (f , idp) 
 
 ⊙Ω^-csmap : ∀ {i₀ i₁ j₀ j₁} (n : ℕ) {X₀ : Ptd i₀} {X₁ : Ptd i₁}
   {Y₀ : Ptd j₀} {Y₁ : Ptd j₁} {f : X₀ ⊙→ Y₀} {g : X₁ ⊙→ Y₁}
@@ -505,6 +513,10 @@ module _ {i} where
     → (Ω^ (S n) X → Ω^ n (⊙Ω X))
   Ω^-Ω-split n X = fst (⊙Ω^-Ω-split n X)
 
+  Ω^-Ω-splitₚ : {X : Type i} {x : X} (n : ℕ-ₚ)
+    → Ω^ (S (pnat n)) ⊙[ X , x ] → Ω^ (pnat n) (⊙Ω ⊙[ X , x ])
+  Ω^-Ω-splitₚ {X} {x} n = Ω^-Ω-split (pnat n) ⊙[ X , x ]
+
   Ω^S-Ω-split-∙ : (n : ℕ)
     (X : Ptd i) (p q : Ω^ (S (S n)) X)
     → Ω^-Ω-split (S n) X (Ω^S-∙ (S n) p q)
@@ -520,6 +532,42 @@ module _ {i} where
 
   Ω^-Ω-split-equiv : (n : ℕ) (X : Ptd i) → Ω^ (S n) X ≃ Ω^ n (⊙Ω X)
   Ω^-Ω-split-equiv n X = _ , Ω^-Ω-split-is-equiv n X
+
+module _ {i} {X : Type i} {x : X} where
+
+  Ω^-Ω-split-≃-ₚ : (n : ℕ-ₚ) → Ω^ (S (pnat n)) (⊙[ X , x ]) ≃ Ω^ (pnat n) (⊙Ω ⊙[ X , x ])
+  Ω^-Ω-split-≃-ₚ n = Ω^-Ω-split-equiv (pnat n) ⊙[ X , x ]
+
+  Ω^-Ω-split-revₚ : (n : ℕ-ₚ) → Ω^ (pnat n) (⊙Ω ⊙[ X , x ]) → Ω^ (S (pnat n)) ⊙[ X , x ]
+  Ω^-Ω-split-revₚ n = <– (Ω^-Ω-split-≃-ₚ n)
+{-
+  Ω^-Ω-split-revₚ-rec : (n : ℕ-ₚ)
+    →
+    Ω^-Ω-split-revₚ (S n)
+      ==
+    Ω-fmap
+      (Ω^-Ω-split-revₚ n , {!!})
+  Ω^-Ω-split-revₚ-rec n = {!!}
+-}
+  Ω^-Ω-split-Path-ₚ : (n : ℕ-ₚ) → Ω^ (S (pnat n)) (⊙[ X , x ]) == Ω^ (pnat n) (⊙Ω ⊙[ X , x ])
+  Ω^-Ω-split-Path-ₚ n = ua (Ω^-Ω-split-≃-ₚ n)
+
+module _ {i j} {A : Type i} {B : Type j} where
+{-
+  Ω^-fmap-S-ₚ : (n : ℕ-ₚ) (f : A → B) {a : A} (p : Ω^ (S (pnat n)) ⊙[ A , a ])
+    → Ω^-fmapₚ (S n) f p == Ω^-Ω-split-revₚ n (Ω^-fmapₚ n (ap f) (Ω^-Ω-splitₚ n p))
+  Ω^-fmap-S-ₚ I f p = 
+    ! (∙-unit-r _ ∙ ap-idf (ap (ap f) (ap (λ x → x) p)) ∙ ap (ap (ap f)) (ap-idf p))
+  Ω^-fmap-S-ₚ (S n) f p = 
+    fst (⊙Ω-fmap (⊙Ω-fmap (⊙Ω^-fmap (pnat n) (f , idp)))) p
+      =⟨ {!(λ k → fst (⊙Ω-fmap k)) (Ω^-fmap-S-ₚ n f) p!} ⟩
+    {!!}
+-}
+  Ω^-ap-assoc-ₚ : (n : ℕ-ₚ) (f : A → B) {a : A} (p : Ω^ (pnat n) (⊙Ω ⊙[ A , a ]))
+    → Ω^-fmapₚ n (ap f) p == Ω^-Ω-splitₚ n (Ω^-fmapₚ (S n) f (Ω^-Ω-split-revₚ n p))
+  Ω^-ap-assoc-ₚ I f p = ! (ap-idf (ap (ap f) (ap (λ x → x) p ∙ idp)) ∙ ap (ap (ap f)) (∙-unit-r _ ∙ ap-idf p))
+  Ω^-ap-assoc-ₚ (S n) f p = prove-later
+    where postulate prove-later : _
 
 module _ {i j} (X : Ptd i) (Y : Ptd j) where
 

@@ -16,6 +16,9 @@ it may be helpful to know definitionally what are the components.
 coe-equiv : ∀ {i} {A B : Type i} → A == B → A ≃ B
 coe-equiv p = (coe p , record { g = coe! p ; f-g = coe!-inv-r p ; g-f = coe!-inv-l p ; adj = coe-inv-adj p })
 
+coe-is-equiv : ∀ {i} {A B : Type i} (p : A == B) → is-equiv (coe p)
+coe-is-equiv p = snd (coe-equiv p)
+
 {- We postulate the univalence axiom as three separate axioms because it’s more
 natural this way. But it doesn’t change anything in practice. -}
 
@@ -28,6 +31,12 @@ ua-equiv : ∀ {i} {A B : Type i} → (A ≃ B) ≃ (A == B)
 ua-equiv = equiv ua coe-equiv ua-η coe-equiv-β
 
 {- Reductions for coercions along a path constructed with the univalence axiom -}
+
+type≃β : ∀ {i} {A B : Type i} (e : A ≃ B) → coe (ua e) == –> e
+type≃β e = ap (–>) (coe-equiv-β e)
+
+type≃β! : ∀ {i} {A B : Type i} (e : A ≃ B) → coe (! (ua e)) == <– e
+type≃β! e = coe-!-eq (ua e) ∙ ap (<–) (coe-equiv-β e)
 
 coe-β : ∀ {i} {A B : Type i} (e : A ≃ B) (a : A)
   → coe (ua e) a == –> e a

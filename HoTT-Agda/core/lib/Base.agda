@@ -88,11 +88,16 @@ J' : ∀ {i j} {A : Type i} {a : A} (B : (a' : A) (p : a' == a) → Type j) (d :
   {a' : A} (p : a' == a) → B a' p
 J' B d idp = d
 
-infixr 80 _∙_
+infixr 80 _∙_ _∙ʳ_
 
 _∙_ : ∀ {i} {A : Type i} {x y z : A}
   → (x == y → y == z → x == z)
 idp ∙ q = q
+
+_∙ʳ_ : ∀ {i} {A : Type i} {x y z : A}
+  → (y == z → x == y → x == z)
+q ∙ʳ idp = q
+
 
 {- Rewriting
 
@@ -223,6 +228,12 @@ pair= : ∀ {i j} {A : Type i} {B : A → Type j}
   → (a , b) == (a' , b')
 pair= idp q = ap (_ ,_) q
 
+pair=-tr : ∀ {i j} {A : Type i} {B : A → Type j}
+  {a a' : A} (p : a == a') {b : B a} {b' : B a'}
+  (q : transport B p b == b')
+  → (a , b) == (a' , b')
+pair=-tr {a = a} idp q = ap (λ v → a , v) q
+
 pair×= : ∀ {i j} {A : Type i} {B : Type j}
   {a a' : A} (p : a == a') {b b' : B} (q : b == b')
   → (a , b) == (a' , b')
@@ -273,6 +284,10 @@ data ℕ-ₚ : Type₀ where
   I : ℕ-ₚ
   S : (n : ℕ-ₚ) → ℕ-ₚ
 
+pnat : ℕ-ₚ → ℕ
+pnat I = S O
+pnat (S n) = S (pnat n)
+
 {- Lifting to a higher universe level
 
 The operation of lifting enjoys both β and η definitionally.
@@ -314,11 +329,14 @@ If you do want to reason on paths constructed with equational reasoning, check
 out PathSeq (below) instead.
 -}
 
-infixr 10 _=⟨_⟩_
+infixr 10 _=⟨_⟩_ _=ᵣ⟨_⟩_
 infix  15 _=∎
 
 _=⟨_⟩_ : ∀ {i} {A : Type i} (x : A) {y z : A} → x == y → y == z → x == z
 _ =⟨ idp ⟩ idp = idp
+
+_=ᵣ⟨_⟩_ : ∀ {i} {A : Type i} (x : A) {y z : A} → x == y → y == z → x == z
+_ =ᵣ⟨ p₁ ⟩ p₂ = p₂ ∙ʳ p₁
 
 _=∎ : ∀ {i} {A : Type i} (x : A) → x == x
 _ =∎ = idp
@@ -476,7 +494,13 @@ data TLevel : Type₀ where
 ⟨ O ⟩₋₂ = ⟨-2⟩
 ⟨ S n ⟩₋₂ = S ⟨ n ⟩₋₂
 
-tl = ⟨_⟩₋₂
+tl : ℕ → ℕ₋₂
+tl O = S (S ⟨-2⟩)
+tl (S n) = S (tl n)
+
+tlp : ℕ-ₚ → ℕ₋₂
+tlp I = S (S (S ⟨-2⟩))
+tlp (S n) = S (tlp n)
 
 {- Coproducts and case analysis -}
 

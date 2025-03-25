@@ -59,6 +59,9 @@ module _ {i} {A : Type i} where
   ∙'-unit-l : {x y : A} (q : x == y) → idp ∙' q == q
   ∙'-unit-l idp = idp
 
+  ∙ʳ-unit-l : {x y : A} (p : x == y) → idp ∙ʳ p == p
+  ∙ʳ-unit-l idp = idp
+
   {- Reversal of paths -}
 
   ! : {x y : A} → (x == y → y == x)
@@ -88,6 +91,9 @@ module _ {i} {A : Type i} where
   !-∙◃ : {x y z : A} (p : x == y) (q : y == z) → ! (p ∙ q) ◃∎ =ₛ ! q ◃∙ ! p ◃∎
   !-∙◃ idp idp = =ₛ-in idp
 
+  !-∙ʳ : {x y z : A} (p₁ : y == z) (p₂ : x == y) → ! (p₁ ∙ʳ p₂) == ! p₂ ∙ʳ ! p₁
+  !-∙ʳ idp idp = idp
+
   !-∙-∙ : {x y z w : A} (p : x == y) (q : y == z) (r : z == w)
     → ! (p ∙ q ∙ r) == ! r ∙ ! q ∙ ! p
   !-∙-∙ idp idp idp = idp
@@ -114,6 +120,9 @@ module _ {i} {A : Type i} where
 
   ∙-idp-!-∙'-rot : {x y : A} (p q : x == y) → idp == p ∙ idp ∙' ! q → p == q
   ∙-idp-!-∙'-rot idp q e = ap ! (e ∙ ∙'-unit-l (! q)) ∙ !-! q
+
+  !-inv-r-front : {x y z : A} (p₁ : x == y) (p₂ : z == y) → p₁ ∙ʳ ! p₁ ∙ʳ p₂ == p₂
+  !-inv-r-front idp idp = idp
 
 {- induction rules for !-! -}
 module _ {i j} {A : Type i} {x y : A} {p : x == y} where

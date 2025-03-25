@@ -81,11 +81,20 @@ abstract
     is-equiv.g-f (snd e) = λ _ → idp
     is-equiv.adj (snd e) = λ _ → idp
 
+  hfib-contr-≃-is-contr : ∀ {i} (A : Type i) → is-contr A ≃ Σ A (λ x → (y : A) → x == y) 
+  hfib-contr-≃-is-contr A = equiv (λ (has-level-in p) → p) has-level-in (λ _ → idp) λ _ → idp
+
   instance
     has-level-level : ∀ {i} {n m : ℕ₋₂} {A : Type i}
       → has-level (S m) (has-level n A)
     has-level-level {m = ⟨-2⟩} = has-level-is-prop
     has-level-level {m = S m} = raise-level _ has-level-level
+
+    hfib-contr-has-level : ∀ {i} {m : ℕ₋₂} {A : Type i} → has-level (S m) (has-level-aux ⟨-2⟩ A)
+    hfib-contr-has-level {A = A} = equiv-preserves-level (hfib-contr-≃-is-contr A)
+
+  is-contr≃is-equiv : ∀ {i j} {A : Type i} {B : Type j} (f : A → B) → is-contr-map f == is-equiv f
+  is-contr≃is-equiv f = ua (props-BiImp-≃ contr-map-is-equiv equiv-is-contr-map)
 
 {- Subtypes. -}
 
