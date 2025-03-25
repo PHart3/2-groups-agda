@@ -33,6 +33,12 @@ is-connected-is-prop : ∀ {i} {n : ℕ₋₂} {A : Type i}
   → is-prop (is-connected n A)
 is-connected-is-prop = is-contr-is-prop
 
+-- a 0-connected type has a single path component
+abstract
+  conn-path-conn : ∀ {i} {A : Type i} {{_ : is-connected 0 A}}
+    (x y : A) → Trunc -1 (x == y)
+  conn-path-conn {A = A} x y = –> (=ₜ-equiv [ x ] [ y ]) (contr-has-all-paths [ x ] [ y ]) 
+
 {- "induction principle" for n-connected maps (where codomain is n-type) -}
 abstract
   pre∘-conn-is-equiv : ∀ {i j} {A : Type i} {B : Type j} {n : ℕ₋₂}
@@ -190,7 +196,7 @@ prop-over-connected :  ∀ {i j} {A : Type i} {a : A} {{p : is-connected 0 A}}
   → fst (P a) → Π A (fst ∘ P)
 prop-over-connected P x = conn-extend (pointed-conn-out _ _) P (λ _ → x)
 
-module _ {i k} {A : Type i} (a : A) {n : ℕ₋₂} {{_ : is-connected (S n) A}} (P : A → Type k)
+module _ {i j} {A : Type i} (a : A) {n : ℕ₋₂} {{_ : is-connected (S n) A}} (P : A → Type j)
   {{tr : {x : A} → has-level n (P x)}} where
 
   conn-extend-ptd : P a → (x : A) → P x
@@ -198,3 +204,5 @@ module _ {i k} {A : Type i} (a : A) {n : ℕ₋₂} {{_ : is-connected (S n) A}}
 
   conn-extend-ptd-β : (b : P a) → conn-extend-ptd b a == b 
   conn-extend-ptd-β b = conn-extend-β (pointed-conn-out A a) (λ x → P x , tr) (λ _ → b) tt
+
+  

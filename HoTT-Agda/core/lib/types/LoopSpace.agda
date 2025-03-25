@@ -213,6 +213,10 @@ module _ {i} where
 ⊙Ω^-fmap O F = F
 ⊙Ω^-fmap (S n) F = ⊙Ω-fmap (⊙Ω^-fmap n F)
 
+⊙Ω^-fmapₚ : ∀ {i j} {X : Ptd i} {Y : Ptd j} (n : ℕ-ₚ) (f : X ⊙→ Y)
+  → ⊙Ω^ (pnat n) X ⊙→ ⊙Ω^ (pnat n) Y
+⊙Ω^-fmapₚ n f = ⊙Ω^-fmap (pnat n) f
+
 Ω^-fmap : ∀ {i j} (n : ℕ) {X : Ptd i} {Y : Ptd j}
   → X ⊙→ Y → (de⊙ (⊙Ω^ n X) → de⊙ (⊙Ω^ n Y))
 Ω^-fmap n F = fst (⊙Ω^-fmap n F)

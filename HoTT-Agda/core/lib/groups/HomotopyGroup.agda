@@ -184,6 +184,11 @@ abstract
   πS->level-trivial n m X lt =
     iso-preserves'-trivial (πS->level-econv n m X lt) Unit-group-is-trivial  
 
+  πS->level-contr-ₚ : ∀ {i} (n : ℕ-ₚ) (m : ℕ₋₂) (X : Ptd i)
+    → (m <T ⟨ S (pnat n) ⟩) → {{_ : has-level m (de⊙ X)}}
+    → is-contr (Trunc 0 (Ω^ (S (pnat n)) X))
+  πS->level-contr-ₚ n m X lt = has-level-in ([ idp^ (S (pnat n)) ] , λ y → ! (πS->level-trivial (pnat n) m X lt y))
+
   π'S->level-econv : ∀ {i} (n : ℕ) (m : ℕ₋₂) (X : Ptd i)
     → (m <T ⟨ S n ⟩) → {{_ : has-level m (de⊙ X)}}
     → π'S n X ≃ᴳ 0ᴳ
