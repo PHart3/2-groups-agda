@@ -1,6 +1,9 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=4 #-}
 
 open import lib.Basics
+open import lib.NConnected
+open import lib.NType2
+open import lib.types.Pi
 open import lib.types.Pointed
 open import lib.types.LoopSpace
 open import lib.types.Truncation
@@ -152,3 +155,18 @@ module _ {{η : CohGrp G}} where
         (M.loop-comp-β x y)
 
   open K₂Rec public renaming (f to K₂-rec)
+
+  -- elimination into prop-valued family
+  abstract
+    K₂Elim-prop : ∀ {j} {P : K₂ η → Type j} {{p : {x : K₂ η} → is-prop (P x)}} (base* : P base)
+      → (x : K₂ η) → P x
+    K₂Elim-prop {{p}} base* = K₂-elim {{λ {x} → prop-has-level-S (p {x})}} base*
+      (λ _ → prop-has-all-paths-↓)
+      (λ _ _ → PPOver-0type {{λ {x} → prop-has-level-S (p {x})}} _ _)
+      λ _ _ _ → PPPOver-1type {{λ {x} → prop-has-level-S (p {x})}} _ _ _
+
+  -- K₂ is always 0-connected.
+  abstract
+    K₂-is-conn : is-connected 0 (K₂ η)
+    K₂-is-conn = path-conn-conn [ base ] (K₂Elim-prop (K₂Elim-prop [ idp ]))
+

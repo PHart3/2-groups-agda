@@ -33,11 +33,16 @@ is-connected-is-prop : ∀ {i} {n : ℕ₋₂} {A : Type i}
   → is-prop (is-connected n A)
 is-connected-is-prop = is-contr-is-prop
 
--- a 0-connected type has a single path component
+-- relation between 0-connectedness and path connectedness
 abstract
   conn-path-conn : ∀ {i} {A : Type i} {{_ : is-connected 0 A}}
     (x y : A) → Trunc -1 (x == y)
-  conn-path-conn {A = A} x y = –> (=ₜ-equiv [ x ] [ y ]) (contr-has-all-paths [ x ] [ y ]) 
+  conn-path-conn {A = A} x y = –> (=ₜ-equiv [ x ] [ y ]) (contr-has-all-paths [ x ] [ y ])
+
+  path-conn-conn : ∀ {i} {A : Type i} (b : Trunc 0 A)
+    → ((x y : A) → Trunc -1 (x == y)) → is-connected 0 A
+  path-conn-conn {A = A} b ps = inhab-prop-is-contr b
+    {{all-paths-is-prop (Trunc-elim (λ r₁ → Trunc-elim (λ r₂ → <– (=ₜ-equiv [ r₁ ] [ r₂ ]) (ps r₁ r₂))))}}
 
 {- "induction principle" for n-connected maps (where codomain is n-type) -}
 abstract

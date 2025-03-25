@@ -12,7 +12,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
 
   open import Delooping G
 
-  module _ {j} {X : Type j} {{ηX : has-level 2 X}} (x₀ : X) {φ : G → x₀ == x₀} where
+  module _ {j} {X : Type j} {{trX : has-level 2 X}} (x₀ : X) {φ : G → x₀ == x₀} where
 
     K₂-rec-hom : WkMagHomStr {{mag η}} {{mag (Loop2Grp x₀)}} φ → ⊙[ K₂ η , base ] ⊙→ ⊙[ X , x₀ ]
     K₂-rec-hom ρ =

@@ -1,5 +1,7 @@
 name: two-group
-depend: hott-core-group
+depend:
+  hott-core-group
+  hott-theorems-group
 include:
   2Grps
   Deloop
