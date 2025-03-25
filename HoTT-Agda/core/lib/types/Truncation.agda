@@ -145,9 +145,9 @@ module _ {i} {n : ℕ₋₂} {A : Type i} where
   =ₜ-path : (a b : Trunc (S n) A) → (a == b) == (a =ₜ b)
   =ₜ-path a b = ua (=ₜ-equiv a b)
 
-=ₜ-path-can : ∀ {i} (n : ℕ₋₂) {A : Type i} {a b : A}
-  → (Trunc n (a == b)) == ([ a ] == [ b ])
-=ₜ-path-can _ {a = a} {b} = ! (=ₜ-path [ a ] [ b ])
+=ₜ-equiv-can : ∀ {i} (n : ℕ₋₂) {A : Type i} {a b : A}
+  → ([ a ] == [ b ]) ≃ (Trunc n (a == b))
+=ₜ-equiv-can _ {a = a} {b} = =ₜ-equiv [ a ] [ b ]
 
 {- Universal property -}
 

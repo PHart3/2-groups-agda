@@ -30,25 +30,23 @@ module homotopy.Whitehead {i : ULevel} where
     eqv x _ idp  = loops x
 
     paths' : (x : A) (x' : A) → is-contr-map {A = Path x x'} {Path (f x) (f x')} (ap f)
-    paths' x x' β = Trunc-rec (λ α → coe (! (is-contr≃is-equiv (ap f))) (eqv x x' α) β) fact2
+    paths' x x' β = Trunc-rec (λ α → equiv-is-contr-map (eqv x x' α) β) fact2
       where
       
       fact1 : Path {A = Trunc (tl 0) A} ([ x ]) ([ x' ])
       fact1 = is-equiv.g-f zero [ x' ] ∙ʳ ap (is-equiv.g zero) (ap [_] β) ∙ʳ ! (is-equiv.g-f zero [ x ])
 
       fact2 : Trunc -1 (Path x x') 
-      fact2 = coe (! (=ₜ-path-can -1)) fact1
+      fact2 = –> (=ₜ-equiv-can -1) fact1
 
     abstract
       paths : (x : A) (x' : A) → is-equiv {A = Path x x'} {Path (f x) (f x')} (ap f)
-      paths x x' = coe (is-contr≃is-equiv (ap f)) (paths' x x')
+      paths x x' = contr-map-is-equiv (paths' x x')
   
-
   module SplitEquiv {A : Type i} {B : Type i} 
                     (f : A → B)
                     (zero : is-equiv {A = Trunc (tl 0) A} {Trunc (tl 0) B} (Trunc-fmap f))
-                    (one : (x : A) → is-equiv {A = Path x x} {Path (f x) (f x)} (ap f))
-         where
+                    (one : (x : A) → is-equiv {A = Path x x} {Path (f x) (f x)} (ap f)) where
 
      one' : (x x' : A) → is-equiv {A = Path x x'} {Path (f x) (f x')} (ap f)
      one' = LoopEquivToPathEquiv.paths f zero one
@@ -61,8 +59,8 @@ module homotopy.Whitehead {i : ULevel} where
        tβ : Path {A = Trunc (tl 0) B} (Trunc-fmap f (is-equiv.g zero [ y ])) [ y ]
        tβ = is-equiv.f-g zero [ y ]
 
-       gen : (x : Trunc (tl 0) A) → Path {A = Trunc (tl 0) B} (Trunc-fmap f x) [ y ] 
-                → is-contr (hfiber f y)
+       gen : (x : Trunc (tl 0) A) →
+         Path {A = Trunc (tl 0) B} (Trunc-fmap f x) [ y ] → is-contr (hfiber f y)
        gen = Trunc-elim
          (λ x tα → has-level-in
            (Trunc-rec (λ α → (x , α) , 
@@ -79,30 +77,30 @@ module homotopy.Whitehead {i : ULevel} where
                  ! (! α')
                    =ᵣ⟨ !-! α' ⟩ 
                  α' =∎)}))
-             (coe (! (=ₜ-path-can -1)) tα)))
+             (–> (=ₜ-equiv-can -1) tα)))
 
      iseqv : is-equiv f 
-     iseqv = coe (is-contr≃is-equiv f) iseqv'
+     iseqv = contr-map-is-equiv iseqv'
 
   module Whitehead-NType where
 
     abstract
-      whitehead : {A : Type i} {B : Type i} (n : ℕ-ₚ) 
-                  {{nA : has-level (tlp n) A}} {{nB : has-level (tlp n) B}}
-                  (f : A → B)
-                  (zero : is-equiv {A = Trunc (tl 0) A} {Trunc (tl 0) B} (Trunc-fmap f))
-                  (pis  : ∀ k x → is-equiv {A = π-tyₚ k A x} {π-tyₚ k B (f x)} (Trunc-fmap (Ω^-fmapₚ k f)))
-                → is-equiv f
+      whitehead : {A : Type i} {B : Type i} (n : ℕ-ₚ) {{nA : has-level (tlp n) A}} {{nB : has-level (tlp n) B}}
+        (f : A → B)
+        (zero : is-equiv {A = Trunc (tl 0) A} {Trunc (tl 0) B} (Trunc-fmap f))
+        (pis  : ∀ k x → is-equiv {A = π-tyₚ k A x} {π-tyₚ k B (f x)} (Trunc-fmap (Ω^-fmapₚ k f)))
+        → is-equiv f
       whitehead I f zero pis =
         SplitEquiv.iseqv f zero 
-          (λ x → snd (unTrunc-equiv {n = tl 0} _
-                 ∘e (Trunc-fmap (ap f) , pis I x)
-                 ∘e ((unTrunc-equiv {n = tl 0} _)⁻¹)))
-      whitehead {A} {B} (S n) f zero pis = SplitEquiv.iseqv f zero (λ x → IH x) where
+          (λ x →
+            snd (unTrunc-equiv {n = tl 0} _ ∘e
+            (Trunc-fmap (ap f) , pis I x) ∘e
+            (unTrunc-equiv {n = tl 0} _)⁻¹))
+      whitehead {A} {B} (S n) f zero pis = SplitEquiv.iseqv f zero IH where
         IH : (x : A) → is-equiv {A = Path x x} {Path (f x) (f x)} (ap f)
         IH x = whitehead n (ap f) (pis I x)
           (λ k α → transport is-equiv (coe-incr-pis k α) (coe-is-equiv (incr-pis k α))) where 
-            incr-pis : ∀ k α → (π-tyₚ k (Path x x) α) == (π-tyₚ k (Path (f x) (f x)) (ap f α))
+            incr-pis : ∀ k α → π-tyₚ k (Path x x) α == π-tyₚ k (Path (f x) (f x)) (ap f α)
             incr-pis k α = 
               -- optimized proof-term
               ap (Trunc (tl 0)) ((! (rebase-Loop-Path (pnat k) (ap f α))) ∙ʳ
@@ -125,11 +123,11 @@ module homotopy.Whitehead {i : ULevel} where
                 =ᵣ⟨ rearrange (Ω^-fmapₚ (S k) f) (pis (S k) x)
                       (! (rebase-Loop-Path (pnat k) (ap f α))) (Ω^-Ω-split-Path-ₚ k) (! (Ω^-Ω-split-Path-ₚ {X = A} {x} k))
                       (rebase-Loop-Path (pnat k) α) ⟩ 
-              Trunc-fmap ( coe (! (rebase-Loop-Path (pnat k) (ap f α))) 
-                           ∘ coe (Ω^-Ω-split-Path-ₚ k)
-                           ∘ (Ω^-fmapₚ (S k) f) 
-                           ∘ coe (! (Ω^-Ω-split-Path-ₚ {X = A} {x} k))
-                           ∘ coe (rebase-Loop-Path (pnat k) α))
+              Trunc-fmap ( coe (! (rebase-Loop-Path (pnat k) (ap f α))) ∘
+                           coe (Ω^-Ω-split-Path-ₚ k) ∘
+                           Ω^-fmapₚ (S k) f ∘
+                           coe (! (Ω^-Ω-split-Path-ₚ {X = A} {x} k)) ∘
+                           coe (rebase-Loop-Path (pnat k) α))
                 =ᵣ⟨ ap Trunc-fmap STS ⟩
               Trunc-fmap (Ω^-fmapₚ k (ap f)) =∎ where
               
@@ -148,11 +146,11 @@ module homotopy.Whitehead {i : ULevel} where
                       (fl α) 
                 reduce-rebase-Loop-Path idp fl = idp
 
-                STS : (coe (! (rebase-Loop-Path (pnat k) (ap f α))) 
-                       ∘ coe (Ω^-Ω-split-Path-ₚ k)
-                       ∘ (Ω^-fmapₚ (S k) f) 
-                       ∘ coe (! (Ω^-Ω-split-Path-ₚ {X = A} {x} k))
-                       ∘ coe (rebase-Loop-Path (pnat k) α))
+                STS : (coe (! (rebase-Loop-Path (pnat k) (ap f α))) ∘
+                       coe (Ω^-Ω-split-Path-ₚ k) ∘
+                       Ω^-fmapₚ (S k) f ∘
+                       coe (! (Ω^-Ω-split-Path-ₚ {X = A} {x} k)) ∘
+                       coe (rebase-Loop-Path (pnat k) α))
                          ==
                        Ω^-fmapₚ k (ap f)
                 STS = coe (! (rebase-Loop-Path (pnat k) (ap f α))) ∘
@@ -160,19 +158,24 @@ module homotopy.Whitehead {i : ULevel} where
                       Ω^-fmapₚ (S k) f ∘
                       coe (! (Ω^-Ω-split-Path-ₚ {X = A} {x} k)) ∘
                       coe (rebase-Loop-Path (pnat k) α)
-                        =ᵣ⟨ ap2
-                              (λ x' y → coe (! (rebase-Loop-Path (pnat k) (ap f α))) ∘ x' ∘ Ω^-fmapₚ (S k) f ∘ y ∘ coe (rebase-Loop-Path (pnat k) α))
+                        =ᵣ⟨ ap2 (λ x' y →
+                                  coe (! (rebase-Loop-Path (pnat k) (ap f α))) ∘
+                                  x' ∘
+                                  Ω^-fmapₚ (S k) f ∘
+                                  y ∘
+                                  coe (rebase-Loop-Path (pnat k) α))
                               (type≃β (Ω^-Ω-split-≃-ₚ k))
                               (type≃β! (Ω^-Ω-split-≃-ₚ k)) ⟩ 
                       coe (! (rebase-Loop-Path (pnat k) (ap f α))) ∘
                       (Ω^-Ω-splitₚ k ∘ Ω^-fmapₚ (S k) f ∘ Ω^-Ω-split-revₚ k) ∘
                       coe (rebase-Loop-Path (pnat k) α)
                         =ᵣ⟨ ap (λ x' → coe (! (rebase-Loop-Path (pnat k) (ap f α))) ∘ x' ∘ coe (rebase-Loop-Path (pnat k) α))
-                              (! (λ= (Ω^-ap-assoc-ₚ k f))) ⟩ 
+                              (λ= (Ω^-ap-assoc-ₚ k f)) ⟩ 
                       coe (! (rebase-Loop-Path (pnat k) (ap f α))) ∘
-                      (Ω^-fmapₚ k (ap f)) ∘
+                      Ω^-fmapₚ k (ap f) ∘
                       coe (rebase-Loop-Path (pnat k) α)
-                        =ᵣ⟨ reduce-rebase-Loop-Path α (λ {x' : A} (α' : Path x x') (l : Ω^ (pnat k) ⊙[ x == x' , α' ]) → Ω^-fmapₚ k (ap f) l) ⟩
+                        =ᵣ⟨ reduce-rebase-Loop-Path α
+                              (λ {x' : A} (α' : Path x x') (l : Ω^ (pnat k) ⊙[ x == x' , α' ]) → Ω^-fmapₚ k (ap f) l) ⟩
                       Ω^-fmapₚ k (ap f) =∎
 
       -- corollary of whitehead for pointed maps on connected types

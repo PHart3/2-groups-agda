@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
+open import lib.Equivalence2
 open import lib.NType2
 open import lib.FTID
 open import lib.types.Bool
@@ -194,6 +195,20 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
   ⊙-comp-to-==-β : (f : X ⊙→ Y) → ⊙-comp-to-== (⊙∼-id f) == idp
   ⊙-comp-to-==-β f = ⊙hom-ind-β f (λ g _ → f == g) idp
 
+  ==-to-⊙-comp : {f : X ⊙→ Y} {g : X ⊙→ Y} → f == g → f ⊙-comp g
+  ==-to-⊙-comp idp = ⊙∼-id _
+
+  ⊙-comp-==-≃ : {f : X ⊙→ Y} {g : X ⊙→ Y} → (f == g) ≃ (f ⊙-comp g)
+  ⊙-comp-==-≃ {f} {g} = equiv ==-to-⊙-comp ⊙-comp-to-== aux1 aux2
+    where
+      aux1 : {k : X ⊙→ Y} (H : f ⊙-comp k) → ==-to-⊙-comp (⊙-comp-to-== H) == H
+      aux1 =
+        ⊙hom-ind f (λ k H → ==-to-⊙-comp (⊙-comp-to-== H) == H)
+          (ap (==-to-⊙-comp) (⊙-comp-to-==-β f))
+
+      aux2 : {k : X ⊙→ Y} (p : f == k) → ⊙-comp-to-== (==-to-⊙-comp p) == p
+      aux2 idp = ⊙-comp-to-==-β f 
+
 -- induction principle for ⊙∼→
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} {f₁ f₂ : X ⊙→ Y} {H : f₁ ⊙-comp f₂} where
@@ -296,6 +311,9 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
       → snd (⊙<– ⊙e ⊙∘ ⊙–> ⊙e) == is-equiv.g-f (snd ⊙e) (pt X)
     lemma ((f , idp) , f-ise) = idp
 
+  ⊙<–-inv-l-comp : (⊙e : X ⊙≃ Y) → ⊙<– ⊙e ⊙∘ ⊙–> ⊙e ⊙-comp ⊙idf _
+  ⊙<–-inv-l-comp ⊙e = ⊙-to-comp (⊙<–-inv-l ⊙e)
+
   ⊙<–-inv-r : (⊙e : X ⊙≃ Y) → ⊙–> ⊙e ⊙∘ ⊙<– ⊙e ⊙∼ ⊙idf _
   ⊙<–-inv-r ⊙e = <–-inv-r (⊙≃-to-≃ ⊙e) , ↓-idf=cst-in' (lemma ⊙e) where
     lemma : {Y : Ptd j} (⊙e : X ⊙≃ Y)
@@ -366,6 +384,15 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} (⊙e : X ⊙≃ Y) where
 
   pre⊙∘-equiv : (Y ⊙→ Z) ≃ (X ⊙→ Z)
   pre⊙∘-equiv = _ , pre⊙∘-is-equiv
+
+  pre⊙∘-hfib-contr : (g : X ⊙→ Z) → is-contr (Σ (Y ⊙→ Z) (λ k → (k ⊙∘ ⊙–> ⊙e) ⊙-comp g))
+  pre⊙∘-hfib-contr g =
+    equiv-preserves-level (Σ-emap-r (λ _ → ⊙-comp-==-≃)) {{equiv-is-contr-map (pre⊙∘-is-equiv) g}}
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} (⊙e : X ⊙≃ Y) where
+
+  linv⊙-unique : {f₁ f₂ : Y ⊙→ X} → (f₁ ⊙∘ ⊙–> ⊙e) ⊙-comp ⊙idf X → (f₂ ⊙∘ ⊙–> ⊙e) ⊙-comp ⊙idf X → f₁ == f₂
+  linv⊙-unique {f₁} {f₂} p₁ p₂ = fst= (contr-has-all-paths {{pre⊙∘-hfib-contr ⊙e (⊙idf X)}} (f₁ , p₁) (f₂ , p₂))
 
 -- induction principle for ⊙≃
 
