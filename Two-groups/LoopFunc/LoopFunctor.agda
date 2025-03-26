@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --lossy-unification #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --lossy-unification #-}
 
 open import lib.Basics
 open import lib.types.Pointed
@@ -27,7 +27,7 @@ module _ {ℓ₁ ℓ₂} {X₁ : Ptd ℓ₁} {X₂ : Ptd ℓ₂} {{η₁ : has-l
       ⊙hom-ind (f , idp) (λ g* _ → ap f ∼ Ω-fmap g*) (λ x → idp) (⊙∘-runit (f , idp)) p ◃∙
       ap-∘ f (λ z → z) p ◃∙
       ap (ap f) (ap-idf p) ◃∎
-        =ₛ₁⟨ 0 & 1 & app= (⊙hom-ind-β (f , idp) {P = (λ g* _ → ap f ∼ Ω-fmap g*)} (λ x → idp)) p ⟩
+        =ₛ₁⟨ 0 & 1 & app= (⊙hom-ind-β (f , idp) (λ g* _ → ap f ∼ Ω-fmap g*) (λ x → idp)) p ⟩
       idp ◃∙
       ap-∘ f (λ z → z) p ◃∙
       ap (ap f) (ap-idf p) ◃∎
@@ -47,7 +47,7 @@ module _ {ℓ₁ ℓ₂} {X₁ : Ptd ℓ₁} {X₂ : Ptd ℓ₂} {{η₁ : has-l
       ⊙hom-ind (f , idp) (λ g* _ → ap f ∼ Ω-fmap g*) (λ x → idp) (⊙∘-lunit (f , idp)) p ◃∙
       ap-∘ (λ z → z) f p ◃∙
       ap-idf (ap f p) ◃∎
-        =ₛ₁⟨ 0 & 1 & app= (⊙hom-ind-β (f , idp) {P = (λ g* _ → ap f ∼ Ω-fmap g*)} (λ x → idp)) p ⟩
+        =ₛ₁⟨ 0 & 1 & app= (⊙hom-ind-β (f , idp) (λ g* _ → ap f ∼ Ω-fmap g*) (λ x → idp)) p ⟩
       idp ◃∙
       ap-∘ (λ z → z) f p ◃∙
       ap-idf (ap f p) ◃∎
@@ -76,7 +76,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {X₁ : Ptd ℓ₁} {X₂ : Ptd ℓ₂} {
         (λ g* _ → ap (f₃ ∘ f₂ ∘ f₁) ∼ Ω-fmap g*) (λ x → idp) (⊙∘-α-comp (f₃ , idp) (f₂ , idp) (f₁ , idp)) p ◃∙
       ap-∘ (f₃ ∘ f₂) f₁ p ◃∙
       ap-∘ f₃ f₂ (ap f₁ p) ◃∎
-        =ₛ₁⟨ 2 & 1 & app= (⊙hom-ind-β (f₃ ∘ f₂ ∘ f₁ , idp) {P = (λ g* _ → ap (f₃ ∘ f₂ ∘ f₁) ∼ Ω-fmap g*)} (λ x → idp)) p ⟩
+        =ₛ₁⟨ 2 & 1 & app= (⊙hom-ind-β (f₃ ∘ f₂ ∘ f₁ , idp) (λ g* _ → ap (f₃ ∘ f₂ ∘ f₁) ∼ Ω-fmap g*) (λ x → idp)) p ⟩
       ! (ap (ap f₃) (ap-∘ f₂ f₁ p)) ◃∙
       ! (ap-∘ f₃ (f₂ ∘ f₁) p) ◃∙
       idp ◃∙

@@ -42,17 +42,17 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
       F-id₁ : (a : B₀) → F₁ (id₁ a) == id₁ (F₀ a)
       F-◻ : {a b c : B₀} (f : hom a b) (g : hom b c)
         → F₁ (⟦ ξB ⟧ g ◻ f) == ⟦ ξC ⟧ F₁ g ◻ F₁ f
-      F-ρ : {a b : B₀} (f : hom a b) → ρ (F₁ f) == ap F₁ (ρ f) ∙ F-◻ (id₁ a) f ∙ ap (λ m → F₁ f ◻ m) (F-id₁ a)
-      F-λ : {a b : B₀} (f : hom a b) → lamb (F₁ f) == ap F₁ (lamb f) ∙ F-◻ f (id₁ b) ∙ ap (λ m → m ◻ F₁ f) (F-id₁ b)
+      F-ρ : {a b : B₀} (f : hom a b) → ap F₁ (ρ f) ∙ F-◻ (id₁ a) f ∙ ap (λ m → F₁ f ◻ m) (F-id₁ a) == ρ (F₁ f)
+      F-λ : {a b : B₀} (f : hom a b) → ap F₁ (lamb f) ∙ F-◻ f (id₁ b) ∙ ap (λ m → m ◻ F₁ f) (F-id₁ b) == lamb (F₁ f)
       F-α : {a b c d : B₀} (h : hom c d) (g : hom b c) (f : hom a b)
         →
-        α (F₁ h) (F₁ g) (F₁ f)
-          ==
         ! (ap (λ m → F₁ h ◻ m) (F-◻ f g)) ∙
         ! (F-◻ (⟦ ξB ⟧ g ◻ f) h) ∙
         ap F₁ (α h g f) ∙
         F-◻ f (⟦ ξB ⟧ h ◻ g) ∙
         ap (λ m → m ◻ F₁ f) (F-◻ g h)
+         ==
+        α (F₁ h) (F₁ g) (F₁ f)
         
     -- hnat properties of F-◻
     F-◻-nat-l : {a b c : B₀} {m₁ m₂ : hom a b} (m₃ : hom b c) (q : m₁ == m₂)
@@ -78,9 +78,9 @@ module _ {i j} {B₀ : Type i} {{ξ : BicatStr j B₀}} where
   F₁ idfBCσ = λ f → f
   F-id₁ idfBCσ = λ a → idp
   F-◻ idfBCσ = λ f g → idp
-  F-ρ idfBCσ = λ f → ! (∙-unit-r (ap (λ z → z) (ρ f)) ∙ ap-idf (ρ f))
-  F-λ idfBCσ = λ f → ! (∙-unit-r (ap (λ z → z) (lamb f)) ∙ ap-idf (lamb f))
-  F-α idfBCσ = λ h g f → ! (∙-unit-r (ap (λ z → z) (α h g f)) ∙ ap-idf (α h g f))
+  F-ρ idfBCσ = λ f → ∙-unit-r (ap (λ z → z) (ρ f)) ∙ ap-idf (ρ f)
+  F-λ idfBCσ = λ f → ∙-unit-r (ap (λ z → z) (lamb f)) ∙ ap-idf (lamb f)
+  F-α idfBCσ = λ h g f → ∙-unit-r (ap (λ z → z) (α h g f)) ∙ ap-idf (α h g f)
 
   idfBC : Psfunctor
   map-pf idfBC = idf B₀
@@ -96,23 +96,23 @@ module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {
   PsfunctorStr.F-id₁ (φ₂ ∘BCσ φ₁) a = ap (F₁ (str-pf φ₂)) (F-id₁ (str-pf φ₁) a) ∙ F-id₁ (str-pf φ₂) (map-pf φ₁ a)
   PsfunctorStr.F-◻ (φ₂ ∘BCσ φ₁) f g = ap (F₁ (str-pf φ₂)) (F-◻ (str-pf φ₁) f g) ∙ F-◻ (str-pf φ₂) (F₁ (str-pf φ₁) f) (F₁ (str-pf φ₁) g)
   PsfunctorStr.F-ρ (φ₂ ∘BCσ φ₁) {a} {b} f =
-    F-ρ (str-pf φ₂) (F₁ (str-pf φ₁) f) ∙
+    ap
+      (λ q →
+        ap (F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)) (ρ f) ∙
+        (ap (F₁ (str-pf φ₂)) (F-◻ (str-pf φ₁) (id₁ a) f) ∙ q) ∙
+        ap (λ m → (F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)) f ◻ m)
+          (ap (F₁ (str-pf φ₂)) (F-id₁ (str-pf φ₁) a) ∙ F-id₁ (str-pf φ₂) (map-pf φ₁ a)))
+      (F-◻-nat-l (str-pf φ₂) (F₁ (str-pf φ₁) f) (F-id₁ (str-pf φ₁) a)) ∙
+    lemma-ρ (ρ f) (F-◻ (str-pf φ₁) (id₁ a) f) (F-id₁ (str-pf φ₁) a)
+      (F-id₁ (str-pf φ₁) a) (F-id₁ (str-pf φ₂) (map-pf φ₁ a))
+      (F-◻ (str-pf φ₂) (id₁ (map-pf φ₁ a)) (F₁ (str-pf φ₁) f)) ∙
     ap
       (λ q →
         ap (F₁ (str-pf φ₂)) q ∙
         F-◻ (str-pf φ₂) (id₁ (map-pf φ₁ a)) (F₁ (str-pf φ₁) f) ∙
         ap (λ m → F₁ (str-pf φ₂) (F₁ (str-pf φ₁) f) ◻ m) (F-id₁ (str-pf φ₂) (map-pf φ₁ a)))
       (F-ρ (str-pf φ₁) f) ∙
-    ! (ap
-        (λ q →
-          ap (F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)) (ρ f) ∙
-          (ap (F₁ (str-pf φ₂)) (F-◻ (str-pf φ₁) (id₁ a) f) ∙ q) ∙
-          ap (λ m → (F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)) f ◻ m)
-            (ap (F₁ (str-pf φ₂)) (F-id₁ (str-pf φ₁) a) ∙ F-id₁ (str-pf φ₂) (map-pf φ₁ a)))
-        (F-◻-nat-l (str-pf φ₂) (F₁ (str-pf φ₁) f) (F-id₁ (str-pf φ₁) a)) ∙
-      lemma-ρ (ρ f) (F-◻ (str-pf φ₁) (id₁ a) f) (F-id₁ (str-pf φ₁) a)
-        (F-id₁ (str-pf φ₁) a) (F-id₁ (str-pf φ₂) (map-pf φ₁ a))
-        (F-◻ (str-pf φ₂) (id₁ (map-pf φ₁ a)) (F₁ (str-pf φ₁) f)))
+    F-ρ (str-pf φ₂) (F₁ (str-pf φ₁) f)
     where abstract
       lemma-ρ : {x : B₀} {g₁ g₂ : hom x b} (p₁ : g₁ == g₂)
         {k₁ k₂ k₃ k₄ : hom (map-pf φ₁ x) (map-pf φ₁ a)}
@@ -138,23 +138,23 @@ module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {
             → (ap g q₁ ∙ q₂) ∙ idp == ap g (q₁ ∙ idp) ∙ q₂ ∙ idp
           aux-ρ _ idp idp = idp
   PsfunctorStr.F-λ (φ₂ ∘BCσ φ₁) {a} {b} f =
-    F-λ (str-pf φ₂) (F₁ (str-pf φ₁) f) ∙
+    ap
+      (λ q →
+        ap (F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)) (lamb f) ∙
+        (ap (F₁ (str-pf φ₂)) (F-◻ (str-pf φ₁) f (id₁ b)) ∙ q) ∙
+        ap (λ m → m ◻ (F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)) f)
+          (ap (F₁ (str-pf φ₂)) (F-id₁ (str-pf φ₁) b) ∙ F-id₁ (str-pf φ₂) (map-pf φ₁ b)))
+      (F-◻-nat-r (str-pf φ₂) (F₁ (str-pf φ₁) f) (F-id₁ (str-pf φ₁) b)) ∙
+    lemma-λ (lamb f) (F-id₁ (str-pf φ₁) b) (F-id₁ (str-pf φ₁) b)
+      (F-◻ (str-pf φ₁) f (id₁ b)) (F-id₁ (str-pf φ₂) (map-pf φ₁ b))
+      (F-◻ (str-pf φ₂) (F₁ (str-pf φ₁) f) (id₁ (map-pf φ₁ b))) ∙
     ap
       (λ q →
         ap (F₁ (str-pf φ₂)) q ∙
         F-◻ (str-pf φ₂) (F₁ (str-pf φ₁) f) (id₁ (map-pf φ₁ b)) ∙
         ap (λ m → m ◻ F₁ (str-pf φ₂) (F₁ (str-pf φ₁) f)) (F-id₁ (str-pf φ₂) (map-pf φ₁ b)))
       (F-λ (str-pf φ₁) f) ∙
-    ! (ap
-        (λ q →
-          ap (F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)) (lamb f) ∙
-          (ap (F₁ (str-pf φ₂)) (F-◻ (str-pf φ₁) f (id₁ b)) ∙ q) ∙
-          ap (λ m → m ◻ (F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)) f)
-            (ap (F₁ (str-pf φ₂)) (F-id₁ (str-pf φ₁) b) ∙ F-id₁ (str-pf φ₂) (map-pf φ₁ b)))
-        (F-◻-nat-r (str-pf φ₂) (F₁ (str-pf φ₁) f) (F-id₁ (str-pf φ₁) b)) ∙
-      lemma-λ (lamb f) (F-id₁ (str-pf φ₁) b) (F-id₁ (str-pf φ₁) b)
-        (F-◻ (str-pf φ₁) f (id₁ b)) (F-id₁ (str-pf φ₂) (map-pf φ₁ b))
-        (F-◻ (str-pf φ₂) (F₁ (str-pf φ₁) f) (id₁ (map-pf φ₁ b))))
+    F-λ (str-pf φ₂) (F₁ (str-pf φ₁) f)
     where abstract
       lemma-λ : {x : B₀} {g₁ g₂ : hom a x} (p₁ : g₁ == g₂)
         {k₁ k₂ k₃ k₄ : hom (map-pf φ₁ b) (map-pf φ₁ x)}
@@ -179,8 +179,8 @@ module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {
             {x₁ x₂ : A} (q₁ : x₁ == x₂) {b : B} (q₂ : g x₂ == b)
             → (ap g q₁ ∙ q₂) ∙ idp == ap g (q₁ ∙ idp) ∙ q₂ ∙ idp
           aux-λ _ idp idp = idp
-  PsfunctorStr.F-α (φ₂ ∘BCσ φ₁) {a} {b} {c} {d} h g f = 
-    F-α (str-pf φ₂) (F₁ (str-pf φ₁) h) (F₁ (str-pf φ₁) g) (F₁ (str-pf φ₁) f) ∙
+  PsfunctorStr.F-α (φ₂ ∘BCσ φ₁) {a} {b} {c} {d} h g f =
+    ! (=ₛ-out lemma-α) ∙
     ap
       (λ q →
         ! (ap (λ m → F₁ (str-pf φ₂) (F₁ (str-pf φ₁) h) ◻ m) (F-◻ (str-pf φ₂) (F₁ (str-pf φ₁) f) (F₁ (str-pf φ₁) g))) ∙
@@ -189,7 +189,7 @@ module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {
         F-◻ (str-pf φ₂) (F₁ (str-pf φ₁) f) (⟦ ξC ⟧ F₁ (str-pf φ₁) h ◻ F₁ (str-pf φ₁) g) ∙
         ap (λ m → m ◻ (F₁ (str-pf φ₂) (F₁ (str-pf φ₁) f))) (F-◻ (str-pf φ₂) (F₁ (str-pf φ₁) g) (F₁ (str-pf φ₁) h)))
       (F-α (str-pf φ₁) h g f) ∙
-    =ₛ-out lemma-α
+    F-α (str-pf φ₂) (F₁ (str-pf φ₁) h) (F₁ (str-pf φ₁) g) (F₁ (str-pf φ₁) f)
     where abstract
       lemma-α :
         ! (ap (λ m → F₁ (str-pf φ₂) (F₁ (str-pf φ₁) h) ◻ m) (F-◻ (str-pf φ₂) (F₁ (str-pf φ₁) f) (F₁ (str-pf φ₁) g))) ◃∙
