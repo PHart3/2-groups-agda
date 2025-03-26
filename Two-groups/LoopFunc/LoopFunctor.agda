@@ -6,6 +6,7 @@ open import lib.types.LoopSpace
 open import 2Magma
 open import 2Grp
 open import Hmtpy2Grp
+open import LoopFunctor-ap
 
 -- pseudofunctorial properties of Ω
 
@@ -18,12 +19,16 @@ module _ {ℓ₁ ℓ₂} {X₁ : Ptd ℓ₁} {X₂ : Ptd ℓ₂} {{η₁ : has-l
   abstract
 
     Loop2Grp-map-runit : (f* : X₁ ⊙→ X₂) (p : Ω X₁) →
-      Ω-fmap-ap (⊙∘-runit f*) p ◃∙
+      θ (Loop2Grp-map-ap (⊙∘-runit f*)) p ◃∙
       θ (Loop2Grp-map-∘ f* (⊙idf X₁)) p ◃∙
       ap (Ω-fmap f*) (ap-idf p) ◃∎
         =ₛ
       idp ◃∎
-    Loop2Grp-map-runit (f , idp) p =
+    Loop2Grp-map-runit f*@(f , idp) p =
+      θ (Loop2Grp-map-ap (⊙∘-runit f*)) p ◃∙
+      θ (Loop2Grp-map-∘ f* (⊙idf X₁)) p ◃∙
+      ap (Ω-fmap f*) (ap-idf p) ◃∎
+        =ₛ₁⟨ 0 & 1 & Loop2Grp-map-ap-fst (⊙∘-runit f*) p ⟩
       ⊙hom-ind (f , idp) (λ g* _ → ap f ∼ Ω-fmap g*) (λ x → idp) (⊙∘-runit (f , idp)) p ◃∙
       ap-∘ f (λ z → z) p ◃∙
       ap (ap f) (ap-idf p) ◃∎
@@ -38,12 +43,16 @@ module _ {ℓ₁ ℓ₂} {X₁ : Ptd ℓ₁} {X₂ : Ptd ℓ₂} {{η₁ : has-l
           aux idp = idp
 
     Loop2Grp-map-lunit : (f* : X₁ ⊙→ X₂) (p : Ω X₁) →
-      Ω-fmap-ap (⊙∘-lunit f*) p ◃∙
+      θ (Loop2Grp-map-ap (⊙∘-lunit f*)) p ◃∙
       θ (Loop2Grp-map-∘ (⊙idf X₂) f*) p ◃∙
       ap-idf (Ω-fmap f* p) ◃∎
         =ₛ
       idp ◃∎
-    Loop2Grp-map-lunit (f , idp) p =
+    Loop2Grp-map-lunit f*@(f , idp) p =
+      θ (Loop2Grp-map-ap (⊙∘-lunit f*)) p ◃∙
+      θ (Loop2Grp-map-∘ (⊙idf X₂) f*) p ◃∙
+      ap-idf (Ω-fmap f* p) ◃∎
+        =ₛ₁⟨ 0 & 1 & Loop2Grp-map-ap-fst (⊙∘-lunit f*) p ⟩
       ⊙hom-ind (f , idp) (λ g* _ → ap f ∼ Ω-fmap g*) (λ x → idp) (⊙∘-lunit (f , idp)) p ◃∙
       ap-∘ (λ z → z) f p ◃∙
       ap-idf (ap f p) ◃∎
@@ -64,12 +73,18 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {X₁ : Ptd ℓ₁} {X₂ : Ptd ℓ₂} {
     Loop2Grp-map-assoc : (f₁* : X₁ ⊙→ X₂) (f₂* : X₂ ⊙→ X₃) (f₃* : X₃ ⊙→ X₄) (p : Ω X₁) →
       ! (ap (Ω-fmap f₃*) (θ (Loop2Grp-map-∘ f₂* f₁*) p)) ◃∙
       ! (θ (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*)) p) ◃∙
-      Ω-fmap-ap (⊙∘-α-comp f₃* f₂* f₁*) p ◃∙
+      θ (Loop2Grp-map-ap (⊙∘-α-comp f₃* f₂* f₁*)) p ◃∙
       θ (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) p ◃∙
       θ (Loop2Grp-map-∘ f₃* f₂*) (Ω-fmap f₁* p) ◃∎
         =ₛ
       idp ◃∎
-    Loop2Grp-map-assoc (f₁ , idp) (f₂ , idp) (f₃ , idp) p =
+    Loop2Grp-map-assoc f₁*@(f₁ , idp) f₂*@(f₂ , idp) f₃*@(f₃ , idp) p =
+      ! (ap (Ω-fmap f₃*) (θ (Loop2Grp-map-∘ f₂* f₁*) p)) ◃∙
+      ! (θ (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*)) p) ◃∙
+      θ (Loop2Grp-map-ap (⊙∘-α-comp f₃* f₂* f₁*)) p ◃∙
+      θ (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) p ◃∙
+      θ (Loop2Grp-map-∘ f₃* f₂*) (Ω-fmap f₁* p) ◃∎
+        =ₛ₁⟨ 2 & 1 & Loop2Grp-map-ap-fst (⊙∘-α-comp f₃* f₂* f₁*) p ⟩
       ! (ap (ap f₃) (ap-∘ f₂ f₁ p)) ◃∙
       ! (ap-∘ f₃ (f₂ ∘ f₁) p) ◃∙
       ⊙hom-ind (f₃ ∘ f₂ ∘ f₁ , idp)

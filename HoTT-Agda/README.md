@@ -3,7 +3,7 @@ Homotopy Type Theory in Agda
 
 This directory contains a somewhat stripped-down version of Andrew Swan's [branch](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) of the
 HoTT-Agda library. It has been customized and signifcantly augmented to accomodate
-our development of 2-groups and pointed types. In particular, we have created an updated
+our development of 2-groups and pointed types. Notably, we have created an updated
 version of Whitehead's theorem for truncated types. The structure of the source code is
 described below.
 
