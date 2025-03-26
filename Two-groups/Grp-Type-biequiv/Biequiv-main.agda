@@ -13,4 +13,4 @@ open import LoopK-adjeq
 
 -- Final theorem: biequivalence between 2-groups and pointed connected 2-types
 
-module LoopK-PT {i} where
+module Biequiv-main {i} where

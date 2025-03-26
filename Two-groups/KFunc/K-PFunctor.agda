@@ -16,6 +16,6 @@ open import KFunctor-comp-assoc
 
 -- K₂ as a pseudofunctor
 
-module K-PFunctor {i} where
+module K-PFunctor {i : ULevel} where
 
 open CohGrp {{...}}

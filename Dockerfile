@@ -38,7 +38,8 @@ COPY --from=agda /dist /dist
 COPY --from=hottagda /build /build
 
 RUN echo "/build/HoTT-Agda/hott-core.agda-lib" >> /dist/libraries
+RUN echo "/build/HoTT-Agda/hott-theorems.agda-lib" >> /dist/libraries
 RUN echo "/build/Two-groups/two-group.agda-lib" >> /dist/libraries
 
 WORKDIR /build/Two-groups
-RUN /dist/agda --library-file=/dist/libraries ./Deloop/Decode-main.agda
+RUN /dist/agda --library-file=/dist/libraries ./Grp-Type-biequiv/Biequiv-main.agda

@@ -13,4 +13,4 @@ open import 2GrpMap-conv2
 
 --  Ω as a pseudofunctor
 
-module Loop-PFunctor {i} where
+module Loop-PFunctor {i : ULevel} where

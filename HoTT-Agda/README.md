@@ -1,11 +1,11 @@
 Homotopy Type Theory in Agda
 ============================
 
-This directory contains a heavily stripped-down version of Andrew Swan's [branch](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) of the
-HoTT-Agda library. It also contains a bunch of additional auxiliary lemmas, which arose
-during our development of coslice colimits. Finally, it contains a new verification of the
-2-coherence of the Suspension-Loop adjunction, which itself relies on a bunch of new auxiliary
-lemmas. The structure of the source code is described below.
+This directory contains a somewhat stripped-down version of Andrew Swan's [branch](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) of the
+HoTT-Agda library. It has been customized and signifcantly augmented to accomodate
+our development of 2-groups and pointed types. In particular, we have created an updated
+version of Whitehead's theorem for truncated types. The structure of the source code is
+described below.
 
 Setup
 -----
@@ -25,21 +25,15 @@ Structure of the source
 
 ### Core library (directory `core/lib/`)
 
-The main library is more or less divided into two parts.
+The main library is more or less divided into three parts.
 
-- The first part is exported in the module `lib.Basics` and contains everything needed to make the second
-  part compile.
-- The second part is found in `lib.types` and develops type formers.
-  Note that it contains new facts about homogeneous types and reformulates some of the basic theory of
-  the Suspension type.
-
-Note that our work on colimits makes extensive use of the `path-seq/` directory.
+- The first part is exported in the module `lib.Basics` and contains essential constructions.
+- The second part is found in the `path-seq/` directory and develops machinery for path sequences.
+- The third part, which relies on the first part, is found in `lib.types` and develops type formers.
 
 ### Homotopy (directory `theorems/homotopy/`)
 
-This directory contains a proof of the 2-coherence of the Suspension-Loop adjunction.
-This property of the adjunction is important because it ensures that the Suspension
-functor preserves colimits. The proof relies on our work on homogeneous types.
+This directory contains a proof of Whitehead's theorem, which updates Dan Licata's old hott-agda proof.
 
 Citation
 --------

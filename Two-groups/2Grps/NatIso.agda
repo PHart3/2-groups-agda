@@ -75,6 +75,21 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : 
     natiso∼-to-== : {ρ : WkMagNatIso μ₁ μ₂} → θ ι ∼ θ ρ → ι == ρ
     natiso∼-to-== = natiso∼-ind (λ ρ _ → ι == ρ) idp
 
+    natiso∼-to-==-β : natiso∼-to-== (λ _ → idp) == idp
+    natiso∼-to-==-β = ID-ind-map-β (λ ρ _ → ι == ρ) (natiso∼-contr ι) idp
+
+  natiso∼-to-==-! : {ι ρ : WkMagNatIso μ₁ μ₂} (H : θ ι ∼ θ ρ)
+    → ! (natiso∼-to-== {ι = ι} H) == natiso∼-to-== {ι = ρ} (! ∘ H)
+  natiso∼-to-==-! =
+    natiso∼-ind (λ ρ H → ! (natiso∼-to-== H) == natiso∼-to-== {ι = ρ} (! ∘ H))
+      (ap ! natiso∼-to-==-β ∙ ! natiso∼-to-==-β)
+
+  natiso∼-to-==-∙ : {ι ρ κ : WkMagNatIso μ₁ μ₂} (H₂ : θ ρ ∼ θ κ) (H₁ : θ ι ∼ θ ρ)
+    → natiso∼-to-== {ρ = ρ} H₁ ∙ natiso∼-to-== H₂ == natiso∼-to-== {ι = ι} {ρ = κ} (λ x → H₁ x ∙ H₂ x)
+  natiso∼-to-==-∙ {ι} {ρ} = 
+    natiso∼-ind {ρ} (λ κ H₂ → (H₁ : θ ι ∼ θ ρ) → natiso∼-to-== {ρ = ρ} H₁ ∙ natiso∼-to-== H₂ == natiso∼-to-== {ι = ι} {ρ = κ} (λ x → H₁ x ∙ H₂ x))
+      λ H₁ → ap (λ e → natiso∼-to-== H₁ ∙ e) natiso∼-to-==-β ∙ ∙-unit-r _ ∙ ! (ap natiso∼-to-== (λ= (λ x → ∙-unit-r (H₁ x))))
+
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkMag G₁}} {{η₂ : WkMag G₂}} where
 
   !ʷ-id : (μ : WkMagWkHom {{η₁}} {{η₂}}) → !ʷ (natiso-id μ) == natiso-id μ

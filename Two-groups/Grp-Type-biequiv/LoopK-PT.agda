@@ -2,8 +2,8 @@
 
 open import lib.Basics
 open import lib.types.Pointed
-open import lib.types.GrpMap-conv2
 open import 2Grp
+open import 2GrpMap-conv2
 open import Hmtpy2Grp
 open import Delooping
 open import Bicategory
@@ -17,4 +17,4 @@ open import LoopK-ptr-comp
 
 -- Pseudotransformation from identity to Ω ∘ K₂
 
-module LoopK-PT {i} where
+module LoopK-PT {i : ULevel} where

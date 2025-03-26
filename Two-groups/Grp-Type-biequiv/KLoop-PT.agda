@@ -18,4 +18,4 @@ open import KLoop-ptr-comp
 
 -- Pseudotransformation from K₂ ∘ Ω to identity
 
-module KLoop-PT {i} where
+module KLoop-PT {i : ULevel} where
