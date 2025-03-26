@@ -8,7 +8,7 @@ open import Hmtpy2Grp
 open import K-hom2-ind
 open import KFunctor
 open import Delooping
-open import LoopK
+open import LoopK-hom
 open import KFunctor-comp
 open import SqKLoop
 open import apK

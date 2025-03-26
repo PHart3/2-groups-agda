@@ -6,7 +6,7 @@ open import lib.types.PtdMap-conv2
 open import 2Grp
 open import Hmtpy2Grp
 open import Delooping
-open import LoopK
+open import LoopK-hom
 open import Bicategory
 open import 2Grp-bc
 open import Ptd-bc

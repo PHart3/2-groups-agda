@@ -5,7 +5,7 @@ open import 2Grp
 open import Hmtpy2Grp
 open import Delooping
 open import KFunctor
-open import LoopK
+open import LoopK-hom
 open import SqKLoop
 open import KFunctor-idf
 open import apK

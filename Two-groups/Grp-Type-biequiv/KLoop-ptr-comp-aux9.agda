@@ -6,7 +6,7 @@ open import Hmtpy2Grp
 open import KFunctor
 open import Delooping
 open import SqKLoop
-open import LoopK
+open import LoopK-hom
 
 module KLoop-ptr-comp-aux9 where
 

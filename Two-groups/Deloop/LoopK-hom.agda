@@ -6,7 +6,7 @@ open import 2Magma
 open import 2Grp
 open import Hmtpy2Grp
 
-module LoopK where
+module LoopK-hom where
 
 module _ {i} {G : Type i} {{η : CohGrp G}} where
 
