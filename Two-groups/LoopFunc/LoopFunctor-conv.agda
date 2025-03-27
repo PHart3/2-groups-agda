@@ -14,6 +14,8 @@ open import 2GrpMap-conv
 open import LoopFunctor
 open import LoopFunctor-ap
 
+-- conversion of pseudofunctorial properties of Ω to ==
+
 module LoopFunctor-conv where
 
 open CohGrp {{...}}
@@ -43,7 +45,8 @@ module _ {ℓ₁ ℓ₂} {X₁ : Ptd ℓ₁} {X₂ : Ptd ℓ₂} {{η₁ : has-l
       natiso2G-to-== (Loop2Grp-map-∘ f* (⊙idf X₁)) ◃∙
       natiso2G-to-== (natiso-whisk-l (Loop2Grp-map-idf X₁)) ◃∎
         =ₛ⟨ !ₛ (∘2G-conv-tri (Loop2Grp-map-ap (⊙∘-runit f*)) (Loop2Grp-map-∘ f* (⊙idf X₁)) (natiso-whisk-l (Loop2Grp-map-idf X₁))) ⟩
-      natiso2G-to-== (natiso-whisk-l (Loop2Grp-map-idf X₁) natiso-∘ Loop2Grp-map-∘ f* (⊙idf X₁) natiso-∘ Loop2Grp-map-ap (⊙∘-runit f*)) ◃∎
+      natiso2G-to-==
+        (natiso-whisk-l (Loop2Grp-map-idf X₁) natiso-∘ Loop2Grp-map-∘ f* (⊙idf X₁) natiso-∘ Loop2Grp-map-ap (⊙∘-runit f*)) ◃∎
         =ₛ₁⟨ ap natiso2G-to-==
                (natiso∼-to-== (λ p →
                  ∙-assoc (θ (Loop2Grp-map-ap (⊙∘-runit f*)) p) (θ (Loop2Grp-map-∘ f* (⊙idf X₁)) p) (ap (Ω-fmap f*) (ap-idf p)) ∙
@@ -69,7 +72,8 @@ module _ {ℓ₁ ℓ₂} {X₁ : Ptd ℓ₁} {X₂ : Ptd ℓ₂} {{η₁ : has-l
       natiso2G-to-== (Loop2Grp-map-∘ (⊙idf X₂) f*) ◃∙
       natiso2G-to-== (natiso-whisk-r (Loop2Grp-map-idf X₂)) ◃∎
         =ₛ⟨ !ₛ (∘2G-conv-tri (Loop2Grp-map-ap (⊙∘-lunit f*)) (Loop2Grp-map-∘ (⊙idf X₂) f*) (natiso-whisk-r (Loop2Grp-map-idf X₂))) ⟩
-      natiso2G-to-== (natiso-whisk-r (Loop2Grp-map-idf X₂) natiso-∘ Loop2Grp-map-∘ (⊙idf X₂) f* natiso-∘ Loop2Grp-map-ap (⊙∘-lunit f*)) ◃∎
+      natiso2G-to-==
+        (natiso-whisk-r (Loop2Grp-map-idf X₂) natiso-∘ Loop2Grp-map-∘ (⊙idf X₂) f* natiso-∘ Loop2Grp-map-ap (⊙∘-lunit f*)) ◃∎
         =ₛ₁⟨ ap natiso2G-to-==
                (natiso∼-to-== (λ p →
                  ∙-assoc (θ (Loop2Grp-map-ap (⊙∘-lunit f*)) p) (θ (Loop2Grp-map-∘ (⊙idf X₂) f*) p) (ap-idf (Ω-fmap f* p)) ∙
