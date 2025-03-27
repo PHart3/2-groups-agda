@@ -1,14 +1,16 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=3 --lossy-unification #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=5 --lossy-unification #-}
 
 open import lib.Basics
 open import lib.types.LoopSpace
 open import 2Magma
 open import 2MagMap
 open import 2Grp
+open import Hmtpy2Grp
 open import KFunctor
 open import K-hom-ind
 open import KFunctor-comp
 open import Delooping
+open import LoopFunctor-ap
 
 module LoopK-ptr-comp where
 
@@ -68,7 +70,7 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
   abstract
     LoopK-∘ :
       ! (K₂-map-β-pts (m₂ ∘2Gσ m₁) x) ◃∙
-      (Ω-fmap-ap (K₂-map-∘ σ₁ σ₂) (loop G₁ x) ∙
+      (WkMagNatIso.θ (Loop2Grp-map-ap (K₂-map-∘ σ₁ σ₂)) (loop G₁ x) ∙
       ap-∘ (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x)) ◃∙
       ap (Ω-fmap (K₂-map⊙ σ₂)) (K₂-map-β-pts σ₁ x) ◃∙
       K₂-map-β-pts σ₂ (f₁ x) ◃∙
@@ -76,6 +78,13 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
         =ₛ
       idp ◃∎
     LoopK-∘ =
+      ! (K₂-map-β-pts (m₂ ∘2Gσ m₁) x) ◃∙
+      (WkMagNatIso.θ (Loop2Grp-map-ap (K₂-map-∘ σ₁ σ₂)) (loop G₁ x) ∙
+      ap-∘ (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x)) ◃∙
+      ap (Ω-fmap (K₂-map⊙ σ₂)) (K₂-map-β-pts σ₁ x) ◃∙
+      K₂-map-β-pts σ₂ (f₁ x) ◃∙
+      idp ◃∎
+        =ₛ₁⟨ 1 & 1 & ap (λ p → p ∙ ap-∘ (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x)) (Loop2Grp-map-ap-fst (K₂-map-∘ σ₁ σ₂) (loop G₁ x)) ⟩
       ! (K₂-map-β-pts (m₂ ∘2Gσ m₁) x) ◃∙
       (Ω-fmap-ap (K₂-map-∘ σ₁ σ₂) (loop G₁ x) ∙
       ap-∘ (K₂-map σ₂) (K₂-map σ₁) (loop G₁ x)) ◃∙

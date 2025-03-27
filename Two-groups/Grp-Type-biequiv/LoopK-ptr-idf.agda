@@ -1,14 +1,16 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=3 --lossy-unification #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=5 --lossy-unification #-}
 
 open import lib.Basics
 open import lib.types.LoopSpace
 open import 2Magma
 open import 2MagMap
 open import 2Grp
+open import Hmtpy2Grp
 open import KFunctor
 open import K-hom-ind
 open import KFunctor-idf
 open import Delooping
+open import LoopFunctor-ap
 
 module LoopK-ptr-idf where
 
@@ -56,11 +58,15 @@ module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
   abstract
     LoopK-idf :
       K₂-map-β-pts idf2G x ◃∙
-      ! (Ω-fmap-ap K₂-map-idf (loop G x) ∙ ap-idf (loop G x)) ◃∙
+      ! (WkMagNatIso.θ (Loop2Grp-map-ap K₂-map-idf) (loop G x) ∙ ap-idf (loop G x)) ◃∙
       idp ◃∎
         =ₛ
       idp ◃∎
     LoopK-idf =
+      K₂-map-β-pts idf2G x ◃∙
+      ! (WkMagNatIso.θ (Loop2Grp-map-ap K₂-map-idf) (loop G x) ∙ ap-idf (loop G x)) ◃∙
+      idp ◃∎
+        =ₛ₁⟨ 1 & 1 & ap (λ p → ! (p ∙ ap-idf (loop G x))) (Loop2Grp-map-ap-fst K₂-map-idf (loop G x)) ⟩
       K₂-map-β-pts idf2G x ◃∙
       ! (Ω-fmap-ap K₂-map-idf (loop G x) ∙ ap-idf (loop G x)) ◃∙
       idp ◃∎
