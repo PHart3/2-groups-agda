@@ -92,7 +92,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {X₁ : Ptd ℓ₁} {X₂ : Ptd ℓ₂} {
       ap (λ m → m ∘2G Loop2Grp-map f₁*) (natiso2G-to-== (Loop2Grp-map-∘ f₃* f₂*))
         ==
       natiso2G-to-==
-        (assoc-wkmaghom (grphom-forg ( Loop2Grp-map f₃*)) (grphom-forg ( Loop2Grp-map f₂*)) (grphom-forg (Loop2Grp-map f₁*)))
+        (assoc-wkmaghom (grphom-forg (Loop2Grp-map f₃*)) (grphom-forg (Loop2Grp-map f₂*)) (grphom-forg (Loop2Grp-map f₁*)))
     Ω-α f₃* f₂* f₁* = =ₛ-out $
       ! (ap (λ m → Loop2Grp-map f₃* ∘2G m) (natiso2G-to-== (Loop2Grp-map-∘ f₂* f₁*))) ◃∙
       ! (natiso2G-to-== (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*))) ◃∙
@@ -144,7 +144,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {X₁ : Ptd ℓ₁} {X₂ : Ptd ℓ₂} {
         =ₛ₁⟨ ap natiso2G-to-== (
                natiso∼-to-== (λ p → ! (=ₛ-out (re-associate p)) ∙ =ₛ-out (Loop2Grp-map-assoc f₁* f₂* f₃* p))) ⟩
       natiso2G-to-==
-        (assoc-wkmaghom (grphom-forg ( Loop2Grp-map f₃*)) (grphom-forg ( Loop2Grp-map f₂*)) (grphom-forg (Loop2Grp-map f₁*))) ◃∎ ∎ₛ
+        (assoc-wkmaghom (grphom-forg (Loop2Grp-map f₃*)) (grphom-forg (Loop2Grp-map f₂*)) (grphom-forg (Loop2Grp-map f₁*))) ◃∎ ∎ₛ
         where abstract
           re-associate : (p : _) →
             ! (ap (Ω-fmap f₃*) (θ (Loop2Grp-map-∘ f₂* f₁*) p)) ◃∙
