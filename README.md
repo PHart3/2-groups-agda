@@ -1,9 +1,9 @@
 ## Overview
 
-  We construct a fully verified biequivalence between
-    1. the (2,1)-category of coherent 2-groups
-    2. the (2,1)-category of 2-truncated connected pointed types.
-  The code has been checked with Agda 2.6.4.3.
+We construct a fully verified biequivalence between
+  1. the (2,1)-category of coherent 2-groups
+  2. the (2,1)-category of 2-truncated connected pointed types.
+The code has been checked with Agda 2.6.4.3.
 
 ## Organization
 
