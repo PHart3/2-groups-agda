@@ -42,6 +42,76 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       natiso2G-to-== (iso₂ natiso-∘ iso₁) ◃∙ natiso2G-to-== iso₃ ◃∎
         =ₛ⟨ 0 & 1 & ∘2G-conv iso₁ iso₂ ⟩
       natiso2G-to-== iso₁ ◃∙ natiso2G-to-== iso₂ ◃∙ natiso2G-to-== iso₃ ◃∎ ∎ₛ
+  
+    ∘2G-conv-quart : {f₁ f₂ f₃ f₄ f₅ : CohGrpHom {{η₁}} {{η₂}}}
+      (iso₁ : WkMagNatIso-forg f₁ f₂) (iso₂ : WkMagNatIso-forg f₂ f₃)
+      (iso₃ : WkMagNatIso-forg f₃ f₄) (iso₄ : WkMagNatIso-forg f₄ f₅) →
+      natiso2G-to-== iso₁ ◃∙ natiso2G-to-== iso₂ ◃∙ natiso2G-to-== iso₃ ◃∙ natiso2G-to-== iso₄ ◃∎ 
+        =ₛ
+      natiso2G-to-== (iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∎
+    ∘2G-conv-quart iso₁ iso₂ iso₃ iso₄ = 
+      natiso2G-to-== iso₁ ◃∙ natiso2G-to-== iso₂ ◃∙ natiso2G-to-== iso₃ ◃∙ natiso2G-to-== iso₄ ◃∎
+        =ₛ⟨ 0 & 3 & !ₛ (∘2G-conv-tri iso₁ iso₂ iso₃) ⟩
+      natiso2G-to-== (iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∙ natiso2G-to-== iso₄ ◃∎
+        =ₛ⟨ !ₛ (∘2G-conv (iso₃ natiso-∘ iso₂ natiso-∘ iso₁) iso₄) ⟩
+      natiso2G-to-== (iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∎ ∎ₛ
+
+    ∘2G-conv-quint : {f₁ f₂ f₃ f₄ f₅ f₆ : CohGrpHom {{η₁}} {{η₂}}}
+      (iso₁ : WkMagNatIso-forg f₁ f₂) (iso₂ : WkMagNatIso-forg f₂ f₃)
+      (iso₃ : WkMagNatIso-forg f₃ f₄) (iso₄ : WkMagNatIso-forg f₄ f₅)
+      (iso₅ : WkMagNatIso-forg f₅ f₆) →
+      natiso2G-to-== iso₁ ◃∙
+      natiso2G-to-== iso₂ ◃∙
+      natiso2G-to-== iso₃ ◃∙
+      natiso2G-to-== iso₄ ◃∙
+      natiso2G-to-== iso₅ ◃∎ 
+        =ₛ
+      natiso2G-to-== (iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∎
+    ∘2G-conv-quint iso₁ iso₂ iso₃ iso₄ iso₅ = 
+      natiso2G-to-== iso₁ ◃∙
+      natiso2G-to-== iso₂ ◃∙
+      natiso2G-to-== iso₃ ◃∙
+      natiso2G-to-== iso₄ ◃∙
+      natiso2G-to-== iso₅ ◃∎
+        =ₛ⟨ 0 & 4 & ∘2G-conv-quart iso₁ iso₂ iso₃ iso₄ ⟩
+      natiso2G-to-== (iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∙
+      natiso2G-to-== iso₅ ◃∎
+        =ₛ⟨ !ₛ (∘2G-conv (iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) iso₅) ⟩
+      natiso2G-to-== (iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∎ ∎ₛ
+
+    ∘2G-conv-oct : {f₁ f₂ f₃ f₄ f₅ f₆ f₇ f₈ f₉ : CohGrpHom {{η₁}} {{η₂}}}
+      (iso₁ : WkMagNatIso-forg f₁ f₂) (iso₂ : WkMagNatIso-forg f₂ f₃)
+      (iso₃ : WkMagNatIso-forg f₃ f₄) (iso₄ : WkMagNatIso-forg f₄ f₅)
+      (iso₅ : WkMagNatIso-forg f₅ f₆) (iso₆ : WkMagNatIso-forg f₆ f₇)
+      (iso₇ : WkMagNatIso-forg f₇ f₈) (iso₈ : WkMagNatIso-forg f₈ f₉) →
+      natiso2G-to-== iso₁ ◃∙
+      natiso2G-to-== iso₂ ◃∙
+      natiso2G-to-== iso₃ ◃∙
+      natiso2G-to-== iso₄ ◃∙
+      natiso2G-to-== iso₅ ◃∙
+      natiso2G-to-== iso₆ ◃∙
+      natiso2G-to-== iso₇ ◃∙
+      natiso2G-to-== iso₈ ◃∎
+        =ₛ
+      natiso2G-to-==
+        (iso₈ natiso-∘ iso₇ natiso-∘ iso₆ natiso-∘ iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∎
+    ∘2G-conv-oct iso₁ iso₂ iso₃ iso₄ iso₅ iso₆ iso₇ iso₈ = 
+      natiso2G-to-== iso₁ ◃∙
+      natiso2G-to-== iso₂ ◃∙
+      natiso2G-to-== iso₃ ◃∙
+      natiso2G-to-== iso₄ ◃∙
+      natiso2G-to-== iso₅ ◃∙
+      natiso2G-to-== iso₆ ◃∙
+      natiso2G-to-== iso₇ ◃∙
+      natiso2G-to-== iso₈ ◃∎
+        =ₛ⟨ 0 & 5 & ∘2G-conv-quint iso₁ iso₂ iso₃ iso₄ iso₅ ⟩
+      natiso2G-to-== (iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∙
+      natiso2G-to-== iso₆ ◃∙
+      natiso2G-to-== iso₇ ◃∙
+      natiso2G-to-== iso₈ ◃∎
+        =ₛ⟨ ∘2G-conv-quart (iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) iso₆ iso₇ iso₈ ⟩
+      natiso2G-to-==
+        (iso₈ natiso-∘ iso₇ natiso-∘ iso₆ natiso-∘ iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∎ ∎ₛ
 
   module _ {k} {G₃ : Type k} {{η₃ : CohGrp G₃}} where
 
