@@ -2,15 +2,18 @@
 
 open import lib.Basics
 open import lib.types.Pointed
+open import lib.types.LoopSpace
 open import 2Grp
-open import 2GrpMap-conv2
+open import 2GrpMap-conv
 open import Hmtpy2Grp
 open import Delooping
 open import Bicategory
 open import 2Grp-bc
 open import Ptd-bc
-open import Loop-PFunctor
-open import K-PFunctor
+open import KFunctor
+open import KFunctor-comp
+open import KFunctor-idf
+open import LoopFunctor-ap
 open import SqLoopK
 open import LoopK-ptr-idf
 open import LoopK-ptr-comp

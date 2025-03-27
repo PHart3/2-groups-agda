@@ -18,21 +18,21 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
   abstract
   
     ∘2G-conv-gen : {f₁ f₂ f₃ : CohGrpHom {{η₁}} {{η₂}}}
-      (iso₁ : WkMagNatIso-forg f₁ f₃)
-      (iso₂ : WkMagNatIso-forg f₁ f₂)
-      (iso₃ : WkMagNatIso-forg f₂ f₃) →
+      (iso₁ : CohGrpNatIso f₁ f₃)
+      (iso₂ : CohGrpNatIso f₁ f₂)
+      (iso₃ : CohGrpNatIso f₂ f₃) →
       ∼WkMagNatIso iso₁ (iso₃ natiso-∘ iso₂)
       → natiso2G-to-== iso₁ == natiso2G-to-== iso₂ ∙ natiso2G-to-== iso₃
     ∘2G-conv-gen iso₁ iso₂ iso₃ e = natiso2G-to-==-∙ iso₂ iso₁ iso₃ e 
   
     ∘2G-conv : {f₁ f₂ f₃ : CohGrpHom {{η₁}} {{η₂}}}
-      (iso₁ : WkMagNatIso-forg f₁ f₂) (iso₂ : WkMagNatIso-forg f₂ f₃) →
+      (iso₁ : CohGrpNatIso f₁ f₂) (iso₂ : CohGrpNatIso f₂ f₃) →
       natiso2G-to-== (iso₂ natiso-∘ iso₁) ◃∎ =ₛ natiso2G-to-== iso₁ ◃∙ natiso2G-to-== iso₂ ◃∎
     ∘2G-conv iso₁ iso₂ = =ₛ-in (∘2G-conv-gen (iso₂ natiso-∘ iso₁) iso₁ iso₂ (λ _ → idp))
 
     ∘2G-conv-tri : {f₁ f₂ f₃ f₄ : CohGrpHom {{η₁}} {{η₂}}}
-      (iso₁ : WkMagNatIso-forg f₁ f₂) (iso₂ : WkMagNatIso-forg f₂ f₃)
-      (iso₃ : WkMagNatIso-forg f₃ f₄) →
+      (iso₁ : CohGrpNatIso f₁ f₂) (iso₂ : CohGrpNatIso f₂ f₃)
+      (iso₃ : CohGrpNatIso f₃ f₄) →
       natiso2G-to-== (iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∎
         =ₛ
       natiso2G-to-== iso₁ ◃∙ natiso2G-to-== iso₂ ◃∙ natiso2G-to-== iso₃ ◃∎
@@ -44,8 +44,8 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       natiso2G-to-== iso₁ ◃∙ natiso2G-to-== iso₂ ◃∙ natiso2G-to-== iso₃ ◃∎ ∎ₛ
   
     ∘2G-conv-quart : {f₁ f₂ f₃ f₄ f₅ : CohGrpHom {{η₁}} {{η₂}}}
-      (iso₁ : WkMagNatIso-forg f₁ f₂) (iso₂ : WkMagNatIso-forg f₂ f₃)
-      (iso₃ : WkMagNatIso-forg f₃ f₄) (iso₄ : WkMagNatIso-forg f₄ f₅) →
+      (iso₁ : CohGrpNatIso f₁ f₂) (iso₂ : CohGrpNatIso f₂ f₃)
+      (iso₃ : CohGrpNatIso f₃ f₄) (iso₄ : CohGrpNatIso f₄ f₅) →
       natiso2G-to-== iso₁ ◃∙ natiso2G-to-== iso₂ ◃∙ natiso2G-to-== iso₃ ◃∙ natiso2G-to-== iso₄ ◃∎ 
         =ₛ
       natiso2G-to-== (iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∎
@@ -57,9 +57,9 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       natiso2G-to-== (iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∎ ∎ₛ
 
     ∘2G-conv-quint : {f₁ f₂ f₃ f₄ f₅ f₆ : CohGrpHom {{η₁}} {{η₂}}}
-      (iso₁ : WkMagNatIso-forg f₁ f₂) (iso₂ : WkMagNatIso-forg f₂ f₃)
-      (iso₃ : WkMagNatIso-forg f₃ f₄) (iso₄ : WkMagNatIso-forg f₄ f₅)
-      (iso₅ : WkMagNatIso-forg f₅ f₆) →
+      (iso₁ : CohGrpNatIso f₁ f₂) (iso₂ : CohGrpNatIso f₂ f₃)
+      (iso₃ : CohGrpNatIso f₃ f₄) (iso₄ : CohGrpNatIso f₄ f₅)
+      (iso₅ : CohGrpNatIso f₅ f₆) →
       natiso2G-to-== iso₁ ◃∙
       natiso2G-to-== iso₂ ◃∙
       natiso2G-to-== iso₃ ◃∙
@@ -80,10 +80,10 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       natiso2G-to-== (iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∎ ∎ₛ
 
     ∘2G-conv-oct : {f₁ f₂ f₃ f₄ f₅ f₆ f₇ f₈ f₉ : CohGrpHom {{η₁}} {{η₂}}}
-      (iso₁ : WkMagNatIso-forg f₁ f₂) (iso₂ : WkMagNatIso-forg f₂ f₃)
-      (iso₃ : WkMagNatIso-forg f₃ f₄) (iso₄ : WkMagNatIso-forg f₄ f₅)
-      (iso₅ : WkMagNatIso-forg f₅ f₆) (iso₆ : WkMagNatIso-forg f₆ f₇)
-      (iso₇ : WkMagNatIso-forg f₇ f₈) (iso₈ : WkMagNatIso-forg f₈ f₉) →
+      (iso₁ : CohGrpNatIso f₁ f₂) (iso₂ : CohGrpNatIso f₂ f₃)
+      (iso₃ : CohGrpNatIso f₃ f₄) (iso₄ : CohGrpNatIso f₄ f₅)
+      (iso₅ : CohGrpNatIso f₅ f₆) (iso₆ : CohGrpNatIso f₆ f₇)
+      (iso₇ : CohGrpNatIso f₇ f₈) (iso₈ : CohGrpNatIso f₈ f₉) →
       natiso2G-to-== iso₁ ◃∙
       natiso2G-to-== iso₂ ◃∙
       natiso2G-to-== iso₃ ◃∙
@@ -118,12 +118,12 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
     abstract
     
       whisk2G-conv-r : {f₁ : CohGrpHom {{η₁}} {{η₂}}} {f₂ f₂' : CohGrpHom {{η₂}} {{η₃}}}
-        (iso : WkMagNatIso-forg f₂ f₂') →
+        (iso : CohGrpNatIso f₂ f₂') →
         natiso2G-to-== (natiso-whisk-r iso) == ap (λ m → m ∘2G f₁) (natiso2G-to-== iso)
       whisk2G-conv-r iso = natiso2G-to-==-whisk-r iso (natiso-whisk-r iso) (λ _ → idp)
 
       whisk2G-conv-l : {f₂ : CohGrpHom {{η₂}} {{η₃}}} {f₁ f₁' : CohGrpHom {{η₁}} {{η₂}}}
-        (iso : WkMagNatIso-forg f₁ f₁') →
+        (iso : CohGrpNatIso f₁ f₁') →
         natiso2G-to-== (natiso-whisk-l {μ = grphom-forg f₂} iso) == ap (λ m → f₂ ∘2G m) (natiso2G-to-== iso)
       whisk2G-conv-l {f₂} iso = natiso2G-to-==-whisk-l iso (natiso-whisk-l {μ = grphom-forg f₂} iso) (λ _ → idp)
 
@@ -135,9 +135,9 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
 
   abstract
     tri-conv :
-      (iso₂ : WkMagNatIso-forg f₁ f₁')
-      (iso₃ : WkMagNatIso-forg f₂ f₂')
-      (iso₁ : WkMagNatIso-forg (f₂ ∘2G f₁') (f₂' ∘2G f₁)) →
+      (iso₂ : CohGrpNatIso f₁ f₁')
+      (iso₃ : CohGrpNatIso f₂ f₂')
+      (iso₁ : CohGrpNatIso (f₂ ∘2G f₁') (f₂' ∘2G f₁)) →
       ∼WkMagNatIso iso₁ ((natiso-whisk-r iso₃) natiso-∘ (!ʷ (natiso-whisk-l {μ = grphom-forg f₂} iso₂)))
       →
       natiso2G-to-== iso₁
@@ -180,9 +180,9 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄ ℓ₅} {G₁ : Type ℓ₁} {G₂ : Type 
 
   abstract
     pent-conv :
-      (iso₁ : WkMagNatIso-forg (f₄ ∘2G f₃) f₂) (iso₂ : WkMagNatIso-forg f₂ (f₅ ∘2G f₁))
-      (iso₃ : WkMagNatIso-forg f₃ f₆) (iso₄ : WkMagNatIso-forg (f₄ ∘2G f₆) (f₇ ∘2G f₁))
-      (iso₅ : WkMagNatIso-forg f₇ f₅) →
+      (iso₁ : CohGrpNatIso (f₄ ∘2G f₃) f₂) (iso₂ : CohGrpNatIso f₂ (f₅ ∘2G f₁))
+      (iso₃ : CohGrpNatIso f₃ f₆) (iso₄ : CohGrpNatIso (f₄ ∘2G f₆) (f₇ ∘2G f₁))
+      (iso₅ : CohGrpNatIso f₇ f₅) →
       ∼WkMagNatIso
         (iso₂ natiso-∘ iso₁)
         (natiso-whisk-r iso₅ natiso-∘ iso₄ natiso-∘ (natiso-whisk-l {μ = grphom-forg f₄} iso₃))

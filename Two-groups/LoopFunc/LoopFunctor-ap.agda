@@ -19,15 +19,15 @@ open WkMagNatIso
 
 module _ {ℓ₁ ℓ₂} {X₁ : Ptd ℓ₁} {X₂ : Ptd ℓ₂} {{η₁ : has-level 2 (de⊙ X₁)}} {{η₂ : has-level 2 (de⊙ X₂)}} where
 
-  Loop2Grp-map-ap : {f* g* : X₁ ⊙→ X₂} → f* ⊙-comp g* → WkMagNatIso-forg (Loop2Grp-map f*) (Loop2Grp-map g*)
+  Loop2Grp-map-ap : {f* g* : X₁ ⊙→ X₂} → f* ⊙-comp g* → CohGrpNatIso (Loop2Grp-map f*) (Loop2Grp-map g*)
   Loop2Grp-map-ap {f*} = 
     ⊙hom-ind f*
-      (λ g* _ → WkMagNatIso-forg (Loop2Grp-map f*) (Loop2Grp-map g*))
+      (λ g* _ → CohGrpNatIso (Loop2Grp-map f*) (Loop2Grp-map g*))
       (natiso-id2G (Loop2Grp-map f*))
       
   Loop2Grp-map-ap-β : (f* : X₁ ⊙→ X₂) → Loop2Grp-map-ap (⊙∼-id f*) == natiso-id2G (Loop2Grp-map f*)
   Loop2Grp-map-ap-β f* =
-    ⊙hom-ind-β f* (λ g* _ → WkMagNatIso-forg (Loop2Grp-map f*) (Loop2Grp-map g*)) (natiso-id2G (Loop2Grp-map f*))
+    ⊙hom-ind-β f* (λ g* _ → CohGrpNatIso (Loop2Grp-map f*) (Loop2Grp-map g*)) (natiso-id2G (Loop2Grp-map f*))
 
   Loop2Grp-map-ap-fst : {f* g* : X₁ ⊙→ X₂} (H : f* ⊙-comp g*) → θ (Loop2Grp-map-ap H) ∼ Ω-fmap-ap H
   Loop2Grp-map-ap-fst {f*} =
