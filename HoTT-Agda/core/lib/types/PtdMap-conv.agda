@@ -47,7 +47,75 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
       ⊙-comp-to-== h₁ ◃∙ ⊙-comp-to-== (h₂ ∙⊙∼ h₃) ◃∎
         =ₛ⟨ 1 & 1 & ⊙∘-conv h₂ h₃ ⟩
       ⊙-comp-to-== h₁ ◃∙ ⊙-comp-to-== h₂ ◃∙ ⊙-comp-to-== h₃ ◃∎ ∎ₛ
-      
+
+    ⊙∘-conv-quart : {f₁ f₂ f₃ f₄ f₅ : X ⊙→ Y}
+      (h₁ : _⊙-comp_ f₁ f₂) (h₂ : _⊙-comp_ f₂ f₃)
+      (h₃ : _⊙-comp_ f₃ f₄) (h₄ : _⊙-comp_ f₄ f₅) →
+      ⊙-comp-to-== h₁ ◃∙ ⊙-comp-to-== h₂ ◃∙ ⊙-comp-to-== h₃ ◃∙ ⊙-comp-to-== h₄ ◃∎ 
+        =ₛ
+      ⊙-comp-to-== (h₁ ∙⊙∼ h₂ ∙⊙∼ h₃ ∙⊙∼ h₄) ◃∎
+    ⊙∘-conv-quart h₁ h₂ h₃ h₄ = 
+      ⊙-comp-to-== h₁ ◃∙ ⊙-comp-to-== h₂ ◃∙ ⊙-comp-to-== h₃ ◃∙ ⊙-comp-to-== h₄ ◃∎
+        =ₛ⟨ 1 & 3 & !ₛ (⊙∘-conv-tri h₂ h₃ h₄) ⟩
+      ⊙-comp-to-== h₁ ◃∙ ⊙-comp-to-== (h₂ ∙⊙∼ h₃ ∙⊙∼ h₄) ◃∎
+        =ₛ⟨ !ₛ (⊙∘-conv h₁ (h₂ ∙⊙∼ h₃ ∙⊙∼ h₄)) ⟩
+      ⊙-comp-to-== (h₁ ∙⊙∼ h₂ ∙⊙∼ h₃ ∙⊙∼ h₄) ◃∎ ∎ₛ
+
+    ⊙∘-conv-quint : {f₁ f₂ f₃ f₄ f₅ f₆ : X ⊙→ Y}
+      (h₁ : _⊙-comp_ f₁ f₂) (h₂ : _⊙-comp_ f₂ f₃)
+      (h₃ : _⊙-comp_ f₃ f₄) (h₄ : _⊙-comp_ f₄ f₅)
+      (h₅ : _⊙-comp_ f₅ f₆) →
+      ⊙-comp-to-== h₁ ◃∙
+      ⊙-comp-to-== h₂ ◃∙
+      ⊙-comp-to-== h₃ ◃∙
+      ⊙-comp-to-== h₄ ◃∙
+      ⊙-comp-to-== h₅ ◃∎ 
+        =ₛ
+      ⊙-comp-to-== (h₁ ∙⊙∼ h₂ ∙⊙∼ h₃ ∙⊙∼ h₄ ∙⊙∼ h₅) ◃∎
+    ⊙∘-conv-quint h₁ h₂ h₃ h₄ h₅ = 
+      ⊙-comp-to-== h₁ ◃∙
+      ⊙-comp-to-== h₂ ◃∙
+      ⊙-comp-to-== h₃ ◃∙
+      ⊙-comp-to-== h₄ ◃∙
+      ⊙-comp-to-== h₅ ◃∎
+        =ₛ⟨ 1 & 4 & ⊙∘-conv-quart h₂ h₃ h₄ h₅ ⟩
+      ⊙-comp-to-== h₁ ◃∙
+      ⊙-comp-to-== (h₂ ∙⊙∼ h₃ ∙⊙∼ h₄ ∙⊙∼ h₅) ◃∎
+        =ₛ⟨ !ₛ (⊙∘-conv h₁ (h₂ ∙⊙∼ h₃ ∙⊙∼ h₄ ∙⊙∼ h₅)) ⟩
+      ⊙-comp-to-== (h₁ ∙⊙∼ h₂ ∙⊙∼ h₃ ∙⊙∼ h₄ ∙⊙∼ h₅) ◃∎ ∎ₛ
+
+    ⊙∘-conv-oct : {f₁ f₂ f₃ f₄ f₅ f₆ f₇ f₈ f₉ : X ⊙→ Y}
+      (h₁ : _⊙-comp_ f₁ f₂) (h₂ : _⊙-comp_ f₂ f₃)
+      (h₃ : _⊙-comp_ f₃ f₄) (h₄ : _⊙-comp_ f₄ f₅)
+      (h₅ : _⊙-comp_ f₅ f₆) (h₆ : _⊙-comp_ f₆ f₇)
+      (h₇ : _⊙-comp_ f₇ f₈) (h₈ : _⊙-comp_ f₈ f₉) →
+      ⊙-comp-to-== h₁ ◃∙
+      ⊙-comp-to-== h₂ ◃∙
+      ⊙-comp-to-== h₃ ◃∙
+      ⊙-comp-to-== h₄ ◃∙
+      ⊙-comp-to-== h₅ ◃∙
+      ⊙-comp-to-== h₆ ◃∙
+      ⊙-comp-to-== h₇ ◃∙
+      ⊙-comp-to-== h₈ ◃∎
+        =ₛ
+      ⊙-comp-to-== (h₁ ∙⊙∼ h₂ ∙⊙∼ h₃ ∙⊙∼ h₄ ∙⊙∼ h₅ ∙⊙∼ h₆ ∙⊙∼ h₇ ∙⊙∼ h₈) ◃∎
+    ⊙∘-conv-oct h₁ h₂ h₃ h₄ h₅ h₆ h₇ h₈ = 
+      ⊙-comp-to-== h₁ ◃∙
+      ⊙-comp-to-== h₂ ◃∙
+      ⊙-comp-to-== h₃ ◃∙
+      ⊙-comp-to-== h₄ ◃∙
+      ⊙-comp-to-== h₅ ◃∙
+      ⊙-comp-to-== h₆ ◃∙
+      ⊙-comp-to-== h₇ ◃∙
+      ⊙-comp-to-== h₈ ◃∎
+        =ₛ⟨ 3 & 5 & ⊙∘-conv-quint h₄ h₅ h₆ h₇ h₈ ⟩
+      ⊙-comp-to-== h₁ ◃∙
+      ⊙-comp-to-== h₂ ◃∙
+      ⊙-comp-to-== h₃ ◃∙
+      ⊙-comp-to-== (h₄ ∙⊙∼ h₅ ∙⊙∼ h₆ ∙⊙∼ h₇ ∙⊙∼ h₈) ◃∎
+        =ₛ⟨ ⊙∘-conv-quart h₁ h₂ h₃ (h₄ ∙⊙∼ h₅ ∙⊙∼ h₆ ∙⊙∼ h₇ ∙⊙∼ h₈) ⟩
+      ⊙-comp-to-== (h₁ ∙⊙∼ h₂ ∙⊙∼ h₃ ∙⊙∼ h₄ ∙⊙∼ h₅ ∙⊙∼ h₆ ∙⊙∼ h₇ ∙⊙∼ h₈) ◃∎ ∎ₛ
+
   module _ {k} {Z : Ptd k} where
 
     abstract
