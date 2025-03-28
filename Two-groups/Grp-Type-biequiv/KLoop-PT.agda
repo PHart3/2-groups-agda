@@ -2,7 +2,7 @@
 
 open import lib.Basics
 open import lib.types.Pointed
-open import lib,types.LoopSpace
+open import lib.types.LoopSpace
 open import lib.types.PtdMap-conv
 open import 2Grp
 open import Hmtpy2Grp
