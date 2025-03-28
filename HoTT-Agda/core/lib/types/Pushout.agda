@@ -6,7 +6,6 @@ open import lib.types.Sigma
 open import lib.types.Span
 open import lib.types.CommutingSquare
 open import lib.types.Paths
-import lib.types.Generic1HIT as Generic1HIT
 
 module lib.types.Pushout where
 
@@ -93,53 +92,6 @@ module PushoutMap {i₀ j₀ k₀ i₁ j₁ k₁} {span₀ : Span {i₀} {j₀} 
     (left ∘ SpanMap-Rev.hA span-map) (right ∘ SpanMap-Rev.hB span-map)
     (λ x → ! (ap left (SpanMap-Rev.f-commutes span-map □$ x)) ∙ glue (SpanMap-Rev.hC span-map x) ∙
       ap right (SpanMap-Rev.g-commutes span-map □$  x))
-
-module PushoutGeneric {i j k} {d : Span {i} {j} {k}} where
-
-  open Span d renaming (f to g; g to h)
-
-  open Generic1HIT (Coprod A B) C (inl ∘ g) (inr ∘ h) public
-
-  module _ where
-
-    module To = PushoutRec (cc ∘ inl) (cc ∘ inr) pp
-
-    to : Pushout d → T
-    to = To.f
-
-    from-cc : Coprod A B → Pushout d
-    from-cc (inl a) = left a
-    from-cc (inr b) = right b
-
-    module From = Rec from-cc glue
-
-    from : T → Pushout d
-    from = From.f
-
-    abstract
-      to-from : (x : T) → to (from x) == x
-      to-from = elim to-from-cc to-from-pp where
-
-        to-from-cc : (x : Coprod A B)
-          → to (from (cc x)) == cc x
-        to-from-cc (inl a) = idp
-        to-from-cc (inr b) = idp
-
-        to-from-pp :
-          (c : C) → idp == idp [ (λ z → to (from z) == z) ↓ pp c ]
-        to-from-pp c = ↓-∘=idf-in' to from
-          (ap to (ap from (pp c))   =⟨ From.pp-β c |in-ctx ap to ⟩
-           ap to (glue c)           =⟨ To.glue-β c ⟩
-           pp c =∎)
-
-      from-to : (x : Pushout d) → from (to x) == x
-      from-to = Pushout-elim (λ a → idp) (λ b → idp) (λ c → ↓-∘=idf-in' from to
-        (ap from (ap to (glue c))   =⟨ To.glue-β c |in-ctx ap from ⟩
-         ap from (pp c)             =⟨ From.pp-β c ⟩
-         glue c =∎))
-
-  generic-pushout : Pushout d ≃ T
-  generic-pushout = equiv to from to-from from-to
 
 _⊔^[_]_/_ : ∀ {i j k} (A : Type i) (C : Type k) (B : Type j)
   (fg : (C → A) × (C → B)) → Type (lmax (lmax i j) k)
