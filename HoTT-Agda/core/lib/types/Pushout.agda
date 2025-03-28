@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --confluence-check #-}
 
 open import lib.Basics
 open import lib.types.Pointed

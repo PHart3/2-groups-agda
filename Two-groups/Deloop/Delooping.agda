@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=4 #-}
+{-# OPTIONS --without-K --rewriting --confluence-check --overlapping-instances --instance-search-depth=4 #-}
 
 open import lib.Basics
 open import lib.NConnected
