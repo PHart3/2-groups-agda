@@ -53,27 +53,28 @@ module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
       K₂-map-β-pts idf2G x ◃∎ ∎ₛ
 
   private
-    γ = ∙-unit-r (! (Ω-fmap-ap K₂-map-idf (loop G x) ∙ ap-idf (loop G x)))
+    γ = ∙-unit-r (K₂-map-β-pts idf2G x)
 
   abstract
-    LoopK-idf :
-      K₂-map-β-pts idf2G x ◃∙
+    LoopK-idf :      
       ! (WkMagNatIso.θ (Loop2Grp-map-ap K₂-map-idf) (loop G x) ∙ ap-idf (loop G x)) ◃∙
+      K₂-map-β-pts idf2G x ◃∙
       idp ◃∎
         =ₛ
       idp ◃∎
     LoopK-idf =
-      K₂-map-β-pts idf2G x ◃∙
       ! (WkMagNatIso.θ (Loop2Grp-map-ap K₂-map-idf) (loop G x) ∙ ap-idf (loop G x)) ◃∙
-      idp ◃∎
-        =ₛ₁⟨ 1 & 1 & ap (λ p → ! (p ∙ ap-idf (loop G x))) (Loop2Grp-map-ap-fst K₂-map-idf (loop G x)) ⟩
       K₂-map-β-pts idf2G x ◃∙
+      idp ◃∎
+        =ₛ₁⟨ 0 & 1 & ap (λ p → ! (p ∙ ap-idf (loop G x))) (Loop2Grp-map-ap-fst K₂-map-idf (loop G x)) ⟩
       ! (Ω-fmap-ap K₂-map-idf (loop G x) ∙ ap-idf (loop G x)) ◃∙
-      idp ◃∎
-        =ₛ₁⟨ 1 & 2 & γ ⟩
       K₂-map-β-pts idf2G x ◃∙
-      ! (Ω-fmap-ap K₂-map-idf (loop G x) ∙ ap-idf (loop G x)) ◃∎
-        =ₛ⟨ !ₛ (post-rotate-in {q = Ω-fmap-ap K₂-map-idf (loop G x) ∙ ap-idf (loop G x)} LoopK-idf-pre) ⟩
-      []
-        =ₛ₁⟨ idp ⟩
+      idp ◃∎
+        =ₛ₁⟨ 1 & 2 & γ ⟩     
+      ! (Ω-fmap-ap K₂-map-idf (loop G x) ∙ ap-idf (loop G x)) ◃∙
+      K₂-map-β-pts idf2G x ◃∎
+        =ₛ₁⟨ 0 & 1 & ap ! (=ₛ-out LoopK-idf-pre) ⟩
+      ! (K₂-map-β-pts idf2G x) ◃∙
+      K₂-map-β-pts idf2G x ◃∎
+        =ₛ₁⟨ !-inv-l (K₂-map-β-pts idf2G x) ⟩
       idp ◃∎ ∎ₛ
