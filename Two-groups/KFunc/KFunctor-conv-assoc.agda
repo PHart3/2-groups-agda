@@ -2,10 +2,13 @@
 
 open import lib.Basics
 open import lib.types.Pointed
-open import lib.types.LoopSpace
 open import lib.types.PtdMap-conv
+open import KFunctor
+open import KFunctor-comp
+open import apK
+open import KFunctor-comp-assoc
 
-module KFunctor-conv where
+module KFunctor-conv-assoc where
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} where
 
