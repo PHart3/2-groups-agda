@@ -4,6 +4,7 @@ open import lib.Basics
 open import lib.types.Pointed
 open import 2Magma
 open import 2Grp
+open import 2GrpMap
 open import Delooping
 open import KFunctor
 open import K-hom-ind
@@ -14,21 +15,22 @@ open import apK-aux2
 
 module apK where
 
-open CohGrp {{...}}
-
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {f₁ f₂ : G₁ → G₂}
   {σ₁ : WkMagHomStr f₁} {σ₂ : WkMagHomStr f₂} where
 
+  private
+    m₁ = maghom-forg (cohmaghom f₁ {{σ₁}})
+    m₂ = maghom-forg (cohmaghom f₂ {{σ₂}})
+
   open WkMagNatIso
 
-  apK₂ : WkMagNatIso (maghom-forg (cohmaghom f₁ {{σ₁}})) (maghom-forg (cohmaghom f₂ {{σ₂}})) → K₂-map⊙ σ₁ ⊙-comp K₂-map⊙ σ₂
+  apK₂ : WkMagNatIso m₁ m₂ → K₂-map⊙ σ₁ ⊙-comp K₂-map⊙ σ₂
   fst (apK₂ iso) = 
     K₂-∼-ind (fst (K₂-map⊙ σ₁)) (fst (K₂-map⊙ σ₂))
     idp
     (λ x → K₂-map-β-pts σ₁ x ∙ ap (loop G₂) (θ iso x) ∙ ! (K₂-map-β-pts σ₂ x))
     (apK₂-coher iso)
   snd (apK₂ iso) = idp
-
 
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {f : G₁ → G₂} {σ : WkMagHomStr f} where
 
@@ -56,7 +58,14 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         =⟨ ! (hmtpy-nat-∙'-idp (loop G₁ x)) ⟩
       hmtpy-nat-∙' (λ v → idp) (loop G₁ x) =∎
 
+  apK₂-idp : apK₂ (natiso-id (maghom-forg (cohmaghom f {{σ}}))) ⊙→∼ ⊙∼-id (K₂-map⊙ σ)
+  fst apK₂-idp = K₂-∼∼-ind idp apK₂-idp-coher
+  snd apK₂-idp = idp
+
+module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}  where
+
   abstract
-    apK₂-idp : apK₂ (natiso-id (maghom-forg (cohmaghom f {{σ}}))) ⊙→∼ ⊙∼-id (K₂-map⊙ σ)
-    fst apK₂-idp = K₂-∼∼-ind idp apK₂-idp-coher
-    snd apK₂-idp = idp
+    apK₂-pres : {φ₁ φ₂ : CohGrpHom {{η₁}} {{η₂}}}
+      → (iso : CohGrpNatIso φ₁ φ₂) → ap K₂-action-hom (natiso2G-to-== iso) == ⊙-comp-to-== (apK₂ iso) 
+    apK₂-pres {φ₁} = natiso2G-ind {μ = φ₁} (λ φ₂ iso → ap K₂-action-hom (natiso2G-to-== iso) == ⊙-comp-to-== (apK₂ iso))
+      (ap (ap K₂-action-hom) (natiso2G-to-==-β φ₁) ∙ ! (ap ⊙-comp-to-== (⊙→∼-to-== apK₂-idp) ∙ ⊙-comp-to-==-β _ ))

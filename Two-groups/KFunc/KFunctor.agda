@@ -44,6 +44,9 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
   K₂-map⊙ : {f : G₁ → G₂} (σ : WkMagHomStr f) → ⊙[ K₂ G₁ η₁ , base G₁ ] ⊙→ ⊙[ K₂ G₂ η₂ , base G₂ ]
   K₂-map⊙ σ = (K₂-map σ , idp)
 
+  K₂-action-hom : CohGrpHom {{η₁}} {{η₂}} → ⊙[ K₂ G₁ η₁ , base G₁ ] ⊙→ ⊙[ K₂ G₂ η₂ , base G₂ ]
+  K₂-action-hom (cohgrphom f {{σ}}) = K₂-map⊙ σ
+
   open WkMagNatIso
 
   module _ {f : G₁ → G₂} (σ : WkMagHomStr f) where
