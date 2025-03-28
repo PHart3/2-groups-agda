@@ -21,7 +21,6 @@ module _ {i} {X : Type i} {{ηX : has-level 2 X}} (x₀ : X) where
   abstract
     KLoop-idf :
       ⊙∘-lunit (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}})) ∙⊙∼
-      ⊙∘-pre (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}})) (⊙∼-id (⊙idf ⊙[ X , x₀ ])) ∙⊙∼
       sq-KΩ x₀ x₀ (⊙idf ⊙[ X , x₀ ]) ∙⊙∼
       ⊙∘-post (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}}))
         (apK₂ (Loop2Grp-map-idf ⊙[ X , x₀ ]) ∙⊙∼ K₂-map-idf {{Loop2Grp x₀}})

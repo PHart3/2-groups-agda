@@ -84,37 +84,34 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
         =ₛ⟨ !ₛ (⊙∘-conv h₁ (h₂ ∙⊙∼ h₃ ∙⊙∼ h₄ ∙⊙∼ h₅)) ⟩
       ⊙-comp-to-== (h₁ ∙⊙∼ h₂ ∙⊙∼ h₃ ∙⊙∼ h₄ ∙⊙∼ h₅) ◃∎ ∎ₛ
 
-    ⊙∘-conv-oct : {f₁ f₂ f₃ f₄ f₅ f₆ f₇ f₈ f₉ : X ⊙→ Y}
+    ⊙∘-conv-sept : {f₁ f₂ f₃ f₄ f₅ f₆ f₇ f₈ : X ⊙→ Y}
       (h₁ : _⊙-comp_ f₁ f₂) (h₂ : _⊙-comp_ f₂ f₃)
       (h₃ : _⊙-comp_ f₃ f₄) (h₄ : _⊙-comp_ f₄ f₅)
       (h₅ : _⊙-comp_ f₅ f₆) (h₆ : _⊙-comp_ f₆ f₇)
-      (h₇ : _⊙-comp_ f₇ f₈) (h₈ : _⊙-comp_ f₈ f₉) →
+      (h₇ : _⊙-comp_ f₇ f₈) →
       ⊙-comp-to-== h₁ ◃∙
       ⊙-comp-to-== h₂ ◃∙
       ⊙-comp-to-== h₃ ◃∙
       ⊙-comp-to-== h₄ ◃∙
       ⊙-comp-to-== h₅ ◃∙
       ⊙-comp-to-== h₆ ◃∙
-      ⊙-comp-to-== h₇ ◃∙
-      ⊙-comp-to-== h₈ ◃∎
+      ⊙-comp-to-== h₇ ◃∎
         =ₛ
-      ⊙-comp-to-== (h₁ ∙⊙∼ h₂ ∙⊙∼ h₃ ∙⊙∼ h₄ ∙⊙∼ h₅ ∙⊙∼ h₆ ∙⊙∼ h₇ ∙⊙∼ h₈) ◃∎
-    ⊙∘-conv-oct h₁ h₂ h₃ h₄ h₅ h₆ h₇ h₈ = 
+      ⊙-comp-to-== (h₁ ∙⊙∼ h₂ ∙⊙∼ h₃ ∙⊙∼ h₄ ∙⊙∼ h₅ ∙⊙∼ h₆ ∙⊙∼ h₇) ◃∎
+    ⊙∘-conv-sept h₁ h₂ h₃ h₄ h₅ h₆ h₇ = 
       ⊙-comp-to-== h₁ ◃∙
       ⊙-comp-to-== h₂ ◃∙
       ⊙-comp-to-== h₃ ◃∙
       ⊙-comp-to-== h₄ ◃∙
       ⊙-comp-to-== h₅ ◃∙
       ⊙-comp-to-== h₆ ◃∙
-      ⊙-comp-to-== h₇ ◃∙
-      ⊙-comp-to-== h₈ ◃∎
-        =ₛ⟨ 3 & 5 & ⊙∘-conv-quint h₄ h₅ h₆ h₇ h₈ ⟩
+      ⊙-comp-to-== h₇ ◃∎
+        =ₛ⟨ 2 & 5 & ⊙∘-conv-quint h₃ h₄ h₅ h₆ h₇ ⟩
       ⊙-comp-to-== h₁ ◃∙
       ⊙-comp-to-== h₂ ◃∙
-      ⊙-comp-to-== h₃ ◃∙
-      ⊙-comp-to-== (h₄ ∙⊙∼ h₅ ∙⊙∼ h₆ ∙⊙∼ h₇ ∙⊙∼ h₈) ◃∎
-        =ₛ⟨ ⊙∘-conv-quart h₁ h₂ h₃ (h₄ ∙⊙∼ h₅ ∙⊙∼ h₆ ∙⊙∼ h₇ ∙⊙∼ h₈) ⟩
-      ⊙-comp-to-== (h₁ ∙⊙∼ h₂ ∙⊙∼ h₃ ∙⊙∼ h₄ ∙⊙∼ h₅ ∙⊙∼ h₆ ∙⊙∼ h₇ ∙⊙∼ h₈) ◃∎ ∎ₛ
+      ⊙-comp-to-== (h₃ ∙⊙∼ h₄ ∙⊙∼ h₅ ∙⊙∼ h₆ ∙⊙∼ h₇) ◃∎
+        =ₛ⟨ !ₛ (⊙∘-conv-tri h₁ h₂ (h₃ ∙⊙∼ h₄ ∙⊙∼ h₅ ∙⊙∼ h₆ ∙⊙∼ h₇)) ⟩
+      ⊙-comp-to-== (h₁ ∙⊙∼ h₂ ∙⊙∼ h₃ ∙⊙∼ h₄ ∙⊙∼ h₅ ∙⊙∼ h₆ ∙⊙∼ h₇) ◃∎ ∎ₛ
 
   module _ {k} {Z : Ptd k} where
 
@@ -137,3 +134,28 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
           (ap ⊙-comp-to-== ∙⊙-post ∙ 
           ⊙-comp-to-==-β (f₁ ⊙∘ f₂) ∙
           ! (ap (ap (λ m → f₁ ⊙∘ m)) (⊙-comp-to-==-β f₂)))
+
+      !⊙-whisk⊙-conv-l-∙-aux : {f₁ : Y ⊙→ Z} {f₂ f₂' : X ⊙→ Y} (h : f₂ ⊙-comp f₂') →
+        ! (ap (_⊙∘_ f₁) (⊙-comp-to-== (⊙∼-id f₂)) ∙ ap (_⊙∘_ f₁) (⊙-comp-to-== h))
+          ==
+        ⊙-comp-to-== (!-⊙∼ (⊙∘-post f₁ (⊙∼-id f₂ ∙⊙∼ h)))
+      !⊙-whisk⊙-conv-l-∙-aux {f₁@(_ , idp)} {f₂@(_ , idp)} =
+        ⊙hom-ind f₂
+          (λ f₂' h →
+            ! (ap (_⊙∘_ f₁) (⊙-comp-to-== (⊙∼-id f₂)) ∙ ap (_⊙∘_ f₁) (⊙-comp-to-== h))
+              ==
+            ⊙-comp-to-== (!-⊙∼ (⊙∘-post f₁ (⊙∼-id f₂ ∙⊙∼ h))))
+          (ap ! (ap (λ p → ap (_⊙∘_ f₁) p ∙ ap (_⊙∘_ f₁) p) (⊙-comp-to-==-β f₂)) ∙
+          ! (ap ⊙-comp-to-== (⊙→∼-to-== ((λ _ → idp) , idp )) ∙ ⊙-comp-to-==-β _))
+
+      !⊙-whisk⊙-conv-l-∙ : {f₁ : Y ⊙→ Z} {f₂ f₂'' f₂' : X ⊙→ Y} (h₁ : f₂ ⊙-comp f₂') (h₂ : f₂' ⊙-comp f₂'') →
+        ! (ap (λ m → f₁ ⊙∘ m) (⊙-comp-to-== h₁) ∙ ap (λ m → f₁ ⊙∘ m) (⊙-comp-to-== h₂))
+          ==
+        ⊙-comp-to-== (!-⊙∼ (⊙∘-post f₁ (h₁ ∙⊙∼ h₂)))
+      !⊙-whisk⊙-conv-l-∙ {f₁} {f₂} {f₂''} =
+        ⊙hom-ind f₂
+          (λ f₂' h₁ → (h₂ : f₂' ⊙-comp f₂'') →
+            ! (ap (λ m → f₁ ⊙∘ m) (⊙-comp-to-== h₁) ∙ ap (λ m → f₁ ⊙∘ m) (⊙-comp-to-== h₂))
+              ==
+            ⊙-comp-to-== (!-⊙∼ (⊙∘-post f₁ (h₁ ∙⊙∼ h₂))))
+          !⊙-whisk⊙-conv-l-∙-aux 
