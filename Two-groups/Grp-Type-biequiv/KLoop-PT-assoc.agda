@@ -79,31 +79,15 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k}
           (⊙∘-α-comp (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}})) (K₂-action-hom (Loop2Grp-map g*)) (K₂-action-hom (Loop2Grp-map f*)))) ◃∙
       ρ ◃∎
         =ₛ₁⟨ 5 & 1 & ! (!⊙-conv (⊙∘-α-comp (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}})) (K₂-action-hom (Loop2Grp-map g*)) (K₂-action-hom (Loop2Grp-map f*)))) ⟩
-      ⊙-comp-to-== (!-⊙∼ (sq-KΩ (pt X) (pt Z) (g* ⊙∘ f*))) ◃∙
-      ⊙-comp-to-== (!-⊙∼ (⊙∘-α-comp g* f* (K₂-rec-hom (pt X) (idf2G {{Loop2Grp (pt X)}})))) ◃∙ 
-      ⊙-comp-to-== (⊙∘-post g* (sq-KΩ (pt X) (pt Y) f*)) ◃∙
-      υ ◃∙
-      ⊙-comp-to-== (⊙∘-pre (K₂-action-hom (Loop2Grp-map f*)) (sq-KΩ (pt Y) (pt Z) g*)) ◃∙
-      ⊙-comp-to-== (!-⊙∼
-        (⊙∘-α-comp (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}})) (K₂-action-hom (Loop2Grp-map g*))
-          (K₂-action-hom {{Loop2Grp (pt X)}} {{Loop2Grp (pt Y)}} (Loop2Grp-map f*)))) ◃∙
-      ρ ◃∎
-        =ₛ₁⟨ 6 & 1 &
-          ap ! (ap-∙ (λ m → K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ m)
-                 (ap K₂-action-hom (natiso2G-to-== (Loop2Grp-map-∘ g* f*)))
-                 (⊙-comp-to-==
-                   {f = K₂-action-hom (Loop2Grp-map {{ηY}} {{ηZ}} g* ∘2G Loop2Grp-map {{ηX}} {{ηY}} f*)}
-                   {g = K₂-action-hom (Loop2Grp-map {{ηY}} {{ηZ}} g*) ⊙∘ K₂-action-hom (Loop2Grp-map {{ηX}} {{ηY}} f*)}
-                   (K₂-map-∘ (Loop2Grp-map-str {{ηX}} {{ηY}} f*) (Loop2Grp-map-str {{ηY}} {{ηZ}} g*)))) ⟩
-      τ₁ ∎ₛ
-
+      τ₁ ◃∎
+      
     KLoop-coher-assoc2 : τ₁ =ₛ τ₃
     KLoop-coher-assoc2 = 
       τ₁
         =ₛ₁⟨ 6 & 1 &
           ap (λ v →
-               ! (ap (λ m → K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ m) v ∙
-                  ap (λ m → K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ m) (⊙-comp-to-== (K₂-map-∘ (Loop2Grp-map-str f*) (Loop2Grp-map-str g*)))))
+               ! (ap (λ m → K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ m)
+                   (v ∙ ⊙-comp-to-== (K₂-map-∘ (Loop2Grp-map-str f*) (Loop2Grp-map-str g*)))))
             (apK₂-pres (Loop2Grp-map-∘ g* f*)) ⟩
       τ₂
         =ₛ₁⟨ 6 & 1 &
