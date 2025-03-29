@@ -79,7 +79,7 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k}
           (⊙∘-α-comp (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}})) (K₂-action-hom (Loop2Grp-map g*)) (K₂-action-hom (Loop2Grp-map f*)))) ◃∙
       ρ ◃∎
         =ₛ₁⟨ 5 & 1 & ! (!⊙-conv (⊙∘-α-comp (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}})) (K₂-action-hom (Loop2Grp-map g*)) (K₂-action-hom (Loop2Grp-map f*)))) ⟩
-      τ₁ ◃∎
+      τ₁ ∎ₛ
       
     KLoop-coher-assoc2 : τ₁ =ₛ τ₃
     KLoop-coher-assoc2 = 
