@@ -16,7 +16,7 @@ open import AdjEq-exmps
 
 module KLoop-adjeq where
 
-module _ {i} {X : Ptd i} {{tX : has-level 2 (de⊙ X)}} {{cX : is-connected 0 (de⊙ X)}} where
+module _ {i} {X : Ptd i} {{cX : is-connected 0 (de⊙ X)}} {{tX : has-level 2 (de⊙ X)}} where
 
    abstract
      KLoop-is-equiv : is-equiv (fst (K₂-rec-hom {{Loop2Grp (pt X)}} (pt X) {φ = idf (pt X == pt X)} idf2G))

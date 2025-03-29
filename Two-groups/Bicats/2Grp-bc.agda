@@ -15,7 +15,7 @@ module 2Grp-bc where
 2Grp-tot : (i : ULevel) → Type (lsucc i)
 2Grp-tot i = Σ (Type i) (λ G → CohGrp G)
 
-module _ {i : ULevel} where
+module _ (i : ULevel) where
 
   open BicatStr
 
@@ -39,4 +39,4 @@ module _ {i : ULevel} where
 
 instance
   2grp-bicat-instance : ∀ {i} → BicatStr i (2Grp-tot i)
-  2grp-bicat-instance {i} = 2grp-bicat {i}
+  2grp-bicat-instance {i} = 2grp-bicat i

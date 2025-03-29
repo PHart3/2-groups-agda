@@ -15,7 +15,7 @@ module Ptd-bc where
 Ptd02 : (i : ULevel) → Type (lsucc i)
 Ptd02 i = Σ (Ptd i) (λ X → is-connected 0 (de⊙ X) × has-level 2 (de⊙ X))
 
-module _ {i : ULevel} where
+module _ (i : ULevel) where
 
   open BicatStr
 
@@ -65,4 +65,4 @@ module _ {i : ULevel} where
 
 instance
   Ptd02-bicat-instance : ∀ {i} → BicatStr i (Ptd02 i)
-  Ptd02-bicat-instance {i} = Ptd02-bicat {i}
+  Ptd02-bicat-instance {i} = Ptd02-bicat i

@@ -16,7 +16,7 @@ open import KFunctor-comp-runit
 module KFunctor-conv-unit where
 
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}}
-  {φ@(cohgrphom f {{σ}}) : CohGrpHom {{η₁}} {{η₂}}} where
+  (φ@(cohgrphom f {{σ}}) : CohGrpHom {{η₁}} {{η₂}}) where
 
   abstract
   

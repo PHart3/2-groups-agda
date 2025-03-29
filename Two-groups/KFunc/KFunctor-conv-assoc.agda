@@ -15,9 +15,9 @@ module KFunctor-conv-assoc where
 
 module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {G₁ : Type ℓ₁} {G₂ : Type ℓ₂} {G₃ : Type ℓ₃} {G₄ : Type ℓ₄}
   {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}} {{η₄ : CohGrp G₄}}
-  (φ₁@(cohgrphom f₁ {{σ₁}}) : CohGrpHom {{η₁}} {{η₂}})
+  (φ₃@(cohgrphom f₃ {{σ₃}}) : CohGrpHom {{η₃}} {{η₄}})
   (φ₂@(cohgrphom f₂ {{σ₂}}) : CohGrpHom {{η₂}} {{η₃}})
-  (φ₃@(cohgrphom f₃ {{σ₃}}) : CohGrpHom {{η₃}} {{η₄}}) where
+  (φ₁@(cohgrphom f₁ {{σ₁}}) : CohGrpHom {{η₁}} {{η₂}}) where
 
   abstract
     K₂-α :
