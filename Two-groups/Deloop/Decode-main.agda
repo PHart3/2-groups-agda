@@ -14,8 +14,6 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
 
   open import Delooping G
 
-  open CohGrp {{...}}
-
   decode-encode : (z : K₂ η) (p : base == z) → decode z (encode z p) == p
   decode-encode z idp = loop-ident
 
