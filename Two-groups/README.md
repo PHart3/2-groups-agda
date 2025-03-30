@@ -29,7 +29,8 @@ pointed connected 2-types.
 
 - The `LoopFunc/` folder contains constructions making the LoopSpace into
   a pseudofunctor from pointed connected 2-types to 2-groups along with
-  associated proofs of coherence of these constructions.
+  associated proofs of coherence of these constructions. The object function
+  of the LoopSpace pseudofunctor is defined in `Hmtpy2Grp.agda`.
 
 - The `Grp-Type-biequiv/` folder contains the proof of our desired biequivalence.
   The two arrows of the biequivalence are defined by the delooping and LoopSpace
