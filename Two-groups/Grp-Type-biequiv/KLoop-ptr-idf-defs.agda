@@ -13,7 +13,6 @@ open import apK
 module KLoop-ptr-idf-defs
   {i} {X : Type i} {{ηX : has-level 2 X}} (x₀ : X) (x : x₀ == x₀) where
 
-
   Λ₁ = 
     ap-∘ (idf X) (K₂-rec-x₀ x₀ x₀) (loop (x₀ == x₀) x) ◃∙
     ap (ap (idf X)) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) x) ◃∙
