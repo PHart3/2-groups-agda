@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --lossy-unification #-}
+{-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
 open import lib.types.Pointed
@@ -110,7 +110,7 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
     whisk⊙-conv-r {f₁} {f₂} =
       ⊙hom-ind f₂
         (λ f₂' h → ⊙-comp-to-== (⊙∘-pre f₁ h) == ap (λ m → m ⊙∘ f₁) (⊙-comp-to-== h))
-        (ap ⊙-comp-to-== ∙⊙-pre ∙
+        (ap ⊙-comp-to-== (∙⊙-pre {f = f₂}) ∙
         ⊙-comp-to-==-β (f₂ ⊙∘ f₁) ∙
         ! (ap (ap (λ m → m ⊙∘ f₁)) (⊙-comp-to-==-β f₂)))
 
@@ -119,7 +119,7 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
     whisk⊙-conv-l {f₁} {f₂} = 
       ⊙hom-ind f₂
         (λ f₂' h → ⊙-comp-to-== (⊙∘-post f₁ h) == ap (λ m → f₁ ⊙∘ m) (⊙-comp-to-== h))
-        (ap ⊙-comp-to-== ∙⊙-post ∙ 
+        (ap ⊙-comp-to-== (∙⊙-post {f = f₂}) ∙ 
         ⊙-comp-to-==-β (f₁ ⊙∘ f₂) ∙
         ! (ap (ap (λ m → f₁ ⊙∘ m)) (⊙-comp-to-==-β f₂)))
 
