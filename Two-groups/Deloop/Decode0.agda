@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --lossy-unification --overlapping-instances --instance-search-depth=4 #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=4 #-}
 
 open import lib.Basics
 open import lib.NType2
