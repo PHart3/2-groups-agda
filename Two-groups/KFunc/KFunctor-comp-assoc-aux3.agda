@@ -62,4 +62,4 @@ module KFCA3 {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {G₁ : Type ℓ₁} {G₂ : Type ℓ
         (loop G₁ x) ◃∎
         =ₛ
       hmtpy-nat-∙' (λ z → idp {a = K₂-map σ₃ (K₂-map σ₂ (K₂-map σ₁ z))}) (loop G₁ x) ◃∎
-    KFunc-assoc-coher = KFunc-assoc-coher0 ∙ₛ (KFunc-assoc-coher1 ∙ₛ KFunc-assoc-coher2)
+    KFunc-assoc-coher = KFunc-assoc-coher0 ∙ₛ KFunc-assoc-coher1 ∙ₛ KFunc-assoc-coher2

@@ -28,6 +28,7 @@ module _ {i} {A : Type i} {a a' : A} where
   !ₛ : {s t : a =-= a'} → s =ₛ t → t =ₛ s
   !ₛ (=ₛ-in p) = =ₛ-in (! p)
 
+  infixr 80 _∙ₛ_
   _∙ₛ_ : {s t u : a =-= a'} → s =ₛ t → t =ₛ u → s =ₛ u
   _∙ₛ_ (=ₛ-in p) (=ₛ-in q) = =ₛ-in (p ∙ q)
 

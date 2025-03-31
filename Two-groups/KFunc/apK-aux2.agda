@@ -100,4 +100,4 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
           (K₂-map-β-pts σ₁ y ∙ ap (loop G₂) (θ iso y) ∙ ! (K₂-map-β-pts σ₂ y)) ◃∙
         ∙-assoc2-!-inv-l (fst (K₂-map⊙ σ₂)) idp idp (loop G₁ x) (loop G₁ y) ◃∙
         ap (ap (fst (K₂-map⊙ σ₂))) (loop-comp G₁ x y) ◃∎
-      apK₂-coher = apK₂-coher0 iso x y ∙ₛ (apK₂-coher1 iso x y ∙ₛ (apK₂-coher2 iso x y ∙ₛ (apK₂-coher3 iso x y ∙ₛ apK₂-coher4)))
+      apK₂-coher = apK₂-coher0 iso x y ∙ₛ apK₂-coher1 iso x y ∙ₛ apK₂-coher2 iso x y ∙ₛ apK₂-coher3 iso x y ∙ₛ apK₂-coher4

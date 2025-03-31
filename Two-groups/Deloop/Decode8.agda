@@ -59,22 +59,3 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
             (loop-comp x y)
             (transp-cst=idf (loop x ∙ loop y) (loop z))) ◃∎
       loop-comp-decode03 = loop-comp-decode01 x y z ∙ₛ loop-comp-decode23 x y z
-
-{-
-    loop-comp-decode : (z : G) → 
-      ! (ap loop (transp-∙ (loop x) (loop y) z)) ◃∙
-      ap loop (ap (λ p → transport codes-fst p z) (loop-comp x y)) ◃∙
-      ap loop (↯ (transp-codes (mu x y) z)) ◃∙
-      ! (loop-comp z (mu x y)) ◃∙
-      ! (transp-cst=idf (loop (mu x y)) (loop z)) ◃∎
-        =ₛ
-      ap loop (↯ (transp-codes y (transport codes-fst (loop x) z))) ◃∙
-      ! (loop-comp (transport codes-fst (loop x) z) y) ◃∙
-      ! (transp-cst=idf (loop y) (loop (transport codes-fst (loop x) z))) ◃∙
-      ap (transport (λ b → base == b) (loop y)) (ap loop (↯ (transp-codes x z))) ◃∙
-      ap (transport (λ b → base == b) (loop y)) (! (loop-comp z x)) ◃∙
-      ap (transport (λ b → base == b) (loop y)) (! (transp-cst=idf (loop x) (loop z))) ◃∙
-      ! (transp-∙ (loop x) (loop y) (loop z)) ◃∙
-      ap (λ p → transport (λ b → base == b) p (loop z)) (loop-comp x y) ◃∎
-    loop-comp-decode = {!θ-comp (codes-β {{η}})!}
--}

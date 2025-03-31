@@ -137,4 +137,4 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         ap (transport (λ b → base == b) (loop y)) (! (transp-cst=idf (loop x) (loop z))) ◃∙
         ! (transp-∙ (loop x) (loop y) (loop z)) ◃∙
         ap (λ p → transport (λ b → base == b) p (loop z)) (loop-comp x y) ◃∎
-      loop-comp-decode = loop-comp-decode05 x y z ∙ₛ (=ₛ-in (loop-comp-decode6-pre) ∙ₛ loop-comp-decode6 x y z)
+      loop-comp-decode = loop-comp-decode05 x y z ∙ₛ (=ₛ-in loop-comp-decode6-pre) ∙ₛ loop-comp-decode6 x y z

@@ -40,4 +40,4 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k}
         ==
       idp {a = K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ K₂-action-hom (Loop2Grp-map (g* ⊙∘ f*))}
     KLoop-coher-assoc = =ₛ-out $
-      KLoop-coher-assoc0 ∙ₛ (KLoop-coher-assoc1 ∙ₛ (KLoop-coher-assoc2 ∙ₛ (KLoop-coher-assoc3 ∙ₛ (KLoop-coher-assoc4 ∙ₛ KLoop-coher-assoc5))))
+      KLoop-coher-assoc0 ∙ₛ KLoop-coher-assoc1 ∙ₛ KLoop-coher-assoc2 ∙ₛ KLoop-coher-assoc3 ∙ₛ KLoop-coher-assoc4 ∙ₛ KLoop-coher-assoc5

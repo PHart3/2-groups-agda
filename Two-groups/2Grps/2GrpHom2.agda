@@ -59,8 +59,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         =ₛ
       map-inv x ◃∎
     rinv-to-linv map-rinv =
-      rinv-to-linv0 ∙ₛ (rinv-to-linv1 ∙ₛ (rinv-to-linv2 ∙ₛ (rinv-to-linv3 ∙ₛ
-      (rinv-to-linv4 ∙ₛ (rinv-to-linv5 ∙ₛ (rinv-to-linv6 map-rinv ∙ₛ
-      (rinv-to-linv7 ∙ₛ (rinv-to-linv8 ∙ₛ (rinv-to-linv9 ∙ₛ (rinv-to-linv10 ∙ₛ
-      (rinv-to-linv11 ∙ₛ (rinv-to-linv12 ∙ₛ (rinv-to-linv13 ∙ₛ
-      rinv-to-linv14)))))))))))))
+      rinv-to-linv0 ∙ₛ rinv-to-linv1 ∙ₛ rinv-to-linv2 ∙ₛ rinv-to-linv3 ∙ₛ
+      rinv-to-linv4 ∙ₛ rinv-to-linv5 ∙ₛ rinv-to-linv6 map-rinv ∙ₛ
+      rinv-to-linv7 ∙ₛ rinv-to-linv8 ∙ₛ rinv-to-linv9 ∙ₛ rinv-to-linv10 ∙ₛ
+      rinv-to-linv11 ∙ₛ rinv-to-linv12 ∙ₛ rinv-to-linv13 ∙ₛ rinv-to-linv14

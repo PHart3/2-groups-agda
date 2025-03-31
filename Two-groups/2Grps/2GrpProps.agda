@@ -137,8 +137,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
             =ₛ
           idp ◃∎
         lam-alid-lam4 =
-          ap-seq-∙ (mu id) _ ∙ₛ
-          (lam-alid-lam0 ∙ₛ (lam-alid-lam1 ∙ₛ (lam-alid-lam2 ∙ₛ lam-alid-lam3)))
+          ap-seq-∙ (mu id) _ ∙ₛ lam-alid-lam0 ∙ₛ lam-alid-lam1 ∙ₛ lam-alid-lam2 ∙ₛ lam-alid-lam3
 
     abstract
       lam-alid-lam :
@@ -244,7 +243,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
 
   abstract
     rho-lam-id-eq : rho id ◃∎ =ₛ lam id ◃∎
-    rho-lam-id-eq = rho-lam-id-eq0 ∙ₛ (rho-lam-id-eq1 ∙ₛ (rho-lam-id-eq2 ∙ₛ rho-lam-id-eq3))
+    rho-lam-id-eq = rho-lam-id-eq0 ∙ₛ rho-lam-id-eq1 ∙ₛ rho-lam-id-eq2 ∙ₛ rho-lam-id-eq3
 
 -- properties specific to 2-groups
 module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where

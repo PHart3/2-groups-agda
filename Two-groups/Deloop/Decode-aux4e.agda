@@ -25,4 +25,4 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
 
     abstract
       long-aux7b : τ₁ =ₛ τ₂
-      long-aux7b = long-aux7b0 ∙ₛ (long-aux7b1 ∙ₛ long-aux7b2)
+      long-aux7b = long-aux7b0 ∙ₛ long-aux7b1 ∙ₛ long-aux7b2

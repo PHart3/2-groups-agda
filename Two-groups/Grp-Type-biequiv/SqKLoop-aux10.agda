@@ -76,4 +76,4 @@ module Sq-aux10 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : 
         η₁
           =ₛ
         η₂
-      SqKLoop-coher = Σ₁ ∙ₛ (Σ₂ ∙ₛ (Σ₃ ∙ₛ Σ₄))
+      SqKLoop-coher = Σ₁ ∙ₛ Σ₂ ∙ₛ Σ₃ ∙ₛ Σ₄

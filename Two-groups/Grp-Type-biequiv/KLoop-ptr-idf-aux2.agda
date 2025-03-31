@@ -132,4 +132,4 @@ module KLoop-ptr-idf-aux2
         ==
       hmtpy-nat-∙' (λ z → idp) (loop (x₀ == x₀) x)
     KLoop-ptr-idf-coher = =ₛ-out $
-      KLoop-ptr-idf-coher0 ∙ₛ (KLoop-ptr-idf-coher1 ∙ₛ (KLoop-ptr-idf-coher2 ∙ₛ KLoop-ptr-idf-coher3))
+      KLoop-ptr-idf-coher0 ∙ₛ KLoop-ptr-idf-coher1 ∙ₛ KLoop-ptr-idf-coher2 ∙ₛ KLoop-ptr-idf-coher3

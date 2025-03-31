@@ -105,7 +105,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
           ap (mu y) (rho x)) ◃∎
           =ₛ
         idp ◃∎
-      rho-alid-rho2 = ap-seq-∙ (λ z → mu z id) _ ∙ₛ (rho-alid-rho0 ∙ₛ rho-alid-rho1)
+      rho-alid-rho2 = ap-seq-∙ (λ z → mu z id) _ ∙ₛ rho-alid-rho0 ∙ₛ rho-alid-rho1
 
     abstract
       rho-alid-rho :

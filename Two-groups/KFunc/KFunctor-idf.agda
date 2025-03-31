@@ -29,7 +29,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         (K₂-map-β-pts idf2G y ∙ ! (ap-idf (loop G y))) ◃∙
       ∙-assoc2-!-inv-l (idf (K₂ G η)) idp idp (loop G x) (loop G y) ◃∙
       ap (λ p → ap (idf (K₂ G η)) p) (loop-comp G x y) ◃∎
-    K₂-map-idf-coher x y = K₂-map-idf-coher0 x y ∙ₛ (K₂-map-idf-coher1 x y ∙ₛ K₂-map-idf-coher2 x y)
+    K₂-map-idf-coher x y = K₂-map-idf-coher0 x y ∙ₛ K₂-map-idf-coher1 x y ∙ₛ K₂-map-idf-coher2 x y
 
   K₂-map-idf : K₂-map⊙ idf2G ⊙-comp (idf (K₂ G η) , idp)
   fst K₂-map-idf =

@@ -33,4 +33,4 @@ module KLPC-aux11 {i j k} {X : Type i} {Y : Type j} {Z : Type k}
       hmtpy-nat-∙'
         (λ u → idp {a = fst (K₂-rec-hom z₀ (idf2G {{Loop2Grp z₀}})) (K₂-map (Loop2Grp-map-str (g ∘ f , idp)) u)})
         (loop (x₀ == x₀) x) ◃∎
-    KLoop-∘-coher = KLoop-∘-coher0 ∙ₛ (KLoop-∘-coher1 ∙ₛ KLoop-∘-coher2)
+    KLoop-∘-coher = KLoop-∘-coher0 ∙ₛ KLoop-∘-coher1 ∙ₛ KLoop-∘-coher2

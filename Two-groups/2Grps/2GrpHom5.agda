@@ -71,4 +71,4 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
           =ₛ
         map-id ◃∎
       rho-to-lam =
-        rho-to-lam0 ∙ₛ (rho-to-lam1 ∙ₛ (rho-to-lam2 ∙ₛ (rho-to-lam3 ∙ₛ (rho-to-lam4 ∙ₛ rho-to-lam5))))
+        rho-to-lam0 ∙ₛ rho-to-lam1 ∙ₛ rho-to-lam2 ∙ₛ rho-to-lam3 ∙ₛ rho-to-lam4 ∙ₛ rho-to-lam5

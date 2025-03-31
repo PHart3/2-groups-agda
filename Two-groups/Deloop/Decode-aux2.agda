@@ -32,4 +32,4 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         idp ◃∙      
         transp-cst=idf p₂ (loop (coe (ap fst (ap codes p₁)) z)) ◃∎
       long-aux8-aux-aux2 idp =
-        long-aux8-aux-aux2-aux0 ∙ₛ (long-aux8-aux-aux2-aux1 ∙ₛ (long-aux8-aux-aux2-aux2 ∙ₛ long-aux8-aux-aux2-aux3))
+        long-aux8-aux-aux2-aux0 ∙ₛ long-aux8-aux-aux2-aux1 ∙ₛ long-aux8-aux-aux2-aux2 ∙ₛ long-aux8-aux-aux2-aux3
