@@ -98,7 +98,6 @@ _∙ʳ_ : ∀ {i} {A : Type i} {x y z : A}
   → (y == z → x == y → x == z)
 q ∙ʳ idp = q
 
-
 {- Rewriting
 
 This is a new pragma added to Agda to help create higher inductive types.
@@ -112,7 +111,7 @@ postulate  -- HIT
 
 {- Unit type
 
-The unit type is defined as record so that we also get the η-rule definitionally.
+The unit type is defined as a record so that we also get the η-rule definitionally.
 -}
 
 record ⊤ : Type₀ where
