@@ -46,6 +46,13 @@ pointed connected 2-types.
 2. Install the stripped, modified HoTT-Agda library under `../HoTT-Agda`.
 3. Type-check the file `Grp-Type-biequiv/Biequiv-main.agda`.
 
+The type-checking of this file is very intensive. We have verfied that the type-checker
+finishes successfully on the following machine:
+
+*macOS Monterey 12.6.5, Apple M1 chip, 16 GB of RAM*
+
+The type-checking takes about 166.67 minutes in total. (See [stats.md](../stats.md).)
+
 ## License
 
 This work is released under Mozilla Public License 2.0.
