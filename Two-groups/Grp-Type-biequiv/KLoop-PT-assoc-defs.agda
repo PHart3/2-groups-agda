@@ -85,3 +85,4 @@ module KLoop-PT-assoc-defs
         ⊙∘-post (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}))
           (apK₂ {σ₁ = Loop2Grp-map-str (g* ⊙∘ f*)} {σ₂ = Loop2Grp-map g* ∘2Gσ Loop2Grp-map f*}
             (Loop2Grp-map-∘ g* f*) ∙⊙∼ K₂-map-∘ (Loop2Grp-map-str f*) (Loop2Grp-map-str g*)))) ◃∎
+  τ₅ = ⊙-comp-to-== (⊙∼-id (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ K₂-action-hom (Loop2Grp-map (g* ⊙∘ f*)))) ◃∎
