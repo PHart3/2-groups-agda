@@ -20,7 +20,7 @@ and comes equipped with the following operations:
   the codomain is in a uniform universe level)
 
 This type is postulated below and linked to Agda’s universe polymorphism
-mechanism via the built-in module Agda.Primitive (it’s the new way).
+mechanism via the built-in module Agda.Primitive.
 
 In plain Agda, the [i]th universe is called [Set i], which is not a very good
 name from the point of view of HoTT, so we define [Type] as a synonym of [Set]
@@ -121,7 +121,6 @@ Unit = ⊤
 
 {-# BUILTIN UNIT ⊤ #-}
 
-
 {- Dependent paths
 
 The notion of dependent path is a very important notion.
@@ -202,7 +201,6 @@ Shorter notation for Π-types.
 
 Π : ∀ {i j} (A : Type i) (P : A → Type j) → Type (lmax i j)
 Π A P = (x : A) → P x
-
 
 {- Σ-types
 
