@@ -1,39 +1,39 @@
 **Output of command `agda --profile=internal Biequiv-main.agda`:**
 
 ```
-Total                            10,000,460ms              
-Miscellaneous                           226ms              
-Typing                              710,206ms (8,770,022ms)
-Typing.CheckRHS                   4,438,188ms              
-Typing.OccursCheck                1,671,014ms              
-Typing.InstanceSearch             1,303,872ms              
-Typing.TypeSig                      644,587ms              
-Typing.CheckLHS                       1,268ms     (2,142ms)
-Typing.CheckLHS.UnifyIndices            874ms              
-Typing.With                              10ms              
-Serialization                       330,495ms   (408,886ms)
-Serialization.BuildInterface         76,189ms              
-Serialization.BinaryEncode            1,038ms              
-Serialization.Compress                1,003ms              
-Serialization.Sort                      159ms              
-DeadCode                                138ms   (310,645ms)
-DeadCode.DeadCodeInstantiateFull    290,645ms              
-DeadCode.DeadCodeReachable           19,861ms              
-Positivity                          288,326ms              
-ProjectionLikeness                   81,278ms              
-Termination                             115ms    (60,864ms)
-Termination.RecCheck                 60,732ms              
+Total                            10,005,083ms              
+Miscellaneous                           108ms              
+Typing                              735,417ms (8,759,452ms)
+Typing.CheckRHS                   4,429,242ms              
+Typing.OccursCheck                1,659,711ms              
+Typing.InstanceSearch             1,291,021ms              
+Typing.TypeSig                      641,900ms              
+Typing.CheckLHS                       1,265ms     (2,148ms)
+Typing.CheckLHS.UnifyIndices            883ms              
+Typing.With                              11ms              
+Serialization                       327,238ms   (405,560ms)
+Serialization.BuildInterface         76,240ms              
+Serialization.Compress                  996ms              
+Serialization.BinaryEncode              930ms              
+Serialization.Sort                      154ms              
+DeadCode                                145ms   (324,621ms)
+DeadCode.DeadCodeInstantiateFull    308,913ms              
+DeadCode.DeadCodeReachable           15,562ms              
+Positivity                          309,180ms              
+ProjectionLikeness                   65,232ms              
+Termination                             115ms    (54,901ms)
+Termination.RecCheck                 54,769ms              
 Termination.Compare                      13ms              
-Coverage                             40,494ms    (41,178ms)
-Coverage.UnifyIndices                   684ms              
-Parsing                                 858ms    (18,938ms)
-Parsing.OperatorsExpr                17,375ms              
-Parsing.OperatorsPattern                704ms              
-Scoping                                 986ms    (11,715ms)
-Scoping.InverseScopeLookup           10,729ms              
-Deserialization                       5,516ms     (7,490ms)
-Deserialization.Compaction            1,973ms              
-Highlighting                            753ms              
-Import                                   85ms              
-Injectivity                              48ms
+Coverage                             46,174ms    (46,864ms)
+Coverage.UnifyIndices                   689ms              
+Parsing                                 907ms    (19,002ms)
+Parsing.OperatorsExpr                17,393ms              
+Parsing.OperatorsPattern                701ms              
+Scoping                                 998ms    (11,734ms)
+Scoping.InverseScopeLookup           10,736ms              
+Deserialization                       5,584ms     (7,609ms)
+Deserialization.Compaction            2,025ms              
+Highlighting                            696ms              
+Import                                   70ms              
+Injectivity                              51ms
 ```
