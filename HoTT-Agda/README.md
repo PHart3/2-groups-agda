@@ -20,6 +20,9 @@ Each Agda file should have `--without-K --rewriting` in its header.
 `--without-K` is for restricting pattern matching so that the uniqueness of identity proofs is not admissible.
 `--rewriting` is for the computational rules of the higher inductive types.
 
+Moreover, files postulating HITs should have `--confluence-check` in their headers. This ensures that the
+new rewriting rules keep the system confluent, so that type-checking remains at least semi-decidable.
+
 Structure of the source
 -----------------------
 
