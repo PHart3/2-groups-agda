@@ -52,10 +52,10 @@ finishes successfully on the following machine:
 *macOS Sequoia 15.4, Apple M1 chip, 16 GB of RAM*
 
 The type-checking takes about 166.75 minutes in total. (See [stats.md](../stats.md).)
-Note that macOS, unlike Linux, dynamically allocates swap space as the process runs.
-This is crucial because the type-checking uses around 100 GB of memory at some points.
-Therefore, make sure to run the type-checker on a system with a lot of virtual memory
-available.
+Note that macOS, unlike Linux, dynamically alters the size of the swap file as the
+process runs. This is crucial because the type-checking uses around 100 GB of memory
+at some points. Therefore, make sure to run the type-checker on a system with a lot
+of virtual memory available.
 
 ## License
 
