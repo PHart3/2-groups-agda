@@ -24,11 +24,20 @@ The code has been checked with Agda 2.6.4.3.
 
 ## Type-checking with Docker
 
-Build Docker image:
+1. Build Docker image:
 
-  ```bash
-  docker build . -t 2group
-  ```
+   ```bash
+   docker build . -t 2group
+   ```
+2. Generate HTML files:
+
+   ```bash
+   mkdir -p ./html
+   docker run --mount type=bind,source=./html,target=/Two-groups/html 2group
+   ```
+
+   The HTML files will be under `html/`, and `html/Biequiv-main.agda.html`
+   will be the entry point.
 
 ## Acknowledgement
 
