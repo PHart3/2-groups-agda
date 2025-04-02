@@ -31,7 +31,6 @@ open import LoopK-adjeq
 
 module Biequiv-main where
 
-  open BicatStr {{...}}
   open PsfunctorStr
   open Psfunctor
   open Pstrans
