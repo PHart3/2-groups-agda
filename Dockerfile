@@ -25,4 +25,6 @@ RUN echo "/HoTT-Agda/hott-theorems.agda-lib" >> /root/.agda/libraries
 RUN echo "/Two-groups/two-group.agda-lib" >> /root/.agda/libraries 
 
 WORKDIR /Two-groups
-RUN source /root/.bashrc && agda --library-file=/root/.agda/libraries --ignore-interfaces ./Grp-Type-biequiv/Biequiv-main.agda
+RUN \
+  source /root/.bashrc && \
+  agda --library-file=/root/.agda/libraries --ignore-interfaces ./Grp-Type-biequiv/Biequiv-main.agda
