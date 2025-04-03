@@ -24,6 +24,10 @@ The code has been checked with Agda 2.6.4.3.
 
 ## Type-checking with Docker
 
+We have successfully tested the following Docker container on Linux with 16 GB of RAM and
+100 GB of swap space. A machine with more RAM should significantly improve the performance
+of the build.
+
 1. Build Docker image:
 
    ```bash
