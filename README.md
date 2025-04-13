@@ -24,7 +24,7 @@ A preprint outlining our mechanization is located at [2Grp-biequiv-preprint.pdf]
 
   See `Two-groups/README.md` for details and for the license of the work inside this directory.
 
-## Type-checking with Docker
+## Type-checking
 
 We have successfully tested the following Docker container on Linux with 16 GB of RAM and
 100 GB of swap space.
@@ -48,6 +48,8 @@ We have successfully tested the following Docker container on Linux with 16 GB o
 
    This may take a few minutes. The HTML files will be under `html/`,
    and `html/Biequiv-main.agda.html` will be the entry point.
+
+See `Two-groups/README.md` for information on type-checking the code without Docker.
 
 ## Acknowledgement
 
