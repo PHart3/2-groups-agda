@@ -1,0 +1,11 @@
+name: two-group
+depend:
+  hott-core-group
+  hott-theorems-group
+include:
+  2Grps
+  Deloop
+  KFunc
+  LoopFunc
+  Bicats
+  Grp-Type-biequiv
