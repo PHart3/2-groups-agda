@@ -13,7 +13,7 @@ module 2GrpMap-conv where
 
 open CohGrp {{...}}
 
-module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
+module 2G-comp-conv {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
 
   abstract
   
@@ -119,7 +119,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       natiso2G-to-==
         (iso₈ natiso-∘ iso₇ natiso-∘ iso₆ natiso-∘ iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∎ ∎ₛ
 
-  module _ {k} {G₃ : Type k} {{η₃ : CohGrp G₃}} where
+  module Whisk-conv {k} {G₃ : Type k} {{η₃ : CohGrp G₃}} where
 
     abstract
     
@@ -135,6 +135,10 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         natiso2G-to-== (natiso-whisk-l {μ = grphom-forg f₂} iso) == ap (λ m → f₂ ∘2G m) (natiso2G-to-== {μ = f₁} {ν = f₁'} iso)
       whisk2G-conv-l {f₂} iso =
         natiso2G-to-==-whisk-l {f₂ = f₂} iso (natiso-whisk-l {μ = grphom-forg f₂} iso) (λ _ → idp)
+
+  open Whisk-conv public
+
+open 2G-comp-conv public
 
 -- triangle identity
 

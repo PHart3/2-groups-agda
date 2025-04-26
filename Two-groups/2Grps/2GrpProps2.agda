@@ -97,37 +97,40 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         =ₛ₁⟨ !-inv-l (al y x id) ⟩
       idp ◃∎ ∎ₛ
 
-    abstract
-      rho-alid-rho2 :
-        ap (λ z → mu z id) (
-          ! (rho (mu y x)) ∙
-          ! (al y x id) ∙
-          ap (mu y) (rho x)) ◃∎
-          =ₛ
-        idp ◃∎
-      rho-alid-rho2 = ap-seq-∙ (λ z → mu z id) _ ∙ₛ rho-alid-rho0 ∙ₛ rho-alid-rho1
+    module Rho-alid-rho where
 
-    abstract
-      rho-alid-rho :
-        ! (rho (mu y x)) ◃∙
-        ! (al y x id) ◃∙
-        ap (mu y) (rho x) ◃∎
-          =ₛ
-        idp ◃∎
-      rho-alid-rho = =ₛ-in (ap-equiv-idp idmu-iso (=ₛ-out rho-alid-rho2))
+      abstract
+        rho-alid-rho2 :
+          ap (λ z → mu z id) (
+            ! (rho (mu y x)) ∙
+            ! (al y x id) ∙
+            ap (mu y) (rho x)) ◃∎
+            =ₛ
+          idp ◃∎
+        rho-alid-rho2 = ap-seq-∙ (λ z → mu z id) _ ∙ₛ rho-alid-rho0 ∙ₛ rho-alid-rho1
 
+      abstract
+        rho-alid-rho :
+          ! (rho (mu y x)) ◃∙
+          ! (al y x id) ◃∙
+          ap (mu y) (rho x) ◃∎
+            =ₛ
+          idp ◃∎
+        rho-alid-rho = =ₛ-in (ap-equiv-idp idmu-iso (=ₛ-out rho-alid-rho2))
 
-  module _ (x : G) where
+    open Rho-alid-rho public
 
-    abstract
-      zz₁-rot2◃ :
-        al x (inv x) x ◃∙
-        ! (ap (λ z → mu z x) (rinv x)) ◃∙
-        lam x ◃∎
-          =ₛ
-        ap (mu x) (linv x) ◃∙
-        rho x ◃∎
-      zz₁-rot2◃ = pre-rotate-out (pre-rotate'-in (=ₛ-in (zz₁ x)))
+  abstract
+    zz₁-rot2◃ : (x : G) → 
+      al x (inv x) x ◃∙
+      ! (ap (λ z → mu z x) (rinv x)) ◃∙
+      lam x ◃∎
+        =ₛ
+      ap (mu x) (linv x) ◃∙
+      rho x ◃∎
+    zz₁-rot2◃ x = pre-rotate-out (pre-rotate'-in (=ₛ-in (zz₁ x)))
+
+  module ZZ-linv-suff (x : G) where
 
     abstract
 
@@ -181,7 +184,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         ap (mu (inv x)) (lam x) ◃∎
           =ₛ⟨ 1 & 3 & ∙-ap-seq (mu (inv x)) (al x (inv x) x ◃∙ ! (ap (λ z → mu z x) (rinv x)) ◃∙ lam x ◃∎) ⟩
         _
-          =ₛ₁⟨ 1 & 1 & ap (ap (mu (inv x))) (=ₛ-out zz₁-rot2◃) ⟩
+          =ₛ₁⟨ 1 & 1 & ap (ap (mu (inv x))) (=ₛ-out (zz₁-rot2◃ x)) ⟩
         ! (al (inv x) x (mu (inv x) x) ∙
           ap2 mu (linv x) idp ∙
           lam (mu (inv x) x)) ◃∙
@@ -255,6 +258,10 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
           =ₛ₁⟨ =ₛ-out (rho-alid-rho (inv x) x) ⟩
         idp ◃∎ ∎ₛ
 
+  module ZZ-linv (x : G) where
+
+    open ZZ-linv-suff
+
     abstract
       zz₁-linv :
         linv x ◃∎
@@ -265,7 +272,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         lam id ◃∎
       zz₁-linv =
         linv x ◃∎
-          =ₛ⟨ zz₁-linv-aux ⟩
+          =ₛ⟨ zz₁-linv-aux x ⟩
         ! (al (inv x) x (mu (inv x) x) ∙
           ap2 mu (linv x) idp ∙
           lam (mu (inv x) x)) ◃∙
@@ -281,7 +288,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
             ap-seq-∙ (mu (inv x))
               (al x (inv x) x ◃∙ ! (ap (λ z → mu z x) (rinv x)) ◃∙ lam x ◃∙ ! (rho x) ◃∎) ⟩
         _
-          =ₛ⟨ 0 & 4 & zz₁-linv-suff ⟩
+          =ₛ⟨ 0 & 4 & zz₁-linv-suff x ⟩
         idp ◃∙
         ap (mu (inv x)) (! (rho x)) ◃∙
         al (inv x) x id ◃∙
@@ -293,6 +300,10 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         ap2 mu (linv x) idp ◃∙
         lam id ◃∎ ∎ₛ
 
+  open ZZ-linv public
+
+  module ZZ-linv-rot (x : G) where
+
     abstract
       zz₁-linv-rot1 :
         ! (lam id) ◃∙
@@ -301,7 +312,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         ap (mu (inv x)) (rho x) ◃∎
           =ₛ
         ! (linv x) ◃∎
-      zz₁-linv-rot1 = post-rotate-in (pre-rotate'-in (pre-rotate'-in (pre-rotate'-in (pre-rotate-out (zz₁-linv)))))
+      zz₁-linv-rot1 = post-rotate-in (pre-rotate'-in (pre-rotate'-in (pre-rotate'-in (pre-rotate-out (zz₁-linv x)))))
 
       zz₁-linv-rot2 :
         linv x ◃∙
@@ -313,7 +324,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
       zz₁-linv-rot2 =  
         linv x ◃∙
         ! (lam id) ◃∎
-          =ₛ⟨ post-rotate'-in (zz₁-linv) ⟩
+          =ₛ⟨ post-rotate'-in (zz₁-linv x) ⟩
         ! (ap (mu (inv x)) (rho x)) ◃∙
         al (inv x) x id ◃∙
         ap2 mu (linv x) idp ◃∎
@@ -321,4 +332,5 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         ! (ap (mu (inv x)) (rho x)) ◃∙
         al (inv x) x id ◃∙
         ap (λ z → mu z id) (linv x) ◃∎ ∎ₛ
-          
+
+  open ZZ-linv-rot public

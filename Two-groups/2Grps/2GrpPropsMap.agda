@@ -13,7 +13,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
   (map : G₁ → G₂)
   (map-comp : (x y : G₁) → mu (map x) (map y) == map (mu x y)) where
 
-  module _
+  module Map-al-rot
     (map-al : (x y z : G₁) →
       ! (al (map x) (map y) (map z)) ◃∙
       ap (mu (map x)) (map-comp y z) ◃∙
@@ -46,6 +46,8 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         al (map x) (map y) (map z) ◃∎
       map-al-rot2◃ =
         post-rotate'-in (post-rotate'-in (post-rotate-out (pre-rotate-in (pre-rotate'-out (map-al x y z)))))
+
+  open Map-al-rot public
 
   module _ (map-id : id == map id) where
 
@@ -86,7 +88,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
 
       -- properties about map-rho
 
-      module _ 
+      module Map-rho-rot 
         (map-rho :
           ! (map-comp x id) ◃∎
             =ₛ
@@ -154,6 +156,8 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
             al (inv (map x)) (map x) (map id) ◃∙
             ap2 mu (linv (map x)) idp ◃∙
             lam (map id) ◃∎ ∎ₛ
+
+      open Map-rho-rot public
 
       abstract
         map-id-map-rho :
@@ -223,10 +227,9 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
               <–-inv-r (ap-equiv ((λ z → mu z (map x)) , mu-post-iso (map x)) _ _)
                 (linv (map x) ∙ map-id ∙ ! (ap map (linv x)) ∙ ! (map-comp (inv x) x)))
 
-
       -- properties about map-rinv
 
-      module _
+      module Map-rinv-rot
         (map-rinv : (x : G₁) →
           ! (ap (mu (map x)) (map-inv x)) ◃∎
             =ₛ
@@ -300,6 +303,8 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
             al (inv (map x)) (map x) (map (inv x)) ◃∙
             ap2 mu (linv (map x)) idp ◃∙
             lam (map (inv x)) ◃∎ ∎ₛ
+
+      open Map-rinv-rot public
 
       abstract
         map-inv-map-rinv : (x : G₁) →
