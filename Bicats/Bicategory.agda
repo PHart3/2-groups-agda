@@ -23,6 +23,9 @@ module _ (j : ULevel) where
         → α i h (g ◻ f) ∙ α (i ◻ h) g f == ap (λ m → i ◻ m) (α h g f) ∙ α i (h ◻ g) f ∙ ap (λ m → m ◻ f) (α i h g)
       {{hom-trunc}} : {a b : B₀} → has-level 1 (hom a b)
 
+  Bicat : (i : ULevel) → Type (lmax (lsucc j) (lsucc i))
+  Bicat i = Σ (Type i) BicatStr
+
 open BicatStr {{...}}
 
 module _ {i j} {B₀ : Type i} where

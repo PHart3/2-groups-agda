@@ -282,6 +282,9 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
 ap-idf : ∀ {i} {A : Type i} {u v : A} (p : u == v) → ap (idf A) p == p
 ap-idf idp = idp
 
+ap-idf-idp : ∀ {i} {A : Type i} {u v : A} (p : u == v) → ap (λ v → v) p ∙ idp == p
+ap-idf-idp idp = idp
+
 !-!-ap-idf : ∀ {i} {A : Type i} {u v : A} (p : u == v) → ! (! (ap (idf A) p)) == p
 !-!-ap-idf idp = idp
 

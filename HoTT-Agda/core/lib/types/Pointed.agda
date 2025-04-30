@@ -165,7 +165,7 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y) where
 
   abstract
     ⊙hom-contr : is-contr (Σ (X ⊙→ Y) (λ g → f ⊙-comp g))
-    ⊙hom-contr = equiv-preserves-level lemma {{⊙hom-contr-aux }}
+    ⊙hom-contr = equiv-preserves-level lemma {{⊙hom-contr-aux}}
       where
         lemma :
           Σ (Σ (de⊙ X → de⊙ Y) (λ g → fst f ∼ g))
@@ -225,21 +225,22 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} {f₁ f₂ : X ⊙→ Y} {H : f₁ ⊙-co
           Σ (! (h (pt X)) ∙ snd f₁ == snd f₂) (λ L → ap (λ p →  ! p ∙ snd f₁) (k (pt X)) ∙ L == snd H)}
         (funhom-contr {f = fst H}))⁻¹)
 
-  ⊙→∼-contr : is-contr (Σ (f₁ ⊙-comp f₂) (λ K → H ⊙→∼ K))
-  ⊙→∼-contr = equiv-preserves-level lemma {{⊙→∼-contr-aux}}
-    where
-      lemma :
-        Σ (Σ (fst f₁ ∼ fst f₂) (λ h → fst H ∼ h))
-          (λ (h , k) → Σ (! (h (pt X)) ∙ snd f₁ == snd f₂)
-            (λ L → ap (λ p →  ! p ∙ snd f₁) (k (pt X)) ∙ L == snd H))
-          ≃
-        Σ (f₁ ⊙-comp f₂) (λ K → H ⊙→∼ K)
-      lemma =
-        equiv
-          (λ ((h , k) , (L , c)) → (h , L) , (k , c))
-          (λ ((K₁ , K₂) , (c₁ , c₂)) → (K₁ , c₁) , (K₂ , c₂))
-          (λ ((K₁ , K₂) , (c₁ , c₂)) → idp)
-          λ ((h , k) , (L , c)) → idp
+  abstract
+    ⊙→∼-contr : is-contr (Σ (f₁ ⊙-comp f₂) (λ K → H ⊙→∼ K))
+    ⊙→∼-contr = equiv-preserves-level lemma {{⊙→∼-contr-aux}}
+      where
+        lemma :
+          Σ (Σ (fst f₁ ∼ fst f₂) (λ h → fst H ∼ h))
+            (λ (h , k) → Σ (! (h (pt X)) ∙ snd f₁ == snd f₂)
+              (λ L → ap (λ p →  ! p ∙ snd f₁) (k (pt X)) ∙ L == snd H))
+            ≃
+          Σ (f₁ ⊙-comp f₂) (λ K → H ⊙→∼ K)
+        lemma =
+          equiv
+            (λ ((h , k) , (L , c)) → (h , L) , (k , c))
+            (λ ((K₁ , K₂) , (c₁ , c₂)) → (K₁ , c₁) , (K₂ , c₂))
+            (λ ((K₁ , K₂) , (c₁ , c₂)) → idp)
+            λ ((h , k) , (L , c)) → idp
 
   ⊙→∼-ind : ∀ {k} (P : (K : f₁ ⊙-comp f₂) → (H ⊙→∼ K → Type k))
     → P H (⊙→∼-id H) → {K : f₁ ⊙-comp f₂} (p : H ⊙→∼ K) → P K p
@@ -407,19 +408,20 @@ module _ {i} {X : Ptd i} where
         {P = λ (A , e) → Σ A (λ a₀ → fst e (pt X) == a₀)} ≃-tot-contr)⁻¹)
       {{pathfrom-is-contr-instance}}
 
-  ⊙≃-contr : is-contr (Σ (Ptd i) (λ Y → X ⊙≃ Y))
-  ⊙≃-contr = equiv-preserves-level lemma {{⊙≃-contr-aux }}
-    where
-      lemma :
-        Σ (Σ (Type i) (λ A → de⊙ X ≃ A)) (λ (A , e) → Σ A (λ a₀ → fst e (pt X) == a₀))
-          ≃
-        Σ (Ptd i) (λ Y → X ⊙≃ Y)
-      lemma =
-        equiv
-          (λ ((A , e) , (a , p)) → ⊙[ A , a ] , ≃-to-⊙≃ e p)
-          (λ (Y , ⊙e) → ((de⊙ Y) , (⊙≃-to-≃ ⊙e)) , ((pt Y) , (⊙–>-pt ⊙e)))
-          (λ (Y , ⊙e) → idp)
-          λ ((A , e) , (a , p)) → idp
+  abstract
+    ⊙≃-contr : is-contr (Σ (Ptd i) (λ Y → X ⊙≃ Y))
+    ⊙≃-contr = equiv-preserves-level lemma {{⊙≃-contr-aux}}
+      where
+        lemma :
+          Σ (Σ (Type i) (λ A → de⊙ X ≃ A)) (λ (A , e) → Σ A (λ a₀ → fst e (pt X) == a₀))
+            ≃
+          Σ (Ptd i) (λ Y → X ⊙≃ Y)
+        lemma =
+          equiv
+            (λ ((A , e) , (a , p)) → ⊙[ A , a ] , ≃-to-⊙≃ e p)
+            (λ (Y , ⊙e) → ((de⊙ Y) , (⊙≃-to-≃ ⊙e)) , ((pt Y) , (⊙–>-pt ⊙e)))
+            (λ (Y , ⊙e) → idp)
+            λ ((A , e) , (a , p)) → idp
 
   ⊙≃-ind : ∀ {k} (P : (Y : Ptd i) → (X ⊙≃ Y → Type k))
     → P X (⊙ide X) → {Y : Ptd i} (e : X ⊙≃ Y) → P Y e
