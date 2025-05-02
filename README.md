@@ -49,9 +49,7 @@ We have successfully tested the following Docker container on Linux with 16 GB o
    docker build . -t 2group
    ```
 
-   Our machine uses as much as 28.7 GB of physical memory and takes
-   over 8 hours to build, but a machine with more RAM should significantly
-   improve the performance. 
+   Our machine uses as much as 28.7 GB of physical memory and takes about 8 hours to build. 
 
 2. Generate HTML files:
 
@@ -60,8 +58,8 @@ We have successfully tested the following Docker container on Linux with 16 GB o
    docker run --mount type=bind,source=./html,target=/Two-groups/html 2group
    ```
 
-   This may take a few minutes. The HTML files will be under `html/`,
-   and `html/Final-thms.agda.html` will be the entry point.
+   This may take a few minutes. The HTML files will be under `html/`, and
+   `html/Final-thms.agda.html` will be the entry point.
 
 If you can avoid the overhead of Docker, please do so. Type-checking directly on a
 MacOS with an M1 chip is much faster in our experience (see `Two-groups/README.md`).
