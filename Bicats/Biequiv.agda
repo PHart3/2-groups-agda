@@ -43,6 +43,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}  where
   -- biequiv strucutre between two bicats
   
   record BiequivStr-inst {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}} : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
+    constructor bequiv
     field
       Ψ₁ : Psfunctor {{ξB}} {{ξC}} 
       Ψ₂ : Psfunctor {{ξC}} {{ξB}}

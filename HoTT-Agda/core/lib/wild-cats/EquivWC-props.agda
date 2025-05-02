@@ -13,6 +13,7 @@ module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} {C : WildCat {ℓc₁} {ℓc
   open Equiv-wc
   open HAdjEquiv-wc
 
+  -- Every equivalence of wild categories is a fully faithful functor.
   abstract
     Equiv-wc-ff : (e : Equiv-wc C D) → {x y : ob C} → is-equiv (arr (ftor₁ e) {x} {y})
     Equiv-wc-ff (e@(EquivWC ftor₁ ftor₂ (iso₁-f , iso₁-s) (iso₂-f , iso₂-s))) {x} {y} = let a𝔼@(AEquivWC hae zz) = Equiv-wc-promote e in 
