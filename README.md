@@ -3,7 +3,8 @@
 We construct a fully verified biequivalence between
   1. the (2,1)-category of coherent 2-groups
   2. the (2,1)-category of 2-truncated connected pointed types.
-We also provide an equality between them by way of univalence.
+  
+We also derive a verified equality between them by way of univalence.
 
 The code has been checked with Agda 2.6.4.3.
 
