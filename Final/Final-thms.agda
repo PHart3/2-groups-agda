@@ -6,4 +6,4 @@ module Final-thms where
 open import Biequiv-main public
 
 -- an equality between the same two (2,1)-categories obtained from the biequivalence
-open import Bicat-quniv public
+open import Equality-main public

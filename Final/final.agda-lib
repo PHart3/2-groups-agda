@@ -1,6 +1,5 @@
 name: final
 depend:
   two-group
-  bicats
 include:
   ./

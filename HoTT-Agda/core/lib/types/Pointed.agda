@@ -427,6 +427,11 @@ module _ {i} {X : Ptd i} where
     → P X (⊙ide X) → {Y : Ptd i} (e : X ⊙≃ Y) → P Y e
   ⊙≃-ind P = ID-ind-map P ⊙≃-contr
 
+module _ {i} {X : Ptd i} {Y : Ptd i} where
+
+  ⊙≃-to-== : X ⊙≃ Y → X == Y 
+  ⊙≃-to-== = ⊙≃-ind {X = X} (λ Y _ → X == Y) idp
+
 {- Pointed maps out of bool -}
 
 -- intuition : [f true] is fixed and the only changable part is [f false].
