@@ -60,6 +60,26 @@ module _ {i j} (C : WildCat {i} {j}) where
     ap (λ m → ⟦ C ⟧ g ▢ m) (α C f (<–-wc ef) (<–-wc eg)) ∙
     ! (α C g f (⟦ C ⟧ <–-wc ef ▢ <–-wc eg))  
 
+module _ {i j} (C : WildCat {i} {j}) {a b : ob C} where
+
+  equiv-wc-unique : {f : hom C a b} (e₁ e₂ : equiv-wc C f) → <–-wc C e₁ == <–-wc C e₂
+  equiv-wc-unique {f} e₁ e₂ = 
+    <–-wc C e₁
+      =⟨ ρ C (<–-wc C e₁) ⟩
+    ⟦ C ⟧ <–-wc C e₁ ▢ id₁ C b
+      =⟨ ap (λ m → ⟦ C ⟧ <–-wc C e₁ ▢ m) (<–-wc-rinv C e₂) ⟩
+    ⟦ C ⟧ <–-wc C e₁ ▢ ⟦ C ⟧ f ▢ <–-wc C e₂
+      =⟨ ! (α C (<–-wc C e₁) f (<–-wc C e₂)) ⟩
+    ⟦ C ⟧ (⟦ C ⟧ <–-wc C e₁ ▢  f) ▢ <–-wc C e₂
+      =⟨ ap (λ m → ⟦ C ⟧ m ▢  <–-wc C e₂) (! (<–-wc-linv C e₁)) ⟩
+    ⟦ C ⟧ id₁ C a ▢  <–-wc C e₂
+      =⟨ ! (lamb C (<–-wc C e₂)) ⟩
+    <–-wc C e₂ =∎
+
+  ap-<–-wc : {f₁ f₂ : hom C a b} (p : f₁ == f₂)
+    (e₁ : equiv-wc C f₁) (e₂ : equiv-wc C f₂) → <–-wc C e₁ == <–-wc C e₂
+  ap-<–-wc idp e₁ e₂ = equiv-wc-unique e₁ e₂
+
 Type-wc : (i : ULevel) → WildCat {lsucc i} {i}
 ob (Type-wc i) = Type i
 hom (Type-wc i) A B = A → B

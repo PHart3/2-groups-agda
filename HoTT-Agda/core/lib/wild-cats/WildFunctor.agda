@@ -13,6 +13,9 @@ record Functor-wc {i₁ j₁ i₂ j₂} (B : WildCat {i₁} {j₁}) (C : WildCat
     arr : {a b : ob B} → hom B a b → hom C (obj a) (obj b)
     id : (a : ob B) → arr (id₁ B a) == id₁ C (obj a)
     comp : {a b c : ob B} (f : hom B a b) (g : hom B b c) → arr (⟦ B ⟧ g ▢ f) == ⟦ C ⟧ arr g ▢ arr f
+  comp-tri : {a b c d : ob B} (f : hom B a b) (g : hom B b c) (h : hom B c d)
+    → arr (⟦ B ⟧ h ▢ ⟦ B ⟧ g ▢ f) == ⟦ C ⟧ arr h ▢ ⟦ C ⟧ arr g ▢ arr f
+  comp-tri f g h = comp (⟦ B ⟧ g ▢ f) h ∙ ap (λ m → ⟦ C ⟧ arr h ▢ m) (comp f g)
 open Functor-wc public
 
 F-equiv-wc : ∀ {i₁ j₁ i₂ j₂} {B : WildCat {i₁} {j₁}} {C : WildCat {i₂} {j₂}}

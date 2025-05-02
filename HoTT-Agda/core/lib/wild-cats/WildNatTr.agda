@@ -87,25 +87,61 @@ module _ {ℓv ℓe : ULevel} {ℓc₁ ℓc₂ ℓd₁ ℓd₂} {I : WildCat {�
 module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} (C : WildCat {ℓc₁} {ℓc₂}) (D : WildCat {ℓd₁} {ℓd₂}) where
 
   record Equiv-wc : Type (lmax (lmax ℓc₁ ℓc₂) (lmax ℓd₁ ℓd₂)) where
+    constructor EquivWC
     field
       ftor₁ : Functor-wc C D
       ftor₂ : Functor-wc D C
       iso₁ : Nat-iso (ftor₁ ∘WC ftor₂) (idfWC D)
       iso₂ : Nat-iso (idfWC C) (ftor₂ ∘WC ftor₁)
+    iso₂-coher : (x : ob C) → arr ftor₂ (arr ftor₁ (comp (fst iso₂) x)) == comp (fst iso₂) (obj ftor₂ (obj ftor₁ x))
+    iso₂-coher x = 
+      arr ftor₂ (arr ftor₁ (comp (fst iso₂) x))
+        =⟨ ρ C (arr ftor₂ (arr ftor₁ (comp (fst iso₂) x))) ⟩
+      ⟦ C ⟧ arr ftor₂ (arr ftor₁ (comp (fst iso₂) x)) ▢ id₁ C (obj ftor₂ (obj ftor₁ x))
+        =⟨ ap (λ m → ⟦ C ⟧ arr ftor₂ (arr ftor₁ (comp (fst iso₂) x)) ▢ m) (<–-wc-rinv C (snd iso₂ x)) ⟩
+      ⟦ C ⟧ arr ftor₂ (arr ftor₁ (comp (fst iso₂) x)) ▢ ⟦ C ⟧ comp (fst iso₂) x ▢ <–-wc C ((snd iso₂) x)
+        =⟨ ! (α C (arr ftor₂ (arr ftor₁ (comp (fst iso₂) x))) (comp (fst iso₂) x) (<–-wc C ((snd iso₂) x))) ⟩
+      ⟦ C ⟧ (⟦ C ⟧ arr ftor₂ (arr ftor₁ (comp (fst iso₂) x)) ▢ comp (fst iso₂) x) ▢ <–-wc C ((snd iso₂) x)
+        =⟨ ap (λ m → ⟦ C ⟧ m ▢ <–-wc C ((snd iso₂) x)) (sq (fst iso₂) (comp (fst iso₂) x)) ⟩
+      ⟦ C ⟧ (⟦ C ⟧ comp (fst iso₂) (obj ftor₂ (obj ftor₁ x)) ▢ comp (fst iso₂) x) ▢ <–-wc C (snd iso₂ x)
+        =⟨ α C (comp (fst iso₂) (obj ftor₂ (obj ftor₁ x))) (comp (fst iso₂) x) (<–-wc C (snd iso₂ x)) ⟩
+      ⟦ C ⟧ comp (fst iso₂) (obj ftor₂ (obj ftor₁ x)) ▢ ⟦ C ⟧ comp (fst iso₂) x ▢ <–-wc C (snd iso₂ x)
+        =⟨ ap (λ m → ⟦ C ⟧  comp (fst iso₂) (obj ftor₂ (obj ftor₁ x)) ▢ m) (! (<–-wc-rinv C (snd iso₂ x))) ⟩
+      ⟦ C ⟧ comp (fst iso₂) (obj ftor₂ (obj ftor₁ x)) ▢ id₁ C (obj ftor₂ (obj ftor₁ x))
+        =⟨ ! (ρ C (comp (fst iso₂) (obj ftor₂ (obj ftor₁ x)))) ⟩
+      comp (fst iso₂) (obj ftor₂ (obj ftor₁ x)) =∎
+    iso₂-coher-inv : (x : ob C) →
+      <–-wc C (F-equiv-wc (ftor₂ ∘WC ftor₁) (snd iso₂ x)) == <–-wc C (snd iso₂ (obj ftor₂ (obj ftor₁ x)))
+    iso₂-coher-inv x = ap-<–-wc C (iso₂-coher x) (F-equiv-wc (ftor₂ ∘WC ftor₁) (snd iso₂ x)) (snd iso₂ (obj ftor₂ (obj ftor₁ x)))
   open Equiv-wc
 
-  record AdjEquiv-wc : Type (lmax (lmax ℓc₁ ℓc₂) (lmax ℓd₁ ℓd₂)) where
+  record HAdjEquiv-wc : Type (lmax (lmax ℓc₁ ℓc₂) (lmax ℓd₁ ℓd₂)) where
+    constructor AEquivWC
     field
       𝔼 : Equiv-wc
       zig-zag : (x : ob C) →
         ⟦ D ⟧ comp (fst (iso₁ 𝔼)) (obj (ftor₁ 𝔼) x) ▢ arr (ftor₁ 𝔼) (comp (fst (iso₂ 𝔼)) x) == id₁ D (obj (ftor₁ 𝔼) x)
+    abstract
+      zig-zag-eq : (x : ob C) → arr (ftor₁ 𝔼) (<–-wc C (snd (iso₂ 𝔼) x)) == comp (fst (iso₁ 𝔼)) (obj (ftor₁ 𝔼) x)
+      zig-zag-eq x = 
+        arr (ftor₁ 𝔼) (<–-wc C (snd (iso₂ 𝔼) x))
+          =⟨ lamb D (arr (ftor₁ 𝔼) (<–-wc C (snd (iso₂ 𝔼) x))) ⟩
+        ⟦ D ⟧ id₁ D (obj (ftor₁ 𝔼) x) ▢ arr (ftor₁ 𝔼) (<–-wc C (snd (iso₂ 𝔼) x))
+          =⟨ ! (ap (λ m → ⟦ D ⟧ m ▢ arr (ftor₁ 𝔼) (<–-wc C (snd (iso₂ 𝔼) x))) (zig-zag x)) ⟩
+        ⟦ D ⟧ (⟦ D ⟧ comp (fst (iso₁ 𝔼)) (obj (ftor₁ 𝔼) x) ▢ arr (ftor₁ 𝔼) (comp (fst (iso₂ 𝔼)) x)) ▢ arr (ftor₁ 𝔼) (<–-wc C (snd (iso₂ 𝔼) x))
+          =⟨ α D (comp (fst (iso₁ 𝔼)) (obj (ftor₁ 𝔼) x)) (arr (ftor₁ 𝔼) (comp (fst (iso₂ 𝔼)) x)) (arr (ftor₁ 𝔼) (<–-wc C (snd (iso₂ 𝔼) x))) ⟩
+        ⟦ D ⟧ comp (fst (iso₁ 𝔼)) (obj (ftor₁ 𝔼) x) ▢ ⟦ D ⟧ arr (ftor₁ 𝔼) (comp (fst (iso₂ 𝔼)) x) ▢ arr (ftor₁ 𝔼) (<–-wc C (snd (iso₂ 𝔼) x))
+          =⟨ ap (λ m → ⟦ D ⟧ comp (fst (iso₁ 𝔼)) (obj (ftor₁ 𝔼) x) ▢  m) (! (<–-wc-rinv D (F-equiv-wc (ftor₁ 𝔼) (snd (iso₂ 𝔼) x)))) ⟩
+        ⟦ D ⟧ comp (fst (iso₁ 𝔼)) (obj (ftor₁ 𝔼) x) ▢ id₁ D ((obj (ftor₁ 𝔼) ∘ obj (ftor₂ 𝔼)) (obj (ftor₁ 𝔼) x))
+          =⟨ ! (ρ D (comp (fst (iso₁ 𝔼)) (obj (ftor₁ 𝔼) x))) ⟩
+        comp (fst (iso₁ 𝔼)) (obj (ftor₁ 𝔼) x) =∎  
 
 module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} {C : WildCat {ℓc₁} {ℓc₂}} {D : WildCat {ℓd₁} {ℓd₂}} where
 
   open Equiv-wc
-  open AdjEquiv-wc
+  open HAdjEquiv-wc
 
-  Equiv-wc-promote : Equiv-wc C D → AdjEquiv-wc C D
+  Equiv-wc-promote : Equiv-wc C D → HAdjEquiv-wc C D
   ftor₁ (𝔼 (Equiv-wc-promote e)) = ftor₁ e
   ftor₂ (𝔼 (Equiv-wc-promote e)) = ftor₂ e
   comp (fst (iso₁ (𝔼 (Equiv-wc-promote e)))) x =
@@ -190,4 +226,52 @@ module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} {C : WildCat {ℓc₁} {ℓc
     (equiv-wc-∘ D (equiv-wc-rev D (F-equiv-wc (ftor₁ e) (snd (iso₂ e) (obj (ftor₂ e) x))))
       (equiv-wc-rev D (snd (iso₁ e) (obj (ftor₁ e) (obj (ftor₂ e) x)))))
   iso₂ (𝔼 (Equiv-wc-promote e)) = iso₂ e
-  zig-zag (Equiv-wc-promote e) x = {!!}
+  zig-zag (Equiv-wc-promote e) x = 
+    ⟦ D ⟧ (⟦ D ⟧ comp (fst (iso₁ e)) (obj (ftor₁ e) x) ▢
+    (⟦ D ⟧ <–-wc D (F-equiv-wc (ftor₁ e) (snd (iso₂ e) (obj (ftor₂ e) (obj (ftor₁ e) x)))) ▢
+    <–-wc D (snd (iso₁ e) (obj (ftor₁ e) (obj (ftor₂ e) (obj (ftor₁ e) x)))))) ▢
+    arr (ftor₁ e) (comp (fst (iso₂ e)) x)
+      =⟨ ap (λ m →
+              ⟦ D ⟧ (⟦ D ⟧ comp (fst (iso₁ e)) (obj (ftor₁ e) x) ▢
+              (⟦ D ⟧ m ▢
+              <–-wc D (snd (iso₁ e) (obj (ftor₁ e) (obj (ftor₂ e) (obj (ftor₁ e) x)))))) ▢
+              arr (ftor₁ e) (comp (fst (iso₂ e)) x))
+            (! (ap (arr (ftor₁ e)) (iso₂-coher-inv e x))) ⟩
+    ⟦ D ⟧ (⟦ D ⟧ comp (fst (iso₁ e)) (obj (ftor₁ e) x) ▢
+    (⟦ D ⟧ arr (ftor₁ e) (<–-wc C (F-equiv-wc (ftor₂ e ∘WC ftor₁ e) (snd (iso₂ e) x))) ▢
+    <–-wc D (snd (iso₁ e) (obj (ftor₁ e) (obj (ftor₂ e) (obj (ftor₁ e) x)))))) ▢
+    arr (ftor₁ e) (comp (fst (iso₂ e)) x)
+      =⟨ ap (λ m →
+              ⟦ D ⟧ (⟦ D ⟧ comp (fst (iso₁ e)) (obj (ftor₁ e) x) ▢
+              m) ▢
+              arr (ftor₁ e) (comp (fst (iso₂ e)) x))
+            (ap-<–-wc D (! (sq (fst (iso₁ e)) (arr (ftor₁ e) (comp (fst (iso₂ e)) x))))
+              (equiv-wc-∘ D
+                (snd (iso₁ e) (obj (ftor₁ e) (obj (ftor₂ e) (obj (ftor₁ e) x))))
+                (F-equiv-wc (ftor₁ e ∘WC ftor₂ e ∘WC ftor₁ e) (snd (iso₂ e) x)))
+              (equiv-wc-∘ D
+                (F-equiv-wc (ftor₁ e) (snd (iso₂ e) x))
+                (snd (iso₁ e) (obj (ftor₁ e) x)))) ⟩
+    ⟦ D ⟧ (⟦ D ⟧ comp (fst (iso₁ e)) (obj (ftor₁ e) x) ▢
+    (⟦ D ⟧ <–-wc D (snd (iso₁ e) (obj (ftor₁ e) x)) ▢
+    <–-wc D (F-equiv-wc (ftor₁ e) (snd (iso₂ e) x)))) ▢
+    arr (ftor₁ e) (comp (fst (iso₂ e)) x)
+      =⟨ ap (λ m → ⟦ D ⟧ m ▢ arr (ftor₁ e) (comp (fst (iso₂ e)) x))
+           (! (α D
+                (comp (fst (iso₁ e)) (obj (ftor₁ e) x))
+                (<–-wc D (snd (iso₁ e) (obj (ftor₁ e) x)))
+                (<–-wc D (F-equiv-wc (ftor₁ e) (snd (iso₂ e) x))))) ⟩
+    ⟦ D ⟧ (⟦ D ⟧ (⟦ D ⟧ comp (fst (iso₁ e)) (obj (ftor₁ e) x) ▢
+    <–-wc D (snd (iso₁ e) (obj (ftor₁ e) x))) ▢
+    <–-wc D (F-equiv-wc (ftor₁ e) (snd (iso₂ e) x))) ▢
+    arr (ftor₁ e) (comp (fst (iso₂ e)) x)
+      =⟨ ap (λ m → ⟦ D ⟧ (⟦ D ⟧ m ▢  <–-wc D (F-equiv-wc (ftor₁ e) (snd (iso₂ e) x))) ▢  arr (ftor₁ e) (comp (fst (iso₂ e)) x))
+           (! (<–-wc-rinv D (snd (iso₁ e) (obj (ftor₁ e) x)))) ⟩
+    ⟦ D ⟧ (⟦ D ⟧ id₁ D (obj (ftor₁ e) x) ▢
+    <–-wc D (F-equiv-wc (ftor₁ e) (snd (iso₂ e) x))) ▢
+    arr (ftor₁ e) (comp (fst (iso₂ e)) x)
+      =⟨ ap (λ m → ⟦ D ⟧ m ▢ arr (ftor₁ e) (comp (fst (iso₂ e)) x))
+           (! (lamb D (<–-wc D (F-equiv-wc (ftor₁ e) (snd (iso₂ e) x))))) ⟩
+    ⟦ D ⟧ <–-wc D (F-equiv-wc (ftor₁ e) (snd (iso₂ e) x)) ▢ arr (ftor₁ e) (comp (fst (iso₂ e)) x)
+      =⟨ ! (<–-wc-linv D (F-equiv-wc (ftor₁ e) (snd (iso₂ e) x))) ⟩
+    id₁ D (obj (ftor₁ e) x) =∎
