@@ -21,10 +21,8 @@ pointed connected 2-types.
   types defined in `../HoTT-Agda/core/lib/cubical/PathPathOver.agda`.
   We derive the recursion principle from the elimination principle.
 
-- The `Bicats/` folder contains basic information about (2,1)-categories
-  and pseudofunctors between them. It also contains a definition of a
-  biequivalence between (2,1)-categories. Finally, it collects the data
-  defining the two (2,1)-categories of interest.
+- The `Bicat-stuff/` folder collects the data defining the two (2,1)-categories
+  of interest. It also shows how to construct adjoint equivalences inside them.
 
 - The `KFunc/` folder contains constructions making the delooping into
   a pseudofunctor from 2-groups to pointed connected 2-types along with
@@ -41,7 +39,10 @@ pointed connected 2-types.
   pseudotransformations between their composites and the identity pseudofunctors.
   It also provides proofs exhibiting these pseudotransformations as levelwise
   adjoint equivalences (`LoopK-adjeq.agda` and `KLoop-adjeq.agda`), thereby forming
-  a biequivalence. The full biequivalence is defined in `Biequiv-main.agda`.
+  a biequivalence. The full biequivalence is defined in `Biequiv-main.agda`. We also
+  obtain an equality between the two (2,1)-categories in question by way of univalence
+  (`Equality-main.agda`). This equality relies on the fact that every biequivalence
+  between quasi-univalent bicategories is fully-faithful, which we prove in `../Bicats/`.
 
 ## Manual Type-Checking
 

@@ -31,8 +31,9 @@ Structure of the source
 The main library is more or less divided into three parts.
 
 - The first part is exported in the module `lib.Basics` and contains essential constructions.
-- The second part is found in the `path-seq/` directory and develops machinery for path sequences.
-- The third part, which relies on the first part, is found in `lib.types` and develops type formers.
+- The second part is found in `lib.types` and develops type formers.
+- The third part is found in `lib.wild-cats` and develops wild category theory.
+  In particular, it shows that every equivalence of wild categories is fully faithful.
 
 ### Homotopy (directory `theorems/homotopy/`)
 

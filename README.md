@@ -3,12 +3,16 @@
 We construct a fully verified biequivalence between
   1. the (2,1)-category of coherent 2-groups
   2. the (2,1)-category of 2-truncated connected pointed types.
-  
+We also provide an equality between them by way of univalence.
+
 The code has been checked with Agda 2.6.4.3.
 
 A preprint outlining our mechanization is located at [2Grp-biequiv-preprint.pdf](2Grp-biequiv-preprint.pdf).
 
 ## Organization
+
+The library has three main components, each component depending on the previous ones. It also has a fourth component
+collecting the main theorems.
 
 - `HoTT-Agda/`
 
@@ -18,11 +22,21 @@ A preprint outlining our mechanization is located at [2Grp-biequiv-preprint.pdf]
 
   See `HoTT-Agda/README.md` for details and for the license of the work inside this directory.
 
+- `Bicats/`
+
+  A collection of basic notions and facts about (2,1)-categories, which we also call bicategories in this work.
+
+  See `Bicats/README.md` for details and for the license of the work inside this directory.
+
 - `Two-groups/`
 
-  Our formalization of the biequivalence.
+  Our formalization of the biequivalence and the induced equality.
 
   See `Two-groups/README.md` for details and for the license of the work inside this directory.
+
+- `Final/`
+
+  A single file containing the final biequivalence and equality.
 
 ## Type-checking
 
@@ -35,9 +49,9 @@ We have successfully tested the following Docker container on Linux with 16 GB o
    docker build . -t 2group
    ```
 
-   Our machine uses as much as 32.6 GB of physical memory and takes
-   many hours to build, but a machine with more RAM should significantly
-   improve the performance.
+   Our machine uses as much as 28.7 GB of physical memory and takes
+   over 8 hours to build, but a machine with more RAM should significantly
+   improve the performance. 
 
 2. Generate HTML files:
 
@@ -47,9 +61,10 @@ We have successfully tested the following Docker container on Linux with 16 GB o
    ```
 
    This may take a few minutes. The HTML files will be under `html/`,
-   and `html/Biequiv-main.agda.html` will be the entry point.
+   and `html/Final-thms.agda.html` will be the entry point.
 
-See `Two-groups/README.md` for information on type-checking the code without Docker.
+If you can avoid the overhead of Docker, please do so. Type-checking directly on a
+MacOS with an M1 chip is much faster in our experience (see `Two-groups/README.md`).
 
 ## Acknowledgement
 
