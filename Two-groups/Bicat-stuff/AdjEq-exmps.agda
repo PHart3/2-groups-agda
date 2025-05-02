@@ -61,14 +61,14 @@ module _ {i} {G₁ : Type i} {η₁ : CohGrp G₁} where
 
   abstract
     2g≃-to-adjeq : {(_ , η₂) : 2Grp-tot i} →
-      (((map , _) , σ) : η₁ 2g≃ η₂) → Adjequiv {{ξ = 2grp-bicat-instance}} (cohgrphom {{η₁}} {{η₂}} map {{σ}})
+      (((map , _) , σ) : η₁ 2g≃ η₂) → Adjequiv {{2grp-bicat-instance}} (cohgrphom {{η₁}} {{η₂}} map {{σ}})
     2g≃-to-adjeq = 
       2grphom-ind
         (λ ((_ , η₂) : 2Grp-tot i) (((map , _) , σ) : η₁ 2g≃ η₂)
           → Adjequiv (cohgrphom {{η₁}} {{η₂}} map {{σ}}))
         (adj-str {{η₁}})
         where
-          adj-str : {{η : CohGrp G₁}} → Adjequiv {{ξ = 2grp-bicat-instance}} (cohgrphom {{η}} {{η}} (idf G₁) {{idf2G {{η}}}})
+          adj-str : {{η : CohGrp G₁}} → Adjequiv {{2grp-bicat-instance}} (cohgrphom {{η}} {{η}} (idf G₁) {{idf2G {{η}}}})
           map (inv adj-str) = idf G₁
           str (inv adj-str) = idf2G
           eta adj-str = natiso2G-to-== (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))

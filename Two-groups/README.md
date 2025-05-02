@@ -52,7 +52,7 @@ pointed connected 2-types.
 The type-checking of this file is very intensive. We have verfied that the type-checker
 finishes successfully on the following machine:
 
-*macOS Sequoia 15.4, Apple M1 chip, 16 GB of RAM*
+*macOS Sequoia 15.4.1, Apple M1 chip, 16 GB of RAM*
 
 The type-checking takes about 165.2 minutes in total. (See [stats.md](stats.md).)
 Note that macOS, unlike Linux, dynamically alters the size of the swap

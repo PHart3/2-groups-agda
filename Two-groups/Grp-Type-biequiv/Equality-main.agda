@@ -45,5 +45,5 @@ module Equality-main (i : ULevel) where
       λ x → ! (app= (fst= (eta ae)) x)))
 
   -- final equality
-  2Grp-Ptd02-eql : 2grp-bicat i == Ptd02-bicat i
+  2Grp-Ptd02-eql : (2Grp-tot i , 2grp-bicat i) == (Ptd02 i , Ptd02-bicat i)
   2Grp-Ptd02-eql = biequiv-to-== qu-2G qu-Pt02 (2Grp-Ptd02-bieq i)
