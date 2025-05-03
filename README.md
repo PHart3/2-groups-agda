@@ -62,8 +62,11 @@ We have successfully tested the following Docker container on Linux with 16 GB o
    This may take a few minutes. The HTML files will be under `html/`, and
    `html/Final-thms.agda.html` will be the entry point.
 
-If you can avoid the overhead of Docker, please do so. Type-checking directly on a
-MacOS with an M1 chip is much faster in our experience (see `Final/README.md`).
+If you can avoid the overhead of Docker, we suggest that you do so even if you
+have lots of available RAM.
+
+We have found that type-checking directly on a MacOS with an M1 chip is much
+faster (see `Final/README.md`).
 
 ## Acknowledgement
 
