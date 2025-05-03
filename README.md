@@ -37,6 +37,8 @@ collecting the main theorems.
 
   A single file containing the final biequivalence and equality.
 
+  See `Final/README.md` for details and for the license of the work inside this directory.
+
 ## Type-checking
 
 We have successfully tested the following Docker container on Linux with 16 GB of RAM and
@@ -61,7 +63,7 @@ We have successfully tested the following Docker container on Linux with 16 GB o
    `html/Final-thms.agda.html` will be the entry point.
 
 If you can avoid the overhead of Docker, please do so. Type-checking directly on a
-MacOS with an M1 chip is much faster in our experience (see `Two-groups/README.md`).
+MacOS with an M1 chip is much faster in our experience (see `Final/README.md`).
 
 ## Acknowledgement
 
