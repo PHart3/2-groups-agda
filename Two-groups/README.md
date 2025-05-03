@@ -1,7 +1,7 @@
 ## Summary
 
 This directory contains a formalized biequivalence between the
-(2,1)-category of (cohernet) 2-groups and the (2,1)-category of
+(2,1)-category of (coherent) 2-groups and the (2,1)-category of
 pointed connected 2-types.
 
 
@@ -21,10 +21,8 @@ pointed connected 2-types.
   types defined in `../HoTT-Agda/core/lib/cubical/PathPathOver.agda`.
   We derive the recursion principle from the elimination principle.
 
-- The `Bicats/` folder contains basic information about (2,1)-categories
-  and pseudofunctors between them. It also contains a definition of a
-  biequivalence between (2,1)-categories. Finally, it collects the data
-  defining the two (2,1)-categories of interest.
+- The `Bicat-stuff/` folder collects the data defining the two (2,1)-categories
+  of interest. It also shows how to construct adjoint equivalences inside them.
 
 - The `KFunc/` folder contains constructions making the delooping into
   a pseudofunctor from 2-groups to pointed connected 2-types along with
@@ -41,24 +39,10 @@ pointed connected 2-types.
   pseudotransformations between their composites and the identity pseudofunctors.
   It also provides proofs exhibiting these pseudotransformations as levelwise
   adjoint equivalences (`LoopK-adjeq.agda` and `KLoop-adjeq.agda`), thereby forming
-  a biequivalence. The full biequivalence is defined in `Biequiv-main.agda`.
-
-## Manual Type-Checking
-
-1. Install Agda 2.6.4.3.
-2. Install the stripped, modified HoTT-Agda library under `../HoTT-Agda`.
-3. Type-check the file `Grp-Type-biequiv/Biequiv-main.agda`.
-
-The type-checking of this file is very intensive. We have verfied that the type-checker
-finishes successfully on the following machine:
-
-*macOS Sequoia 15.4, Apple M1 chip, 16 GB of RAM*
-
-The type-checking takes about 165.2 minutes in total. (See [stats.md](stats.md).)
-Note that macOS, unlike Linux, dynamically alters the size of the swap
-space as the process runs. This is crucial because the type-checking uses
-as much as 29 GB of physical memory. Therefore, you will need to increase
-your machine's swap space if you have under 29 GB of available RAM.
+  a biequivalence. The full biequivalence is defined in `Biequiv-main.agda`. We also
+  obtain an equality between the two (2,1)-categories in question by way of univalence
+  (`Equality-main.agda`). This equality relies on the fact that every biequivalence
+  between quasi-univalent bicategories is fully-faithful, which we prove in `../Bicats/`.
 
 ## License
 

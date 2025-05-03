@@ -2,10 +2,11 @@ name: two-group
 depend:
   hott-core-group
   hott-theorems-group
+  bicats
 include:
   2Grps
   Deloop
   KFunc
   LoopFunc
-  Bicats
+  Bicat-stuff
   Grp-Type-biequiv

@@ -66,6 +66,13 @@ module _ {i j} {A : Type i} {B : Type j} where
   rinv : (A → B) → Type (lmax i j)
   rinv f = Σ (B → A) (λ g → (∀ y → f (g y) == y))
 
+  bi-inv : (A → B) → Type (lmax i j)
+  bi-inv f = rinv f × linv f
+
+  bi-inv-eqv : {f : A → B} → bi-inv f → is-equiv f
+  bi-inv-eqv {f} ((g , α) , (h , β)) =
+    is-eq f g α (λ a → ! (β (g (f a))) ∙ ap h (α (f a)) ∙ β a)
+
   lcoh : (f : A → B) → linv f → Type (lmax i j)
   lcoh f (g , g-f) = Σ (∀ y → f (g y) == y)
                        (λ f-g → ∀ y → ap g (f-g y) == g-f (g y))
@@ -73,6 +80,16 @@ module _ {i j} {A : Type i} {B : Type j} where
   rcoh : (f : A → B) → rinv f → Type (lmax i j)
   rcoh f (g , f-g) = Σ (∀ x → g (f x) == x)
                        (λ g-f → ∀ x → ap f (g-f x) == f-g (f x))
+
+  module _ {k} {C : Type k} {f : A → B} where
+
+    cmp-eqv-linv : (g : B → C) → is-equiv (g ∘ f) → linv f
+    fst (cmp-eqv-linv g e) = is-equiv.g e ∘ g
+    snd (cmp-eqv-linv g e) = is-equiv.g-f e
+
+    cmp-eqv-rinv : (g : C → A) → is-equiv (f ∘ g) → rinv f
+    fst (cmp-eqv-rinv g e) = g ∘ is-equiv.g e
+    snd (cmp-eqv-rinv g e) = is-equiv.f-g e
 
 module _ {i j} {A : Type i} {B : Type j} {f : A → B} (e : is-equiv f) where
 

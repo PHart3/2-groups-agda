@@ -68,34 +68,38 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
             {{pathto-is-contr (uncurry (map-comp-wk (grphom-forg μ)))}}))⁻¹ )
         {{inhab-prop-is-contr (map-al (str μ))}}}} 
 
-    abstract
-      natiso2G-contr : is-contr (Σ (CohGrpHom {{η₁}} {{η₂}}) (λ ν → CohGrpNatIso μ ν))
-      natiso2G-contr = equiv-preserves-level aux {{natiso2G-contr-aux}}
-        where
-          aux : 
-            Σ (Σ (G₁ → G₂) (λ f → map μ ∼ f))
-              (λ (f , H) →
-                Σ (Σ (((x , y) : G₁ × G₁) → mu (f x) (f y) == f (mu x y))
-                    (λ c → ((x , y) : G₁ × G₁) →
-                      c (x , y) == ! (ap2 mu (H x) (H y)) ∙ uncurry (map-comp-wk (grphom-forg μ)) (x , y) ∙ H (mu x y)))
-                  (λ (map-comp' , _) → (x y z : G₁) → 
-                    ! (al (f x) (f y) (f z)) ∙
-                    ap (mu (f x)) (map-comp' (y , z)) ∙
-                    map-comp' (x , (mu y z))
-                      ==
-                    ap (λ v → mu v (f z)) (map-comp' (x , y)) ∙
-                    map-comp' ((mu x y) , z) ∙
-                    ! (ap f (al x y z))))
-            ≃
-            Σ (CohGrpHom {{η₁}} {{η₂}}) (λ ν → CohGrpNatIso μ ν)
-          aux = 
-            equiv
-              (λ ((f , H) , (map-comp' , c) , al) → (cohgrphom f {{cohsgrphomstr (curry map-comp') al}}) ,
-                cohgrpnatiso H (curry c))
-              (λ (ν , iso) → ((map ν) , (θ iso)) , (((uncurry (map-comp (str ν))) , (uncurry (θ-comp iso))) ,
-                (map-al (str ν))))
-              (λ (ν , iso) → idp)
-              λ ((f , H) , (map-comp' , c) , al) → idp
+    module NIso2G-contr where
+
+      abstract
+        natiso2G-contr : is-contr (Σ (CohGrpHom {{η₁}} {{η₂}}) (λ ν → CohGrpNatIso μ ν))
+        natiso2G-contr = equiv-preserves-level aux {{natiso2G-contr-aux}}
+          where
+            aux : 
+              Σ (Σ (G₁ → G₂) (λ f → map μ ∼ f))
+                (λ (f , H) →
+                  Σ (Σ (((x , y) : G₁ × G₁) → mu (f x) (f y) == f (mu x y))
+                      (λ c → ((x , y) : G₁ × G₁) →
+                        c (x , y) == ! (ap2 mu (H x) (H y)) ∙ uncurry (map-comp-wk (grphom-forg μ)) (x , y) ∙ H (mu x y)))
+                    (λ (map-comp' , _) → (x y z : G₁) → 
+                      ! (al (f x) (f y) (f z)) ∙
+                      ap (mu (f x)) (map-comp' (y , z)) ∙
+                      map-comp' (x , (mu y z))
+                        ==
+                      ap (λ v → mu v (f z)) (map-comp' (x , y)) ∙
+                      map-comp' ((mu x y) , z) ∙
+                      ! (ap f (al x y z))))
+              ≃
+              Σ (CohGrpHom {{η₁}} {{η₂}}) (λ ν → CohGrpNatIso μ ν)
+            aux = 
+              equiv
+                (λ ((f , H) , (map-comp' , c) , al) → (cohgrphom f {{cohsgrphomstr (curry map-comp') al}}) ,
+                  cohgrpnatiso H (curry c))
+                (λ (ν , iso) → ((map ν) , (θ iso)) , (((uncurry (map-comp (str ν))) , (uncurry (θ-comp iso))) ,
+                  (map-al (str ν))))
+                (λ (ν , iso) → idp)
+                λ ((f , H) , (map-comp' , c) , al) → idp
+
+    open NIso2G-contr public
 
     natiso2G-ind : ∀ {k} (P : (ν : CohGrpHom {{η₁}} {{η₂}}) → CohGrpNatIso μ ν → Type k)
       → P μ (natiso-id2G μ)
@@ -122,7 +126,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       ! (ap ! (natiso2G-to-==-β μ)))
 
 -- iterated induction
-module _ {i j k l} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k} {G₄ : Type l}
+module NIso-ind-bi {i j k l} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k} {G₄ : Type l}
   {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}}  {{η₄ : CohGrp G₄}}
   {f₁ : CohGrpHom {{η₁}} {{η₂}}} {f₂ : CohGrpHom {{η₃}} {{η₄}}} where
 
@@ -141,6 +145,8 @@ module _ {i j k l} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k} {G₄ : Type 
           P (cohgrphom (λ z → map f₁ z)) f' (natiso-id2G f₁) μ)
         r)
       {f₁'} p₁ {f₂'} p₂
+
+open NIso-ind-bi public
 
 -- conversion of CohGrpHom to Σ-type
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
