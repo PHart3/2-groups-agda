@@ -3,9 +3,7 @@ Homotopy Type Theory in Agda
 
 This directory contains a somewhat stripped-down version of Andrew Swan's [branch](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) of the
 HoTT-Agda library. It has been customized and signifcantly augmented to accomodate
-our development of 2-groups and pointed types. Notably, we have created an updated
-version of Whitehead's theorem for truncated types. The structure of the source code is
-described below.
+our development of 2-groups and pointed types.
 
 Setup
 -----
@@ -37,7 +35,8 @@ The main library is more or less divided into three parts.
 
 ### Homotopy (directory `theorems/homotopy/`)
 
-This directory contains a proof of Whitehead's theorem, which updates Dan Licata's old hott-agda proof.
+This directory contains a concise proof of the fact that a pointed map f between connected types
+is an equivalence as soon as Loop f is an equivalence.
 
 Citation
 --------

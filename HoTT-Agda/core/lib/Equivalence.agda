@@ -276,8 +276,10 @@ module _ {i j} {A : Type i} {B : Type j} where
 
               open is-equiv (snd e)
 
-  ap-is-equiv : {f : A → B} → is-equiv f
-    → (x y : A) → is-equiv (ap f :> (x == y → f x == f y))
+  is-embedding : (f : A → B) → Type (lmax i j)
+  is-embedding f = (x y : A) → is-equiv (ap f :> (x == y → f x == f y))
+
+  ap-is-equiv : {f : A → B} → is-equiv f → is-embedding f
   ap-is-equiv {f} e x y =
     is-eq (ap f) (equiv-is-inj e _ _) (right-inverse (_ , e)) (left-inverse (_ , e))
 
