@@ -8,6 +8,8 @@ open import lib.types.Pi
 open import lib.Equivalence2
 open import lib.types.Truncation
 
+-- If f is a map of pointed connected types and Ω f is an equivalence, then so is f. 
+
 module homotopy.Loop-conn-equiv where
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} {{cX : is-connected 0 (de⊙ X)}} {{cY : is-connected 0 (de⊙ Y)}} where
@@ -15,6 +17,7 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} {{cX : is-connected 0 (de⊙ X)}} {{cY : 
   abstract
     Ω-conn-≃ : (f* : X ⊙→ Y) → is-equiv (Ω-fmap f*) → is-equiv (fst f*)
     Ω-conn-≃ (f , idp) eΩ = surj-emb-is-equiv (emb , surj)
+      -- f is a surjective embedding.
       where
         emb : is-embedding f
         emb = prop-over-connected
