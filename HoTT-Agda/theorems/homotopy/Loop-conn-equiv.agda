@@ -2,7 +2,7 @@
 
 open import lib.Basics
 open import lib.NConnected
-open import lib.Surjection
+open import lib.Function2
 open import lib.types.LoopSpace
 open import lib.types.Pi
 open import lib.Equivalence2
