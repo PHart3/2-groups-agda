@@ -3,7 +3,6 @@
 open import lib.Basics
 open import lib.Equivalence2
 open import lib.Relation2
-open import lib.FTID
 open import lib.types.Paths
 open import lib.types.Pi
 open import lib.types.Sigma

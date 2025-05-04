@@ -176,6 +176,11 @@ module _ {i j} {A : Type i} {B : Type j}
     → (u == v [ (λ x → f x == b) ↓ p ])
   ↓-app=cst-in' {p = idp} {v = idp} q = q
 
+  ↓-app=cst-in'-rot : {p : x == y} {u : f x == b} {v : f y == b}
+    → ap f p == u ∙' ! v
+    → (u == v [ (λ x → f x == b) ↓ p ])
+  ↓-app=cst-in'-rot {p = idp} {v = idp} q = ! q
+
   ↓-app=cst-out' : {p : x == y} {u : f x == b} {v : f y == b}
     → (u == v [ (λ x → f x == b) ↓ p ])
     → u == (ap f p ∙' v)

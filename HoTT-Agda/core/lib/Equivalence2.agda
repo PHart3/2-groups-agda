@@ -419,7 +419,7 @@ ap-ua-∘e {C = C} {A} =
       ap2 _∘e_ (! (coe-equiv-β e₂)) (! (coe-equiv-β (ide A))) ◃∙
       ∙-coe-equiv (ua (ide A)) (ua e₂) ◃∎ ∎ₛ
 
-{- Adjointion where hom = path -}
+{- Adjunction where hom = path -}
 
 module _ {i j} {A : Type i} {B : Type j} (e : A ≃ B) where
 
