@@ -58,7 +58,18 @@ module MapUnit1 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{
       ! (rinv (map x))) ◃∙
     rho (map id) ◃∎
       =ₛ⟨ 3 & 2 & !-!-ap-∙◃ map (rinv x) (rho id) ⟩
-    _
+    rinv (map x) ◃∙
+    ap (mu (map x)) (map-inv x) ◃∙
+    map-comp x (inv x) ◃∙
+    ! (ap map (rinv x)) ◃∙
+    ! (ap map (rho id)) ◃∙
+    ! (map-comp id id) ◃∙
+    ap (mu (map id))
+      (ap map (rinv x) ∙
+      ! (map-comp x (inv x)) ∙
+      ! (ap (mu (map x)) (map-inv x)) ∙
+      ! (rinv (map x))) ◃∙
+    rho (map id) ◃∎
       =ₛ⟨ 6 & 1 &
         ∙-ap-seq-=ₛ (mu (map id))
           (map-rinv-rot1◃ map map-comp map-id map-inv map-rinv x) ⟩

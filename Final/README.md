@@ -1,7 +1,7 @@
 ## Manual Type-Checking
 
 1. Install Agda 2.6.4.3.
-2. Add the lib files in the four sub-directories of `../` to your Agda libraries file. 
+2. Add all lib files in the repo to your Agda libraries file. 
 3. Type-check the file `Final-thms.agda`.
 
 The type-checking of this file is very intensive. We have verfied that the type-checker
