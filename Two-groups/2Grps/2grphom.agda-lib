@@ -1,4 +1,4 @@
-name: 2grphom,
+name: 2grphom
 depend:
   hott-core-group
   two-group
