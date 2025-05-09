@@ -62,7 +62,19 @@ module MapUnit4 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{
       linv (map x)) ◃∙
     lam (map id) ◃∎
       =ₛ⟨ 4 & 1 & ∙-ap-seq-=ₛ map (!ₛ (zz₁-linv-rot2 x)) ⟩
-    _
+    ! (linv (map x)) ◃∙
+    ap (λ z → mu z (map x)) (map-inv x) ◃∙
+    idp ◃∙
+    map-comp (inv x) x ◃∙
+    ap map (linv x) ◃∙
+    ap map (! (lam id)) ◃∙
+    ! (map-comp id id) ◃∙
+    ap (λ z → mu z (map id))
+      ((! (ap map (linv x)) ∙
+      ! (map-comp (inv x) x) ∙
+      ! (ap (λ z → mu z (map x)) (map-inv x))) ∙
+      linv (map x)) ◃∙
+    lam (map id) ◃∎
       =ₛ₁⟨ 5 & 1 & ap-! map (lam id) ⟩
     ! (linv (map x)) ◃∙
     ap (λ z → mu z (map x)) (map-inv x) ◃∙

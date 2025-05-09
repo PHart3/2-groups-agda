@@ -1,0 +1,8 @@
+name: 2grphom
+depend:
+  hott-core-group
+  two-group
+include:
+  2GrpHom-recover/2GrpHom-inv
+  2GrpHom-recover/2GrpHom-lamrho
+  2GrpHom-recover/2GrpHom-rholam

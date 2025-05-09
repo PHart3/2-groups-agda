@@ -38,7 +38,14 @@ module MapUnit3 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{
       =ₛ⟨ 1 & 1 & ap-∙◃ (mu (inv (map x))) (rho (map x)) _ ⟩
     _
       =ₛ⟨ 0 & 1 & !-∙-seq (al (inv (map x)) (map x) id ◃∙ ap2 mu (linv (map x)) idp ◃∙ lam id ◃∎) ⟩
-    _
+    ! (lam id) ◃∙
+    ! (ap2 (mu) (linv (map x)) idp) ◃∙
+    ! (al (inv (map x)) (map x) id) ◃∙
+    ap (mu (inv (map x))) (rho (map x)) ◃∙
+    ap (mu (inv (map x))) (! (ap map (rho x)) ∙ ! (map-comp x id)) ◃∙
+    al (inv (map x)) (map x) (map id) ◃∙
+    ap2 (mu) (linv (map x)) idp ◃∙
+    lam (map id) ◃∎
       =ₛ⟨ 0 & 4 & zz₁-linv-rot1 (map x) ⟩
     ! (linv (map x)) ◃∙
     ap (mu (inv (map x))) (! (ap map (rho x)) ∙ ! (map-comp x id)) ◃∙
@@ -46,7 +53,13 @@ module MapUnit3 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{
     ap2 mu (linv (map x)) idp ◃∙
     lam (map id) ◃∎
       =ₛ⟨ 1 & 1 & hmtpy-nat-∙◃ (λ z → ap (λ v → mu v z) (map-inv x)) (! (ap map (rho x)) ∙ ! (map-comp x id)) ⟩
-    _
+    ! (linv (map x)) ◃∙
+    ap (λ v → mu v (map x)) (map-inv x) ◃∙
+    ap (λ z → mu (map (inv x)) z) (! (ap map (rho x)) ∙ ! (map-comp x id)) ◃∙
+    ! (ap (λ v → mu v (mu (map x) (map id))) (map-inv x)) ◃∙
+    al (inv (map x)) (map x) (map id) ◃∙
+    ap2 (mu) (linv (map x)) idp ◃∙
+    lam (map id) ◃∎
       =ₛ⟨ 2 & 1 & ap-∙-!-!◃ (mu (map (inv x))) (ap map (rho x)) (map-comp x id) ⟩
     ! (linv (map x)) ◃∙
     ap (λ v → mu v (map x)) (map-inv x) ◃∙
@@ -57,7 +70,16 @@ module MapUnit3 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{
     ap2 mu (linv (map x)) idp ◃∙
     lam (map id) ◃∎
       =ₛ⟨ 5 & 1 & apCommSq2◃' (λ z → al z (map x) (map id)) (map-inv x) ⟩
-    _
+    ! (linv (map x)) ◃∙
+    ap (λ v → mu v (map x)) (map-inv x) ◃∙
+    ! (ap (mu (map (inv x))) (ap map (rho x))) ◃∙
+    ! (ap (mu (map (inv x))) (map-comp x id)) ◃∙
+    ! (ap (λ v → mu v (mu (map x) (map id))) (map-inv x)) ◃∙
+    ap (λ z → mu z (mu (map x) (map id))) (map-inv x) ◃∙
+    al (map (inv x)) (map x) (map id) ◃∙
+    ! (ap (λ z → mu (mu z (map x)) (map id)) (map-inv x)) ◃∙
+    ap2 (mu) (linv (map x)) idp ◃∙
+    lam (map id) ◃∎
       =ₛ₁⟨ 4 & 2 & !-inv-l (ap (λ v → mu v (mu (map x) (map id))) (map-inv x)) ⟩
     _
       =ₛ₁⟨ 4 & 2 & idp ⟩
@@ -91,7 +113,18 @@ module MapUnit3 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{
     ap2 mu (linv (map x)) idp ◃∙
     lam (map id) ◃∎
       =ₛ⟨ 5 & 1 & hmtpy-nat-!◃ (λ z → map-comp z id) (linv x) ⟩
-    _
+    ! (linv (map x)) ◃∙
+    ap (λ v → mu v (map x)) (map-inv x) ◃∙
+    ! (ap (mu (map (inv x))) (ap map (rho x))) ◃∙
+    map-comp (inv x) (mu x id) ◃∙
+    ap map (al (inv x) x id) ◃∙
+    ap (λ z → map (mu z id)) (linv x) ◃∙
+    ! (map-comp id id) ◃∙
+    ! (ap (λ z → mu (map z) (map id)) (linv x)) ◃∙
+    ! (ap (λ v → mu v (map id)) (map-comp (inv x) x)) ◃∙
+    ! (ap (λ z → mu (mu z (map x)) (map id)) (map-inv x)) ◃∙
+    ap2 (mu) (linv (map x)) idp ◃∙
+    lam (map id) ◃∎
       =ₛ⟨ 3 & 1 & apCommSq2◃' (map-comp (inv x)) (rho x) ⟩
     ! (linv (map x)) ◃∙
     ap (λ v → mu v (map x)) (map-inv x) ◃∙

@@ -1,5 +1,6 @@
 name: final
 depend:
   two-group
+  2grphom
 include:
   ./
