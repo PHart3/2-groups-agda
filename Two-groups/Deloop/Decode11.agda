@@ -31,7 +31,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
         η₁ = ap loop (ap (λ q → coe q z) (ap-∘ fst codes (p₁ ∙ p₂)))
         η₂ = ! (ap (λ p → p ∙ p₂) q₃)
         
-      ϵ₁ =
+      ε₁ =
         ! (ap loop (transp-∙ p₁ p₂ z)) ◃∙
         (ap loop (transp-coe (p₁ ∙ p₂) z) ∙ η₁) ◃∙
         ap loop (ap (λ q → coe q z)
@@ -50,7 +50,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
                 (ap-∘ fst codes p₂) ∙ idp) ∙
              ! q₂)
              
-      ϵ₂ =
+      ε₂ =
         η₃ ◃∙
         ! (transp-cst=idf p₂ (loop (transport codes-fst p₁ z))) ◃∙
         ap (transport (_==_ base) p₂)
@@ -61,5 +61,5 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
     open ends
 
     long-aux6 : {t : base == base} (q₃ : t == loop (coe (ap fst (ap codes p₁)) z))    
-      → ϵ₁ q₃ =ₛ ϵ₂ q₃
+      → ε₁ q₃ =ₛ ε₂ q₃
     long-aux6 idp = pre-rotate'-out long-aux7
