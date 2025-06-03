@@ -41,7 +41,7 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
   ap-∙◃ idp q = =ₛ-in idp
 
   ∙-ap◃ : {x y z : A} (p : x == y) (q : y == z)
-    →  ap f p ◃∙ ap f q ◃∎ =ₛ ap f (p ∙ q) ◃∎
+    → ap f p ◃∙ ap f q ◃∎ =ₛ ap f (p ∙ q) ◃∎
   ∙-ap◃ idp q = =ₛ-in idp
 
   !-!-ap : {x y : A} (p : x == y) → ! (ap f (! p)) == ap f p
@@ -95,16 +95,12 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → ap f (p ∙ q ∙' ! r) == ap f p ∙ ap f q ∙' ! (ap f r)
   ap-∙-∙'! idp q idp = idp
 
-  -- note: ap-∙' is defined in PathGroupoid
-
-  module _ {k} {C : Type k} (g : B → C) where
-
-    ap3-!-ap-!-rid : {x y : A} (p₁ : x == y)
-      {e : f x == f y} (p₂ : ap f p₁ == e) →
-      ap (ap g) (ap (λ p → p) (! (ap-! p₁ ∙ ap ! (p₂ ∙ idp))))
-      ==
-      ap (λ p → ap g (! p)) (! p₂) ∙ ap (ap g) (!-ap p₁)
-    ap3-!-ap-!-rid idp idp = idp
+  ap3-!-ap-!-rid : ∀ {k} {C : Type k} (g : B → C) {x y : A} (p₁ : x == y)
+    {e : f x == f y} (p₂ : ap f p₁ == e) →
+    ap (ap g) (ap (λ p → p) (! (ap-! p₁ ∙ ap ! (p₂ ∙ idp))))
+    ==
+    ap (λ p → ap g (! p)) (! p₂) ∙ ap (ap g) (!-ap p₁)
+  ap3-!-ap-!-rid _ idp idp = idp
 
 {- Dependent stuff -}
 module _ {i j} {A : Type i} {B : A → Type j} (f : Π A B) where
@@ -148,7 +144,7 @@ module _ {i j} {A : Type i} {B : Type j} (g : A → B) where
   !-ap-∙◃ idp r = =ₛ-in idp
 
   ap-!-∙-ap : ∀ {k} {C : Type k} (h : C → A) {y z : C} {x : A} (q : y == z) (p : x == h y) 
-    →  ap g (! p) ∙ ap g (p ∙ ap h q) == ap g (ap h q)
+    → ap g (! p) ∙ ap g (p ∙ ap h q) == ap g (ap h q)
   ap-!-∙-ap h q idp = idp 
 
   !-ap-∙-s : {x y : A} (p : x == y) {z : A} {r : x == z} {w : B} {s : g z == w}
@@ -251,7 +247,7 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
 
   ap-cp-revR : {x y : A} (q : x == y) {w : B} {z : C} {r : f y == w}
     {s : g w == z} {b : B} (p : f x == b) 
-    →  ! (ap g p) ∙ (ap (g ∘ f) q) ∙ (ap g r) ∙ s == ap g (! p ∙ ap f q ∙ r) ∙ s
+    → ! (ap g p) ∙ (ap (g ∘ f) q) ∙ (ap g r) ∙ s == ap g (! p ∙ ap f q ∙ r) ∙ s
   ap-cp-revR idp {r = r} {s = s} p = !-ap-∙-s g p {r = r} {s = s}
 
   inv-canc-cmp : {a b : A} (p : a == b) {z : B} (S : f a == z) {w : C} (gₚ : g z == w)
@@ -259,7 +255,7 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
   inv-canc-cmp idp idp idp = idp
 
   ap-!-∘-rid-coher : {x y : A} (p : x == y)
-    → ! (ap (λ q →  (ap g (ap f p)) ∙ q) (ap-∘ (! p) ∙ ap (ap g) (ap-! f p))) ∙ idp
+    → ! (ap (λ q → (ap g (ap f p)) ∙ q) (ap-∘ (! p) ∙ ap (ap g) (ap-! f p))) ∙ idp
       ==
       ap-!-inv g (ap f p) ∙ ! (cmp-inv-r p)
   ap-!-∘-rid-coher idp = idp
@@ -307,8 +303,7 @@ coe!-inv-adj : ∀ {i} {A B : Type i} (p : A == B) (b : B) →
   ap (coe! p) (coe!-inv-r p b) == coe!-inv-l p (coe! p b)
 coe!-inv-adj idp b = idp
 
-coe-ap-! : ∀ {i j} {A : Type i} (P : A → Type j) {a b : A} (p : a == b)
-  (x : P b)
+coe-ap-! : ∀ {i j} {A : Type i} (P : A → Type j) {a b : A} (p : a == b) (x : P b)
   → coe (ap P (! p)) x == coe! (ap P p) x
 coe-ap-! P idp x = idp
 
@@ -562,10 +557,10 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k}
   ap2CommSq {a₀ = a} {b₀ = b} idp idp = =ₛ-in (! (∙-unit-r (h a b)))
 
 module _ {i j k} {A : Type i} {B : Type j} {C : Type k}
-         {f g : A → B → C} (h : ∀ a b → f a b == g a b) where
+  {f g : A → B → C} (h : ∀ a b → f a b == g a b) where
 
   ap2CommSq◃! : {a₀ a₁ : A} {b₀ b₁ : B} (p : a₀ == a₁) (q : b₀ == b₁)
-    →  ! (h a₁ b₁) ◃∎ =ₛ ap2 g (! p) (! q) ◃∙ ! (h a₀ b₀) ◃∙ ap2 f p q ◃∎
+    → ! (h a₁ b₁) ◃∎ =ₛ ap2 g (! p) (! q) ◃∙ ! (h a₀ b₀) ◃∙ ap2 f p q ◃∎
   ap2CommSq◃! {a₀ = a} {b₀ = b} idp idp = =ₛ-in (! (∙-unit-r (! (h a b))))
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} (f g : A → B) (H : (x : A) → f x == g x) where
@@ -587,7 +582,7 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f g : A → B} (H 
   apCommSq2◃' : {x y : A} (p : x == y) → H x ◃∎ =ₛ ap f p ◃∙ H y ◃∙ ! (ap g p) ◃∎
   apCommSq2◃' {x = x} idp = =ₛ-in (! (∙-unit-r (H x)))
 
-  apCommSq◃! : {x y : A} (p : x == y) →  ! (ap g p) ◃∎ =ₛ ! (H y) ◃∙ ! (ap f p) ◃∙ H x ◃∎
+  apCommSq◃! : {x y : A} (p : x == y) → ! (ap g p) ◃∎ =ₛ ! (H y) ◃∙ ! (ap f p) ◃∙ H x ◃∎
   apCommSq◃! {x = x} idp = =ₛ-in (! (!-inv-l (H x)))
 
   apCommSq2◃! : {x y : A} (p : x == y) → ! (H y) ◃∎ =ₛ ! (ap g p) ◃∙ ! (H x) ◃∙ ap f p ◃∎
@@ -658,7 +653,7 @@ module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f₁ f₂ : A → 
       lemma idp = idp
 
 module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f₁ f₂ f₃ : A → B}
-  (H₁ : (x : A) → f₁ x == f₂ x) (H₂ : (x : A) →  f₂ x == f₃ x) {x y : A} where
+  (H₁ : (x : A) → f₁ x == f₂ x) (H₂ : (x : A) → f₂ x == f₃ x) {x y : A} where
 
   hnat-∙'-∙ : (p : x == y) →
     hmtpy-nat-∙' (λ x → H₁ x ∙ H₂ x) p ◃∎
@@ -833,7 +828,7 @@ module _ {i j} {A : Type i} {B : Type j} {f : A → B} where
 
   transp-pth-Rcmp : ∀ {k l} {C : Type k} {D : Type l} {h : C → A} {v : C → D} {u : D → B}
     {x y : C} (p : x == y) (q : u (v x) == f (h x))
-    →  transport (λ x → u (v x) == f (h x)) p q == ! (ap u (ap v p)) ∙ q ∙ (ap (f ∘ h) p)
+    → transport (λ x → u (v x) == f (h x)) p q == ! (ap u (ap v p)) ∙ q ∙ (ap (f ∘ h) p)
   transp-pth-Rcmp idp q = ! (∙-unit-r q)
 
   transp-pth-l : {x y : A} {g : A → B} (p : x == y) (q : f x == g x)
@@ -843,17 +838,17 @@ module _ {i j} {A : Type i} {B : Type j} {f : A → B} where
   transp-pth-cmpR : ∀ {k l m} {C : Type k} {D : Type l} {Z : Type m}
     {t : C → Z} {h : Z → A} {v : C → D} {u : D → B}
     {x y : C} (p : x == y) (q : u (v x) == f (h (t x)))
-    →  transport (λ x → u (v x) == f (h (t x))) p q == (! (ap u (ap v p))) ∙ q ∙ (ap f (ap h (ap t p)))
+    → transport (λ x → u (v x) == f (h (t x))) p q == (! (ap u (ap v p))) ∙ q ∙ (ap f (ap h (ap t p)))
   transp-pth-cmpR idp q = ! (∙-unit-r q)
 
   transp-pth-cmp : ∀ {k l} {C : Type k} {D : Type l} {h : C → A} {v : C → D} {u : D → B}
     {x y : C} (p : x == y) (q : u (v x) == f (h x))
-    →  transport (λ x → u (v x) == f (h x)) p q == (! (ap u (ap v p))) ∙ q ∙ (ap f (ap h p))
+    → transport (λ x → u (v x) == f (h x)) p q == (! (ap u (ap v p))) ∙ q ∙ (ap f (ap h p))
   transp-pth-cmp idp q = ! (∙-unit-r q)
   
   transp-pth-cmp-l : ∀ {k l} {C : Type k} {D : Type l} {h : C → A} {v : C → D} {u : D → B}
     {x y : C} (p : x == y) (q : u (v x) == f (h x))
-    →  transport (λ x → u (v x) == f (h x)) p q == ((! (ap u (ap v p))) ∙ q) ∙ (ap f (ap h p))
+    → transport (λ x → u (v x) == f (h x)) p q == ((! (ap u (ap v p))) ∙ q) ∙ (ap f (ap h p))
   transp-pth-cmp-l idp q = ! (∙-unit-r q)
 
   transpRev : {x y : A} {g : A → B} (p : x == y) {q : f x == g x} {r : f y == g y}
@@ -915,7 +910,7 @@ module _ {i j} {A : Type i} {B : A → Type j} where
   transp-inv : {x y : A} (p : x == y) (v : B y) → transport B p (transport B (! p) v) == v
   transp-inv idp v = idp
 
-module _ {i j} {A : Type i} {x y : A} {B : Type j} {f g h : A →  B} {F : (x : A) → f x == g x} {G : (x : A) → g x == h x} where
+module _ {i j} {A : Type i} {x y : A} {B : Type j} {f g h : A → B} {F : (x : A) → f x == g x} {G : (x : A) → g x == h x} where
 
   apd-concat-pres : (κ : x == y) → transport (λ x → f x == h x) κ (F x ∙ G x) == F y ∙ (transport (λ x → g x == h x) κ (G x))
   apd-concat-pres idp = idp
