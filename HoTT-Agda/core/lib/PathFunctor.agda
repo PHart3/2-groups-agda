@@ -224,20 +224,20 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
   ∘-ap-ap-∘-inv idp = idp
 
   ap-∘2-ap-! : {x y : A} (v : x == y)
-    {c : g (f (y)) == g (f x)} (e : ap g (! (ap f v)) == c) 
-    → (! (ap (λ q → q) (ap-∘ (! v) ∙
+    {c : g (f (y)) == g (f x)} (e : ap g (! (ap f v)) == c)  →
+      (! (ap (λ q → q) (ap-∘ (! v) ∙
       ap (ap g) (ap-! f v))) ∙ idp) ∙
       ap-∘ (! v) ∙
       ap (ap g) (ap (λ p → p) (ap-! f v)) ∙ e
-      == e
+        ==
+      e
   ap-∘2-ap-! idp e = idp 
 
   ap-∘2-ap-∙ : {x y : A} (v : x == y) → 
     ! (ap (ap g) (ap-∙ f v idp ∙ idp)) ∙
     ! (ap (λ q → q) (ap-∘ (v ∙ idp))) ∙
-    ! (! (ap (λ p → p ∙ idp) (ap-∘ v)) ∙
-      ! (ap-∙ (g ∘ f) v idp))
-    ==
+    ! (! (ap (λ p → p ∙ idp) (ap-∘ v)) ∙ ! (ap-∙ (g ∘ f) v idp))
+      ==
     ap-∙ g (ap f v) idp ∙ idp
   ap-∘2-ap-∙ idp = idp
 
@@ -260,10 +260,10 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
       ap-!-inv g (ap f p) ∙ ! (cmp-inv-r p)
   ap-!-∘-rid-coher idp = idp
 
-  ap-!-∘-∙-rid-coher : {x y : A} (p : x == y)
-    → ! (! (cmp-inv-r p) ∙ ! (ap (λ q → q ∙ ap (g ∘ f) (! p)) (ap-∘ p)) ∙ ! (ap-∙ (g ∘ f) p (! p))) ∙ idp
+  ap-!-∘-∙-rid-coher : {x y : A} (p : x == y) →
+    ! (! (cmp-inv-r p) ∙ ! (ap (λ q → q ∙ ap (g ∘ f) (! p)) (ap-∘ p)) ∙ ! (ap-∙ (g ∘ f) p (! p))) ∙ idp
       ==
-      ap (ap (g ∘ f)) (!-inv-r p) ∙ idp
+    ap (ap (g ∘ f)) (!-inv-r p) ∙ idp
   ap-!-∘-∙-rid-coher idp = idp
   
 {- ap of idf -}
@@ -716,25 +716,27 @@ module _ {i j} {A : Type i} {B : Type j} {z₁ z₂ : B} (f : A → z₁ == z₂
 
 module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (f : A → B → C) where
 
-  ap-comm : {a₀ a₁ : A} (p : a₀ == a₁) {b₀ b₁ : B} (q : b₀ == b₁)
-    → ap (λ a → f a b₀) p ∙ ap (λ z → f a₁ z) q ==
-      ap (λ z → f a₀ z) q ∙ ap (λ a → f a b₁) p
+  ap-comm : {a₀ a₁ : A} (p : a₀ == a₁) {b₀ b₁ : B} (q : b₀ == b₁) →
+    ap (λ a → f a b₀) p ∙ ap (λ z → f a₁ z) q
+      ==
+    ap (λ z → f a₀ z) q ∙ ap (λ a → f a b₁) p
   ap-comm p q = ! (=ₛ-out (ap2-out f p q)) ∙ =ₛ-out (ap2-out' f p q)
 
-  ap-comm-=ₛ : {a₀ a₁ : A} (p : a₀ == a₁) {b₀ b₁ : B} (q : b₀ == b₁)
-    → ap (λ a → f a b₀) p ◃∙ ap (λ z → f a₁ z) q ◃∎ =ₛ
-      ap (λ z → f a₀ z) q ◃∙ ap (λ a → f a b₁) p ◃∎
+  ap-comm-=ₛ : {a₀ a₁ : A} (p : a₀ == a₁) {b₀ b₁ : B} (q : b₀ == b₁) →
+    ap (λ a → f a b₀) p ◃∙ ap (λ z → f a₁ z) q ◃∎
+      =ₛ
+    ap (λ z → f a₀ z) q ◃∙ ap (λ a → f a b₁) p ◃∎
   ap-comm-=ₛ p q = =ₛ-in (ap-comm p q)
 
-  ap-comm' : {a₀ a₁ : A} (p : a₀ == a₁) {b₀ b₁ : B} (q : b₀ == b₁)
-    → ap (λ a → f a b₀) p ∙' ap (λ z → f a₁ z) q ==
-      ap (λ z → f a₀ z) q ∙ ap (λ a → f a b₁) p
+  ap-comm' : {a₀ a₁ : A} (p : a₀ == a₁) {b₀ b₁ : B} (q : b₀ == b₁) →
+    ap (λ a → f a b₀) p ∙' ap (λ z → f a₁ z) q
+      ==
+    ap (λ z → f a₀ z) q ∙ ap (λ a → f a b₁) p
   ap-comm' p idp = idp
 
   ap-comm-cst-seq : {a₀ a₁ : A} (p : a₀ == a₁) {b₀ b₁ : B} (q : b₀ == b₁)
-    (c : C) (h₀ : ∀ b → f a₀ b == c)
-    → ap (λ a → f a b₀) p ∙ ap (λ b → f a₁ b) q =-=
-      ap (λ z → f a₀ z) q ∙ ap (λ a → f a b₁) p
+    (c : C) (h₀ : ∀ b → f a₀ b == c) →
+    ap (λ a → f a b₀) p ∙ ap (λ b → f a₁ b) q =-= ap (λ z → f a₀ z) q ∙ ap (λ a → f a b₁) p
   ap-comm-cst-seq {a₀} {a₁} p {b₀} {b₁} q c h₀ =
     ap (λ a → f a b₀) p ∙ ap (λ b → f a₁ b) q
       =⟪ ap (ap (λ a → f a b₀) p ∙_) $
@@ -754,8 +756,7 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (f : A → B → C) wher
 
   ap-comm-cst-coh : {a₀ a₁ : A} (p : a₀ == a₁) {b₀ b₁ : B} (q : b₀ == b₁)
     (c : C) (h₀ : ∀ b → f a₀ b == c)
-    → ap-comm p q ◃∎ =ₛ
-      ap-comm-cst-seq p q c h₀
+    → ap-comm p q ◃∎ =ₛ ap-comm-cst-seq p q c h₀
   ap-comm-cst-coh p@idp {b₀} q@idp c h₀ = =ₛ-in $ ! $
     ap (idp ∙_) (! (!-inv-r (h₀ b₀))) ∙
     ! (∙-unit-r (h₀ b₀ ∙ ! (h₀ b₀))) ∙
@@ -796,15 +797,14 @@ module _ {i} {A : Type i} where
     → transport (λ x → x == a) p q == ! p ∙ q
   transp-cst=idf-l idp q = idp
 
-  transp-cst=idf-pentagon : {a x y z : A}
-    (p : x == y) (q : y == z) (r : a == x)
-    → transp-cst=idf (p ∙ q) r ◃∎ =ₛ
-      transp-∙ p q r ◃∙
-      ap (transport (λ x → a == x) q) (transp-cst=idf p r) ◃∙
-      transp-cst=idf q (r ∙ p) ◃∙
-      ∙-assoc r p q ◃∎
-  transp-cst=idf-pentagon idp q idp =
-    =ₛ-in (! (∙-unit-r (transp-cst=idf q idp)))
+  transp-cst=idf-pentagon : {a x y z : A} (p : x == y) (q : y == z) (r : a == x) →
+    transp-cst=idf (p ∙ q) r ◃∎
+      =ₛ
+    transp-∙ p q r ◃∙
+    ap (transport (λ x → a == x) q) (transp-cst=idf p r) ◃∙
+    transp-cst=idf q (r ∙ p) ◃∙
+    ∙-assoc r p q ◃∎
+  transp-cst=idf-pentagon idp q idp = =ₛ-in (! (∙-unit-r (transp-cst=idf q idp)))
 
 {- Various lemmas on transporting identities -}
 
