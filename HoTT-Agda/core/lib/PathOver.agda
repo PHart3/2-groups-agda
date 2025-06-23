@@ -403,7 +403,7 @@ module _ {i j} {A : Type i} {B : Type j} {f g : A → B} where
               (! (r ∙ ∙'-unit-l (ap2 (λ p₁ p₂ → p₁ ∙ idp ∙' ! p₂) idp (! c₂)) ∙ ap2-idp-l _ (! c₂)))
 
 {-
-  A coordinate definition of homotopy of pointed functions.
+  An extensional definition of homotopy of pointed functions.
   We also call such a homotopy "unfolded." 
 -}
 
