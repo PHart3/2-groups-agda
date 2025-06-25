@@ -1,38 +1,38 @@
 **Output of command `agda --profile=internal Final-thms.agda`:**
 
 ```
-Total                            9,940,476ms              
-Miscellaneous                        1,389ms              
-Typing                             703,149ms (8,679,273ms)
-Typing.CheckRHS                  4,445,851ms              
-Typing.OccursCheck               1,586,319ms              
-Typing.InstanceSearch            1,290,961ms              
-Typing.TypeSig                     647,975ms              
-Typing.CheckLHS                      3,998ms     (5,006ms)
-Typing.CheckLHS.UnifyIndices         1,007ms              
-Serialization                      345,189ms   (425,611ms)
-Serialization.BuildInterface        78,459ms              
-Serialization.Compress                 989ms              
-Serialization.BinaryEncode             775ms              
-Serialization.Sort                     196ms              
-Positivity                         314,638ms              
-DeadCode                               115ms   (313,620ms)
-DeadCode.DeadCodeInstantiateFull   298,299ms              
-DeadCode.DeadCodeReachable          15,206ms              
-ProjectionLikeness                  67,001ms              
-Coverage                            55,968ms    (56,657ms)
-Coverage.UnifyIndices                  688ms              
-Termination                            115ms    (46,323ms)
-Termination.RecCheck                46,191ms              
-Termination.Compare                     13ms              
-Parsing                                736ms    (18,883ms)
-Parsing.OperatorsExpr               17,473ms              
-Parsing.OperatorsPattern               673ms              
-Scoping                                994ms    (11,961ms)
-Scoping.InverseScopeLookup          10,967ms              
-Deserialization                      3,072ms     (4,091ms)
-Deserialization.Compaction           1,019ms              
-Highlighting                           710ms              
-Import                                 277ms              
-Injectivity                             47ms
+Total                            9,967,489ms              
+Miscellaneous                        1,415ms              
+Typing                             720,507ms (8,714,445ms)
+Typing.CheckRHS                  4,446,376ms              
+Typing.OccursCheck               1,590,839ms              
+Typing.InstanceSearch            1,308,652ms              
+Typing.TypeSig                     643,347ms              
+Typing.CheckLHS                      3,848ms     (4,711ms)
+Typing.CheckLHS.UnifyIndices           863ms              
+Serialization                      347,692ms   (425,574ms)
+Serialization.BuildInterface        75,913ms              
+Serialization.Compress                 980ms              
+Serialization.BinaryEncode             834ms              
+Serialization.Sort                     152ms              
+DeadCode                               135ms   (318,522ms)
+DeadCode.DeadCodeInstantiateFull   302,576ms              
+DeadCode.DeadCodeReachable          15,810ms              
+Positivity                         304,813ms              
+ProjectionLikeness                  67,263ms              
+Termination                            114ms    (52,895ms)
+Termination.RecCheck                52,766ms              
+Termination.Compare                     12ms              
+Coverage                            45,454ms    (46,145ms)
+Coverage.UnifyIndices                  690ms              
+Parsing                                801ms    (18,587ms)
+Parsing.OperatorsExpr               17,120ms              
+Parsing.OperatorsPattern               665ms              
+Scoping                              1,011ms    (12,027ms)
+Scoping.InverseScopeLookup          11,016ms              
+Deserialization                      3,639ms     (4,704ms)
+Deserialization.Compaction           1,064ms              
+Highlighting                           789ms              
+Import                                 273ms              
+Injectivity                             44ms
 ```
