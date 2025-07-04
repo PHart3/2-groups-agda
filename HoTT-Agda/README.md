@@ -8,7 +8,7 @@ our development of 2-groups and pointed types.
 Setup
 -----
 
-The library is compatible with Agda 2.6.4.3. To use it, include `hott-core.agda-lib` and `hott-theorems.agda-lib` in your Agda library file.
+The library is compatible with Agda 2.6.4.3. To use it, include `hott-core.agda-lib` and `hott-theorems.agda-lib` in your Agda libraries file.
 
 Agda Options
 ------------
