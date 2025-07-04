@@ -8,8 +8,7 @@ our development of 2-groups and pointed types.
 Setup
 -----
 
-The library is compatible with Agda 2.6.4.3. To use it, you need a recent version of Agda and to include at
-least the path to `hott-core.agda-lib` in your Agda library list.
+The library is compatible with Agda 2.6.4.3. To use it, include `hott-core.agda-lib` and `hott-theorems.agda-lib` in your Agda library file.
 
 Agda Options
 ------------
@@ -41,6 +40,8 @@ is an equivalence as soon as Loop f is an equivalence.
 Citation
 --------
 
+The extension and modification of HoTT-Agda presented here is due to Perry Hart.
+
 We copy here the citation for the original HoTT-Agda library.
 
 ```
@@ -62,6 +63,8 @@ We copy here the citation for the original HoTT-Agda library.
 
 Names are roughly sorted by the amount of contributed code, with the founder Guillaume always staying on the
 top.
+
+**If using the version of HoTT-Agda presented in this repo, please cite both the original authors and Perry Hart.**
 
 License
 -------
