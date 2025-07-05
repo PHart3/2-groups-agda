@@ -1,0 +1,14 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: A mechanized study of coherent 2-groups
+message: Please cite this software using these metadata.
+type: software
+authors:
+  - given-names: Perry
+    family-names: Hart
+    email: hart1262@umn.edu
+    affiliation: 'University of Minnesota, Twin Cities'
+    orcid: 'https://orcid.org/0000-0002-7247-362X'
+repository-code: 'https://github.com/PHart3/2-groups-agda'
