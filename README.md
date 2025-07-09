@@ -6,7 +6,7 @@ We construct a fully verified biequivalence between
   
 We also derive a verified equality between them by way of univalence.
 
-The code has been checked with Agda 2.6.4.3. A preprint outlining our mechanization is located at [2Grp-biequiv-preprint.pdf](2Grp-biequiv-preprint.pdf).
+The code has been checked with Agda 2.6.4.3. A preprint outlining our mechanization is located [here](https://phart3.github.io/2Grp-biequiv-preprint.pdf).
 
 ## Organization
 
