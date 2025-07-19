@@ -8,7 +8,6 @@ open import lib.Funext2
 open import lib.types.Sigma
 open import lib.types.Pi
 open import lib.types.Paths
-open import lib.types.Unit
 open import 2Semigroup
 open import 2Grp
 
@@ -349,7 +348,7 @@ module _ {i} (G₁ : Type i) (η₁ : CohGrp G₁) where
              {{Π-level (λ x →
                (equiv-preserves-level (Σ-emap-r (λ r → pre-rotate-in-!≃-back r (ap (λ v → v) (rinv x))))))}}) ⟩
     [ tr₂ ∈ _ ] × [ pent₂ ∈ _ ] × [ zz₁₂ ∈ _ ] × _
-      ≃⟨ contr-is-Unit (inhab-prop-is-contr (tr-inhab , pent-inhab , zz₁-inhab , zz₂-inhab)
+      ≃⟨ contr-equiv-Unit (inhab-prop-is-contr (tr-inhab , pent-inhab , zz₁-inhab , zz₂-inhab)
            {{Σ-level-instance {{Π-level-instance}}
            {{Σ-level-instance {{Π-level-instance}}
            {{Σ-level-instance {{Π-level-instance}} {{Π-level-instance}}}}}}}}) ⟩
