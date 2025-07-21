@@ -2,7 +2,7 @@ Homotopy Type Theory in Agda
 ============================
 
 This directory contains a somewhat stripped-down version of Andrew Swan's [branch](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) of the
-HoTT-Agda library. It has been customized and signifcantly augmented to accomodate
+HoTT-Agda library. It has been customized and significantly augmented to accommodate
 our development of 2-groups and pointed types.
 
 Setup

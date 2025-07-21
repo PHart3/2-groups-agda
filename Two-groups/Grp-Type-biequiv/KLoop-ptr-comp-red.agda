@@ -2,7 +2,7 @@
 
 open import lib.Basics
 
--- ad-hoc data strucutre for a big path-seq reduction
+-- ad-hoc data structure for a big path-seq reduction
 
 module KLoop-ptr-comp-red where
 
