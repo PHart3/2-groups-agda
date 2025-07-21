@@ -434,7 +434,7 @@ module _ {i} {X : Ptd i} {Y : Ptd i} where
 
 {- Pointed maps out of bool -}
 
--- intuition : [f true] is fixed and the only changable part is [f false].
+-- intuition : [f true] is fixed and the only changeable part is [f false].
 
 ⊙Bool→-to-idf : ∀ {i} {X : Ptd i}
   → ⊙Bool ⊙→ X → de⊙ X

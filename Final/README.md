@@ -4,7 +4,7 @@
 2. Add all lib files in the repo to your Agda libraries file. 
 3. Type-check the file `Final-thms.agda`.
 
-The type-checking of this file is arduous. We have verfied that the type-checker
+The type-checking of this file is arduous. We have verified that the type-checker
 finishes successfully on the following machine:
 
 *macOS Sequoia 15.4.1, Apple M1 chip, 16 GB of RAM*

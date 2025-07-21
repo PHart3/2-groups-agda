@@ -99,7 +99,7 @@ module _ {i₀ i₁ j₀ j₁} {A₀ : Type i₀} {A₁ : Type i₁}
 -}
 
 
-{- Coversions between functions with implicit and explicit arguments -}
+{- Conversions between functions with implicit and explicit arguments -}
 
 expose-equiv : ∀ {i j} {A : Type i} {B : A → Type j}
   → ({x : A} → B x) ≃ ((x : A) → B x)
