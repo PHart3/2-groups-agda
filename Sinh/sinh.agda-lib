@@ -1,0 +1,5 @@
+name: sinh
+depend:
+  hott-core-group
+  hott-theorems-group
+  bicats
