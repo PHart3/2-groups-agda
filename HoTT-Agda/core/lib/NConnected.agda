@@ -201,6 +201,78 @@ prop-over-connected :  ∀ {i j} {A : Type i} {a : A} {{p : is-connected 0 A}}
   → fst (P a) → Π A (fst ∘ P)
 prop-over-connected P x = conn-extend (pointed-conn-out _ _) P (λ _ → x)
 
+{- Connectedness of a truncated type -}
+Trunc-preserves-conn : ∀ {i} {A : Type i} {n : ℕ₋₂} {m : ℕ₋₂}
+  → is-connected n A → is-connected n (Trunc m A)
+Trunc-preserves-conn {n = ⟨-2⟩} _ = Trunc-level
+Trunc-preserves-conn {A = A} {n = S n} {m} c = lemma (contr-center c) (contr-path c)
+  where
+  lemma : (x₀ : Trunc (S n) A) → (∀ x → x₀ == x) → is-connected (S n) (Trunc m A)
+  lemma = Trunc-elim
+    (λ a → λ p → has-level-in ([ [ a ] ] ,
+       Trunc-elim
+         (Trunc-elim
+           {{=-preserves-level
+                   (Trunc-preserves-level (S n) Trunc-level)}}
+           (λ x → <– (=ₜ-equiv [ [ a ] ] [ [ x ] ])
+              (Trunc-fmap (ap [_])
+                (–> (=ₜ-equiv [ a ] [ x ]) (p [ x ])))))))
+
+instance
+  Trunc-preserves-conn-instance : ∀ {i} {A : Type i} {n : ℕ₋₂} {m : ℕ₋₂}
+    → {{is-connected n A}} → is-connected n (Trunc m A)
+  Trunc-preserves-conn-instance {{pA}} = Trunc-preserves-conn pA
+
+{- Connectedness of a Σ-type -}
+abstract
+  Σ-conn : ∀ {i} {j} {A : Type i} {B : A → Type j} {n : ℕ₋₂}
+    → is-connected n A → (∀ a → is-connected n (B a))
+    → is-connected n (Σ A B)
+  Σ-conn {A = A} {B = B} {n = ⟨-2⟩} cA cB = -2-conn (Σ A B)
+  Σ-conn {A = A} {B = B} {n = S m} cA cB =
+    Trunc-elim
+      {P = λ ta → (∀ tx → ta == tx) → is-connected (S m) (Σ A B)}
+      (λ a₀ pA →
+        Trunc-elim
+          {P = λ tb → (∀ ty → tb == ty) → is-connected (S m) (Σ A B)}
+          (λ b₀ pB → has-level-in
+            ([ a₀ , b₀ ] ,
+              Trunc-elim
+                {P = λ tp → [ a₀ , b₀ ] == tp}
+                (λ {(r , s) →
+                  Trunc-rec
+                    (λ pa → Trunc-rec
+                      (λ pb → ap [_] (pair= pa (from-transp! B pa pb)))
+                      (–> (=ₜ-equiv [ b₀ ] [ transport! B pa s ])
+                          (pB [ transport! B pa s ])))
+                    (–> (=ₜ-equiv [ a₀ ] [ r ]) (pA [ r ]))})))
+          (contr-center (cB a₀)) (contr-path (cB a₀)))
+      (contr-center cA) (contr-path cA)
+
+  ×-conn : ∀ {i} {j} {A : Type i} {B : Type j} {n : ℕ₋₂}
+    → is-connected n A → is-connected n B
+    → is-connected n (A × B)
+  ×-conn cA cB = Σ-conn cA (λ _ → cB)
+
+instance
+  Σ-conn-instance : ∀ {i} {j} {A : Type i} {B : A → Type j} {n : ℕ₋₂}
+    → {{is-connected n A}} → {{{a : A} → is-connected n (B a)}}
+    → is-connected n (Σ A B)
+  Σ-conn-instance {{pA}} {{pB}} = Σ-conn pA (λ _ → pB)
+
+{- connectedness of a path space -}
+abstract
+  path-conn : ∀ {i} {A : Type i} {x y : A} {n : ℕ₋₂}
+    → is-connected (S n) A → is-connected n (x == y)
+  path-conn {x = x} {y = y} cA =
+    equiv-preserves-level (=ₜ-equiv [ x ] [ y ])
+      {{has-level-apply (contr-is-prop cA) [ x ] [ y ]}}
+
+instance
+  path-conn-instance : ∀ {i} {A : Type i} {x y : A} {n : ℕ₋₂}
+    → {{is-connected (S n) A}} → is-connected n (x == y)
+  path-conn-instance {{pA}} = path-conn pA
+
 module _ {i j} {A : Type i} (a : A) {n : ℕ₋₂} {{_ : is-connected (S n) A}} (P : A → Type j)
   {{tr : {x : A} → has-level n (P x)}} where
 
@@ -210,4 +282,7 @@ module _ {i j} {A : Type i} (a : A) {n : ℕ₋₂} {{_ : is-connected (S n) A}}
   conn-extend-ptd-β : (b : P a) → conn-extend-ptd b a == b 
   conn-extend-ptd-β b = conn-extend-β (pointed-conn-out A a) (λ x → P x , tr) (λ _ → b) tt
 
-  
+{- Equivalent types have the same connectedness -}
+equiv-preserves-conn : ∀ {i j} {A : Type i} {B : Type j} {n : ℕ₋₂} (e : A ≃ B)
+  {{_ : is-connected n A}} → is-connected n B
+equiv-preserves-conn {n = n} e = equiv-preserves-level (Trunc-emap e)

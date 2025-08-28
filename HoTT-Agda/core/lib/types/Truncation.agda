@@ -302,6 +302,120 @@ module _ {i} {n : ℕ₋₂} {A : Type i} where
     level ta tb tc = raise-level _ $
               Π-level (λ _ → Π-level (λ _ → =ₜ-level ta tc))
 
+  ∙ₜ-assoc : {ta tb tc td : Trunc (S n) A}
+    (tp : ta =ₜ tb) (tq : tb =ₜ tc) (tr : tc =ₜ td)
+    → _∙ₜ_ {ta} (_∙ₜ_ {ta} tp tq) tr
+      == _∙ₜ_ {ta} tp (_∙ₜ_ {tb} tq tr)
+  ∙ₜ-assoc {ta = ta} {tb = tb} {tc = tc} {td = td} =
+    Trunc-elim {P = λ ta → C ta tb tc td}
+      {{λ {ta} → C-level ta tb tc td}}
+      (λ a → Trunc-elim {P = λ tb → C [ a ] tb tc td}
+        {{λ {tb} → C-level [ a ] tb tc td}}
+        (λ b → Trunc-elim {P = λ tc → C [ a ] [ b ] tc td}
+          {{λ {tc} → C-level [ a ] [ b ] tc td}}
+          (λ c → Trunc-elim {P = λ td → C [ a ] [ b ] [ c ] td}
+            {{λ {td} → C-level [ a ] [ b ] [ c ] td}}
+            (λ d tp tq tr → Trunc-elim
+              {P = λ tp → D [ a ] [ b ] [ c ] [ d ] tp tq tr}
+              {{λ {tp} → D-level [ a ] [ b ] [ c ] [ d ] tp tq tr}}
+              (λ p → Trunc-elim
+                {P = λ tq → D [ a ] [ b ] [ c ] [ d ] [ p ] tq tr}
+                {{λ {tq} → D-level [ a ] [ b ] [ c ] [ d ] [ p ] tq tr}}
+                (λ q → Trunc-elim
+                  {P = λ tr → D [ a ] [ b ] [ c ] [ d ] [ p ] [ q ] tr}
+                  {{λ {tr} → D-level [ a ] [ b ] [ c ] [ d ] [ p ] [ q ] tr}}
+                  (λ r → ap [_] (∙-assoc p q r))
+                  tr)
+                tq)
+              tp)
+            td)
+          tc)
+        tb)
+      ta
+    where
+    D : (ta tb tc td : Trunc (S n) A)
+      → ta =ₜ tb → tb =ₜ tc → tc =ₜ td
+      → Type i
+    D ta tb tc td tp tq tr =
+         _∙ₜ_ {ta} (_∙ₜ_ {ta} tp tq) tr
+      == _∙ₜ_ {ta} tp (_∙ₜ_ {tb} tq tr)
+    C : (ta tb tc td : Trunc (S n) A) → Type i
+    C ta tb tc td = ∀ tp tq tr → D ta tb tc td tp tq tr
+    D-level : (ta tb tc td : Trunc (S n) A)
+      (tp : ta =ₜ tb) (tq : tb =ₜ tc) (tr : tc =ₜ td)
+      → has-level n (D ta tb tc td tp tq tr)
+    D-level ta tb tc td tp tq tr = =-preserves-level (=ₜ-level ta td)
+    C-level : (ta tb tc td : Trunc (S n) A) → has-level (S n) (C ta tb tc td)
+    C-level ta tb tc td =
+      raise-level _ $
+      Π-level $ λ tp →
+      Π-level $ λ tq →
+      Π-level $ λ tr →
+      D-level ta tb tc td tp tq tr
+
+  abstract
+    ∙ₜ-assoc-pentagon : {ta tb tc td te : Trunc (S n) A}
+      (tp : ta =ₜ tb) (tq : tb =ₜ tc) (tr : tc =ₜ td) (ts : td =ₜ te)
+      → ∙ₜ-assoc {ta} (_∙ₜ_ {ta} tp tq) tr ts ◃∙
+        ∙ₜ-assoc {ta} tp tq (_∙ₜ_ {tc} tr ts) ◃∎
+        =ₛ
+        ap (λ u → _∙ₜ_ {ta} u ts) (∙ₜ-assoc {ta} tp tq tr) ◃∙
+        ∙ₜ-assoc {ta} tp (_∙ₜ_ {tb} tq tr) ts ◃∙
+        ap (_∙ₜ_ {ta} tp) (∙ₜ-assoc {tb} tq tr ts) ◃∎
+    ∙ₜ-assoc-pentagon {ta} {tb} {tc} {td} {te} = core ta tb tc td te
+      where
+      P : (ta tb tc td te : Trunc (S n) A)
+        (tp : ta =ₜ tb) (tq : tb =ₜ tc) (tr : tc =ₜ td) (ts : td =ₜ te)
+        → Type i
+      P ta tb tc td te tp tq tr ts =
+        ∙ₜ-assoc {ta} (_∙ₜ_ {ta} tp tq) tr ts ◃∙
+        ∙ₜ-assoc {ta} tp tq (_∙ₜ_ {tc} tr ts) ◃∎
+        =ₛ
+        ap (λ u → _∙ₜ_ {ta} u ts) (∙ₜ-assoc {ta} tp tq tr) ◃∙
+        ∙ₜ-assoc {ta} tp (_∙ₜ_ {tb} tq tr) ts ◃∙
+        ap (_∙ₜ_ {ta} tp) (∙ₜ-assoc {tb} tq tr ts) ◃∎
+      P-level : ∀ ta tb tc td te →
+        (tp : ta =ₜ tb) (tq : tb =ₜ tc) (tr : tc =ₜ td) (ts : td =ₜ te)
+        → has-level n (P ta tb tc td te tp tq tr ts)
+      P-level ta tb tc td te tp tq tr ts =
+        =ₛ-level $ raise-level _ $ raise-level _ $ =ₜ-level ta te
+      Q : (ta tb tc td te : Trunc (S n) A) → Type i
+      Q ta tb tc td te = ∀ tp tq tr ts → P ta tb tc td te tp tq tr ts
+      Q-level : ∀ ta tb tc td te → has-level (S n) (Q ta tb tc td te)
+      Q-level ta tb tc td te =
+        raise-level n $
+        Π-level $ λ tp →
+        Π-level $ λ tq →
+        Π-level $ λ tr →
+        Π-level $ λ ts →
+        P-level ta tb tc td te tp tq tr ts
+      core' : ∀ {a} {b} {c} {d} {e} p q r s → P [ a ] [ b ] [ c ] [ d ] [ e ] [ p ] [ q ] [ r ] [ s ]
+      core' idp idp r s = =ₛ-in idp
+      core : ∀ ta tb tc td te → Q ta tb tc td te
+      core ta tb tc td te =
+        Trunc-elim {P = λ ta → Q ta tb tc td te} {{λ {ta} → Q-level ta tb tc td te}} (λ a →
+          Trunc-elim {P = λ tb → Q [ a ] tb tc td te} {{λ {tb} → Q-level [ a ] tb tc td te}} (λ b →
+            Trunc-elim {P = λ tc → Q [ a ] [ b ] tc td te} {{λ {tc} → Q-level [ a ] [ b ] tc td te}} (λ c →
+              Trunc-elim {P = λ td → Q [ a ] [ b ] [ c ] td te} {{λ {td} → Q-level [ a ] [ b ] [ c ] td te}} (λ d →
+                Trunc-elim {P = λ te → Q [ a ] [ b ] [ c ] [ d ] te} {{λ {te} → Q-level [ a ] [ b ] [ c ] [ d ] te}} (λ e →
+                  let R = P [ a ] [ b ] [ c ] [ d ] [ e ]
+                      R-level = P-level [ a ] [ b ] [ c ] [ d ] [ e ]
+                  in λ tp tq tr ts →
+                  Trunc-elim {P = λ tp → R tp tq tr ts} {{λ {tp} → R-level tp tq tr ts}} (λ p →
+                    Trunc-elim {P = λ tq → R [ p ] tq tr ts} {{λ {tq} → R-level [ p ] tq tr ts}} (λ q →
+                      Trunc-elim {P = λ tr → R [ p ] [ q ] tr ts} {{λ {tr} → R-level [ p ] [ q ] tr ts}} (λ r →
+                        Trunc-elim {P = λ ts → R [ p ] [ q ] [ r ] ts} {{λ {ts} → R-level [ p ] [ q ] [ r ] ts}} (λ s →
+                          core' p q r s
+                        ) ts
+                      ) tr
+                    ) tq
+                  ) tp
+                ) te
+              ) td
+            ) tc
+          ) tb
+        ) ta
+
   –>-=ₜ-equiv-pres-∙ : {ta tb tc : Trunc (S n) A}
     (p : ta == tb) (q : tb == tc)
     →  –> (=ₜ-equiv ta tc) (p ∙ q)
@@ -314,3 +428,30 @@ module _ {i} {n : ℕ₋₂} {A : Type i} where
       {{λ {ta} → raise-level _ $ =-preserves-level $ =ₜ-level ta ta}}
       (λ a → idp)
       ta
+
+  abstract
+    –>-=ₜ-equiv-pres-∙-coh : {ta tb tc td : Trunc (S n) A}
+      (p : ta == tb) (q : tb == tc) (r : tc == td)
+      → –>-=ₜ-equiv-pres-∙ (p ∙ q) r ◃∙
+        ap (λ u → _∙ₜ_ {ta = ta} u (–> (=ₜ-equiv tc td) r)) (–>-=ₜ-equiv-pres-∙ p q) ◃∙
+        ∙ₜ-assoc {ta = ta} (–> (=ₜ-equiv ta tb) p) (–> (=ₜ-equiv tb tc) q) (–> (=ₜ-equiv tc td) r) ◃∎
+        =ₛ
+        ap (–> (=ₜ-equiv ta td)) (∙-assoc p q r) ◃∙
+        –>-=ₜ-equiv-pres-∙ p (q ∙ r) ◃∙
+        ap (_∙ₜ_ {ta = ta} (–> (=ₜ-equiv ta tb) p)) (–>-=ₜ-equiv-pres-∙ q r) ◃∎
+    –>-=ₜ-equiv-pres-∙-coh {ta = ta} idp idp idp =
+      Trunc-elim
+        {P = λ ta → P ta ta ta ta idp idp idp}
+        {{λ {ta} → =ₛ-level $ raise-level (S (S n)) $ raise-level (S n) $ raise-level n $ =ₜ-level ta ta}}
+        (λ a → =ₛ-in idp)
+        ta
+      where
+      P : (ta tb tc td : Trunc (S n) A) (p : ta == tb) (q : tb == tc) (r : tc == td) → Type i
+      P ta tb tc td p q r =
+        –>-=ₜ-equiv-pres-∙ (p ∙ q) r ◃∙
+        ap (λ u → _∙ₜ_ {ta = ta} u (–> (=ₜ-equiv tc td) r)) (–>-=ₜ-equiv-pres-∙ p q) ◃∙
+        ∙ₜ-assoc {ta = ta} (–> (=ₜ-equiv ta tb) p) (–> (=ₜ-equiv tb tc) q) (–> (=ₜ-equiv tc td) r) ◃∎
+        =ₛ
+        ap (–> (=ₜ-equiv ta td)) (∙-assoc p q r) ◃∙
+        –>-=ₜ-equiv-pres-∙ p (q ∙ r) ◃∙
+        ap (_∙ₜ_ {ta = ta} (–> (=ₜ-equiv ta tb) p)) (–>-=ₜ-equiv-pres-∙ q r) ◃∎
