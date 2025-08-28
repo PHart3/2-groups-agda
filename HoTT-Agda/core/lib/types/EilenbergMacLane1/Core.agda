@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --confluence-check #-}
 
 open import lib.Basics
 open import lib.NType2

@@ -91,7 +91,7 @@ module EM₁HSpace {i} (G : AbGroup i) where
            =⟨ ! (mult-emloop-β g embase) ⟩
          ap (λ z → mult z embase) (emloop g)
            =⟨ ! (∙-unit-r (ap (λ z → mult z embase) (emloop g))) ⟩
-         ap (λ z → mult z embase) (emloop g) ∙ idp ∎)
+         ap (λ z → mult z embase) (emloop g) ∙ idp =∎)
 
     coh : unit-l embase == unit-r embase
     coh = idp

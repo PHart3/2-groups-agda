@@ -273,6 +273,12 @@ instance
     → {{is-connected (S n) A}} → is-connected n (x == y)
   path-conn-instance {{pA}} = path-conn pA
 
+{- an n-Type which is n-connected is contractible -}
+connected-at-level-is-contr : ∀ {i} {A : Type i} {n : ℕ₋₂}
+  {{pA : has-level n A}} {{cA : is-connected n A}} → is-contr A
+connected-at-level-is-contr {{pA}} {{cA}} =
+  equiv-preserves-level (unTrunc-equiv _) {{cA}}
+
 module _ {i j} {A : Type i} (a : A) {n : ℕ₋₂} {{_ : is-connected (S n) A}} (P : A → Type j)
   {{tr : {x : A} → has-level n (P x)}} where
 
