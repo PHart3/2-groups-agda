@@ -202,7 +202,7 @@ module _ {i} where
       aux : {x y : A} (p q : x == y) → has-level (S n) (p == q)
       aux {x} {y} idp q = has-level-apply (UIP-loops {n}) idp q 
 
--- truncated functions
+-- truncated maps
 has-trunc-fibers : ∀ {i j} {A : Type i} {B : Type j} → ℕ₋₂ → (A → B) → Type (lmax i j)
 has-trunc-fibers {A = A} {B = B} n f =
   Π B (λ b → has-level n (hfiber f b))
