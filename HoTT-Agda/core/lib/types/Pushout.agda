@@ -1,4 +1,6 @@
-{-# OPTIONS --without-K --rewriting --confluence-check #-}
+{-# OPTIONS --without-K --rewriting #-}
+
+{- confluence-check causes an internal error -}
 
 open import lib.Basics
 open import lib.types.Pointed
