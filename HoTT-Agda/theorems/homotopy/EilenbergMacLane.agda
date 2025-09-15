@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=3 #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --confluence-check --instance-search-depth=3 #-}
 
 open import HoTT
 open import homotopy.HSpace renaming (HSpaceStructure to HSS)

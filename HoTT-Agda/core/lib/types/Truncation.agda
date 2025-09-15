@@ -70,6 +70,20 @@ module TruncRecType {i j} {n : ℕ₋₂} {A : Type i} (d : A → n -Type j) whe
 ⊙Trunc : ∀ {i} → ℕ₋₂ → Ptd i → Ptd i
 ⊙Trunc n ⊙[ A , a ] = ⊙[ Trunc n A , [ a ] ]
 
+[_]-⊙ : ∀ {i} {n} {X : Ptd i} → X ⊙→ ⊙Trunc n X
+[_]-⊙ = [_] , idp
+
+module ⊙TruncRec {i j} {n : ℕ₋₂} {A : Ptd i} {B : Ptd j} {{p : has-level n (de⊙ B)}}
+  (d : A ⊙→ B) where
+
+  private
+    module M = TruncElim {{λ {x} → p}} (fst d)
+
+  f : ⊙Trunc n A ⊙→ B
+  f = M.f , snd d
+
+open ⊙TruncRec public renaming (f to ⊙Trunc-rec)
+
 module _ {i} {A : Type i} where
 
   [_]₀ : A → Trunc 0 A
