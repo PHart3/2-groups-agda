@@ -6,6 +6,7 @@ open import lib.types.TLevel
 open import lib.types.Pi
 open import lib.types.Sigma
 open import lib.types.Pointed
+open import lib.wild-cats.Ptd-wc
 
 module lib.types.Truncation where
 
@@ -217,9 +218,9 @@ Trunc-fmap f = Trunc-rec ([_] ∘ f)
   ⊙Trunc-fmap {n = n} f ⊙∘ [_]-⊙ == [_]-⊙ ⊙∘ f
 ⊙-Trunc-fmap-nat f = ⊙λ= ((λ _ → idp) , (! (∙-unit-r (ap [_] (snd f)))))
 
-⊙-unTrunc-fmap-nat : ∀ {i j} {n : ℕ₋₂} {X : Ptd i} {Y : Ptd j} {{_ : has-level n (de⊙ X)}} (f : X ⊙→ Y)
+⊙-unTrunc-fmap-nat-rot : ∀ {i j} {n : ℕ₋₂} {X : Ptd i} {Y : Ptd j} {{_ : has-level n (de⊙ X)}} (f : X ⊙→ Y)
   → ⊙Trunc-fmap {n = n} f == [_]-⊙ ⊙∘ f ⊙∘ ⊙–> (⊙unTrunc-equiv X)
-⊙-unTrunc-fmap-nat {n = n} {X} f = 
+⊙-unTrunc-fmap-nat-rot {n = n} {X} f = 
   ⊙Trunc-fmap f
     =⟨ ap (λ m → ⊙Trunc-fmap f ⊙∘ m) (! (⊙λ= (⊙<–-inv-l (⊙unTrunc-equiv X)))) ⟩
   ⊙Trunc-fmap f ⊙∘ [_]-⊙ ⊙∘ ⊙–> (⊙unTrunc-equiv X)
@@ -229,6 +230,14 @@ Trunc-fmap f = Trunc-rec ([_] ∘ f)
   ([_]-⊙ ⊙∘ f) ⊙∘ ⊙–> (⊙unTrunc-equiv X)
     =⟨ ⊙λ= (⊙∘-assoc [_]-⊙ f (⊙–> (⊙unTrunc-equiv X))) ⟩
   [_]-⊙ ⊙∘ f ⊙∘ ⊙–> (⊙unTrunc-equiv X) =∎
+
+⊙-unTrunc-fmap-nat : ∀ {i j} {n : ℕ₋₂} {X : Ptd i} {Y : Ptd j} {{_ : has-level n (de⊙ X)}} {{_ : has-level n (de⊙ Y)}}
+  (f : X ⊙→ Y) → ⊙–> (⊙unTrunc-equiv Y) ⊙∘ ⊙Trunc-fmap {n = n} f == f ⊙∘ ⊙–> (⊙unTrunc-equiv X)
+⊙-unTrunc-fmap-nat {X = X} {Y} f =
+  ap (λ m → ⊙–> (⊙unTrunc-equiv Y) ⊙∘ m) (⊙-unTrunc-fmap-nat-rot f) ∙
+  ! (⊙λ= (⊙∘-assoc (⊙–> (⊙unTrunc-equiv Y)) [_]-⊙ (f ⊙∘ ⊙–> (⊙unTrunc-equiv X)))) ∙
+  ap (λ m → m ⊙∘ f ⊙∘ ⊙–> (⊙unTrunc-equiv X)) (⊙λ= (⊙<–-inv-r (⊙unTrunc-equiv Y))) ∙
+  ! (⊙-comp-to-== (⊙∘-lunit (f ⊙∘ ⊙–> (⊙unTrunc-equiv X))))
 
 Trunc-fmap2 : ∀ {i j k} {n : ℕ₋₂} {A : Type i} {B : Type j} {C : Type k}
   → ((A → B → C) → (Trunc n A → Trunc n B → Trunc n C))
@@ -248,6 +257,27 @@ Trunc-fmap-∘ : ∀ {i j k} {n : ℕ₋₂} {A : Type i} {B : Type j} {C : Type
   → ∀ x → Trunc-fmap {n = n} g (Trunc-fmap f x) == Trunc-fmap (g ∘ f) x
 Trunc-fmap-∘ g f =
   Trunc-elim (λ _ → idp)
+
+⊙Trunc-fmap-idf : ∀ {i} {n : ℕ₋₂} (A : Ptd i)
+  → ⊙Trunc-fmap {n = n} (⊙idf A) == ⊙idf (⊙Trunc n A)
+⊙Trunc-fmap-idf A = ⊙λ= (Trunc-fmap-idf {A = de⊙ A} , idp)
+
+⊙Trunc-fmap-∘ : ∀ {i j k} {n : ℕ₋₂} {A : Ptd i} {B : Ptd j} {C : Ptd k}
+  → (g : B ⊙→ C) (f : A ⊙→ B)
+  → ⊙Trunc-fmap {n = n} g ⊙∘ ⊙Trunc-fmap f == ⊙Trunc-fmap (g ⊙∘ f)
+⊙Trunc-fmap-∘ g f = ⊙λ= ((Trunc-fmap-∘ (fst g) (fst f)) ,
+  (ap (λ p → p ∙ ap [_] (snd g)) (∘-ap (Trunc-elim (λ x → [ fst g x ])) [_] (snd f)) ∙
+  ! (ap-∘-∙ [_] (fst g) (snd f) (snd g))))
+
+-- ⊙Trunc as wild functor
+⊙Trunc-wf : ∀ {n : ℕ₋₂} {i} → PtdFunctor i i
+obj (⊙Trunc-wf {n}) = ⊙Trunc n
+arr (⊙Trunc-wf {n}) = ⊙Trunc-fmap
+id (⊙Trunc-wf {n}) = ⊙Trunc-fmap-idf
+comp (⊙Trunc-wf {n}) f g = ! (⊙Trunc-fmap-∘ g f)
+
+⊙Trunc-fmap-≃ : ∀ {i n} {X Y : Ptd i} → X ⊙≃ Y → ⊙Trunc n X ⊙≃ ⊙Trunc n Y
+⊙Trunc-fmap-≃ e = ⊙≃-from-equiv-wc (F-equiv-wc (⊙Trunc-wf) (⊙≃-to-equiv-wc e))
 
 Trunc-csmap : ∀ {i₀ i₁ j₀ j₁} {n : ℕ₋₂}
   {A₀ : Type i₀} {A₁ : Type i₁} {B₀ : Type j₀} {B₁ : Type j₁}
@@ -286,7 +316,7 @@ module _ {i j} {n : ℕ₋₂} {A : Ptd i} {B : Ptd j} {{_ : has-level n (de⊙ 
 
     ⊙Trunc-ff : is-equiv (⊙Trunc-fmap {n = n} {A} {B})
     ⊙Trunc-ff = is-eq ⊙Trunc-fmap (λ f →  ⊙–> (⊙unTrunc-equiv B) ⊙∘ f ⊙∘ [_]-⊙)
-      (λ f → ⊙-unTrunc-fmap-nat (⊙–> (⊙unTrunc-equiv B) ⊙∘ f ⊙∘ [_]-⊙) ∙
+      (λ f → ⊙-unTrunc-fmap-nat-rot (⊙–> (⊙unTrunc-equiv B) ⊙∘ f ⊙∘ [_]-⊙) ∙
         ([_]-⊙ ⊙∘ (⊙–> (⊙unTrunc-equiv B) ⊙∘ f ⊙∘ [_]-⊙) ⊙∘ ⊙–> (⊙unTrunc-equiv A)
           =⟨ ap (λ m → [_]-⊙ ⊙∘ m) (⊙λ= (⊙∘-assoc (⊙–> (⊙unTrunc-equiv B)) (f ⊙∘ [_]-⊙) (⊙–> (⊙unTrunc-equiv A)))) ⟩
         [_]-⊙ ⊙∘ ⊙–> (⊙unTrunc-equiv B) ⊙∘ (f ⊙∘ [_]-⊙) ⊙∘ ⊙–> (⊙unTrunc-equiv A)
@@ -300,7 +330,7 @@ module _ {i j} {n : ℕ₋₂} {A : Ptd i} {B : Ptd j} {{_ : has-level n (de⊙ 
         f ⊙∘ [_]-⊙ ⊙∘ ⊙–> (⊙unTrunc-equiv A)
           =⟨ ap (λ m → f ⊙∘ m) (⊙λ= (⊙<–-inv-l (⊙unTrunc-equiv A))) ⟩
         f =∎))
-      λ f → ap (λ m → ⊙–> (⊙unTrunc-equiv B) ⊙∘ m ⊙∘ [_]-⊙) (⊙-unTrunc-fmap-nat f) ∙
+      λ f → ap (λ m → ⊙–> (⊙unTrunc-equiv B) ⊙∘ m ⊙∘ [_]-⊙) (⊙-unTrunc-fmap-nat-rot f) ∙
         (⊙–> (⊙unTrunc-equiv B) ⊙∘ ([_]-⊙ ⊙∘ f ⊙∘ ⊙–> (⊙unTrunc-equiv A)) ⊙∘ [_]-⊙
           =⟨ ap (λ m → ⊙–> (⊙unTrunc-equiv B) ⊙∘ m) (⊙λ= (⊙∘-assoc [_]-⊙ (f ⊙∘ ⊙–> (⊙unTrunc-equiv A)) [_]-⊙)) ⟩
         ⊙–> (⊙unTrunc-equiv B) ⊙∘ [_]-⊙ ⊙∘ (f ⊙∘ ⊙–> (⊙unTrunc-equiv A)) ⊙∘ [_]-⊙

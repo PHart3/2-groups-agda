@@ -3,6 +3,7 @@
 open import HoTT
 open import lib.cubical.Square
 open import homotopy.PtdAdjoint
+open import lib.wild-cats.Ptd-wc
 
 module homotopy.SuspAdjointLoop {i} where
 
@@ -12,14 +13,14 @@ private
     obj = ⊙Susp;
     arr = ⊙Susp-fmap;
     id = ⊙Susp-fmap-idf;
-    comp = ⊙Susp-fmap-∘}
+    comp = λ f g → ⊙Susp-fmap-∘ g f}
 
   LoopFunctor : PtdFunctor i i
   LoopFunctor = record {
     obj = ⊙Ω;
     arr = ⊙Ω-fmap;
     id = λ _ → ⊙Ω-fmap-idf;
-    comp = ⊙Ω-fmap-∘}
+    comp = λ f g → ⊙Ω-fmap-∘ g f}
 
   module _ (X : Ptd i) where
 
