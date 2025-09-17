@@ -76,14 +76,6 @@ module FreudenthalEquiv
   Codes-has-level = Susp-elim Trunc-level Trunc-level
                       (λ _ → prop-has-all-paths-↓)
 
-  {-
-    favonia:
-
-    This equation should be true: [⊙Trunc-fmap ⊙up = (decodeN , decodeN-pt)].
-    Maybe there is a way to refactor the following code so that
-    pointedness is handled more elegantly.
-  -}
-
   decodeN : Codes north → Trunc k (north' (de⊙ X) == north)
   decodeN = Trunc-fmap up
 
@@ -233,7 +225,7 @@ module FreudenthalEquiv
   eq = equiv decodeN encode decode-encode encode-decodeN
 
   ⊙eq : ⊙Trunc k X ⊙≃ ⊙Trunc k (⊙Ω (⊙Susp X))
-  ⊙eq = ≃-to-⊙≃ eq (ap [_] (!-inv-r (merid (pt X))))
+  ⊙eq = ≃-to-⊙≃ eq decodeN-pt
 
   path : Trunc k (de⊙ X) == Trunc k (north' (de⊙ X) == north)
   path = ua eq
