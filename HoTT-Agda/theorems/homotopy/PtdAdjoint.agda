@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import HoTT
+open import lib.wild-cats.WildCats
 open import lib.wild-cats.Ptd-wc
 
 {- The pseudo-adjoint functors F,G : Ptd → Ptd
@@ -23,6 +24,13 @@ record CounitUnitAdjoint {i j} (F : PtdFunctor i j) (G : PtdFunctor j i)
     ε-natural : {U V : Ptd j} (k : U ⊙→ V)
       → ε V ⊙∘ arr F (arr G k) == k ⊙∘ ε U
 
+  Nat-trans-η : Nat-trans (idfWC (Ptd-wc i)) (G ∘WC F) 
+  Nat-trans-η = nattrans η (! ∘ η-natural)
+
+  Nat-trans-ε : Nat-trans (F ∘WC G) (idfWC (Ptd-wc j))
+  Nat-trans-ε = nattrans ε (! ∘ ε-natural)
+
+  field
     εF-Fη : (X : Ptd i) → ε (obj F X) ⊙∘ arr F (η X) == ⊙idf (obj F X)
     Gε-ηG : (U : Ptd j) → arr G (ε U) ⊙∘ η (obj G U) == ⊙idf (obj G U)
 
