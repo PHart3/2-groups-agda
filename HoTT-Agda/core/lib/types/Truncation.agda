@@ -6,6 +6,7 @@ open import lib.types.TLevel
 open import lib.types.Pi
 open import lib.types.Sigma
 open import lib.types.Pointed
+open import lib.types.LoopSpace
 open import lib.wild-cats.Ptd-wc
 
 module lib.types.Truncation where
@@ -165,6 +166,20 @@ module _ {i} {n : ℕ₋₂} {A : Type i} where
   → ([ a ] == [ b ]) ≃ (Trunc n (a == b))
 =ₜ-equiv-can _ {a = a} {b} = =ₜ-equiv [ a ] [ b ]
 
+module _ {i} {A : Type i} {n : ℕ₋₂} where
+
+  Trunc-==-[_] : {a b : A} → Trunc n (a == b) → [ a ] == [ b ]
+  Trunc-==-[_] {a} {b} = <– (=ₜ-equiv-can n {a = a} {b})
+
+  module _ {j} {B : Type j} {{_ : has-level (S n) B}} (f : A → B) where
+
+    ap-Trunc-rec : {a b : A} (p : Trunc n (a == b)) → f a == f b
+    ap-Trunc-rec = Trunc-rec (ap f)
+
+    Trunc-==-[_]-ap : {a b : A} (p : Trunc n (a == b))
+      → ap-Trunc-rec p == ap (Trunc-rec f) (Trunc-==-[_] p)
+    Trunc-==-[_]-ap {a} {b} = Trunc-elim {{=-preserves-level ⟨⟩}} λ {idp → idp}
+
 {- Universal property -}
 
 abstract
@@ -213,14 +228,28 @@ Trunc-fmap f = Trunc-rec ([_] ∘ f)
 ⊙Trunc-fmap : ∀ {i j} {n : ℕ₋₂} {X : Ptd i} {Y : Ptd j} → ((X ⊙→ Y) → (⊙Trunc n X ⊙→ ⊙Trunc n Y))
 ⊙Trunc-fmap F = Trunc-fmap (fst F) , ap [_] (snd F)
 
--- naturality of [_]-⊙
+-- naturality of [_]-⊙ and its inverse
+
 ⊙-Trunc-fmap-nat : ∀ {i j} {n : ℕ₋₂} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y) →
   ⊙Trunc-fmap {n = n} f ⊙∘ [_]-⊙ == [_]-⊙ ⊙∘ f
 ⊙-Trunc-fmap-nat f = ⊙λ= ((λ _ → idp) , (! (∙-unit-r (ap [_] (snd f)))))
 
-⊙-unTrunc-fmap-nat-rot : ∀ {i j} {n : ℕ₋₂} {X : Ptd i} {Y : Ptd j} {{_ : has-level n (de⊙ X)}} (f : X ⊙→ Y)
+⊙-unTrunc-fmap-nat-rot-in : ∀ {i j} {n : ℕ₋₂} {X : Ptd i} {Y : Ptd j} {{_ : has-level n (de⊙ Y)}}
+  (f : X ⊙→ Y) → f == ⊙–> (⊙unTrunc-equiv Y) ⊙∘ ⊙Trunc-fmap {n = n} f ⊙∘ [_]-⊙
+⊙-unTrunc-fmap-nat-rot-in {X = X} {Y} f =
+  f
+    =⟨ ⊙-comp-to-== (⊙∘-lunit f) ⟩
+  ⊙idf Y ⊙∘ f
+    =⟨ ap (λ m → m ⊙∘ f) (! (⊙λ= (⊙<–-inv-r (⊙unTrunc-equiv Y)))) ⟩
+  (⊙–> (⊙unTrunc-equiv Y) ⊙∘ [_]-⊙) ⊙∘ f
+    =⟨ ⊙λ= (⊙∘-assoc (⊙–> (⊙unTrunc-equiv Y)) [_]-⊙ f) ⟩
+  ⊙–> (⊙unTrunc-equiv Y) ⊙∘ [_]-⊙ ⊙∘ f
+    =⟨ ap (λ m → ⊙–> (⊙unTrunc-equiv Y) ⊙∘ m) (! (⊙-Trunc-fmap-nat f)) ⟩
+  ⊙–> (⊙unTrunc-equiv Y) ⊙∘ ⊙Trunc-fmap f ⊙∘ [_]-⊙ =∎
+
+⊙-unTrunc-fmap-nat-rot-out : ∀ {i j} {n : ℕ₋₂} {X : Ptd i} {Y : Ptd j} {{_ : has-level n (de⊙ X)}} (f : X ⊙→ Y)
   → ⊙Trunc-fmap {n = n} f == [_]-⊙ ⊙∘ f ⊙∘ ⊙–> (⊙unTrunc-equiv X)
-⊙-unTrunc-fmap-nat-rot {n = n} {X} f = 
+⊙-unTrunc-fmap-nat-rot-out {n = n} {X} f = 
   ⊙Trunc-fmap f
     =⟨ ap (λ m → ⊙Trunc-fmap f ⊙∘ m) (! (⊙λ= (⊙<–-inv-l (⊙unTrunc-equiv X)))) ⟩
   ⊙Trunc-fmap f ⊙∘ [_]-⊙ ⊙∘ ⊙–> (⊙unTrunc-equiv X)
@@ -234,7 +263,7 @@ Trunc-fmap f = Trunc-rec ([_] ∘ f)
 ⊙-unTrunc-fmap-nat : ∀ {i j} {n : ℕ₋₂} {X : Ptd i} {Y : Ptd j} {{_ : has-level n (de⊙ X)}} {{_ : has-level n (de⊙ Y)}}
   (f : X ⊙→ Y) → ⊙–> (⊙unTrunc-equiv Y) ⊙∘ ⊙Trunc-fmap {n = n} f == f ⊙∘ ⊙–> (⊙unTrunc-equiv X)
 ⊙-unTrunc-fmap-nat {X = X} {Y} f =
-  ap (λ m → ⊙–> (⊙unTrunc-equiv Y) ⊙∘ m) (⊙-unTrunc-fmap-nat-rot f) ∙
+  ap (λ m → ⊙–> (⊙unTrunc-equiv Y) ⊙∘ m) (⊙-unTrunc-fmap-nat-rot-out f) ∙
   ! (⊙λ= (⊙∘-assoc (⊙–> (⊙unTrunc-equiv Y)) [_]-⊙ (f ⊙∘ ⊙–> (⊙unTrunc-equiv X)))) ∙
   ap (λ m → m ⊙∘ f ⊙∘ ⊙–> (⊙unTrunc-equiv X)) (⊙λ= (⊙<–-inv-r (⊙unTrunc-equiv Y))) ∙
   ! (⊙-comp-to-== (⊙∘-lunit (f ⊙∘ ⊙–> (⊙unTrunc-equiv X))))
@@ -316,7 +345,7 @@ module _ {i j} {n : ℕ₋₂} {A : Ptd i} {B : Ptd j} {{_ : has-level n (de⊙ 
 
     ⊙Trunc-ff : is-equiv (⊙Trunc-fmap {n = n} {A} {B})
     ⊙Trunc-ff = is-eq ⊙Trunc-fmap (λ f →  ⊙–> (⊙unTrunc-equiv B) ⊙∘ f ⊙∘ [_]-⊙)
-      (λ f → ⊙-unTrunc-fmap-nat-rot (⊙–> (⊙unTrunc-equiv B) ⊙∘ f ⊙∘ [_]-⊙) ∙
+      (λ f → ⊙-unTrunc-fmap-nat-rot-out (⊙–> (⊙unTrunc-equiv B) ⊙∘ f ⊙∘ [_]-⊙) ∙
         ([_]-⊙ ⊙∘ (⊙–> (⊙unTrunc-equiv B) ⊙∘ f ⊙∘ [_]-⊙) ⊙∘ ⊙–> (⊙unTrunc-equiv A)
           =⟨ ap (λ m → [_]-⊙ ⊙∘ m) (⊙λ= (⊙∘-assoc (⊙–> (⊙unTrunc-equiv B)) (f ⊙∘ [_]-⊙) (⊙–> (⊙unTrunc-equiv A)))) ⟩
         [_]-⊙ ⊙∘ ⊙–> (⊙unTrunc-equiv B) ⊙∘ (f ⊙∘ [_]-⊙) ⊙∘ ⊙–> (⊙unTrunc-equiv A)
@@ -330,7 +359,7 @@ module _ {i j} {n : ℕ₋₂} {A : Ptd i} {B : Ptd j} {{_ : has-level n (de⊙ 
         f ⊙∘ [_]-⊙ ⊙∘ ⊙–> (⊙unTrunc-equiv A)
           =⟨ ap (λ m → f ⊙∘ m) (⊙λ= (⊙<–-inv-l (⊙unTrunc-equiv A))) ⟩
         f =∎))
-      λ f → ap (λ m → ⊙–> (⊙unTrunc-equiv B) ⊙∘ m ⊙∘ [_]-⊙) (⊙-unTrunc-fmap-nat-rot f) ∙
+      λ f → ap (λ m → ⊙–> (⊙unTrunc-equiv B) ⊙∘ m ⊙∘ [_]-⊙) (⊙-unTrunc-fmap-nat-rot-out f) ∙
         (⊙–> (⊙unTrunc-equiv B) ⊙∘ ([_]-⊙ ⊙∘ f ⊙∘ ⊙–> (⊙unTrunc-equiv A)) ⊙∘ [_]-⊙
           =⟨ ap (λ m → ⊙–> (⊙unTrunc-equiv B) ⊙∘ m) (⊙λ= (⊙∘-assoc [_]-⊙ (f ⊙∘ ⊙–> (⊙unTrunc-equiv A)) [_]-⊙)) ⟩
         ⊙–> (⊙unTrunc-equiv B) ⊙∘ [_]-⊙ ⊙∘ (f ⊙∘ ⊙–> (⊙unTrunc-equiv A)) ⊙∘ [_]-⊙
