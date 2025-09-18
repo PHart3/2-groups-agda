@@ -180,6 +180,14 @@ module _ {i} {A : Type i} {n : ℕ₋₂} where
       → ap-Trunc-rec p == ap (Trunc-rec f) (Trunc-==-[_] p)
     Trunc-==-[_]-ap {a} {b} = Trunc-elim {{=-preserves-level ⟨⟩}} λ {idp → idp}
 
+⊙Ω-Trunc-[_] : ∀ {i} (A : Ptd i) {n : ℕ₋₂} → ⊙Trunc n (⊙Ω A) ⊙→ ⊙Ω (⊙Trunc (S n) A)
+fst ⊙Ω-Trunc-[ A ] = Trunc-==-[_]
+snd ⊙Ω-Trunc-[ A ] = idp
+
+⊙Ω-UnTrunc-[_] : ∀ {i} (A : Ptd i) {n : ℕ₋₂} → ⊙Ω (⊙Trunc (S n) A) ⊙→ ⊙Trunc n (⊙Ω A)
+fst (⊙Ω-UnTrunc-[ A ] {n}) = –> (=ₜ-equiv-can n)
+snd (⊙Ω-UnTrunc-[ A ] {n}) = idp
+
 {- Universal property -}
 
 abstract
@@ -227,6 +235,16 @@ Trunc-fmap f = Trunc-rec ([_] ∘ f)
 
 ⊙Trunc-fmap : ∀ {i j} {n : ℕ₋₂} {X : Ptd i} {Y : Ptd j} → ((X ⊙→ Y) → (⊙Trunc n X ⊙→ ⊙Trunc n Y))
 ⊙Trunc-fmap F = Trunc-fmap (fst F) , ap [_] (snd F)
+
+module _ {i j} {A : Ptd i} {B : Ptd j} {n : ℕ₋₂} {{_ : has-level (S n) (de⊙ B)}} where
+
+  ⊙Ω-Trunc-rec-coh-rot : (f : A ⊙→ B) →
+    ⊙Trunc-fmap {n = n} (⊙Ω-fmap f) == [_]-⊙ ⊙∘ ⊙Ω-fmap (⊙Trunc-rec {n = S n} f) ⊙∘ ⊙Ω-Trunc-[_] A
+  ⊙Ω-Trunc-rec-coh-rot f = ⊙-comp-to-== ((Trunc-elim {!!}) , {!!})
+
+  ⊙Ω-Trunc-rec-coh : (f : A ⊙→ B) →
+    ⊙–> (⊙unTrunc-equiv (⊙Ω B)) ⊙∘ ⊙Trunc-fmap {n = n} (⊙Ω-fmap f) ⊙∘ ⊙Ω-UnTrunc-[_] A == ⊙Ω-fmap (⊙Trunc-rec {n = S n} f)
+  ⊙Ω-Trunc-rec-coh f = {!!}
 
 -- naturality of [_]-⊙ and its inverse
 
