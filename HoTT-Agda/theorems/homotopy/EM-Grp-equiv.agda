@@ -22,3 +22,4 @@ open EMExplicit
   → (grp →ᴳ Ω^'S-group n X) → ⊙EM G (S n) ⊙→ X
 ⊙EM-elimₙ O {X = X@(⊙[ X₀ , pt ])} φ = (f ∘ –> (unTrunc-equiv (EM₁ (fst G)) {{EM₁-level₁ grp}})) , idp where open EM₁Level₁Rec pt φ
 ⊙EM-elimₙ (S n) {X = X} φ = ⊙Trunc-rec (ε X ⊙∘ ⊙Susp-fmap (⊙EM-elimₙ n {X = ⊙Ω X} φ ⊙∘ [_]-⊙))
+-- https://q.uiver.app/#q=WzAsNSxbMCwxLCJcXFNpZ21hXntufShLKEcsMSkpIl0sWzIsMSwiWCJdLFswLDIsIksoRyxuKzEpIl0sWzAsMCwiXFxTaWdtYShLKEcsbikpIl0sWzIsMCwiXFxTaWdtYXtcXE9tZWdhe1h9fSJdLFswLDEsIiIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFswLDIsIlxcbGVmdFxcbHZlcnR7LX1cXHJpZ2h0XFxydmVydF97bisxfSIsMl0sWzIsMSwiXFx0ZXh0c2Z7Sy1lbGltfShcXHZhcnBoaSxuKzEpIiwyLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzAsMywiXFxTaWdtYShcXGxlZnRcXGx2ZXJ0ey19XFxyaWdodFxccnZlcnRfe259KSJdLFs0LDEsIlxcZXBzaWxvbl9YIl0sWzMsNCwiXFxTaWdtYSAoXFx0ZXh0c2Z7Sy1lbGltfShcXHRpbGRle1xcdmFycGhpfSxuKSJdXQ==
