@@ -166,28 +166,17 @@ module _ {i} {n : ℕ₋₂} {A : Type i} where
   → ([ a ] == [ b ]) ≃ (Trunc n (a == b))
 =ₜ-equiv-can _ {a = a} {b} = =ₜ-equiv [ a ] [ b ]
 
-module _ {i} {A : Type i} {n : ℕ₋₂} where
+module _ {i} (A : Ptd i) {n : ℕ₋₂} where
 
-  Trunc-==-[_] : {a b : A} → Trunc n (a == b) → [ a ] == [ b ]
-  Trunc-==-[_] {a} {b} = <– (=ₜ-equiv-can n {a = a} {b})
+  ⊙Ω-Trunc-[_]-≃ : ⊙Ω (⊙Trunc (S n) A) ⊙≃ ⊙Trunc n (⊙Ω A)
+  ⊙Ω-Trunc-[_]-≃ = ≃-to-⊙≃ (=ₜ-equiv-can n) idp
 
-  module _ {j} {B : Type j} {{_ : has-level (S n) B}} (f : A → B) where
+  ⊙Ω-Trunc-[_] : ⊙Ω (⊙Trunc (S n) A) ⊙→ ⊙Trunc n (⊙Ω A)
+  ⊙Ω-Trunc-[_] = ⊙–> ⊙Ω-Trunc-[_]-≃
 
-    ap-Trunc-rec : {a b : A} (p : Trunc n (a == b)) → f a == f b
-    ap-Trunc-rec = Trunc-rec (ap f)
-
-    Trunc-==-[_]-ap : {a b : A} (p : Trunc n (a == b))
-      → ap-Trunc-rec p == ap (Trunc-rec f) (Trunc-==-[_] p)
-    Trunc-==-[_]-ap {a} {b} = Trunc-elim {{=-preserves-level ⟨⟩}} λ {idp → idp}
-
-⊙Ω-Trunc-[_] : ∀ {i} (A : Ptd i) {n : ℕ₋₂} → ⊙Trunc n (⊙Ω A) ⊙→ ⊙Ω (⊙Trunc (S n) A)
-fst ⊙Ω-Trunc-[ A ] = Trunc-==-[_]
-snd ⊙Ω-Trunc-[ A ] = idp
-
-⊙Ω-UnTrunc-[_] : ∀ {i} (A : Ptd i) {n : ℕ₋₂} → ⊙Ω (⊙Trunc (S n) A) ⊙→ ⊙Trunc n (⊙Ω A)
-fst (⊙Ω-UnTrunc-[ A ] {n}) = –> (=ₜ-equiv-can n)
-snd (⊙Ω-UnTrunc-[ A ] {n}) = idp
-
+  ⊙Ω-UnTrunc-[_] : ⊙Trunc n (⊙Ω A) ⊙→ ⊙Ω (⊙Trunc (S n) A)
+  ⊙Ω-UnTrunc-[_] = ⊙<– ⊙Ω-Trunc-[_]-≃
+   
 {- Universal property -}
 
 abstract
@@ -239,12 +228,27 @@ Trunc-fmap f = Trunc-rec ([_] ∘ f)
 module _ {i j} {A : Ptd i} {B : Ptd j} {n : ℕ₋₂} {{_ : has-level (S n) (de⊙ B)}} where
 
   ⊙Ω-Trunc-rec-coh-rot : (f : A ⊙→ B) →
-    ⊙Trunc-fmap {n = n} (⊙Ω-fmap f) == [_]-⊙ ⊙∘ ⊙Ω-fmap (⊙Trunc-rec {n = S n} f) ⊙∘ ⊙Ω-Trunc-[_] A
-  ⊙Ω-Trunc-rec-coh-rot f = ⊙-comp-to-== ((Trunc-elim {!!}) , {!!})
+    ⊙Trunc-fmap {n = n} (⊙Ω-fmap f) == [_]-⊙ ⊙∘ ⊙Ω-fmap (⊙Trunc-rec {n = S n} f) ⊙∘ ⊙Ω-UnTrunc-[_] A
+  ⊙Ω-Trunc-rec-coh-rot (f₀ , idp) = ⊙-comp-to-== ((Trunc-elim λ p → ap [_] (ap-∘ (Trunc-elim f₀) [_] p)) , idp)
 
   ⊙Ω-Trunc-rec-coh : (f : A ⊙→ B) →
-    ⊙–> (⊙unTrunc-equiv (⊙Ω B)) ⊙∘ ⊙Trunc-fmap {n = n} (⊙Ω-fmap f) ⊙∘ ⊙Ω-UnTrunc-[_] A == ⊙Ω-fmap (⊙Trunc-rec {n = S n} f)
-  ⊙Ω-Trunc-rec-coh f = {!!}
+    ⊙–> (⊙unTrunc-equiv (⊙Ω B)) ⊙∘ ⊙Trunc-fmap {n = n} (⊙Ω-fmap f) ⊙∘ ⊙Ω-Trunc-[ A ] == ⊙Ω-fmap (⊙Trunc-rec {n = S n} f)
+  ⊙Ω-Trunc-rec-coh f = 
+    ⊙–> (⊙unTrunc-equiv (⊙Ω B)) ⊙∘ ⊙Trunc-fmap {n = n} (⊙Ω-fmap f) ⊙∘ ⊙Ω-Trunc-[ A ]
+      =⟨ ap (λ m → ⊙–> (⊙unTrunc-equiv (⊙Ω B)) ⊙∘ m ⊙∘ ⊙Ω-Trunc-[_] A) (⊙Ω-Trunc-rec-coh-rot f) ⟩
+    ⊙–> (⊙unTrunc-equiv (⊙Ω B)) ⊙∘ ([_]-⊙ ⊙∘ ⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ ⊙Ω-UnTrunc-[ A ]) ⊙∘ ⊙Ω-Trunc-[ A ]
+      =⟨ ap (λ m → ⊙–> (⊙unTrunc-equiv (⊙Ω B)) ⊙∘ m) (⊙λ= (⊙∘-assoc [_]-⊙ (⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ ⊙Ω-UnTrunc-[ A ]) ⊙Ω-Trunc-[ A ])) ⟩
+    ⊙–> (⊙unTrunc-equiv (⊙Ω B)) ⊙∘ [_]-⊙ ⊙∘ (⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ ⊙Ω-UnTrunc-[ A ]) ⊙∘ ⊙Ω-Trunc-[ A ]
+      =⟨ ap (λ m → ⊙–> (⊙unTrunc-equiv (⊙Ω B)) ⊙∘ [_]-⊙ ⊙∘ m) (⊙λ= (⊙∘-assoc (⊙Ω-fmap (⊙Trunc-rec f)) ⊙Ω-UnTrunc-[ A ] ⊙Ω-Trunc-[ A ])) ⟩
+    ⊙–> (⊙unTrunc-equiv (⊙Ω B)) ⊙∘ [_]-⊙ ⊙∘ ⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ ⊙Ω-UnTrunc-[ A ] ⊙∘ ⊙Ω-Trunc-[ A ]
+      =⟨ ! (⊙λ= (⊙∘-assoc (⊙–> (⊙unTrunc-equiv (⊙Ω B))) [_]-⊙ (⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ ⊙Ω-UnTrunc-[ A ] ⊙∘ ⊙Ω-Trunc-[ A ]))) ⟩
+    (⊙–> (⊙unTrunc-equiv {n = n} (⊙Ω B)) ⊙∘ [_]-⊙) ⊙∘ ⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ ⊙Ω-UnTrunc-[ A ] ⊙∘ ⊙Ω-Trunc-[ A ]
+      =⟨ ap (λ m → m ⊙∘ ⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ ⊙Ω-UnTrunc-[ A ] ⊙∘ ⊙Ω-Trunc-[ A ]) (⊙λ= (⊙<–-inv-r (⊙unTrunc-equiv {n = n} (⊙Ω B)))) ⟩
+    ⊙idf (⊙Ω B) ⊙∘ ⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ ⊙Ω-UnTrunc-[ A ] ⊙∘ ⊙Ω-Trunc-[ A ]
+      =⟨ ! (⊙-comp-to-== (⊙∘-lunit (⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ ⊙Ω-UnTrunc-[ A ] ⊙∘ ⊙Ω-Trunc-[ A ]))) ⟩
+    ⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ ⊙Ω-UnTrunc-[ A ] ⊙∘ ⊙Ω-Trunc-[ A ]
+      =⟨ ap (λ m → ⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ m) (⊙λ= (⊙<–-inv-l (⊙Ω-Trunc-[ A ]-≃))) ⟩
+    ⊙Ω-fmap (⊙Trunc-rec f) =∎
 
 -- naturality of [_]-⊙ and its inverse
 
