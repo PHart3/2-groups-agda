@@ -3,6 +3,7 @@
 open import lib.Basics
 open import lib.NType2
 open import lib.NConnected
+open import lib.types.LoopSpace
 open import lib.types.Truncation
 open import lib.types.Group
 
@@ -68,6 +69,9 @@ module _ {G : Group i} where
     emloop-ident : emloop G.ident == idp
     emloop-ident = ! $ anti-whisker-right (emloop G.ident) $
       ap emloop (! $ G.unit-r G.ident) ∙ emloop-comp G.ident G.ident
+
+  ⊙emloop : G.⊙El ⊙→ ⊙Ω (⊙EM₁ G)
+  ⊙emloop = emloop , emloop-ident
 
   module EM₁Elim {j} {P : EM₁ G → Type j}
     {{_ : {x : EM₁ G} → has-level 2 (P x)}}

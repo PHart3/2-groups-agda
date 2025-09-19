@@ -2,6 +2,8 @@
 
 open import lib.Basics
 open import lib.NType2
+open import lib.types.LoopSpace
+open import lib.types.Pointed
 open import lib.types.Group
 open import lib.types.EilenbergMacLane1.Core
 open import lib.groups.Homomorphism
@@ -515,5 +517,8 @@ module EM₁Level₁Rec {j} {C : Type j}
 
     emloop-β : (g : G.El) → ap f (emloop g) == GroupHom.f hom* g
     emloop-β = M.emloop-β
+
+    ⊙β-tri : ⊙Ω-fmap (f , idp) ⊙∘ ⊙emloop == GroupHom.⊙f hom*
+    ⊙β-tri = ⊙-comp-to-== (emloop-β , (prop-has-all-paths _ _))
 
 open EM₁Level₁Rec public using () renaming (f to EM₁-level₁-rec)

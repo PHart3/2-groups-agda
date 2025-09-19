@@ -10,7 +10,7 @@ open import homotopy.EilenbergMacLane1
 open import homotopy.EilenbergMacLane
 open import homotopy.SuspAdjointLoop
 
--- equivalence between set-level groups and pointed n-connected, (n+1)-types
+-- type equivalence between set-level groups and pointed n-connected, (n+1)-types
 
 module homotopy.EM-Grp-equiv {i} (G : AbGroup i) where
 

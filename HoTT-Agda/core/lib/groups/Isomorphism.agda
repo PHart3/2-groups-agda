@@ -90,6 +90,9 @@ module GroupIso {i j} {G : Group i} {H : Group j} (iso : GroupIso G H) where
   f-equiv : Group.El G ≃ Group.El H
   f-equiv = f , f-is-equiv
 
+  ⊙f-equiv : Group.⊙El G ⊙≃ Group.⊙El H
+  ⊙f-equiv = ≃-to-⊙≃ f-equiv pres-ident
+
   g-hom : H →ᴳ G
   g-hom = group-hom g (inverse-preserves-comp (Group.comp G) (Group.comp H) f-is-equiv pres-comp)
 

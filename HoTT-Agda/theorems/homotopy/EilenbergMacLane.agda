@@ -183,15 +183,21 @@ module EMImplicit {i} {X : Ptd i} {{_ : is-connected 0 (de⊙ X)}}
 
 module EMExplicit {i} (G : AbGroup i) where
   module HSpace = EM₁HSpace G
+  
   open EMImplicit {{⟨⟩}} {{EM₁-level₁ (fst G)}} HSpace.H-⊙EM₁ public
+  open AbGroup G
 
   open BelowDiagonal public using (πS-below)
 
-  πS-diag : (n : ℕ) → πS n (⊙EM (S n)) ≃ᴳ AbGroup.grp G
-  πS-diag n = π₁-EM₁ (AbGroup.grp G) ∘eᴳ OnDiagonal.πS-diag n
+  πS-diag : (n : ℕ) → πS n (⊙EM (S n)) ≃ᴳ grp
+  πS-diag n = π₁-EM₁ grp ∘eᴳ OnDiagonal.πS-diag n
 
   open AboveDiagonal public using (πS-above)
   open Spectrum public using (spectrum)
+
+  deloop'-fold : (n : ℕ) → ⊙Ω^' n (⊙EM n) ⊙≃ ⊙El
+  deloop'-fold O = ⊙f-equiv where open GroupIso (Ω¹-EM₁ grp)
+  deloop'-fold (S n) = deloop'-fold n ⊙∘e ⊙Ω^'-emap n (spectrum n)
 
 module _ {i j} {G : Group i} {H : Group j} (φ : G →ᴳ H) where
 
