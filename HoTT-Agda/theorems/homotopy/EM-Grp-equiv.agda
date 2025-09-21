@@ -15,11 +15,61 @@ open import homotopy.SuspAdjointLoop
 module homotopy.EM-Grp-equiv {i} (G : AbGroup i) where
 
 open AbGroup G
-open EMExplicit
+open EMExplicit G
 
 -- recursion principle for K(G, n)
 ⊙EM-elimₙ : (n : ℕ) {j : ULevel} {X : Ptd j} {{X-level : has-level ⟨ S n ⟩ (de⊙ X)}}
-  → (grp →ᴳ Ω^'S-group n X) → ⊙EM G (S n) ⊙→ X
-⊙EM-elimₙ O {X = X@(⊙[ X₀ , pt ])} φ = (f ∘ –> (unTrunc-equiv (EM₁ (fst G)) {{EM₁-level₁ grp}})) , idp where open EM₁Level₁Rec pt φ
-⊙EM-elimₙ (S n) {X = X} φ = ⊙Trunc-rec (ε X ⊙∘ ⊙Susp-fmap (⊙EM-elimₙ n {X = ⊙Ω X} φ ⊙∘ [_]-⊙))
--- https://q.uiver.app/#q=WzAsNSxbMCwxLCJcXFNpZ21hXntufShLKEcsMSkpIl0sWzIsMSwiWCJdLFswLDIsIksoRyxuKzEpIl0sWzAsMCwiXFxTaWdtYShLKEcsbikpIl0sWzIsMCwiXFxTaWdtYXtcXE9tZWdhe1h9fSJdLFswLDEsIiIsMCx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFswLDIsIlxcbGVmdFxcbHZlcnR7LX1cXHJpZ2h0XFxydmVydF97bisxfSIsMl0sWzIsMSwiXFx0ZXh0c2Z7Sy1lbGltfShcXHZhcnBoaSxuKzEpIiwyLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzAsMywiXFxTaWdtYShcXGxlZnRcXGx2ZXJ0ey19XFxyaWdodFxccnZlcnRfe259KSJdLFs0LDEsIlxcZXBzaWxvbl9YIl0sWzMsNCwiXFxTaWdtYSAoXFx0ZXh0c2Z7Sy1lbGltfShcXHRpbGRle1xcdmFycGhpfSxuKSJdXQ==
+  → (grp →ᴳ Ω^'S-group n X) → ⊙EM (S n) ⊙→ X
+⊙EM-elimₙ O {X = X@(⊙[ X₀ , pt ])} φ = (f ∘ –> (unTrunc-equiv (EM₁ (fst G)) {{EM₁-level₁ grp}})) , idp
+  where open EM₁Level₁Rec pt φ
+⊙EM-elimₙ (S n) {X = X} φ =
+  ⊙Trunc-rec (ε X ⊙∘ ⊙Susp-fmap (⊙EM-elimₙ n {X = ⊙Ω X} φ) ⊙∘ ⊙Susp-fmap {X = ⊙Susp^ n (⊙EM₁ grp)} [_]-⊙)
+
+open HSpace
+
+module ⊙EM-β (n : ℕ) {j : ULevel} {X : Ptd j} {{X-level : has-level ⟨ S (S n) ⟩ (de⊙ X)}}
+  (φ : grp →ᴳ Ω^'S-group (S n) X) where
+
+  abstract
+    ⊙EM-elimₙ-β : ⊙Ω-fmap (⊙EM-elimₙ (S n) φ) ⊙∘ ⊙<– (spectrum (S n)) == ⊙EM-elimₙ n {X = ⊙Ω X} φ
+    ⊙EM-elimₙ-β = let τ = (ε X ⊙∘ ⊙Susp-fmap (⊙EM-elimₙ n {X = ⊙Ω X} φ) ⊙∘ ⊙Susp-fmap {X = ⊙Susp^ n (⊙EM₁ grp)} [_]-⊙) in
+      ⊙Ω-fmap (⊙EM-elimₙ (S n) φ) ⊙∘ ⊙<– (spectrum (S n))
+        =⟨ ap (λ m → ⊙Ω-fmap (⊙EM-elimₙ (S n) φ) ⊙∘ m) {!!} ⟩
+      ⊙Ω-fmap (⊙EM-elimₙ (S n) φ) ⊙∘ ⊙Ω-UnTrunc-[_] (⊙Susp (⊙Susp^ n (⊙EM₁ grp))) ⊙∘ ⊙Trunc-fmap (η (⊙Susp^ n (⊙EM₁ grp)))
+        =⟨ idp ⟩
+      ⊙Ω-fmap (⊙Trunc-rec τ) ⊙∘ ⊙Ω-UnTrunc-[_] (⊙Susp (⊙Susp^ n (⊙EM₁ grp))) ⊙∘ ⊙Trunc-fmap (η (⊙Susp^ n (⊙EM₁ grp)))
+        =⟨ ap (λ m → m ⊙∘ ⊙Ω-UnTrunc-[_] (⊙Susp (⊙Susp^ n (⊙EM₁ grp))) ⊙∘ ⊙Trunc-fmap (η (⊙Susp^ n (⊙EM₁ grp))))
+             (! (⊙Ω-Trunc-rec-coh τ)) ⟩
+      (⊙–> (⊙unTrunc-equiv (⊙Ω X)) ⊙∘
+      ⊙Trunc-fmap (⊙Ω-fmap (ε X ⊙∘ ⊙Susp-fmap (⊙EM-elimₙ n φ) ⊙∘ ⊙Susp-fmap {X = ⊙Susp^ n (⊙EM₁ grp)} [_]-⊙)) ⊙∘
+      ⊙Ω-Trunc-[_] (⊙Susp (⊙Susp^ n (⊙EM₁ grp)))) ⊙∘
+      ⊙Ω-UnTrunc-[_] (⊙Susp (⊙Susp^ n (⊙EM₁ grp))) ⊙∘
+      ⊙Trunc-fmap (η (⊙Susp^ n (⊙EM₁ grp)))
+        =⟨ ap (λ m →
+               (⊙–> (⊙unTrunc-equiv (⊙Ω X)) ⊙∘ m ⊙∘
+               ⊙Ω-Trunc-[_] (⊙Susp (⊙Susp^ n (⊙EM₁ grp)))) ⊙∘
+               ⊙Ω-UnTrunc-[_] (⊙Susp (⊙Susp^ n (⊙EM₁ grp))) ⊙∘
+               ⊙Trunc-fmap (η (⊙Susp^ n (⊙EM₁ grp))))
+             (ap ⊙Trunc-fmap (⊙Ω-fmap-∘-tri (ε X) (⊙Susp-fmap (⊙EM-elimₙ n φ)) (⊙Susp-fmap [_]-⊙)) ∙
+             ! (⊙Trunc-∘-tri (⊙Ω-fmap (ε X)) (⊙Ω-fmap (⊙Susp-fmap (⊙EM-elimₙ n φ))) (⊙Ω-fmap (⊙Susp-fmap [_]-⊙)))) ⟩
+      (⊙–> (⊙unTrunc-equiv (⊙Ω X)) ⊙∘
+      ⊙Trunc-fmap (⊙Ω-fmap (ε X)) ⊙∘
+      ⊙Trunc-fmap (⊙Ω-fmap (⊙Susp-fmap (⊙EM-elimₙ n φ))) ⊙∘
+      ⊙Trunc-fmap (⊙Ω-fmap (⊙Susp-fmap {X = ⊙Susp^ n (⊙EM₁ grp)} [_]-⊙)) ⊙∘
+      ⊙Ω-Trunc-[_] (⊙Susp (⊙Susp^ n (⊙EM₁ grp)))) ⊙∘
+      ⊙Ω-UnTrunc-[_] (⊙Susp (⊙Susp^ n (⊙EM₁ grp))) ⊙∘
+      ⊙Trunc-fmap (η (⊙Susp^ n (⊙EM₁ grp)))
+        =⟨ {!⊙–> (⊙unTrunc-equiv (⊙Ω X)) !} ⟩
+      {!!}
+{-
+  abstract
+    ⊙EM-elim₂-β-rot : ⊙Ω-fmap (⊙EM-elimₙ (S n) φ) == ⊙EM-elimₙ n {X = ⊙Ω X} φ ⊙∘ ⊙–> (spectrum (S n))
+    ⊙EM-elim₂-β-rot = 
+      ⊙Ω-fmap (⊙EM-elimₙ (S n) φ)
+        =⟨ ap (λ m → ⊙Ω-fmap (⊙EM-elimₙ (S n) φ) ⊙∘ m) (! (⊙λ= (⊙<–-inv-l (spectrum (S n))))) ⟩
+      ⊙Ω-fmap (⊙EM-elimₙ (S n) φ) ⊙∘ ⊙<– (spectrum (S n)) ⊙∘ ⊙–> (spectrum (S n))
+        =⟨ ! (⊙λ= (⊙∘-assoc (⊙Ω-fmap (⊙EM-elimₙ (S n) φ)) (⊙<– (spectrum (S n))) (⊙–> (spectrum (S n))))) ⟩
+      (⊙Ω-fmap (⊙EM-elimₙ (S n) φ) ⊙∘ ⊙<– (spectrum (S n))) ⊙∘ ⊙–> (spectrum (S n))
+        =⟨ ap (λ m → m ⊙∘ ⊙–> (spectrum (S n))) ⊙EM-elimₙ-β ⟩
+      ⊙EM-elimₙ n {X = ⊙Ω X} φ ⊙∘ ⊙–> (spectrum (S n)) =∎
+-}

@@ -175,11 +175,10 @@ module EMImplicit {i} {X : Ptd i} {{_ : is-connected 0 (de⊙ X)}}
         ⊙≃⟨ FS.⊙eq n ⊙⁻¹ ⟩
       ⊙EM (S (S n)) ⊙≃∎
 
-    abstract
-      spectrum : (n : ℕ) → ⊙Ω (⊙EM (S n)) ⊙≃ ⊙EM n
-      spectrum 0 = spectrum0
-      spectrum 1 = spectrum1
-      spectrum (S (S n)) = spectrumSS n
+    spectrum : (n : ℕ) → ⊙Ω (⊙EM (S n)) ⊙≃ ⊙EM n
+    spectrum 0 = spectrum0
+    spectrum 1 = spectrum1
+    spectrum (S (S n)) = spectrumSS n
 
 module EMExplicit {i} (G : AbGroup i) where
   module HSpace = EM₁HSpace G

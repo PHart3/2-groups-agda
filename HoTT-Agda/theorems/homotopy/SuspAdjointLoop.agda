@@ -97,8 +97,6 @@ private
         [ _== idp ↓ ap-∙ f p (! p) ∙ (α ∙2 (ap-! f p ∙ ap ! α)) ∙ !-inv-r q ]
     pt-lemma f idp idp = idp
 
-module Eta = E
-
 adj : CounitUnitAdjoint SuspFunctor LoopFunctor
 adj = record {
   η = ⊙η;

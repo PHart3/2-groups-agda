@@ -320,6 +320,11 @@ Trunc-fmap-∘ g f =
   (ap (λ p → p ∙ ap [_] (snd g)) (∘-ap (Trunc-elim (λ x → [ fst g x ])) [_] (snd f)) ∙
   ! (ap-∘-∙ [_] (fst g) (snd f) (snd g))))
 
+⊙Trunc-∘-tri : ∀ {i j k l} {n : ℕ₋₂} {W : Ptd l} {X : Ptd i} {Y : Ptd j} {Z : Ptd k}
+  (k : Z ⊙→ W) (g : Y ⊙→ Z) (f : X ⊙→ Y)
+  → ⊙Trunc-fmap k ⊙∘ ⊙Trunc-fmap g ⊙∘ ⊙Trunc-fmap f == ⊙Trunc-fmap {n = n} (k ⊙∘ g ⊙∘ f)
+⊙Trunc-∘-tri k g f = ap (λ m → ⊙Trunc-fmap k ⊙∘ m) (⊙Trunc-fmap-∘ g f) ∙ ⊙Trunc-fmap-∘ k (g ⊙∘ f)
+
 -- ⊙Trunc as wild functor
 ⊙Trunc-wf : ∀ {n : ℕ₋₂} {i} → PtdFunctor i i
 obj (⊙Trunc-wf {n}) = ⊙Trunc n
