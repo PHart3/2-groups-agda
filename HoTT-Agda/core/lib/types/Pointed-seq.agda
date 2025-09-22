@@ -9,114 +9,115 @@ module lib.types.Pointed-seq where
 
 -- sequences to facilitate equational reasoning about pointed functions
 
-infixr 80 _⊙-∙∙_
-_⊙-∙∙_ : ∀ {i j k} {A : Ptd i} {B : Ptd j} {C : Ptd k}
-  → A ⊙→-s B → B ⊙→-s C → A ⊙→-s C
-_⊙-∙∙_ t [] = t
-_⊙-∙∙_ t (s ⊙▹∙ p) = (t ⊙-∙∙ s) ⊙▹∙ p
+module _ {i : ULevel} where
 
-⊙↯-∙∙ : ∀ {i j k} {A : Ptd i} {B : Ptd j} {C : Ptd k} (s : A ⊙→-s B) (t : B ⊙→-s C)
-  → ⊙↯ (s ⊙-∙∙ t) == ⊙↯ t ⊙∘ ⊙↯ s
-⊙↯-∙∙ s [] = ⊙-comp-to-== (⊙∘-lunit _)
-⊙↯-∙∙ [] ([] ⊙▹∙ m) = idp
-⊙↯-∙∙ (v ⊙▹∙ p) ([] ⊙▹∙ m) = idp
-⊙↯-∙∙ s (v@(_ ⊙▹∙ _) ⊙▹∙ m) = ap (λ p → m ⊙∘ p) (⊙↯-∙∙ s v) ∙ ! (⊙λ= (⊙∘-assoc m _ (⊙↯ s)))
+  infixr 80 _⊙-∙∙_
+  _⊙-∙∙_ :  {A B C : Ptd i} → A ⊙→-s B → B ⊙→-s C → A ⊙→-s C
+  _⊙-∙∙_ t [] = t
+  _⊙-∙∙_ t (p ⊙◃∙ s) = p ⊙◃∙ (t ⊙-∙∙ s)
 
-⊙point-from-start : ∀ {i j} {A : Ptd i} {B : Ptd j} (n : ℕ) (s : A ⊙→-s B) → Ptd i
-⊙point-from-start {A = A} O s = A
-⊙point-from-start {A = A} (S n) [] = A
-⊙point-from-start (S n) (s ⊙▹∙ p) = ⊙point-from-start n s
+  ⊙↯-∙∙ : {A B C : Ptd i} (s : A ⊙→-s B) (t : B ⊙→-s C)
+    → ⊙↯ (s ⊙-∙∙ t) == ⊙↯ t ⊙∘ ⊙↯ s
+  ⊙↯-∙∙ s [] = ⊙-comp-to-== (⊙∘-lunit _)
+  ⊙↯-∙∙ [] (m ⊙◃∙ []) = idp
+  ⊙↯-∙∙ (p ⊙◃∙ v) (m ⊙◃∙ []) = idp
+  ⊙↯-∙∙ s (m ⊙◃∙ v@(_ ⊙◃∙ _)) = ap (λ p → m ⊙∘ p) (⊙↯-∙∙ s v) ∙ ! (⊙λ= (⊙∘-assoc m _ (⊙↯ s)))
 
-⊙drop : ∀ {i j} {A : Ptd i} {B : Ptd j} (n : ℕ) (s : A ⊙→-s B) → ⊙point-from-start n s ⊙→-s B
-⊙drop 0 s = s
-⊙drop (S n) [] = []
-⊙drop (S n) (s ⊙▹∙ p) = ⊙drop n s ⊙▹∙ p 
+  ⊙point-from-end : {A B : Ptd i} (n : ℕ) (s : A ⊙→-s B) → Ptd i
+  ⊙point-from-end {B = B} O s = B
+  ⊙point-from-end {B = B} (S n) [] = B
+  ⊙point-from-end (S n) (p ⊙◃∙ s) = ⊙point-from-end n s
 
-⊙take : ∀ {i j} {A : Ptd i} {B : Ptd j} (n : ℕ) (s : A ⊙→-s B) → A ⊙→-s ⊙point-from-start n s
-⊙take O s = []
-⊙take (S n) [] = []
-⊙take (S n) (s ⊙▹∙ p) = ⊙take n s
+  ⊙take : {A B : Ptd i} (n : ℕ) (s : A ⊙→-s B) → ⊙point-from-end n s ⊙→-s B
+  ⊙take 0 s = []
+  ⊙take (S n) [] = []
+  ⊙take (S n) (p ⊙◃∙ s) = p ⊙◃∙ ⊙take n s 
 
-private
+  ⊙drop : {A B : Ptd i} (n : ℕ) (s : A ⊙→-s B) → A ⊙→-s ⊙point-from-end n s
+  ⊙drop O s = s
+  ⊙drop (S n) [] = []
+  ⊙drop (S n) (p ⊙◃∙ s) = ⊙drop n s
 
-  -- ad-hoc identity type for elements of Setω
-  infix 30 _ω==_
-  data _ω==_ {A : Agda.Primitive.Setω} (a : A) : A → Agda.Primitive.Setω where
-    idp : a ω== a
+  private
+    ⊙drop-take-split' : {A B : Ptd i} (n : ℕ) (s : A ⊙→-s B)
+      → s == ⊙drop n s ⊙-∙∙ ⊙take n s
+    ⊙drop-take-split' O s = idp
+    ⊙drop-take-split' (S n) [] = idp
+    ⊙drop-take-split' (S n) (p ⊙◃∙ s) = ap (λ v → p ⊙◃∙ v) (⊙drop-take-split' n s)
 
-  apω : {A B : Agda.Primitive.Setω} (f : A → B) {a b : A} (p : a ω== b) → f a ω== f b
-  apω f idp = idp
+  ⊙drop-take-split : {A B : Ptd i} (n : ℕ) (s : A ⊙→-s B)
+    → ⊙↯ s == ⊙↯ (⊙take n s) ⊙∘ ⊙↯ (⊙drop n s)
+  ⊙drop-take-split n s =
+    ⊙↯ s
+      =⟨ ap ⊙↯ (⊙drop-take-split' n s) ⟩
+    ⊙↯ (⊙drop n s ⊙-∙∙ ⊙take n s)
+      =⟨ ⊙↯-∙∙ (⊙drop n s) (⊙take n s) ⟩
+    ⊙↯ (⊙take n s) ⊙∘ ⊙↯ (⊙drop n s) =∎
 
-  ap-⊙↯ : ∀ {i j} {A : Ptd i} {B : Ptd j} {f₁ f₂ : A ⊙→-s B} → f₁ ω== f₂ → ⊙↯ f₁ == ⊙↯ f₂
-  ap-⊙↯ idp = idp
+  infix 30 _=⊙↯=_
+  _=⊙↯=_ : {A B : Ptd i} → A ⊙→-s B → A ⊙→-s B → Type i
+  _=⊙↯=_ s t = (⊙↯ s) == (⊙↯ t)
 
-private
-  ⊙take-drop-split' : ∀ {i j} {A : Ptd i} {B : Ptd j} (n : ℕ) (s : A ⊙→-s B)
-    → s ω== ⊙take n s ⊙-∙∙ ⊙drop n s
-  ⊙take-drop-split' O s = lemma s
-    where
-      lemma : ∀ {i j} {A : Ptd i} {B : Ptd j} (s : A ⊙→-s B) → s ω== [] ⊙-∙∙ s
-      lemma [] = idp
-      lemma (s ⊙▹∙ m) = apω (λ s → s ⊙▹∙ m) (lemma s)
-  ⊙take-drop-split' (S n) [] = idp
-  ⊙take-drop-split' (S n) (s ⊙▹∙ p) = apω (λ v → v ⊙▹∙ p) (⊙take-drop-split' n s)
+  module _ {A B : Ptd i} where
 
-⊙take-drop-split : ∀ {i j} {A : Ptd i} {B : Ptd j} (n : ℕ) (s : A ⊙→-s B)
-  → ⊙↯ s == ⊙↯ (⊙drop n s) ⊙∘ ⊙↯ (⊙take n s)
-⊙take-drop-split n s =
-  ⊙↯ s
-    =⟨ ap-⊙↯ (⊙take-drop-split' n s) ⟩
-  ⊙↯ (⊙take n s ⊙-∙∙ ⊙drop n s)
-    =⟨ ⊙↯-∙∙ (⊙take n s) (⊙drop n s) ⟩
-  ⊙↯ (⊙drop n s) ⊙∘ ⊙↯ (⊙take n s) =∎
+    infixr 80 _⊙∙ₛ_
+    _⊙∙ₛ_ : {s t u : A ⊙→-s B} → s ⊙=ₛ t → t ⊙=ₛ u → s ⊙=ₛ u
+    _⊙∙ₛ_ (⊙=ₛ-in p) (⊙=ₛ-in q) = ⊙=ₛ-in (p ∙ q)
 
-infix 30 _=⊙↯=_
-_=⊙↯=_ : ∀ {i j} {A : Ptd i} {B : Ptd j} → A ⊙→-s B → A ⊙→-s B → Type (lmax i j)
-_=⊙↯=_ s t = (⊙↯ s) == (⊙↯ t)
+    abstract
+      private
+        infixr 10 _=⊙↯=⟨_&_&_&_⟩_
+        _=⊙↯=⟨_&_&_&_⟩_ : {q : A ⊙→ B}
+          → (s : A ⊙→-s B)
+          → (n : ℕ) (m : ℕ)
+          → (t : ⊙point-from-end m (⊙drop n s) ⊙→-s ⊙point-from-end n s)
+          → ⊙take m (⊙drop n s) =⊙↯= t
+          → ⊙↯ ((⊙drop m (⊙drop n s) ⊙-∙∙ t) ⊙-∙∙ ⊙take n s) == q
+          → ⊙↯ s == q
+        _=⊙↯=⟨_&_&_&_⟩_ {q} s n m t p p' =
+          ⊙↯ s
+            =⟨ ⊙drop-take-split n s ⟩
+          ⊙↯ (⊙take n s) ⊙∘ ⊙↯ (⊙drop n s)
+            =⟨ ap (⊙↯ (⊙take n s) ⊙∘_) (⊙drop-take-split m (⊙drop n s)) ⟩
+          ⊙↯ (⊙take n s) ⊙∘ ⊙↯ (⊙take m (⊙drop n s)) ⊙∘ ⊙↯ (⊙drop m (⊙drop n s))
+            =⟨ ap (λ v → ⊙↯ (⊙take n s) ⊙∘ v ⊙∘ ⊙↯ (⊙drop m (⊙drop n s))) p ⟩
+          ⊙↯ (⊙take n s) ⊙∘ ⊙↯ t ⊙∘ ⊙↯ (⊙drop m (⊙drop n s))
+            =⟨ ap (λ v → ⊙↯ (⊙take n s) ⊙∘ v) (! (⊙↯-∙∙ (⊙drop m (⊙drop n s)) t)) ⟩
+          ⊙↯ (⊙take n s) ⊙∘ ⊙↯ (⊙drop m (⊙drop n s) ⊙-∙∙ t)
+            =⟨ ! (⊙↯-∙∙ (⊙drop m (⊙drop n s) ⊙-∙∙ t) (⊙take n s)) ⟩
+          ⊙↯ ((⊙drop m (⊙drop n s) ⊙-∙∙ t) ⊙-∙∙ ⊙take n s)
+            =⟨ p' ⟩
+          q =∎
 
-module _ {i j} {A : Ptd i} {B : Ptd j} where
+      infixr 10 _⊙=ₛ⟨_&_&_⟩_
+      _⊙=ₛ⟨_&_&_⟩_ : (s : A ⊙→-s B) {u : A ⊙→-s B}
+        → (n m : ℕ)
+        → {r : ⊙point-from-end m (⊙drop n s) ⊙→-s ⊙point-from-end n s}
+        → ⊙take m (⊙drop n s) ⊙=ₛ r
+        → ((⊙drop m (⊙drop n s) ⊙-∙∙ r) ⊙-∙∙ ⊙take n s) ⊙=ₛ u
+        → s ⊙=ₛ u
+      _⊙=ₛ⟨_&_&_⟩_ s m n {r} p p' = ⊙=ₛ-in (s =⊙↯=⟨ m & n & r & ⊙=ₛ-out p ⟩ ⊙=ₛ-out p')
 
-  infixr 80 _⊙∙ₛ_
-  _⊙∙ₛ_ : {s t u : A ⊙→-s B} → s ⊙=ₛ t → t ⊙=ₛ u → s ⊙=ₛ u
-  _⊙∙ₛ_ (⊙=ₛ-in p) (⊙=ₛ-in q) = ⊙=ₛ-in (p ∙ q)
+      infixr 10 _⊙=ₛ⟨_⟩_
+      _⊙=ₛ⟨_⟩_ : (s : A ⊙→-s B) {t u : A ⊙→-s B}
+        → s ⊙=ₛ t
+        → t ⊙=ₛ u
+        → s ⊙=ₛ u
+      _⊙=ₛ⟨_⟩_ _ p q = p ⊙∙ₛ q
 
-  abstract
-    private
-      infixr 10 _=⊙↯=⟨_&_&_&_⟩_
-      _=⊙↯=⟨_&_&_&_⟩_ : {q : A ⊙→ B}
-        → (s : A ⊙→-s B)
-        → (n : ℕ) (m : ℕ)
-        → (t : ⊙point-from-start m (⊙take n s) ⊙→-s ⊙point-from-start n s)
-        → ⊙drop m (⊙take n s) =⊙↯= t
-        → ⊙↯ ((⊙take m (⊙take n s) ⊙-∙∙ t) ⊙-∙∙ ⊙drop n s) == q
-        → ⊙↯ s == q
-      _=⊙↯=⟨_&_&_&_⟩_ {q} s n m t p p' =
-        ⊙↯ s
-          =⟨ ⊙take-drop-split n s ⟩
-        ⊙↯ (⊙drop n s) ⊙∘ ⊙↯ (⊙take n s)
-          =⟨ ap (⊙↯ (⊙drop n s) ⊙∘_) (⊙take-drop-split m (⊙take n s)) ⟩
-        ⊙↯ (⊙drop n s) ⊙∘ ⊙↯ (⊙drop m (⊙take n s)) ⊙∘ ⊙↯ (⊙take m (⊙take n s))
-          =⟨ ap (λ v → ⊙↯ (⊙drop n s) ⊙∘ v ⊙∘ ⊙↯ (⊙take m (⊙take n s))) p ⟩
-        ⊙↯ (⊙drop n s) ⊙∘ ⊙↯ t ⊙∘ ⊙↯ (⊙take m (⊙take n s))
-          =⟨ ap (λ v → ⊙↯ (⊙drop n s) ⊙∘ v) (! (⊙↯-∙∙ (⊙take m (⊙take n s)) t)) ⟩
-        ⊙↯ (⊙drop n s) ⊙∘ ⊙↯ (⊙take m (⊙take n s) ⊙-∙∙ t)
-          =⟨ ! (⊙↯-∙∙ (⊙take m (⊙take n s) ⊙-∙∙ t) (⊙drop n s)) ⟩
-        ⊙↯ ((⊙take m (⊙take n s) ⊙-∙∙ t) ⊙-∙∙ ⊙drop n s)
-          =⟨ p' ⟩
-        q =∎
+      infixr 10 _⊙=ₛ₁⟨_⟩_
+      _⊙=ₛ₁⟨_⟩_ : (s : A ⊙→-s B) {u : A ⊙→-s B}
+        → {r : A ⊙→ B}
+        → ⊙↯ s == r
+        → r ⊙◃∎ ⊙=ₛ u
+        → s ⊙=ₛ u
+      _⊙=ₛ₁⟨_⟩_ s {r} p p' = ⊙=ₛ-in p ⊙∙ₛ p'
 
-    infixr 10 _⊙=ₛ⟨_&_&_⟩_
-    _⊙=ₛ⟨_&_&_⟩_ : (s : A ⊙→-s B) {u : A ⊙→-s B}
-      → (n m : ℕ)
-      → {r : ⊙point-from-start m (⊙take n s) ⊙→-s ⊙point-from-start n s}
-      → ⊙drop m (⊙take n s) ⊙=ₛ r
-      → ((⊙take m (⊙take n s) ⊙-∙∙ r) ⊙-∙∙ ⊙drop n s) ⊙=ₛ u
-      → s ⊙=ₛ u
-    _⊙=ₛ⟨_&_&_⟩_ s m n {r} p p' = ⊙=ₛ-in (s =⊙↯=⟨ m & n & r & ⊙=ₛ-out p ⟩ ⊙=ₛ-out p')
-
-    infixr 10 _⊙=ₛ⟨_⟩_
-    _⊙=ₛ⟨_⟩_ : (s : A ⊙→-s B) {t u : A ⊙→-s B}
-      → s ⊙=ₛ t
-      → t ⊙=ₛ u
-      → s ⊙=ₛ u
-    _⊙=ₛ⟨_⟩_ _ p q = p ⊙∙ₛ q
+      infixr 10 _⊙=ₛ₁⟨_&_&_⟩_
+      _⊙=ₛ₁⟨_&_&_⟩_ : (s : A ⊙→-s B) {u : A ⊙→-s B}
+        → (n m : ℕ)
+        → {r : ⊙point-from-end m (⊙drop n s) ⊙→ ⊙point-from-end n s}
+        → ⊙↯ (⊙take m (⊙drop n s)) == r
+        → (r ⊙◃∙ ⊙drop m (⊙drop n s)) ⊙-∙∙ ⊙take n s ⊙=ₛ u
+        → s ⊙=ₛ u
+      _⊙=ₛ₁⟨_&_&_⟩_ s m n {r} p p' = s ⊙=ₛ⟨ m & n & ⊙=ₛ-in {t = r ⊙◃∎} p ⟩ p'

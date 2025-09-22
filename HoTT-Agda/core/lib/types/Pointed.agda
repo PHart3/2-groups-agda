@@ -476,35 +476,32 @@ module _ {i} {X : Ptd i} {Y : Ptd i} where
 
 -- sequences to facilitate equational reasoning about pointed functions
 
-infixr 80 _⊙▹∙_
-data ⊙→-Seq : {i j : ULevel} → Ptd i → Ptd j → Agda.Primitive.Setω where
-  [] : ∀ {i} {A : Ptd i} → ⊙→-Seq A A
-  _⊙▹∙_ : ∀ {i j k} {A : Ptd i} {B : Ptd j} {C : Ptd k} (s : ⊙→-Seq A B) (m : B ⊙→ C) → ⊙→-Seq A C
+module _ {i : ULevel} where
 
-infix 30 _⊙→-s_
-_⊙→-s_ = ⊙→-Seq
+  infixr 80 _⊙◃∙_
+  data ⊙→-Seq : Ptd i → Ptd i → Type (lsucc i) where
+    [] : {A : Ptd i} → ⊙→-Seq A A
+    _⊙◃∙_ : {A B C : Ptd i} (m : B ⊙→ C) (s : ⊙→-Seq A B) → ⊙→-Seq A C
 
-infix 90 _⊙▹∎
-_⊙▹∎ : ∀ {i} {A A' : Ptd i} → A ⊙→ A' → A ⊙→-s A'
-_⊙▹∎ {A} {A'} m = [] ⊙▹∙ m
+  infix 30 _⊙→-s_
+  _⊙→-s_ = ⊙→-Seq
 
-infix 15 _⊙∎
-infixr 10 _=⊙⟪_⟫_
+  infix 90 _⊙◃∎
+  _⊙◃∎ : {A A' : Ptd i} → A ⊙→ A' → A ⊙→-s A'
+  _⊙◃∎ m = m ⊙◃∙ []
 
-_⊙∎ : ∀ {i} (A : Ptd i) → A ⊙→-s A
-_⊙∎ _ = []
+  infix 15 _⊙∎
+  _⊙∎ : (A : Ptd i) → A ⊙→-s A
+  _⊙∎ _ = []
 
-_=⊙⟪_⟫_ : ∀ {i j k} (A : Ptd i) {A' : Ptd j} {A'' : Ptd k} (m : A' ⊙→ A'') (s : A ⊙→-s A') → A ⊙→-s A''
-_=⊙⟪_⟫_ _ m s = s ⊙▹∙ m
+  ⊙↯ : {A A' : Ptd i} (s : A ⊙→-s A') → A ⊙→ A'
+  ⊙↯ [] = ⊙idf _
+  ⊙↯ (m ⊙◃∙ []) = m
+  ⊙↯ {A = A} {A'} (m ⊙◃∙ s@(_ ⊙◃∙ _)) = m ⊙∘ ⊙↯ s  
 
-⊙↯ : ∀ {i j} {A : Ptd i} {A' : Ptd j} (s : A ⊙→-s A') → A ⊙→ A'
-⊙↯ [] = ⊙idf _
-⊙↯ ([] ⊙▹∙ m) = m
-⊙↯ {A = A} {A'} (s@(_ ⊙▹∙ _) ⊙▹∙ m) = m ⊙∘ ⊙↯ s  
+  record _⊙=ₛ_ {A A' : Ptd i} (s t : A ⊙→-s A') : Type i where
+    constructor ⊙=ₛ-in
+    field
+      ⊙=ₛ-out : ⊙↯ s == ⊙↯ t
 
-record _⊙=ₛ_ {i j} {A : Ptd i} {A' : Ptd j} (s t : A ⊙→-s A') : Type (lmax i j) where
-  constructor ⊙=ₛ-in
-  field
-    ⊙=ₛ-out : ⊙↯ s == ⊙↯ t
-
-open _⊙=ₛ_ public
+  open _⊙=ₛ_ public
