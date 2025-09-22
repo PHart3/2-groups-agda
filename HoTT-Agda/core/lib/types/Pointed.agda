@@ -294,9 +294,10 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} (⊙e : X ⊙≃ Y) where
   ⊙–>-pt = snd ⊙–>
 
   ⊙<– : Y ⊙→ X
-  ⊙<– = is-equiv.g (snd ⊙e) , lemma ⊙e where
-    lemma : {Y : Ptd j} (⊙e : X ⊙≃ Y) → is-equiv.g (snd ⊙e) (pt Y) == pt X
-    lemma ((f , idp) , f-ise) = is-equiv.g-f f-ise (pt X)
+  ⊙<– = is-equiv.g (snd ⊙e) , lemma ⊙e
+    module ⊙e-rev where
+      lemma : {Y : Ptd j} (⊙e : X ⊙≃ Y) → is-equiv.g (snd ⊙e) (pt Y) == pt X
+      lemma ((f , idp) , f-ise) = is-equiv.g-f f-ise (pt X)
 
   ⊙<–-pt = snd ⊙<–
 
@@ -392,8 +393,13 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} (⊙e : X ⊙≃ Y) where
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} (⊙e : X ⊙≃ Y) where
 
-  linv⊙-unique : {f₁ f₂ : Y ⊙→ X} → (f₁ ⊙∘ ⊙–> ⊙e) ⊙-comp ⊙idf X → (f₂ ⊙∘ ⊙–> ⊙e) ⊙-comp ⊙idf X → f₁ == f₂
-  linv⊙-unique {f₁} {f₂} p₁ p₂ = fst= (contr-has-all-paths {{pre⊙∘-hfib-contr ⊙e (⊙idf X)}} (f₁ , p₁) (f₂ , p₂))
+  abstract
+  
+    linv⊙-unique : {f₁ f₂ : Y ⊙→ X} → (f₁ ⊙∘ ⊙–> ⊙e) ⊙-comp ⊙idf X → (f₂ ⊙∘ ⊙–> ⊙e) ⊙-comp ⊙idf X → f₁ == f₂
+    linv⊙-unique {f₁} {f₂} p₁ p₂ = fst= (contr-has-all-paths {{pre⊙∘-hfib-contr ⊙e (⊙idf X)}} (f₁ , p₁) (f₂ , p₂))
+
+    ⊙∘e-lunit : ⊙ide Y ⊙∘e ⊙e == ⊙e
+    ⊙∘e-lunit = pair= (⊙λ= ((λ _ → idp) , (ap-idf-idp (snd (fst ⊙e))))) prop-has-all-paths-↓
 
 -- induction principle for ⊙≃
 
@@ -431,6 +437,19 @@ module _ {i} {X : Ptd i} {Y : Ptd i} where
 
   ⊙≃-to-== : X ⊙≃ Y → X == Y 
   ⊙≃-to-== = ⊙≃-ind {X = X} (λ Y _ → X == Y) idp
+
+  ⊙<–-coher⁻¹ : (⊙e : X ⊙≃ Y) → ⊙e-rev.lemma (⊙e ⊙⁻¹) (⊙e ⊙⁻¹) == snd (fst ⊙e)
+  ⊙<–-coher⁻¹ = ⊙≃-ind {X = X} (λ Y ⊙e → ⊙e-rev.lemma (⊙e ⊙⁻¹) (⊙e ⊙⁻¹) == snd (fst ⊙e)) idp
+
+  abstract
+    ⊙<–-invl : (⊙e : X ⊙≃ Y) → ⊙<– (⊙e ⊙⁻¹) == fst ⊙e
+    ⊙<–-invl ⊙e = ⊙-comp-to-== ((λ _ → idp) , ⊙<–-coher⁻¹ ⊙e)
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} (⊙e₁ : X ⊙≃ Y)  where
+
+  abstract
+    ⊙<–-∘ : {Z : Ptd j} (⊙e₂ : Y ⊙≃ Z) → ⊙<– (⊙e₂ ⊙∘e ⊙e₁) == ⊙<– ⊙e₁ ⊙∘ ⊙<– ⊙e₂
+    ⊙<–-∘ = ⊙≃-ind {X = Y} (λ Z ⊙e₂ → ⊙<– (⊙e₂ ⊙∘e ⊙e₁) == ⊙<– ⊙e₁ ⊙∘ ⊙<– ⊙e₂) (ap ⊙<– (⊙∘e-lunit ⊙e₁))
 
 {- Pointed maps out of bool -}
 
@@ -473,35 +492,3 @@ module _ {i} {X : Ptd i} {Y : Ptd i} where
       ⊙Bool→-to-idf
 ⊙Bool→-equiv-idf-nat F = (comm-sqr λ _ → idp) ,
   snd (⊙Bool→-equiv-idf _) , snd (⊙Bool→-equiv-idf _)
-
--- sequences to facilitate equational reasoning about pointed functions
-
-module _ {i : ULevel} where
-
-  infixr 80 _⊙◃∙_
-  data ⊙→-Seq : Ptd i → Ptd i → Type (lsucc i) where
-    [] : {A : Ptd i} → ⊙→-Seq A A
-    _⊙◃∙_ : {A B C : Ptd i} (m : B ⊙→ C) (s : ⊙→-Seq A B) → ⊙→-Seq A C
-
-  infix 30 _⊙→-s_
-  _⊙→-s_ = ⊙→-Seq
-
-  infix 90 _⊙◃∎
-  _⊙◃∎ : {A A' : Ptd i} → A ⊙→ A' → A ⊙→-s A'
-  _⊙◃∎ m = m ⊙◃∙ []
-
-  infix 15 _⊙∎
-  _⊙∎ : (A : Ptd i) → A ⊙→-s A
-  _⊙∎ _ = []
-
-  ⊙↯ : {A A' : Ptd i} (s : A ⊙→-s A') → A ⊙→ A'
-  ⊙↯ [] = ⊙idf _
-  ⊙↯ (m ⊙◃∙ []) = m
-  ⊙↯ {A = A} {A'} (m ⊙◃∙ s@(_ ⊙◃∙ _)) = m ⊙∘ ⊙↯ s  
-
-  record _⊙=ₛ_ {A A' : Ptd i} (s t : A ⊙→-s A') : Type i where
-    constructor ⊙=ₛ-in
-    field
-      ⊙=ₛ-out : ⊙↯ s == ⊙↯ t
-
-  open _⊙=ₛ_ public

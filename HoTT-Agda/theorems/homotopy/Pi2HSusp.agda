@@ -186,11 +186,15 @@ module homotopy.Pi2HSusp {i} {X : Ptd i} {{_ : has-level 1 (de⊙ X)}}
       {decodeN}
       (Trunc-elim (λ _ → idp))
 
-  ⊙eq : ⊙Trunc 1 (⊙Ω (⊙Susp X)) ⊙≃ ⊙Trunc 1 X
-  ⊙eq = ≃-to-⊙≃ eq idp
-
   ⊙eq⁻¹ : ⊙Trunc 1 X ⊙≃ ⊙Trunc 1 (⊙Ω (⊙Susp X))
   ⊙eq⁻¹ = ⊙decodeN , snd (eq ⁻¹)
+
+  ⊙eq : ⊙Trunc 1 (⊙Ω (⊙Susp X)) ⊙≃ ⊙Trunc 1 X
+  ⊙eq = ⊙eq⁻¹ ⊙⁻¹
+
+  abstract
+    ⊙eq-inv-rew : ⊙<– ⊙eq == ⊙decodeN
+    ⊙eq-inv-rew = ⊙<–-invl ⊙eq⁻¹
 
   iso : Ω^S-group 0 (⊙Trunc 1 (⊙Ω (⊙Susp X)))
       ≃ᴳ Ω^S-group 0 (⊙Trunc 1 X)

@@ -3,13 +3,38 @@
 open import lib.Basics
 open import lib.types.Pointed
 
--- reasoning about equalities between sequences of pointed functions
+-- sequences to facilitate equational reasoning about pointed functions
 
 module lib.types.Pointed-seq where
 
--- sequences to facilitate equational reasoning about pointed functions
-
 module _ {i : ULevel} where
+
+  infixr 80 _⊙◃∙_
+  data ⊙→-Seq : Ptd i → Ptd i → Type (lsucc i) where
+    [] : {A : Ptd i} → ⊙→-Seq A A
+    _⊙◃∙_ : {A B C : Ptd i} (m : B ⊙→ C) (s : ⊙→-Seq A B) → ⊙→-Seq A C
+
+  infix 30 _⊙→-s_
+  _⊙→-s_ = ⊙→-Seq
+
+  infix 90 _⊙◃∎
+  _⊙◃∎ : {A A' : Ptd i} → A ⊙→ A' → A ⊙→-s A'
+  _⊙◃∎ m = m ⊙◃∙ []
+
+  ⊙↯ : {A A' : Ptd i} (s : A ⊙→-s A') → A ⊙→ A'
+  ⊙↯ [] = ⊙idf _
+  ⊙↯ (m ⊙◃∙ []) = m
+  ⊙↯ {A = A} {A'} (m ⊙◃∙ s@(_ ⊙◃∙ _)) = m ⊙∘ ⊙↯ s
+
+  record _⊙=ₛ_ {A A' : Ptd i} (s t : A ⊙→-s A') : Type i where
+    constructor ⊙=ₛ-in
+    field
+      ⊙=ₛ-out : ⊙↯ s == ⊙↯ t
+  open _⊙=ₛ_ public
+  
+  infix 15 _⊙∎ₛ
+  _⊙∎ₛ : {A A' : Ptd i} (s : A ⊙→-s A') → s ⊙=ₛ s
+  _⊙∎ₛ _ = ⊙=ₛ-in idp 
 
   infixr 80 _⊙-∙∙_
   _⊙-∙∙_ :  {A B C : Ptd i} → A ⊙→-s B → B ⊙→-s C → A ⊙→-s C
@@ -97,6 +122,15 @@ module _ {i : ULevel} where
         → ((⊙drop m (⊙drop n s) ⊙-∙∙ r) ⊙-∙∙ ⊙take n s) ⊙=ₛ u
         → s ⊙=ₛ u
       _⊙=ₛ⟨_&_&_⟩_ s m n {r} p p' = ⊙=ₛ-in (s =⊙↯=⟨ m & n & r & ⊙=ₛ-out p ⟩ ⊙=ₛ-out p')
+
+      infixr 10 _⊙=ₑ⟨_&_&_%_⟩_
+      _⊙=ₑ⟨_&_&_%_⟩_ : (s : A ⊙→-s B) {u : A ⊙→-s B}
+        → (n m : ℕ)
+        → (r : ⊙point-from-end m (⊙drop n s) ⊙→-s ⊙point-from-end n s)
+        → ⊙take m (⊙drop n s) ⊙=ₛ r
+        → ((⊙drop m (⊙drop n s) ⊙-∙∙ r) ⊙-∙∙ ⊙take n s) ⊙=ₛ u
+        → s ⊙=ₛ u
+      _⊙=ₑ⟨_&_&_%_⟩_ s m n r p p' = ⊙=ₛ-in (s =⊙↯=⟨ m & n & r & ⊙=ₛ-out p ⟩ ⊙=ₛ-out p')
 
       infixr 10 _⊙=ₛ⟨_⟩_
       _⊙=ₛ⟨_⟩_ : (s : A ⊙→-s B) {t u : A ⊙→-s B}

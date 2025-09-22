@@ -144,12 +144,7 @@ module EMImplicit {i} {X : Ptd i} {{_ : is-connected 0 (de⊙ X)}}
       ⊙Ω X ⊙≃∎
 
     spectrum1 : ⊙Ω (⊙EM 2) ⊙≃ ⊙EM 1
-    spectrum1 =
-      ⊙Ω (⊙EM 2)
-        ⊙≃⟨ ≃-to-⊙≃ (=ₜ-equiv _ _) idp ⟩
-      ⊙Trunc 1 (⊙Ω (⊙Susp X))
-        ⊙≃⟨ Π₂.⊙eq ⟩
-      ⊙EM 1 ⊙≃∎
+    spectrum1 = Π₂.⊙eq ⊙∘e ⊙Ω-Trunc-[ ⊙Susp X ]-≃
 
     private
       instance
@@ -162,18 +157,13 @@ module EMImplicit {i} {X : Ptd i} {{_ : is-connected 0 (de⊙ X)}}
                    (≤T-trans (inl (! (+2+-βr ⟨ n ⟩ ⟨ n ⟩)))
                                (inr ltS))
 
-      module FS (n : ℕ) =
-        FreudenthalEquiv ⟨ n ⟩₋₁ ⟨ S (S n) ⟩ (kle n)
-          (⊙Susp^ (S n) X)
+    module FS (n : ℕ) =
+      FreudenthalEquiv ⟨ n ⟩₋₁ ⟨ S (S n) ⟩ (kle n)
+        (⊙Susp^ (S n) X)
 
     spectrumSS : (n : ℕ)
       → ⊙Ω (⊙EM (S (S (S n)))) ⊙≃ ⊙EM (S (S n))
-    spectrumSS n =
-      ⊙Ω (⊙EM (S (S (S n))))
-        ⊙≃⟨ ≃-to-⊙≃ (=ₜ-equiv _ _) idp ⟩
-      ⊙Trunc ⟨ S (S n) ⟩ (⊙Ω (⊙Susp^ (S (S n)) X))
-        ⊙≃⟨ FS.⊙eq n ⊙⁻¹ ⟩
-      ⊙EM (S (S n)) ⊙≃∎
+    spectrumSS n = FS.⊙eq n ⊙⁻¹ ⊙∘e ⊙Ω-Trunc-[_]-≃ (⊙Susp^ (S (S n)) X)
 
     spectrum : (n : ℕ) → ⊙Ω (⊙EM (S n)) ⊙≃ ⊙EM n
     spectrum 0 = spectrum0

@@ -206,11 +206,11 @@ is-equiv-inverse : ∀ {i j} {A : Type i} {B : Type j} {f : A → B}
 is-equiv-inverse {f = g} ise = record { g = _ ; M } where
   module M where
     f = is-equiv.g ise
+    f-g : ∀ b → f (g b) == b
+    f-g = is-equiv.g-f ise
+    g-f : ∀ a → g (f a) == a
+    g-f = is-equiv.f-g ise
     abstract
-      f-g : ∀ b → f (g b) == b
-      f-g = is-equiv.g-f ise
-      g-f : ∀ a → g (f a) == a
-      g-f = is-equiv.f-g ise
       adj : ∀ a → ap f (g-f a) == f-g (f a)
       adj = is-equiv.adj' ise
 
