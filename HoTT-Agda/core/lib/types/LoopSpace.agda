@@ -283,8 +283,7 @@ module _ {i} where
   (g : Y ⊙→ Z) (f : X ⊙→ Y)
   → ⊙Ω^-fmap n (g ⊙∘ f) == ⊙Ω^-fmap n g ⊙∘ ⊙Ω^-fmap n f
 ⊙Ω^-fmap-∘ O _ _ = idp
-⊙Ω^-fmap-∘ (S n) g f = ap ⊙Ω-fmap (⊙Ω^-fmap-∘ n g f)
-                     ∙ ⊙Ω-fmap-∘ (⊙Ω^-fmap n g) (⊙Ω^-fmap n f)
+⊙Ω^-fmap-∘ (S n) g f = ap ⊙Ω-fmap (⊙Ω^-fmap-∘ n g f) ∙ ⊙Ω-fmap-∘ (⊙Ω^-fmap n g) (⊙Ω^-fmap n f)
 
 ⊙Ω^-fmap-idf : ∀ {i} (n : ℕ) {X : Ptd i} → ⊙Ω^-fmap n (⊙idf X) == ⊙idf _
 ⊙Ω^-fmap-idf O = idp
@@ -299,6 +298,12 @@ module _ {i} where
 
 Ω^'-fmap-idf : ∀ {i} (n : ℕ) {X : Ptd i} → Ω^'-fmap n (⊙idf X) == idf _
 Ω^'-fmap-idf n = fst= $ ⊙Ω^'-fmap-idf n
+
+⊙Ω^'-fmap-∘ : ∀ {i j k} (n : ℕ) {X : Ptd i} {Y : Ptd j} {Z : Ptd k}
+  (g : Y ⊙→ Z) (f : X ⊙→ Y)
+  → ⊙Ω^'-fmap n (g ⊙∘ f) == ⊙Ω^'-fmap n g ⊙∘ ⊙Ω^'-fmap n f
+⊙Ω^'-fmap-∘ O _ _ = idp
+⊙Ω^'-fmap-∘ (S n) g f = ap (⊙Ω^'-fmap n) (⊙Ω-fmap-∘ g f) ∙ ⊙Ω^'-fmap-∘ n (⊙Ω-fmap g) (⊙Ω-fmap f)
 
 ⊙Ω^-fmap-fmap2 : ∀ {i j k l} (n : ℕ) {X : Ptd i} {Y : Ptd j} {Z : Ptd k} {W : Ptd l}
   (G : Z ⊙→ W) (F : (X ⊙× Y) ⊙→ Z)

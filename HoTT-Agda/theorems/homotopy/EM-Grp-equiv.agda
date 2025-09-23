@@ -63,4 +63,13 @@ abstract
             ==
           ap (Trunc-elim {P = λ _ → EM₁ grp} {{EM₁-level₁ grp {n = ⟨-2⟩}}} (λ v → v)) (ap [_] p)
         lemma idp = idp
-  ⊙EM-elim₂-β-deloop (S n) φ = {!!}
+  ⊙EM-elim₂-β-deloop (S n) φ = 
+    GroupHom.⊙f φ ⊙◃∙ ⊙–> (deloop'-fold (S (S n))) ⊙◃∎
+      ⊙=ₛ⟨ 1 & 1 & ⊙=ₛ-in idp ⟩
+    GroupHom.⊙f φ ⊙◃∙ ⊙–> (deloop'-fold (S n)) ⊙◃∙ ⊙–> (⊙Ω^'-emap (S n) (spectrum (S n))) ⊙◃∎
+      ⊙=ₛ⟨ 0 & 2 & ⊙EM-elim₂-β-deloop n φ ⟩
+    ⊙Ω^'-fmap (S n) (⊙EM-elimₙ G n φ) ⊙◃∙ ⊙–> (⊙Ω^'-emap (S n) (spectrum (S n))) ⊙◃∎
+      ⊙=ₛ₁⟨ ! (⊙Ω^'-fmap-∘ (S n) (⊙EM-elimₙ G n φ) (⊙–> (spectrum (S n)))) ⟩
+    ⊙Ω^'-fmap (S n) (⊙EM-elimₙ G n φ ⊙∘ ⊙–> (spectrum (S n))) ⊙◃∎
+      ⊙=ₛ₁⟨ ap (⊙Ω^'-fmap (S n)) (! (⊙EM-elim₂-β-rot n φ)) ⟩
+    ⊙Ω^'-fmap (S n) (⊙Ω-fmap (⊙EM-elimₙ G (S n) φ)) ⊙◃∎ ⊙∎ₛ
