@@ -600,27 +600,6 @@ module _ {i} {X : Type i} {x : X} where
   Ω^-Ω-split-Path-ₚ : (n : ℕ-ₚ) → Ω^ (S (pnat n)) (⊙[ X , x ]) == Ω^ (pnat n) (⊙Ω ⊙[ X , x ])
   Ω^-Ω-split-Path-ₚ n = ua (Ω^-Ω-split-≃-ₚ n)
 
-module _ {i j} {A : Type i} {B : Type j} (n : ℕ-ₚ) (f : A → B) {a : A} where
-
-  Ω^-ap-assoc-ₚ' :
-    Ω^-fmapₚ (S n) {x = a} f == Ω^-Ω-split-revₚ n ∘ Ω^-fmapₚ n (ap f) ∘ Ω^-Ω-splitₚ n
-  Ω^-ap-assoc-ₚ' = fst= (⊙Ω^-ap-assoc (pnat n) (f , idp))
-
-  -- a useful lemma for Whitehead's theorem
-  Ω^-ap-assoc-ₚ :
-     Ω^-Ω-splitₚ n ∘ Ω^-fmapₚ (S n) {x = a} f ∘ Ω^-Ω-split-revₚ n ∼ Ω^-fmapₚ n (ap f)
-  Ω^-ap-assoc-ₚ = app= aux
-    where
-      aux : Ω^-Ω-splitₚ n ∘ Ω^-fmapₚ (S n) {x = a} f ∘ Ω^-Ω-split-revₚ n == Ω^-fmapₚ n (ap f)
-      aux =
-        Ω^-Ω-splitₚ n ∘ Ω^-fmapₚ (S n) {x = a} f ∘ Ω^-Ω-split-revₚ n
-          =⟨ ap (λ k → Ω^-Ω-splitₚ n ∘ k ∘ Ω^-Ω-split-revₚ n) Ω^-ap-assoc-ₚ' ⟩
-        (Ω^-Ω-splitₚ n ∘ Ω^-Ω-split-revₚ n) ∘ Ω^-fmapₚ n (ap f) ∘ (Ω^-Ω-splitₚ n ∘ Ω^-Ω-split-revₚ n)
-          =⟨ ap2 (λ k₁ k₂ → k₁ ∘ Ω^-fmapₚ n (ap f) ∘ k₂)
-               (λ= (<–-inv-r (Ω^-Ω-split-≃-ₚ n)))
-               (λ= (<–-inv-r (Ω^-Ω-split-≃-ₚ n))) ⟩
-        Ω^-fmapₚ n (ap f) =∎
-
 module _ {i j} (X : Ptd i) (Y : Ptd j) where
 
   Ω-× : Ω (X ⊙× Y) ≃ Ω X × Ω Y

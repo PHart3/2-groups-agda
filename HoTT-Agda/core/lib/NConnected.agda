@@ -279,6 +279,14 @@ connected-at-level-is-contr : ∀ {i} {A : Type i} {n : ℕ₋₂}
 connected-at-level-is-contr {{pA}} {{cA}} =
   equiv-preserves-level (unTrunc-equiv _) {{cA}}
 
+{- if A is n-connected and m ≤ n, then A is m-connected -}
+connected-≤T : ∀ {i} {m n : ℕ₋₂} {A : Type i}
+  → m ≤T n → {{_ : is-connected n A}} → is-connected m A
+connected-≤T {m = m} {n = n} {A = A} leq =
+  transport (λ B → is-contr B)
+            (ua (Trunc-fuse A m n) ∙ ap (λ k → Trunc k A) (minT-out-l leq))
+            (Trunc-preserves-level m ⟨⟩)
+
 module _ {i j} {A : Type i} (a : A) {n : ℕ₋₂} {{_ : is-connected (S n) A}} (P : A → Type j)
   {{tr : {x : A} → has-level n (P x)}} where
 
