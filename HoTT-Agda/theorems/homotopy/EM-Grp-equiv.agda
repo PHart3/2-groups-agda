@@ -28,7 +28,7 @@ abstract
     → GroupHom.⊙f φ ⊙◃∙ ⊙–> (deloop'-fold (S n)) ⊙◃∎ ⊙=ₛ ⊙Ω^'-fmap (S n) (⊙EM-elimₙ G n φ) ⊙◃∎
   ⊙EM-elim₂-β-deloop O φ =
     GroupHom.⊙f φ ⊙◃∙ ⊙–> (deloop'-fold 1) ⊙◃∎
-      ⊙=ₛ⟨ 0 & 1 & ⊙=ₛ-in (! (EM₁Level₁Rec.⊙β-tri idp φ)) ⟩
+      ⊙=ₑ⟨ 0 & 1 & (⊙Ω-fmap (EM₁-level₁-rec idp φ , idp) ⊙◃∙ ⊙emloop ⊙◃∎) % ⊙=ₛ-in (! (EM₁Level₁Rec.⊙β-tri idp φ)) ⟩
     ⊙Ω-fmap (EM₁-level₁-rec idp φ , idp) ⊙◃∙ ⊙emloop ⊙◃∙ ⊙–> (deloop'-fold 1) ⊙◃∎
       ⊙=ₛ⟨ 2 & 1 & ⊙=ₛ-in idp ⟩
     ⊙Ω-fmap (EM₁-level₁-rec idp φ , idp) ⊙◃∙ ⊙emloop ⊙◃∙ ⊙–> (GroupIso.⊙f-equiv (Ω¹-EM₁ grp)) ⊙◃∙ ⊙–> Spectrum.spectrum0 ⊙◃∎
@@ -40,8 +40,27 @@ abstract
     ⊙Ω-fmap (EM₁-level₁-rec idp φ , idp) ⊙◃∙
     ⊙–> (⊙unTrunc-equiv (⊙Ω (⊙EM₁ grp)) {{has-level-apply-instance {{EM₁-level₁ grp}}}}) ⊙◃∙
     ⊙Ω-Trunc-[_] (⊙EM₁ grp) ⊙◃∎
-      ⊙=ₛ⟨ 1 & 2 & ⊙=ₛ-in (⊙-comp-to-== ({!!} , {!!})) ⟩
-    ⊙Ω-fmap (EM₁-level₁-rec idp φ , idp) ⊙◃∙ ⊙Ω-fmap (⊙–> (⊙unTrunc-equiv (⊙EM₁ (fst G)) {{EM₁-level₁ grp}})) ⊙◃∎
-      ⊙=ₛ₁⟨ ! (⊙Ω-fmap-∘ (EM₁-level₁-rec idp φ , idp) (⊙–> (⊙unTrunc-equiv (⊙EM₁ (fst G)) {{EM₁-level₁ grp}}))) ⟩
-    ⊙Ω-fmap ((EM₁-level₁-rec idp φ ∘ –> (unTrunc-equiv (EM₁ (fst G)) {{EM₁-level₁ grp}})) , idp) ⊙◃∎ ⊙∎ₛ
-  ⊙EM-elim₂-β-deloop (S n) φ = {!Ω^-level!}
+      ⊙=ₛ⟨ 1 & 2 & ⊙=ₛ-in (⊙-comp-to-== (=ₜ-equiv-ind {n = 0}
+        {P = λ (p : [ embase' (fst G) ] == [ embase' (fst G) ]) →
+          Trunc-elim {{has-level-apply-instance {{EM₁-level₁ grp}}}} (λ v → v)
+            (=ₜ-maps.to [ embase' (fst G) ] [ embase' (fst G) ] [ embase' (fst G) ] [ embase' (fst G) ] p)
+            ==
+          ap (Trunc-elim {P = λ _ → EM₁ grp} {{EM₁-level₁ grp}} (λ v → v)) p}
+         (Trunc-elim {P = λ p →
+           Trunc-elim {{has-level-apply-instance {{EM₁-level₁ grp}}}} (λ v → v)
+             (=ₜ-maps.to [ embase' (fst G) ] [ embase' (fst G) ] [ embase' (fst G) ] [ embase' (fst G) ] (Trunc-elim (ap [_]) p))
+             ==
+           ap (Trunc-elim {P = λ _ → EM₁ grp} {{EM₁-level₁ grp}} (λ v → v))
+             (Trunc-elim {P = λ _ → [ embase' grp ] == [ embase' grp ]} (ap [_]) p)} lemma) ,
+       idp)) ⟩
+    ⊙Ω-fmap (EM₁-level₁-rec idp φ , idp) ⊙◃∙
+    ⊙Ω-fmap (⊙–> (⊙unTrunc-equiv (⊙EM₁ grp) {{EM₁-level₁ grp}})) ⊙◃∎
+      ⊙=ₛ₁⟨ ! (⊙Ω-fmap-∘ (EM₁-level₁-rec idp φ , idp) (⊙–> (⊙unTrunc-equiv (⊙EM₁ grp) {{EM₁-level₁ grp}}))) ⟩
+    ⊙Ω-fmap ((EM₁-level₁-rec idp φ ∘ –> (unTrunc-equiv (EM₁ grp) {{EM₁-level₁ grp}})) , idp) ⊙◃∎ ⊙∎ₛ
+      where
+        lemma : {c : EM₁ grp} (p : embase' grp == c) →
+          Trunc-elim {{has-level-apply-instance {{EM₁-level₁ grp {n = ⟨-2⟩}}}}} (λ v → v) (=ₜ-maps.to [ embase' grp ] [ c ] _ _ (ap [_] p))
+            ==
+          ap (Trunc-elim {P = λ _ → EM₁ grp} {{EM₁-level₁ grp {n = ⟨-2⟩}}} (λ v → v)) (ap [_] p)
+        lemma idp = idp
+  ⊙EM-elim₂-β-deloop (S n) φ = {!!}

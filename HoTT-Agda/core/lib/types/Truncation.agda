@@ -116,7 +116,7 @@ module _ {i} {n : ℕ₋₂} {A : Type i} where
                        (λ a → [ idp ])
 
   =ₜ-equiv : (a b : Trunc (S n) A) → (a == b) ≃ (a =ₜ b)
-  =ₜ-equiv a b = to a b , to-is-equiv a b where
+  =ₜ-equiv a b = to a b , to-is-equiv a b module =ₜ-maps where
 
     to : (a b : Trunc (S n) A) → (a == b → a =ₜ b)
     to a .a idp = =ₜ-refl a
@@ -165,6 +165,12 @@ module _ {i} {n : ℕ₋₂} {A : Type i} where
 =ₜ-equiv-can : ∀ {i} (n : ℕ₋₂) {A : Type i} {a b : A}
   → ([ a ] == [ b ]) ≃ (Trunc n (a == b))
 =ₜ-equiv-can _ {a = a} {b} = =ₜ-equiv [ a ] [ b ]
+
+=ₜ-equiv-ind : ∀ {i j} {n : ℕ₋₂} {A : Type i} {a b : A} {P : [ a ] == [ b ] → Type j}
+  → (s : (x : Trunc n (a == b)) → P (<– (=ₜ-equiv-can n) x))
+  → (x : [ a ] == [ b ]) → P x
+=ₜ-equiv-ind {n = n} {P = P} s x =
+  transport P (<–-inv-l (=ₜ-equiv-can n) x) (s (–> (=ₜ-equiv-can n) x)) 
 
 module _ {i} (A : Ptd i) {n : ℕ₋₂} where
 
