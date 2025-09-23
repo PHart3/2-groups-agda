@@ -136,13 +136,8 @@ module EMImplicit {i} {X : Ptd i} {{_ : is-connected 0 (de⊙ X)}}
       module Π₂ = Pi2HSusp H-X
 
     spectrum0 : ⊙Ω (⊙EM 1) ⊙≃ ⊙EM 0
-    spectrum0 =
-      ⊙Ω (⊙EM 1)
-        ⊙≃⟨ ≃-to-⊙≃ (=ₜ-equiv _ _) idp ⟩
-      ⊙Trunc 0 (⊙Ω X)
-        ⊙≃⟨ ≃-to-⊙≃ (unTrunc-equiv _) idp ⟩
-      ⊙Ω X ⊙≃∎
-
+    spectrum0 = ⊙unTrunc-equiv (⊙Ω X) ⊙∘e ⊙Ω-Trunc-[_]-≃ X
+    
     spectrum1 : ⊙Ω (⊙EM 2) ⊙≃ ⊙EM 1
     spectrum1 = Π₂.⊙eq ⊙∘e ⊙Ω-Trunc-[ ⊙Susp X ]-≃
 

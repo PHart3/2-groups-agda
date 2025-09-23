@@ -53,8 +53,7 @@ abstract
       ⊙=ₛ₁⟨ 1 & 1 & ⊙<–-invl (Spectrum.FS.⊙eq n {{⊙Susp^-conn' (S n)}}) ⟩
     ⊙Ω-UnTrunc-[ ⊙Susp (⊙Susp (⊙Susp^ n (⊙EM₁ grp))) ] ⊙◃∙ ⊙Trunc-fmap (η (⊙Susp^ (S n) (⊙EM₁ grp))) ⊙◃∎ ⊙∎ₛ
 
-module ⊙EM-β (n : ℕ) {X : Ptd i} {{X-level : has-level ⟨ S (S n) ⟩ (de⊙ X)}}
-  (φ : grp →ᴳ Ω^'S-group (S n) X) where
+module ⊙EM-β (n : ℕ) {X : Ptd i} {{X-level : has-level ⟨ S (S n) ⟩ (de⊙ X)}} (φ : grp →ᴳ Ω^'S-group (S n) X) where
 
   abstract
     ⊙EM-elimₙ-β : ⊙Ω-fmap (⊙EM-elimₙ (S n) φ) ⊙◃∙ ⊙<– (spectrum (S n)) ⊙◃∎ ⊙=ₛ ⊙EM-elimₙ n {X = ⊙Ω X} φ ⊙◃∎
