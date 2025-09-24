@@ -29,10 +29,10 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} {{cX : is-connected 0 (de⊙ X)}} {{cY : 
         surj = prop-over-connected (λ z → Trunc -1 (hfiber f z) , ⟨⟩) [ (pt X) , idp ]
 
 abstract
-  -- If f is a map of pointed n-connected types and Ω^(n + ) f is an equivalence, then so is f.
+  -- If f is a map of pointed n-connected types and Ω^(n + 1) f is an equivalence, then so is f.
   Ω-Nconn-≃ : ∀ {i j} {X : Ptd i} {Y : Ptd j}
-    {n : ℕ} {{cX : is-connected (tl n) (de⊙ X)}} {{cY : is-connected (tl n) (de⊙ Y)}} (f* : X ⊙→ Y)
+    {n : ℕ} {{cX : is-connected ⟨ n ⟩ (de⊙ X)}} {{cY : is-connected ⟨ n ⟩ (de⊙ Y)}} (f* : X ⊙→ Y)
     → is-equiv (Ω^'-fmap (S n) f*) → is-equiv (fst f*)
   Ω-Nconn-≃ {n = O} = Ω-conn-≃
   Ω-Nconn-≃ {n = S n} {{cX}} {{cY}} f* ise =
-    Ω-conn-≃ {{connected-≤T tl-S-≤T}} {{connected-≤T tl-S-≤T}} f* (Ω-Nconn-≃ {n = n} (⊙Ω-fmap f*) ise) 
+    Ω-conn-≃ {{connected-≤T ⟨⟩-S-≤T}} {{connected-≤T ⟨⟩-S-≤T}} f* (Ω-Nconn-≃ {n = n} (⊙Ω-fmap f*) ise) 

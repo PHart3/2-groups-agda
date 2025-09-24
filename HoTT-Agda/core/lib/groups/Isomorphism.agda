@@ -239,6 +239,15 @@ module _ {i} {G H : Group i} (iso : GroupIso G H) where
     El=-β : ap Group.El uaᴳ == El=
     El=-β = ap3-lemma-El El= _ _
 
+module _ {i} {G H : AbGroup i} (iso : GroupIso (fst G) (fst H)) where
+  private
+    module Gm = AbGroup G
+    module Hm = AbGroup H
+
+  abstract
+    uaᴳ-Ab : G == H
+    uaᴳ-Ab = pair= (uaᴳ iso) prop-has-all-paths-↓
+
 {- homomorphism from equality of groups -}
 
 abstract

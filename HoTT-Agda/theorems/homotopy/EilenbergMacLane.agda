@@ -137,6 +137,12 @@ module EMImplicit {i} {X : Ptd i} {{_ : is-connected 0 (de⊙ X)}}
 
     spectrum0 : ⊙Ω (⊙EM 1) ⊙≃ ⊙EM 0
     spectrum0 = ⊙unTrunc-equiv (⊙Ω X) ⊙∘e ⊙Ω-Trunc-[_]-≃ X
+
+    spectrum0-pres-comp : preserves-comp Ω-∙ Ω-∙ (fst (⊙–> spectrum0))
+    spectrum0-pres-comp = =ₜ-equiv-ind (Trunc-elim {{Π-level λ _ → ⟨⟩}} λ p →
+      =ₜ-equiv-ind (Trunc-elim λ q →
+        ! (ap2 (λ t₁ t₂ → Trunc-elim (λ x → x) t₁ ∙ Trunc-elim (λ x → x) t₂) (<–-inv-r (=ₜ-equiv [ pt X ] [ pt X ]) [ p ]) (<–-inv-r (=ₜ-equiv [ pt X ] [ pt X ]) [ q ]) ∙
+        ! (ap (Trunc-elim (λ x → x)) (ap (=ₜ-maps.to [ pt X ] [ pt X ] [ pt X ] [ pt X ]) (∙-ap [_] p q) ∙ <–-inv-r (=ₜ-equiv _ _) [ p ∙ q ])))))
     
     spectrum1 : ⊙Ω (⊙EM 2) ⊙≃ ⊙EM 1
     spectrum1 = Π₂.⊙eq ⊙∘e ⊙Ω-Trunc-[ ⊙Susp X ]-≃
@@ -182,6 +188,10 @@ module EMExplicit {i} (G : AbGroup i) where
   deloop'-fold : (n : ℕ) → ⊙Ω^' n (⊙EM n) ⊙≃ ⊙El
   deloop'-fold O = ⊙f-equiv where open GroupIso (Ω¹-EM₁ grp)
   deloop'-fold (S n) = deloop'-fold n ⊙∘e ⊙Ω^'-emap n (spectrum n)
+
+  deloop'-fold-pres-comp : (n : ℕ) → preserves-comp (Ω^'S-∙ n) comp (fst (⊙–> (deloop'-fold (S n))))
+  deloop'-fold-pres-comp O g₁ g₂ = ap f (Spectrum.spectrum0-pres-comp g₁ g₂) ∙ pres-comp _ _ where open GroupIso (Ω¹-EM₁ grp)
+  deloop'-fold-pres-comp (S n) g₁ g₂ = ap (fst (⊙–> (deloop'-fold (S n)))) (Ω^'S-fmap-∙ n (⊙–> (spectrum (S n))) g₁ g₂) ∙ deloop'-fold-pres-comp n _ _
 
 module _ {i j} {G : Group i} {H : Group j} (φ : G →ᴳ H) where
 

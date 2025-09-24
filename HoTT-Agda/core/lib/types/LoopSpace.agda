@@ -517,6 +517,28 @@ module _ {i j} where
 Ω^'-is-prop O X pX = pX
 Ω^'-is-prop (S n) X pX = Ω^'-is-prop n (⊙Ω X) (has-level-apply pX (pt X) (pt X))
 
+{- Eckmann-Hilton argument -}
+module _ {i} {X : Ptd i} where
+
+  Ω-fmap2-∙ : (α β : Ω^ 2 X) → ap2 _∙_ α β == Ω^S-∙ 1 α β
+  Ω-fmap2-∙ α β = =ₛ-out (ap2-out _∙_ α β) ∙ ap2 _∙_ (lemma α) (ap-idf β)
+    where
+    lemma : ∀ {i} {A : Type i} {x y : A} {p q : x == y} (α : p == q)
+      → ap (λ r → r ∙ idp) α == ∙-unit-r p ∙ α ∙' ! (∙-unit-r q)
+    lemma {p = idp} idp = idp
+
+  ⊙Ω-fmap2-∙ : ⊙Ω-fmap2 (⊙Ω-∙ {X = X}) == ⊙Ω-∙
+  ⊙Ω-fmap2-∙ = ⊙λ=' (uncurry Ω-fmap2-∙) idp
+
+  Ω^2-∙-comm : (α β : Ω^ 2 X) → Ω^S-∙ 1 α β == Ω^S-∙ 1 β α
+  Ω^2-∙-comm α β = ! (⋆2=Ω^S-∙ α β) ∙ ⋆2=⋆'2 α β ∙ ⋆'2=Ω^S-∙ α β
+    where
+      ⋆2=Ω^S-∙ : (α β : Ω^ 2 X) → α ⋆2 β == Ω^S-∙ 1 α β
+      ⋆2=Ω^S-∙ α β = ap (λ π → π ∙ β) (∙-unit-r α)
+
+      ⋆'2=Ω^S-∙ : (α β : Ω^ 2  X) → α ⋆'2 β == Ω^S-∙ 1 β α
+      ⋆'2=Ω^S-∙ α β = ap (λ π → β ∙ π) (∙-unit-r α)
+
 {- Our definition of [Ω^] builds up loops from the outside,
  - but this is equivalent to building up from the inside -}
 module _ {i} where

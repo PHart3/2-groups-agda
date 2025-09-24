@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
 open import lib.types.Sigma
@@ -48,6 +48,14 @@ module _ {i} (n : ℕ) (X : Ptd i) where
     -- TODO: make it find it automatically
     {{Ω^'-is-set (S n) X ⟨⟩}}
     Ω^'S-group-structure
+
+abstract
+  is-ab-Ω^'S : ∀ {i} (X : Ptd i) {k} {{_ : has-level ⟨ S (S k) ⟩ (de⊙ X)}} → is-abelian (Ω^'S-group (S k) X)
+  is-ab-Ω^'S _ {O} = Ω^2-∙-comm
+  is-ab-Ω^'S X {S k} = is-ab-Ω^'S (⊙Ω X) {k}
+
+Ω^'S-abgroup : ∀ {i} (n : ℕ) (X : Ptd i) {{_ : has-level ⟨ S (S n) ⟩ (de⊙ X)}} → AbGroup i
+Ω^'S-abgroup n X = (Ω^'S-group (S n) X) , is-ab-Ω^'S X
 
 module _ {i j} (n : ℕ) {X : Ptd i} {Y : Ptd j} where
   Ω^S-group-structure-fmap : X ⊙→ Y
