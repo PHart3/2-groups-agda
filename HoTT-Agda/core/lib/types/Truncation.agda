@@ -231,6 +231,22 @@ Trunc-fmap f = Trunc-rec ([_] ∘ f)
 ⊙Trunc-fmap : ∀ {i j} {n : ℕ₋₂} {X : Ptd i} {Y : Ptd j} → ((X ⊙→ Y) → (⊙Trunc n X ⊙→ ⊙Trunc n Y))
 ⊙Trunc-fmap F = Trunc-fmap (fst F) , ap [_] (snd F)
 
+Trunc-Σ : ∀ {i j} {n : ℕ₋₂} {A : Type i} {B : A → Type j} → Trunc n (Σ A B) ≃ Trunc n (Σ A (Trunc n ∘ B))
+Trunc-Σ {n = n} {A} {B} = equiv to from rt1 rt2
+  where
+
+    to : Trunc n (Σ A B) → Trunc n (Σ A (Trunc n ∘ B))
+    to = Trunc-fmap (Σ-fmap-r (λ _ → [_]))
+
+    from : Trunc n (Σ A (Trunc n ∘ B)) → Trunc n (Σ A B)
+    from = Trunc-rec (uncurry λ x → Trunc-fmap λ y → x , y)
+
+    rt1 : (x : Trunc n (Σ A (Trunc n ∘ B))) → to (from x) == x
+    rt1 = Trunc-elim (uncurry λ x → Trunc-elim λ _ → idp)
+
+    rt2 : (x : Trunc n (Σ A B)) → from (to x) == x
+    rt2 = Trunc-elim λ _ → idp
+
 module _ {i j} {A : Ptd i} {B : Ptd j} {n : ℕ₋₂} {{_ : has-level (S n) (de⊙ B)}} where
 
   ⊙Ω-Trunc-rec-coh-rot : (f : A ⊙→ B) →

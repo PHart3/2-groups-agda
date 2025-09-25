@@ -3,6 +3,8 @@
 open import lib.Basics
 open import lib.NConnected
 open import lib.FTID
+open import lib.NType2
+open import lib.Equivalence2
 open import lib.types.Sigma
 open import lib.types.Pointed
 open import lib.types.LoopSpace
@@ -131,5 +133,9 @@ module _ {i j} (X : Ptd i) (Y : Ptd j) {n₁ n₂ : TLevel}
   (cX : is-connected (S n₁) (de⊙ X)) (trY : has-level (n₂ +2+ (S n₁)) (de⊙ Y)) where
 
   abstract
-    ptd-conn-tr-hom-tr : has-level (S n₂) (X ⊙→ Y)
+    ptd-conn-tr-hom-tr : has-level (S n₂) (X ⊙→ Y)
     ptd-conn-tr-hom-tr = ptd-conn-tr-dhom-tr X {{cX}} (λ _ → Y) {{trY}}
+
+    ptd-conn-tr-≃-tr : has-level (S n₂) (X ⊙≃ Y)
+    ptd-conn-tr-≃-tr = Subtype-level (subtypeprop (λ (f , _) → is-equiv f)) {{ptd-conn-tr-hom-tr}}
+   

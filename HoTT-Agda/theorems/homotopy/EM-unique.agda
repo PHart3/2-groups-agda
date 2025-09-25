@@ -12,52 +12,54 @@ module _ (n : ℕ) {i} (H : AbGroup i) where
 
   open EMExplicit
 
-  EM-Ω-==-aux : (G : groupal-grpd-Ab n i) → (–> (EM-Ab-equiv n) G == H) ≃ (G == <– (EM-Ab-equiv n) H)
-  EM-Ω-==-aux G = equiv-adj-≃  (EM-Ab-equiv n {i}) {G} {H}
+  abstract
 
-  EM-Ω-==-to : (X : Ptd i) (tX : has-level ⟨ S (S n) ⟩ (de⊙ X)) (cX : is-connected ⟨ S n ⟩ (de⊙ X))  →
-    (is-connected ⟨ S n ⟩ (de⊙ X) × Σ (has-level ⟨ S (S n) ⟩ (de⊙ X)) (λ tX' → (Ω^'S-abgroup n X {{tX'}} == H)))
-      ≃
-    (–> (EM-Ab-equiv n) (X , tX , cX) == H)
-  EM-Ω-==-to X tX cX = equiv to from rt1 rt2
-    where
+    EM-Ω-==-aux : (G : groupal-grpd-Ab n i) → (–> (EM-Ab-equiv n) G == H) ≃ (G == <– (EM-Ab-equiv n) H)
+    EM-Ω-==-aux G = equiv-adj-≃  (EM-Ab-equiv n {i}) {G} {H}
 
-      to :
-        (is-connected ⟨ S n ⟩ (de⊙ X) × Σ (has-level ⟨ S (S n) ⟩ (de⊙ X)) (λ tX' → (Ω^'S-abgroup n X {{tX'}} == H)))
-        → (–> (EM-Ab-equiv n) (X , tX , cX) == H)
-      to (cX , tX , p) = ap (λ tr → Ω^'S-abgroup n X {{tr}}) (prop-has-all-paths _ _) ∙ p
+    EM-Ω-==-to : (X : Ptd i) (tX : has-level ⟨ S (S n) ⟩ (de⊙ X)) (cX : is-connected ⟨ S n ⟩ (de⊙ X))  →
+      (is-connected ⟨ S n ⟩ (de⊙ X) × Σ (has-level ⟨ S (S n) ⟩ (de⊙ X)) (λ tX' → (Ω^'S-abgroup n X {{tX'}} == H)))
+        ≃
+      (–> (EM-Ab-equiv n) (X , tX , cX) == H)
+    EM-Ω-==-to X tX cX = equiv to from rt1 rt2
+      where
 
-      from :
-        (–> (EM-Ab-equiv n) (X , tX , cX) == H)
-        → (is-connected ⟨ S n ⟩ (de⊙ X) × Σ (has-level ⟨ S (S n) ⟩ (de⊙ X)) (λ tX' → (Ω^'S-abgroup n X {{tX'}} == H)))
-      from p = cX , (tX , p)
+        to :
+          (is-connected ⟨ S n ⟩ (de⊙ X) × Σ (has-level ⟨ S (S n) ⟩ (de⊙ X)) (λ tX' → (Ω^'S-abgroup n X {{tX'}} == H)))
+          → (–> (EM-Ab-equiv n) (X , tX , cX) == H)
+        to (cX , tX , p) = ap (λ tr → Ω^'S-abgroup n X {{tr}}) (prop-has-all-paths _ _) ∙ p
 
-      rt1 : (p : –> (EM-Ab-equiv n) (X , tX , cX) == H) → to (from p) == p
-      rt1 p = ap (λ q → q ∙ p) (ap (ap (λ tr → Ω^'S-abgroup n X {{tr}})) (prop-has-all-paths {{=-preserves-level-instance}} _ _))
+        from :
+          (–> (EM-Ab-equiv n) (X , tX , cX) == H)
+          → (is-connected ⟨ S n ⟩ (de⊙ X) × Σ (has-level ⟨ S (S n) ⟩ (de⊙ X)) (λ tX' → (Ω^'S-abgroup n X {{tX'}} == H)))
+        from p = cX , (tX , p)
 
-      rt2 : (t : is-connected ⟨ S n ⟩ (de⊙ X) × Σ (has-level ⟨ S (S n) ⟩ (de⊙ X)) (λ tX' → Ω^'S-abgroup n X {{tX'}} == H)) → from (to t) == t
-      rt2 (cX , tX' , p) = pair×= (prop-has-all-paths _ _) (pair= (prop-has-all-paths _ _) (↓-app=cst-in idp))
+        rt1 : (p : –> (EM-Ab-equiv n) (X , tX , cX) == H) → to (from p) == p
+        rt1 p = ap (λ q → q ∙ p) (ap (ap (λ tr → Ω^'S-abgroup n X {{tr}})) (prop-has-all-paths {{=-preserves-level-instance}} _ _))
 
-  EM-Ω-==-from : (X : Ptd i) (tX : has-level ⟨ S (S n) ⟩ (de⊙ X)) (cX : is-connected ⟨ S n ⟩ (de⊙ X)) →
-    ((X , tX , cX) == <– (EM-Ab-equiv n) H)
-      ≃
-    (X == ⊙EM H (S (S n)))
-  EM-Ω-==-from X tX cX = equiv fst= from rt1 rt2
-    where
+        rt2 : (t : is-connected ⟨ S n ⟩ (de⊙ X) × Σ (has-level ⟨ S (S n) ⟩ (de⊙ X)) (λ tX' → Ω^'S-abgroup n X {{tX'}} == H)) → from (to t) == t
+        rt2 (cX , tX' , p) = pair×= (prop-has-all-paths _ _) (pair= (prop-has-all-paths _ _) (↓-app=cst-in idp))
 
-      from : (X == fst (<– (EM-Ab-equiv n) H)) → (X , tX , cX == <– (EM-Ab-equiv n) H)
-      from p = pair= p prop-has-all-paths-↓
+    EM-Ω-==-from : (X : Ptd i) (tX : has-level ⟨ S (S n) ⟩ (de⊙ X)) (cX : is-connected ⟨ S n ⟩ (de⊙ X)) →
+      ((X , tX , cX) == <– (EM-Ab-equiv n) H)
+        ≃
+      (X == ⊙EM H (S (S n)))
+    EM-Ω-==-from X tX cX = equiv fst= from rt1 rt2
+      where
 
-      rt1 : (p : X == fst (<– (EM-Ab-equiv n) H)) →  fst= (from p) == p
-      rt1 p = fst=-β p prop-has-all-paths-↓
+        from : (X == fst (<– (EM-Ab-equiv n) H)) → (X , tX , cX == <– (EM-Ab-equiv n) H)
+        from p = pair= p prop-has-all-paths-↓
 
-      rt2 : (p : X , tX , cX == <– (EM-Ab-equiv n) H) → from (fst= p) == p
-      rt2 p = pair== {p = fst= p} idp (prop-has-all-paths {{↓-level}} _ _) ∙ ! (pair=-η p)
+        rt1 : (p : X == fst (<– (EM-Ab-equiv n) H)) →  fst= (from p) == p
+        rt1 p = fst=-β p prop-has-all-paths-↓
+
+        rt2 : (p : X , tX , cX == <– (EM-Ab-equiv n) H) → from (fst= p) == p
+        rt2 p = pair== {p = fst= p} idp (prop-has-all-paths {{↓-level}} _ _) ∙ ! (pair=-η p)
 
   EM-Ω-== : (X : Ptd i) →
     (is-connected ⟨ S n ⟩ (de⊙ X) × Σ (has-level ⟨ S (S n) ⟩ (de⊙ X)) (λ tX → (Ω^'S-abgroup n X {{tX}} == H)))
       ≃
-    (X == ⊙EM H (S (S n))) -- make this ⊙≃
+    (X == ⊙EM H (S (S n)))
   EM-Ω-== X = equiv to from rt1 rt2 where
 
     to : (is-connected ⟨ S n ⟩ (de⊙ X) × Σ (has-level ⟨ S (S n) ⟩ (de⊙ X)) (λ tX → (Ω^'S-abgroup n X {{tX}} == H))) → X == ⊙EM H (S (S n))
@@ -90,3 +92,11 @@ module _ (n : ℕ) {i} (H : AbGroup i) where
       rt2 t@(cX , tX , p) =
         ap (<– (EM-Ω-==-from X _ _ ∘e EM-Ω-==-aux (X , _ , _) ∘e EM-Ω-==-to X _ _)) (app= to-invt t) ∙
         <–-inv-l (EM-Ω-==-from X _ _ ∘e EM-Ω-==-aux (X , _ , _) ∘e EM-Ω-==-to X _ _) t
+
+  abstract
+
+    EM-Ω-==-ext : (X : Ptd i) →
+      (is-connected ⟨ S n ⟩ (de⊙ X) × Σ (has-level ⟨ S (S n) ⟩ (de⊙ X)) (λ tX → (Ω^'S-abgroup n X {{tX}} == H)))
+        ≃
+      (X ⊙≃ ⊙EM H (S (S n)))
+    EM-Ω-==-ext X = ⊙≃-ua ∘e (EM-Ω-== X)

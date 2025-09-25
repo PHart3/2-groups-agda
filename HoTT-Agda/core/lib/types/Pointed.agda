@@ -433,6 +433,10 @@ module _ {i} {X : Ptd i} where
     → P X (⊙ide X) → {Y : Ptd i} (e : X ⊙≃ Y) → P Y e
   ⊙≃-ind P = ID-ind-map P ⊙≃-contr
 
+  ⊙≃-ind-β : ∀ {k} (P : (Y : Ptd i) → (X ⊙≃ Y → Type k))
+    → (r : P X (⊙ide X)) → ⊙≃-ind P r (⊙ide X) == r
+  ⊙≃-ind-β P = ID-ind-map-β P ⊙≃-contr
+
 module _ {i} {X : Ptd i} {Y : Ptd i} where
 
   ⊙≃-to-== : X ⊙≃ Y → X == Y 
@@ -445,8 +449,21 @@ module _ {i} {X : Ptd i} {Y : Ptd i} where
     ⊙<–-invl : (⊙e : X ⊙≃ Y) → ⊙<– (⊙e ⊙⁻¹) == fst ⊙e
     ⊙<–-invl ⊙e = ⊙-comp-to-== ((λ _ → idp) , ⊙<–-coher⁻¹ ⊙e)
 
+⊙≃-to-==-β : ∀ {i} {X : Ptd i} {Y : Ptd i} → ⊙≃-to-== (⊙ide X) == idp
+⊙≃-to-==-β {X = X} = ⊙≃-ind-β (λ Y _ → X == Y) idp
+
 ⊙≃-from-== : ∀ {i} {X : Ptd i} {Y : Ptd i} → X == Y → X ⊙≃ Y
 ⊙≃-from-== idp = ⊙ide _
+
+⊙≃-ua : ∀ {i} {X : Ptd i} {Y : Ptd i} → (X == Y) ≃ (X ⊙≃ Y)
+⊙≃-ua {X = X} = equiv ⊙≃-from-== ⊙≃-to-== rt1 rt2
+  where
+  
+    rt1 : ∀ {Y} (e : X ⊙≃ Y) → ⊙≃-from-== (⊙≃-to-== e) == e
+    rt1 = ⊙≃-ind (λ Y e → ⊙≃-from-== (⊙≃-to-== e) == e) (ap (⊙≃-from-==) (⊙≃-to-==-β {Y = X}))
+
+    rt2 : ∀ {Y} (e : X == Y) → ⊙≃-to-== (⊙≃-from-== e) == e
+    rt2 idp = ⊙≃-to-==-β {Y = X}
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} (⊙e₁ : X ⊙≃ Y)  where
 
