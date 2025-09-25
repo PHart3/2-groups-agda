@@ -106,3 +106,17 @@ module _ (n : ℕ) where
         where abstract
           ext : {X Y : groupal-grpd-Ab i} → fst X ⊙≃ fst Y → X == Y
           ext e = pair= (⊙≃-to-== e) prop-has-all-paths-↓
+
+module _ (n : ℕ) {i} (H : AbGroup i) where
+
+  open AbGroup H
+  open EMExplicit
+  
+  EM-Ω-==-aux : (G : groupal-grpd-Ab n i) → (–> (EM-Ab-equiv n) G == H) ≃ (G == <– (EM-Ab-equiv n) H)
+  EM-Ω-==-aux G = equiv-adj-≃  (EM-Ab-equiv n {i}) {G} {H}
+
+  EM-Ω-== : (X : Ptd i) →
+    ((Ω^' (S n) X == El) × has-level ⟨ S (S n) ⟩ (de⊙ X) × is-connected ⟨ S n ⟩ (de⊙ X))
+      ≃
+    (X == ⊙EM H (S (S n)))
+  EM-Ω-== X = {!!}

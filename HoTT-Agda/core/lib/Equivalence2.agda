@@ -429,6 +429,21 @@ module _ {i j} {A : Type i} {B : Type j} (e : A ≃ B) where
   equiv-adj' : ∀ {a b} → (a == <– e b) → (–> e a == b)
   equiv-adj' p = ap (–> e) p ∙ (<–-inv-r e _)
 
+  equiv-adj-≃ : ∀ {a b} → (–> e a == b) ≃ (a == <– e b)
+  equiv-adj-≃ {a} = equiv equiv-adj equiv-adj' rt1 rt2
+    where
+    
+      rt1 : ∀ {b} (p : a == <– e b) → equiv-adj (equiv-adj' p) == p
+      rt1 {b} idp =
+        ap (λ t → ! (is-equiv.g-f (snd e) (is-equiv.g (snd e) b)) ∙ t) (<–-inv-adj' e b) ∙
+        !-inv-l (is-equiv.g-f (snd e) (is-equiv.g (snd e) b))
+
+      rt2 : ∀ {b} (p : –> e a == b) → equiv-adj' (equiv-adj p) == p
+      rt2 idp =
+        ap (λ t → ap (fst e) (! (is-equiv.g-f (snd e) a) ∙ idp) ∙ t) (! (<–-inv-adj e a)) ∙
+        ap (λ t → t ∙ ap (fst e) (is-equiv.g-f (snd e) a)) (ap (ap (fst e)) (∙-unit-r _)) ∙
+        ap-!-inv-l (fst e) (is-equiv.g-f (snd e) a)
+
 {- Type former equivalences involving Empty may require λ=. -}
 module _ {j} {B : Empty → Type j} where
   Σ₁-Empty : Σ Empty B ≃ Empty
