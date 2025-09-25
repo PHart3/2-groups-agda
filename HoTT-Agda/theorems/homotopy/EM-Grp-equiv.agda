@@ -82,6 +82,10 @@ module _ (n : ℕ) where
   groupal-grpd-Ab : (i : ULevel) → Type (lsucc i)
   groupal-grpd-Ab i = Σ (Ptd i) (λ X → has-level ⟨ S (S n) ⟩ (de⊙ X) × is-connected ⟨ S n ⟩ (de⊙ X) ) 
 
+  private
+    ext : ∀ {i} {X Y : groupal-grpd-Ab i} → fst X ⊙≃ fst Y → X == Y
+    ext e = pair= (⊙≃-to-== e) prop-has-all-paths-↓
+
   EM-Ab-equiv : ∀ {i} → groupal-grpd-Ab i ≃ AbGroup i
   EM-Ab-equiv {i} = equiv Omega-grp EM-spce rt1 rt2
     where
@@ -103,20 +107,3 @@ module _ (n : ℕ) where
         ext (τ , Ω-Nconn-≃ {n = S n} {{EM-conn (Omega-grp T)}} {{cX}} τ
           (transport is-equiv (fst= (⊙=ₛ-out (⊙EM-elim₂-β-deloop (Omega-grp T) (S n) {{tX}} (idhom grp))))
             (idf-is-equiv _ ∘ise snd (deloop'-fold (Omega-grp T) (S (S n)))) ))
-        where abstract
-          ext : {X Y : groupal-grpd-Ab i} → fst X ⊙≃ fst Y → X == Y
-          ext e = pair= (⊙≃-to-== e) prop-has-all-paths-↓
-
-module _ (n : ℕ) {i} (H : AbGroup i) where
-
-  open AbGroup H
-  open EMExplicit
-  
-  EM-Ω-==-aux : (G : groupal-grpd-Ab n i) → (–> (EM-Ab-equiv n) G == H) ≃ (G == <– (EM-Ab-equiv n) H)
-  EM-Ω-==-aux G = equiv-adj-≃  (EM-Ab-equiv n {i}) {G} {H}
-
-  EM-Ω-== : (X : Ptd i) →
-    ((Ω^' (S n) X == El) × has-level ⟨ S (S n) ⟩ (de⊙ X) × is-connected ⟨ S n ⟩ (de⊙ X))
-      ≃
-    (X == ⊙EM H (S (S n)))
-  EM-Ω-== X = {!!}

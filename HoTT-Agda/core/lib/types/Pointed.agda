@@ -445,6 +445,9 @@ module _ {i} {X : Ptd i} {Y : Ptd i} where
     ⊙<–-invl : (⊙e : X ⊙≃ Y) → ⊙<– (⊙e ⊙⁻¹) == fst ⊙e
     ⊙<–-invl ⊙e = ⊙-comp-to-== ((λ _ → idp) , ⊙<–-coher⁻¹ ⊙e)
 
+⊙≃-from-== : ∀ {i} {X : Ptd i} {Y : Ptd i} → X == Y → X ⊙≃ Y
+⊙≃-from-== idp = ⊙ide _
+
 module _ {i j} {X : Ptd i} {Y : Ptd j} (⊙e₁ : X ⊙≃ Y)  where
 
   abstract
