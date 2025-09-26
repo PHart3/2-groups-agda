@@ -505,6 +505,7 @@ module _ {i j k} {A : Type i} {B : Type j} {C : A → B → Type k} where
   Σ₁-×-comm = Σ-assoc ∘e Σ-emap-l _ ×-comm ∘e Σ-assoc ⁻¹
 
 module _ {i j} {A : Type i} {P : A → Type j} where
+
   Σ-contr-red : (c : is-contr A) → Σ A P ≃ P (contr-center c)
   fst (Σ-contr-red c) = λ (a , p) → transport P (! (contr-path c a)) p
   snd (Σ-contr-red c) = is-eq (λ (a , p) → transport P (! (contr-path c a)) p) (λ x → (contr-center c , x))
@@ -512,3 +513,8 @@ module _ {i j} {A : Type i} {P : A → Type j} where
     λ a → fst
     (=Σ-econv (contr-center c , transport P (! (contr-path c (fst a))) (snd a)) a) ((contr-path c (fst a)) ,
       from-transp-g P (contr-path c (fst a)) (transp-inv (contr-path c (fst a)) (snd a)))
+
+  Σ-contr-red-cod : {{{x : A} → is-contr (P x)}} → Σ A P ≃ A
+  Σ-contr-red-cod {{ctr}} =
+    equiv fst (λ a → a , (contr-center ctr)) (λ _ → idp)
+      λ (a , y) → pair= idp (prop-has-all-paths {{contr-is-prop ⟨⟩}} _ _)

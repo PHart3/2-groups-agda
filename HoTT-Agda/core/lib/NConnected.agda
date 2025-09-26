@@ -20,6 +20,10 @@ has-conn-fibers : ∀ {i j} {A : Type i} {B : Type j} → ℕ₋₂ → (A → B
 has-conn-fibers {A = A} {B = B} n f =
   Π B (λ b → is-connected n (hfiber f b))
 
+conn-to-conn-fibs : ∀ {i} {A : Type i} {n : ℕ₋₂} {{_ : is-connected n A}}
+  → has-conn-fibers {A = A} n (cst tt)
+conn-to-conn-fibs {{cA}} tt = equiv-preserves-level (Trunc-emap (Σ-contr-red-cod {{has-level-apply-instance}} ⁻¹)) 
+
 {- all types are -2-connected -}
 -2-conn : ∀ {i} (A : Type i) → is-connected -2 A
 -2-conn A = Trunc-level
