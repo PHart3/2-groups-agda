@@ -4,8 +4,12 @@ open import lib.Basics
 open import lib.Equivalence2
 open import lib.Function2
 open import lib.NType2
+open import lib.FTID
+open import lib.Funext2
+open import lib.types.Unit
 open import lib.types.Group
 open import lib.types.Pi
+open import lib.types.Sigma
 open import lib.types.Subtype
 open import lib.types.Truncation
 open import lib.groups.Homomorphism
@@ -394,3 +398,100 @@ post∘ᴳ-iso G H K iso = ≃-to-≃ᴳ (equiv to from to-from from-to) to-pres
 
     from-to : ∀ φ → from (to φ) == φ
     from-to φ = group-hom= $ λ= λ h → GroupIso.g-f iso (GroupHom.f φ h)
+
+-- SIP for groups
+
+module _ {i} (G₁ : Group i) where
+
+  open Group G₁
+
+  -- big nested Σ-type to be contracted
+  private
+    θ =
+      [ ((El₂ , _) , ( map , _ ) ) ∈ Σ (0 -Type i) (λ ( El₂ , _ ) → El ≃ El₂) ] ×
+       [ (mu₂ , _) ∈ Σ (El₂ → El₂ → El₂) (λ mu₂ → (x y : El) → map (comp x y) == mu₂ (map x) (map y)) ] ×
+         [ (id₂ , _) ∈ Σ El₂ (λ id₂ → map ident == id₂) ] ×
+           [ ( inv₂ , _ ) ∈ Σ (El₂ → El₂) (λ inv₂ → (x : El) → map (inv x) == inv₂ (map x)) ] ×
+             ((x : El₂) → mu₂ id₂ x == x) × ((x y z : El₂) → mu₂ (mu₂ x y) z == mu₂ x (mu₂ y z)) × ((x : El₂) → mu₂ (inv₂ x) x == id₂)
+                
+  abstract
+
+    grpiso-contr-aux : θ ≃ Unit
+    grpiso-contr-aux =
+      θ
+        ≃⟨ Σ-contr-red (nType=-contr (El , ⟨⟩)) ⟩
+      [ (mu₂ , _) ∈ Σ (El → El → El) (λ mu₂ → (x y : El) → comp x y == mu₂ x y) ] ×
+         [ ( id₂ , _ ) ∈ Σ El (λ id₂ → ident == id₂) ] ×
+           [ ( inv₂ , _ ) ∈ Σ (El → El) (λ inv₂ → (x : El) → inv x == inv₂ x) ] ×
+             ((x : El) → mu₂ id₂ x == x) × ((x y z : El) → mu₂ (mu₂ x y) z == mu₂ x (mu₂ y z)) × ((x : El) → mu₂ (inv₂ x) x == id₂)
+        ≃⟨ Σ-contr-red (funhom-iter-contr (S I) comp) ⟩
+      [ ( id₂ , _ ) ∈ Σ El (λ id₂ → ident == id₂) ] ×
+        [ ( inv₂ , _ ) ∈ Σ (El → El) (λ inv₂ → (x : El) → inv x == inv₂ x) ] ×
+           ((x : El) → comp id₂ x == x) × ((x y z : El) → comp (comp x y) z == comp x (comp y z)) × ((x : El) → comp (inv₂ x) x == id₂)
+        ≃⟨ Σ-contr-red (pathfrom-is-contr ident) ⟩
+      [ ( inv₂ , _ ) ∈ Σ (El → El) (λ inv₂ → (x : El) → inv x == inv₂ x) ] ×
+        ((x : El) → comp ident x == x) × ((x y z : El) → comp (comp x y) z == comp x (comp y z)) × ((x : El) → comp (inv₂ x) x == ident)
+        ≃⟨ Σ-contr-red funhom-contr ⟩
+      ((x : El) → comp ident x == x) × ((x y z : El) → comp (comp x y) z == comp x (comp y z)) × ((x : El) → comp (inv x) x == ident)
+        ≃⟨ contr-equiv-Unit (inhab-prop-is-contr (unit-l , assoc , inv-l)) ⟩
+      Unit ≃∎
+
+    grpisof-Σ-≃ : Σ (Group i) (λ G₂ → G₁ ≃ᴳ G₂) ≃ θ
+    grpisof-Σ-≃ = let
+      open GroupStructure
+      open GroupHom in
+      equiv
+        (λ ((group El₂ {{El₂-level}} σ) , iso@(h , _)) →
+          ((El₂ , El₂-level) , GroupIso.f-equiv iso) ,
+          (comp σ , pres-comp h) ,
+          ((ident σ) , (pres-ident h)) ,
+          (((inv σ) , (pres-inv h)) ,
+          (unit-l σ) , (assoc σ) , (inv-l σ)))
+        (λ (((El₂ , El₂-level) , (h , eqv)) , (comp₂ , pres-comp₂) , (id₂ , _) , ((inv₂ , _) , unit-l₂ , assoc₂ , inv-l₂))
+          → group El₂ {{El₂-level}} (group-structure id₂ inv₂ comp₂ unit-l₂ assoc₂ inv-l₂) , (group-hom h pres-comp₂) , eqv)
+        (λ (((El₂ , El₂-level) , (h , eqv)) , (comp₂ , pres-comp₂) , (id₂ , _) , ((inv₂ , _) , unit-l₂ , assoc₂ , inv-l₂)) →
+          ap2 (λ p₁ p₂ →  (((El₂ , El₂-level) , (h , eqv)) , (comp₂ , pres-comp₂) , (id₂ , p₁) , ((inv₂ , p₂) , unit-l₂ , assoc₂ , inv-l₂)))
+            (prop-has-all-paths {{has-level-apply-instance {{El₂-level}}}} _ _)
+            (prop-has-all-paths {{Π-level λ _ → has-level-apply-instance {{El₂-level}}}} _ _))
+        λ _ → idp
+
+  grpiso-contr : is-contr (Σ (Group i) (λ G₂ → G₁ ≃ᴳ G₂))
+  grpiso-contr = equiv-preserves-level ((grpiso-contr-aux ∘e grpisof-Σ-≃) ⁻¹)
+
+module _ {i} {G₁ : Group i} where
+
+  grpiso-ind : ∀ {k} (P : (G₂ : Group i) → G₁ ≃ᴳ G₂ → Type k)
+    → P G₁ (idiso G₁) → {G₂ : Group i} (m : G₁ ≃ᴳ G₂) → P G₂ m
+  grpiso-ind P = ID-ind-map P (grpiso-contr G₁)
+
+  grpiso-ind-β : ∀ {k} (P : (G₂ : Group i) → (G₁ ≃ᴳ G₂ → Type k))
+    → (r : P G₁ (idiso G₁)) → grpiso-ind P r (idiso G₁) == r
+  grpiso-ind-β P = ID-ind-map-β P (grpiso-contr G₁)
+  
+  grpiso-to-== : {G₂ : Group i} → G₁ ≃ᴳ G₂ → G₁ == G₂
+  grpiso-to-== = grpiso-ind (λ G₂ _ → G₁ == G₂) idp
+
+  abstract
+    grpiso-to-==-β : grpiso-to-== (idiso G₁) == idp
+    grpiso-to-==-β = grpiso-ind-β (λ G₂ _ → G₁ == G₂) idp
+
+  grpiso-from-== : {G₂ : Group i} → G₁ == G₂ → G₁ ≃ᴳ G₂
+  grpiso-from-== idp = idiso G₁
+
+  univᴳ : {G₂ : Group i} → (G₁ ≃ᴳ G₂) ≃ (G₁ == G₂)
+  univᴳ = equiv grpiso-to-== grpiso-from-== rt1 rt2
+    where
+
+      rt1 : ∀ {G₂} (p : G₁ == G₂) → grpiso-to-== (grpiso-from-== p) == p
+      rt1 idp = grpiso-to-==-β
+
+      rt2 : ∀ {G₂} (p : G₁ ≃ᴳ G₂) → grpiso-from-== (grpiso-to-== p) == p
+      rt2 = grpiso-ind (λ _ p → grpiso-from-== (grpiso-to-== p) == p) (ap grpiso-from-== grpiso-to-==-β)
+
+instance
+
+  Grp-is-set : ∀ {i} → has-level 1 (Group i)
+  Grp-is-set = has-level-in (λ G₁ G₂ → equiv-preserves-level univᴳ)
+
+  AbGrp-is-set : ∀ {i} → has-level 1 (AbGroup i)
+  AbGrp-is-set = Subtype-level (subtypeprop is-abelian)
