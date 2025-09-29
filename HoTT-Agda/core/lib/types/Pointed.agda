@@ -429,6 +429,11 @@ module _ {i} {X : Ptd i} where
             (λ (Y , ⊙e) → idp)
             λ ((A , e) , (a , p)) → idp
 
+  -- a version revealing the center of contraction
+  ⊙≃-contr-exp : is-contr (Σ (Ptd i) (λ Y → X ⊙≃ Y))
+  fst (has-level-apply ⊙≃-contr-exp) = X , (⊙ide X)
+  snd (has-level-apply ⊙≃-contr-exp) = λ _ → contr-has-all-paths {{⊙≃-contr}} _ _
+
   ⊙≃-ind : ∀ {k} (P : (Y : Ptd i) → (X ⊙≃ Y → Type k))
     → P X (⊙ide X) → {Y : Ptd i} (e : X ⊙≃ Y) → P Y e
   ⊙≃-ind P = ID-ind-map P ⊙≃-contr
@@ -470,6 +475,20 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} (⊙e₁ : X ⊙≃ Y)  where
   abstract
     ⊙<–-∘ : {Z : Ptd j} (⊙e₂ : Y ⊙≃ Z) → ⊙<– (⊙e₂ ⊙∘e ⊙e₁) == ⊙<– ⊙e₁ ⊙∘ ⊙<– ⊙e₂
     ⊙<–-∘ = ⊙≃-ind {X = Y} (λ Z ⊙e₂ → ⊙<– (⊙e₂ ⊙∘e ⊙e₁) == ⊙<– ⊙e₁ ⊙∘ ⊙<– ⊙e₂) (ap ⊙<– (⊙∘e-lunit ⊙e₁))
+
+{- Biinvertible maps -}
+
+module _ {i j : ULevel} where
+
+  infixr 80 _⊙-binv_
+  _⊙-binv_ : (X : Ptd i) (Y : Ptd j) → Type (lmax i j)
+  X ⊙-binv Y = [ f ∈ X ⊙→ Y ] × [ g ∈ Y ⊙→ X ] × (f ⊙∘ g == ⊙idf Y) × (g ⊙∘ f == ⊙idf X) 
+
+  module _ {X : Ptd i} {Y : Ptd j} where
+
+    ⊙-binv-to-⊙≃ : X ⊙-binv Y → X ⊙≃ Y
+    fst (⊙-binv-to-⊙≃ (f , g , ri , li)) = f
+    snd (⊙-binv-to-⊙≃ (f , g , ri , li)) = is-eq (fst f) (fst g) (fst (⊙app= ri)) (fst (⊙app= li))
 
 {- Pointed maps out of bool -}
 

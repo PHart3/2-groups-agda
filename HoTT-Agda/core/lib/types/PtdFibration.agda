@@ -9,133 +9,135 @@ open import lib.types.Sigma
 open import lib.types.Pointed
 open import lib.types.LoopSpace
 open import lib.types.TLevel
+open import lib.types.Paths
 
--- sections of fibrations of pointed types
+-- pointed sections of pointed type families
 
 module lib.types.PtdFibration where
 
 module _ {i j} (X : Ptd i)  where
 
   -- type of pointed sections
-  Π⊙ : (de⊙ X → Ptd j) → Type (lmax i j)
-  Π⊙ Y = [ s ∈ Π (de⊙ X) (de⊙ ∘ Y) ] × (s (pt X) == pt (Y (pt X)) )
+  Π⊙ : (Y : de⊙ X → Type j) → Y (pt X) → Type (lmax i j)
+  Π⊙ Y p = [ s ∈ Π (de⊙ X) Y ] × (s (pt X) == p)
 
 -- SIP for pointed sections
 
 module _ {i j} {X : Ptd i} where
 
-  infixr 50 ⟨_⟩_⊙Π∼_
-  ⟨_⟩_⊙Π∼_ : (Y : de⊙ X → Ptd j) → Π⊙ X Y → Π⊙ X Y → Type (lmax i j)
-  ⟨ Y ⟩ f₁ ⊙Π∼ f₂ = [ H ∈ fst f₁ ∼ fst f₂ ] × (! (H (pt X)) ∙ snd f₁ == snd f₂) 
+  infixr 50 ⟨_&_⟩_⊙Π∼_
+  ⟨_&_⟩_⊙Π∼_ : (Y : de⊙ X → Type j) (p : Y (pt X)) → Π⊙ X Y p → Π⊙ X Y p → Type (lmax i j)
+  ⟨ Y & p ⟩ f₁ ⊙Π∼ f₂ = [ H ∈ fst f₁ ∼ fst f₂ ] × (H (pt X) == snd f₁ ∙' ! (snd f₂)) 
 
-  ⊙Π∼-id : (Y : de⊙ X → Ptd j) (f : Π⊙ X Y) → ⟨ Y ⟩ f ⊙Π∼ f
-  ⊙Π∼-id _ _ = (λ _ → idp) , idp
+  ⊙Π∼-id : (Y : de⊙ X → Type j) (p : Y (pt X)) (f : Π⊙ X Y p) → ⟨ Y & p ⟩ f ⊙Π∼ f
+  ⊙Π∼-id _ _ f = (λ _ → idp) , ! (!-inv'-r (snd f))
 
-module _ {i j} {X : Ptd i} {Y : de⊙ X → Ptd j} (f : Π⊙ X Y) where
+module _ {i j} {X : Ptd i} {Y : de⊙ X → Type j} {p : Y (pt X)} (f : Π⊙ X Y p) where
 
   ⊙Π-contr-aux :
     is-contr
-      (Σ (Σ (Π (de⊙ X) (de⊙ ∘ Y)) (λ g → fst f ∼ g))
-        (λ (h , K) → Σ (h (pt X) == pt (Y (pt X))) (λ p → (! (K (pt X)) ∙ snd f == p))))
+      (Σ (Σ (Π (de⊙ X) Y) (λ g → fst f ∼ g))
+        (λ (h , K) → Σ (h (pt X) == p) (λ q → (K (pt X) == snd f ∙' ! q))))
   ⊙Π-contr-aux =
     equiv-preserves-level
       ((Σ-contr-red
-        {A = Σ (Π (de⊙ X) (de⊙ ∘ Y)) (λ g → fst f ∼ g)}
-        {P = λ (h , K) → Σ (h (pt X) == pt (Y (pt X))) (λ p → (! (K (pt X)) ∙ snd f == p))}
+        {A = Σ (Π (de⊙ X) Y) (λ g → fst f ∼ g)}
         (funhom-contr {f = fst f}))⁻¹)
+        {{equiv-preserves-level ((Σ-emap-r (λ q → aux (snd f) q)) ⁻¹)}}
+        where
+          aux : {x y : Y (pt X)} (q₁ q₂ : x == y) → (idp == q₁ ∙' ! q₂) ≃ (q₂ == q₁)
+          aux q₁ idp = ide (idp == q₁)
 
   abstract
-    ⊙Π-contr : is-contr (Σ (Π⊙ X Y) (λ g → ⟨ Y ⟩ f ⊙Π∼ g))
-    ⊙Π-contr = equiv-preserves-level lemma {{⊙Π-contr-aux }}
+    ⊙Π-contr : is-contr (Σ (Π⊙ X Y p) (λ g → ⟨ Y & p ⟩ f ⊙Π∼ g))
+    ⊙Π-contr = equiv-preserves-level lemma {{⊙Π-contr-aux}}
       where
         lemma :
-          Σ (Σ (Π (de⊙ X) (de⊙ ∘ Y)) (λ g → fst f ∼ g))
-            (λ (h , K) → Σ (h (pt X) == pt (Y (pt X))) (λ p → (! (K (pt X)) ∙ snd f == p)))
+          Σ (Σ (Π (de⊙ X) Y) (λ g → fst f ∼ g))
+            (λ (h , K) → Σ (h (pt X) == p) (λ q → (K (pt X) == snd f ∙' ! q)))
             ≃
-          Σ (Π⊙ X Y) (λ g → ⟨ Y ⟩ f ⊙Π∼ g)
+          Σ (Π⊙ X Y p) (λ g → ⟨ Y & p ⟩ f ⊙Π∼ g)
         lemma =
           equiv
-            (λ ((g , K) , (p , H)) → (g , p) , (K , H))
-            (λ ((h , p) , (H , K)) → (h , H) , (p , K))
-            (λ ((h , p) , (H , K)) → idp)
-            λ ((g , K) , (p , H)) → idp
+            (λ ((g , K) , (q , H)) → (g , q) , (K , H))
+            (λ ((h , q) , (H , K)) → (h , H) , (q , K))
+            (λ _ → idp)
+            λ _ → idp
 
-  ⊙Π-ind : ∀ {k} (P : (g : Π⊙ X Y) → (⟨ Y ⟩ f ⊙Π∼ g → Type k))
-    → P f (⊙Π∼-id Y f) → {g : Π⊙ X Y} (p : ⟨ Y ⟩ f ⊙Π∼ g) → P g p
+  ⊙Π-ind : ∀ {k} (P : (g : Π⊙ X Y p) → (⟨ Y & p ⟩ f ⊙Π∼ g → Type k))
+    → P f (⊙Π∼-id Y p f) → {g : Π⊙ X Y p} (p : ⟨ Y & p ⟩ f ⊙Π∼ g) → P g p
   ⊙Π-ind P = ID-ind-map P ⊙Π-contr
 
-  ⊙Π-ind-β : ∀ {k} (P : (g : Π⊙ X Y) → (⟨ Y ⟩ f ⊙Π∼ g → Type k))
-    → (r : P f (⊙Π∼-id Y f)) → ⊙Π-ind P r {f} (⊙Π∼-id Y f) == r
+  ⊙Π-ind-β : ∀ {k} (P : (g : Π⊙ X Y p) → (⟨ Y & p ⟩ f ⊙Π∼ g → Type k))
+    → (r : P f (⊙Π∼-id Y p f)) → ⊙Π-ind P r {f} (⊙Π∼-id Y p f) == r
   ⊙Π-ind-β P = ID-ind-map-β P ⊙Π-contr
 
-  ⊙Π∼-to-== : {k : Π⊙ X Y} → ⟨ Y ⟩ f ⊙Π∼ k → f == k
+  ⊙Π∼-to-== : {k : Π⊙ X Y p} → ⟨ Y & p ⟩ f ⊙Π∼ k → f == k
   ⊙Π∼-to-== = ⊙Π-ind (λ k _ →  f == k) idp
 
-  ⊙Π∼-== : (g : Π⊙ X Y) → (⟨ Y ⟩ f ⊙Π∼ g) ≃ (f == g)
+  ⊙Π∼-== : (g : Π⊙ X Y p) → (⟨ Y & p ⟩ f ⊙Π∼ g) ≃ (f == g)
   ⊙Π∼-== g = equiv (⊙Π∼-to-== {g}) (can {g}) can-⊙Π∼-to-== ⊙Π∼-to-==-can
     where
-      can : {k : Π⊙ X Y} → f == k → ⟨ Y ⟩ f ⊙Π∼ k
-      can idp = ⊙Π∼-id Y f
+      can : {k : Π⊙ X Y p} → f == k → ⟨ Y & p ⟩ f ⊙Π∼ k
+      can idp = ⊙Π∼-id Y p f
 
-      can-⊙Π∼-to-== : {k : Π⊙ X Y} (p : f == k) → ⊙Π∼-to-== (can p) == p
+      can-⊙Π∼-to-== : {k : Π⊙ X Y p} (p : f == k) → ⊙Π∼-to-== (can p) == p
       can-⊙Π∼-to-== idp = ⊙Π-ind-β (λ k _ →  f == k) idp
       
-      ⊙Π∼-to-==-can : {k : Π⊙ X Y} (p : ⟨ Y ⟩ f ⊙Π∼ k) → can (⊙Π∼-to-== p) == p
+      ⊙Π∼-to-==-can : {k : Π⊙ X Y p} (p : ⟨ Y & p ⟩ f ⊙Π∼ k) → can (⊙Π∼-to-== p) == p
       ⊙Π∼-to-==-can = ⊙Π-ind (λ k p → can (⊙Π∼-to-== p) == p) (ap can (⊙Π-ind-β (λ k _ →  f == k) idp))
 
-  ⊙Π∼-Ω : Π⊙ X (λ x → ⊙Ω ⊙[ de⊙ (Y x) , fst f x ]) ≃ (f == f)
-  ⊙Π∼-Ω = 
-    Π⊙ X (λ x → ⊙Ω ⊙[ de⊙ (Y x) , fst f x ])
-      ≃⟨ equiv (λ k → fst k , idp-canc-l-! (snd f) (snd k)) (λ k → fst k , canc-l-!-idp (snd f) (snd k))
-           (λ k → ap (λ c → fst k , c) (aux1 {k = k} (snd f) (snd k)))
-           (λ k → ap (λ c → fst k , c) (aux2 {k = k} (snd f) (snd k))) ⟩
-    ⟨ Y ⟩ f ⊙Π∼ f
-      ≃⟨ ⊙Π∼-== f ⟩
-    f == f ≃∎
+-- truncation level of pointed sections
+
+module _ {i j} (X : Ptd i) {n₁ : ℕ₋₂} {{_ : is-connected (S n₁) (de⊙ X)}} where
+
+  abstract
+    ptd-conn-tr-dhom-tr : (Y : de⊙ X → Type j) (p : Y (pt X)) {n₂ : ℕ₋₂}
+      {{_ : {x : de⊙ X} → has-level (n₂ +2+ n₁) (Y x)}}  -- level (n₂ + (S (S n₁)))
+      → has-level n₂ (Π⊙ X Y p)
+    ptd-conn-tr-dhom-tr Y p {⟨-2⟩} = has-level-in $
+      ψ ,
+      λ k → ⊙Π∼-to-== ψ (aux k ,
+        conn-extend-ptd-β (pt X) (λ x → conn-extend-ptd (pt X) Y p x == fst k x) (snd ψ ∙' ! (snd k))) 
+        where
+          ψ : Π⊙ X Y p
+          ψ = ((conn-extend-ptd (pt X) Y p) , (conn-extend-ptd-β (pt X) Y p))
+
+          aux : (k : Π⊙ X Y p) → conn-extend-ptd (pt X) Y p ∼ fst k
+          aux k = conn-extend-ptd (pt X) (λ x → conn-extend-ptd (pt X) Y p x == fst k x) (snd ψ ∙' ! (snd k))
+    has-level-apply (ptd-conn-tr-dhom-tr Y p {S n₂}) k₁ k₂ =
+      equiv-preserves-level (⊙Π∼-== k₁ k₂) {{ptd-conn-tr-dhom-tr (λ x → fst k₁ x == fst k₂ x) (snd k₁ ∙' ! (snd k₂))}}
+
+module _ {i j} (X : Ptd i) (Y : Ptd j) {n₁ : ℕ₋₂} (cX : is-connected (S n₁) (de⊙ X)) where
+
+  ptd-conn-tr-hom-tr : ∀ {n₂} (tY : has-level (n₂ +2+ n₁) (de⊙ Y)) → has-level n₂ (X ⊙→ Y)
+  ptd-conn-tr-hom-tr tY = ptd-conn-tr-dhom-tr X {{cX}} (λ _ → de⊙ Y) (pt Y) {{tY}}
+
+module _ {i j} (X : Ptd i) (Y : Ptd j) {n₁ : ℕ₋₂}
+  (cX : is-connected (S n₁) (de⊙ X)) (cY : is-connected (S n₁) (de⊙ Y)) where
+
+  ptd-conn-tr-≃-tr : ∀ {n₂} (tY : has-level (n₂ +2+ n₁) (de⊙ Y)) (tX : has-level (n₂ +2+ n₁) (de⊙ X))
+    → has-level n₂ (X ⊙≃ Y)
+  ptd-conn-tr-≃-tr {⟨-2⟩} tY tX = inhab-prop-is-contr (⊙-binv-to-⊙≃ (contr-center aux-contr))
+    {{Subtype-level (subtypeprop (λ (f , _) → is-equiv f)) {{contr-has-level (ptd-conn-tr-hom-tr X Y cX tY)}}}}
     where
-      aux1 : {k : ⟨ Y ⟩ f ⊙Π∼ f} {x : de⊙ (Y (pt X))}
-        (p : fst f (pt X) == x) (q : ! (fst k (pt X)) ∙ p == p)
-        → idp-canc-l-! p (canc-l-!-idp p q) == q
-      aux1 {k} idp q = lemma q
-        where
-          lemma : {x : de⊙ (Y (pt X))} {r : x == x} (t : ! r ∙ idp == idp)
-            → ap (λ c → ! c ∙ idp) (!-idp r (! (∙-unit-r (! r)) ∙ t)) == t
-          lemma =
-            !-!-∙-unit-r-ind (λ {r} t → ap (λ c → ! c ∙ idp) (!-idp r (! (∙-unit-r (! r)) ∙ t)) == t)
-              (λ { idp → idp })
+      aux-contr : is-contr (X ⊙-binv Y)
+      aux-contr = Σ-level (ptd-conn-tr-hom-tr X Y cX tY) λ f → Σ-level (ptd-conn-tr-hom-tr Y X cY tX)
+         λ g → ×-level (=-preserves-level (ptd-conn-tr-hom-tr Y Y cY tY)) (=-preserves-level (ptd-conn-tr-hom-tr X X cX tX))
+  ptd-conn-tr-≃-tr {S n₂} tY _ = Subtype-level (subtypeprop (λ (f , _) → is-equiv f)) {{ptd-conn-tr-hom-tr X Y cX tY}}
 
-      aux2 : {k : Π⊙ X (λ x → ⊙Ω ⊙[ de⊙ (Y x) , fst f x ])} {x : de⊙ (Y (pt X))}
-        (p : x == pt (Y (pt X))) {r : x == x} (q : r == idp)
-        → canc-l-!-idp p (idp-canc-l-! p q) == q
-      aux2 idp idp = idp
+module _ {i j} {X : Ptd i} {n₁ n₂ : ℕ₋₂} {{cX : is-connected (S n₁) (de⊙ X)}} where
 
--- Theorem 4.2 of the paper "Higher Groups in Homotopy Type Theory"
-module _ {i j} (X : Ptd i) {n₁ : TLevel} {{_ : is-connected (S n₁) (de⊙ X)}} where
+  instance
+  
+    ptd-conn-tr-dhom-tr-inst : {Y : de⊙ X → Type j} {p : Y (pt X)}
+      {{_ : {x : de⊙ X} → has-level (n₂ +2+ n₁) (Y x)}}
+      → has-level n₂ (Π⊙ X Y p)
+    ptd-conn-tr-dhom-tr-inst {Y} {p} = ptd-conn-tr-dhom-tr X Y p
 
-  abstract
-    ptd-conn-tr-dhom-tr : (Y : de⊙ X → Ptd j) {n₂ : TLevel}
-      {{_ : {x : de⊙ X} → has-level (n₂ +2+ (S n₁)) (de⊙ (Y x))}}
-      → has-level (S n₂) (Π⊙ X Y)
-    ptd-conn-tr-dhom-tr Y {⟨-2⟩} {{trY}} =
-      contr-is-prop (has-level-in (((λ x → pt (Y x)) , idp) ,
-        λ k → ⊙Π∼-to-== {Y = Y} ((λ x → pt (Y x)) , idp)
-          (aux k ,
-            ap (λ v → ! v ∙ idp) (conn-extend-ptd-β (pt X) (λ x → pt (Y x) == fst k x) (! (snd k))) ∙
-            (ap (λ v → v ∙ idp) (!-! (snd k)) ∙ ∙-unit-r (snd k)))))
-        where
-          aux : (k : Π⊙ X Y) → (λ x → pt (Y x)) ∼ fst k
-          aux k = conn-extend-ptd (pt X) (λ x → pt (Y x) == fst k x) (! (snd k))
-    ptd-conn-tr-dhom-tr Y {S n₂} =
-      UIP-loops {{λ {k} → equiv-preserves-level (⊙Π∼-Ω {Y = Y} k)
-        {{ptd-conn-tr-dhom-tr λ x → ⊙Ω ⊙[ de⊙ (Y x) , fst k x ]}}}}
+    ptd-conn-tr-≃-tr-inst : {Y : Ptd j} {{cY : is-connected (S n₁) (de⊙ Y)}}
+      {{tY : has-level (n₂ +2+ n₁) (de⊙ Y)}} {{tX : has-level (n₂ +2+ n₁) (de⊙ X)}}
+      → has-level n₂ (X ⊙≃ Y)
+    ptd-conn-tr-≃-tr-inst {Y} {{cY}} {{tY}} {{tX}} = ptd-conn-tr-≃-tr X Y cX cY tY tX
 
-module _ {i j} (X : Ptd i) (Y : Ptd j) {n₁ n₂ : TLevel}
-  (cX : is-connected (S n₁) (de⊙ X)) (trY : has-level (n₂ +2+ (S n₁)) (de⊙ Y)) where
-
-  abstract
-    ptd-conn-tr-hom-tr : has-level (S n₂) (X ⊙→ Y)
-    ptd-conn-tr-hom-tr = ptd-conn-tr-dhom-tr X {{cX}} (λ _ → Y) {{trY}}
-
-    ptd-conn-tr-≃-tr : has-level (S n₂) (X ⊙≃ Y)
-    ptd-conn-tr-≃-tr = Subtype-level (subtypeprop (λ (f , _) → is-equiv f)) {{ptd-conn-tr-hom-tr}}
-   
+  

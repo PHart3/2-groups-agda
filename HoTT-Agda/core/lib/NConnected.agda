@@ -96,7 +96,6 @@ conn-extend-β : ∀ {i j k} {A : Type i} {B : Type j} {n : ℕ₋₂}
   → ∀ a → (conn-extend c P f (h a)) == f a
 conn-extend-β c P f = app= (is-equiv.f-g (pre∘-conn-is-equiv c P) f)
 
-
 {- generalized "almost induction principle" for maps into ≥n-types
    TODO: rearrange this to use ≤T?                                 -}
 conn-extend-general : ∀ {i j} {A : Type i} {B : Type j} {n k : ℕ₋₂}
@@ -200,11 +199,24 @@ abstract
       point : Trunc n (Σ ⊤ (λ _ → a₀ == a))
       point = out $ contr-has-all-paths [ a₀ ] [ a ]
 
-prop-over-connected :  ∀ {i j} {A : Type i} {a : A} {{p : is-connected 0 A}}
+prop-over-connected : ∀ {i j} {A : Type i} {a : A} {{p : is-connected 0 A}}
   → (P : A → hProp j)
   → fst (P a) → Π A (fst ∘ P)
 prop-over-connected P x = conn-extend (pointed-conn-out _ _) P (λ _ → x)
 
+contr-over-inhab : ∀ {i j} {A : Type i} {a : A} {{p : is-connected -1 A}}
+  → (P : A → -2 -Type j)
+  → fst (P a) → Π A (fst ∘ P)
+contr-over-inhab P x = conn-extend (pointed-conn-out _ _) P (λ _ → x)
+
+contr-over-inhab2 : ∀ {i₁ i₂ j} {A : Type i₁} {B : Type i₂} {a : A} {b : B}
+  {{p : is-connected -1 A}} {{q : is-connected -1 B}}
+  → (P : A → B → -2 -Type j)
+  → fst (P a b) → (x : A) (y : B) → fst (P x y)
+contr-over-inhab2 {B = B} {a} {b} P p =
+  conn-extend (pointed-conn-out _ a) (λ x → ((y : B) → fst (P x y)) , Π-level λ _ → snd (P _ _))
+  λ _ → conn-extend (pointed-conn-out _ b) (P a) λ _ → p
+  
 {- Connectedness of a truncated type -}
 Trunc-preserves-conn : ∀ {i} {A : Type i} {n : ℕ₋₂} {m : ℕ₋₂}
   → is-connected n A → is-connected n (Trunc m A)
