@@ -42,6 +42,11 @@ module _ {i} where
   contr-path : {A : Type i} (p : is-contr A) (y : A) → contr-center p == y
   contr-path p y = snd (has-level-apply p) y
 
+  -- adjusting the paths of a contraction to get idp at the center
+  contr-to-path-idp : {A : Type i} → is-contr A → is-contr A
+  fst (has-level-apply (contr-to-path-idp c)) = contr-center c
+  snd (has-level-apply (contr-to-path-idp c)) y = ! (contr-path c (contr-center c)) ∙ contr-path c y
+
   prop-path : {A : Type i} (p : is-prop A) (x y : A) → x == y
   prop-path p x y = contr-center (has-level-apply p x y)
 

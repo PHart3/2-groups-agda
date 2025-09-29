@@ -48,6 +48,26 @@ module _ {i j k} {A : Type i} {B : A → Type j} {a : A} {b : B a} (P : (x : A) 
     ID-ind-map-β : (r : P a b) → ID-ind-map r b == r 
     ID-ind-map-β r = ind-eq (ID-ind tot-cent) r
 
+module _ {i j} {A : Type i} {B : A → Type j} {{σ : is-contr (Σ A B)}} where
+
+  private
+    a = fst (contr-center σ)
+    b = snd (contr-center σ)
+
+  id-sys-== : {x : A} → B x ≃ (x == fst (contr-center σ))
+  id-sys-== = equiv (ID-ind-map {b = b} (λ x _ → x == a) σ idp) pi (λ {idp → ID-ind-map-β {b = b} _ σ idp}) aux
+    where
+    
+      pi : ∀ {x} → x == a → B x
+      pi idp = b
+      
+      aux : ∀ {x} (y : B x) → pi (ID-ind-map {b = b} (λ x _ → x == a) σ idp y) == y
+      aux = ID-ind-map {b = b} _ σ (ap pi (ID-ind-map-β {b = b} (λ x _ → x == a) σ idp))
+
+  id-sys-==-eqv : {x : A} → is-equiv ((ID-ind-map {b = b} (λ x _ → x == a) σ idp {x}) :> (B x → x == a)) 
+  id-sys-==-eqv = snd id-sys-== 
+
+-- another form of univalence
 module _ {i} {A : Type i} where
 
   ≃-tot-contr : is-contr (Σ (Type i) (λ B → A ≃ B))

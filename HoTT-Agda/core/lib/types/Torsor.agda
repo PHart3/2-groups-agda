@@ -37,6 +37,7 @@ module _ {i : ULevel} (X*@(⊙[ X , x₀ ]) : Ptd i) where
   PtdTorsors-level : {n₁ n₂ : ℕ₋₂} {{cX : is-connected (S n₁) X}} {{tX : has-level ((n₂ +2+ n₁) +2+ n₁) X}} → has-level n₂ (PtdTorsors i X*)
   PtdTorsors-level = equiv-preserves-level (PtdTorsors-alt ⁻¹)
 
-  abstract
-    PtdTorsors-contr : {n : ℕ₋₂} → {{cX : is-connected (S n) X}} {{tX : has-level (n +2+ n) X}} → is-contr (PtdTorsors i X*)
-    PtdTorsors-contr = PtdTorsors-level {n₂ = ⟨-2⟩}
+instance
+  PtdTorsors-contr : {i : ULevel} {X*@(⊙[ X , x₀ ]) : Ptd i} {n : ℕ₋₂}
+    → {{cX : is-connected (S n) X}} {{tX : has-level (n +2+ n) X}} → is-contr (PtdTorsors i X*)
+  PtdTorsors-contr {X* = X*} = PtdTorsors-level X* {n₂ = ⟨-2⟩}

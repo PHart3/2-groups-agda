@@ -138,7 +138,7 @@ module _ {i j} {A : Type i} {B : A → Type j} where
   =Σ : (x y : Σ A B) → Type (lmax i j)
   =Σ (a , b) (a' , b') = Σ (a == a') (λ p → b == b' [ B ↓ p ])
 
-  =Σ-econv : (x y : Σ A B) →  (=Σ x y) ≃ (x == y)
+  =Σ-econv : (x y : Σ A B) → (=Σ x y) ≃ (x == y)
   =Σ-econv x y =
     equiv (λ pq → pair= (fst pq) (snd pq)) (λ p → fst= p , snd= p)
           (λ p → ! (pair=-η p))
