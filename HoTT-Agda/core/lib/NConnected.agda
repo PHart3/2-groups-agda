@@ -154,6 +154,11 @@ conn-in {A = A} {B = B} {h = h} sec b =
                    (contr-path (pathfrom-is-contr (h (fst k))) (b , snd k))
                    (snd s (λ a → [ a , idp ]) (fst k))))
 
+
+abstract
+  conn-[_] : ∀ {i} {A : Type i} {n : ℕ₋₂} → has-conn-fibers {A = A} n ([_] {n = n})
+  conn-[_] = conn-in λ P → Trunc-elim {{λ {x} → snd (P x)}} , λ _ _ → idp
+
 abstract
   pointed-conn-in : ∀ {i} {n : ℕ₋₂} (A : Type i) (a₀ : A)
     → has-conn-fibers {A = ⊤} n (cst a₀) → is-connected (S n) A

@@ -145,7 +145,8 @@ module EMImplicit {i} {X : Ptd i} {{_ : is-connected 0 (de⊙ X)}}
       =ₜ-equiv-ind (Trunc-elim λ q →
         ! (ap2 (λ t₁ t₂ → Trunc-elim (λ x → x) t₁ ∙ Trunc-elim (λ x → x) t₂)
             (<–-inv-r (=ₜ-equiv [ pt X ] [ pt X ]) [ p ]) (<–-inv-r (=ₜ-equiv [ pt X ] [ pt X ]) [ q ]) ∙
-        ! (ap (Trunc-elim (λ x → x)) (ap (=ₜ-maps.to [ pt X ] [ pt X ] [ pt X ] [ pt X ]) (∙-ap [_] p q) ∙ <–-inv-r (=ₜ-equiv _ _) [ p ∙ q ])))))
+        ! (ap (Trunc-elim (λ x → x))
+            (ap (=ₜ-maps.to [ pt X ] [ pt X ] [ pt X ] [ pt X ]) (∙-ap [_] p q) ∙ <–-inv-r (=ₜ-equiv _ _) [ p ∙ q ])))))
     
     spectrum1 : ⊙Ω (⊙EM 2) ⊙≃ ⊙EM 1
     spectrum1 = Π₂.⊙eq ⊙∘e ⊙Ω-Trunc-[ ⊙Susp X ]-≃
@@ -194,17 +195,20 @@ module EMExplicit {i} (G : AbGroup i) where
 
   deloop'-fold-pres-comp : (n : ℕ) → preserves-comp (Ω^'S-∙ n) comp (fst (⊙–> (deloop'-fold (S n))))
   deloop'-fold-pres-comp O g₁ g₂ = ap f (Spectrum.spectrum0-pres-comp g₁ g₂) ∙ pres-comp _ _ where open GroupIso (Ω¹-EM₁ grp)
-  deloop'-fold-pres-comp (S n) g₁ g₂ = ap (fst (⊙–> (deloop'-fold (S n)))) (Ω^'S-fmap-∙ n (⊙–> (spectrum (S n))) g₁ g₂) ∙ deloop'-fold-pres-comp n _ _
+  deloop'-fold-pres-comp (S n) g₁ g₂ =
+    ap (fst (⊙–> (deloop'-fold (S n)))) (Ω^'S-fmap-∙ n (⊙–> (spectrum (S n))) g₁ g₂) ∙ deloop'-fold-pres-comp n _ _
 
   instance
     EM-SS-+2+ : {n : ℕ} → has-level (S (S (⟨ n ⟩₋₂ +2+ S (S ⟨ n ⟩₋₂)))) (EM (S (S n)))
-    EM-SS-+2+ {n} = transport (λ l → has-level l (EM (S (S n)))) (! (+2+-βr (S (S (⟨ n ⟩₋₂))) (S ⟨ n ⟩₋₂) ∙ +2+-βr (S (S (S (⟨ n ⟩₋₂)))) ⟨ n ⟩₋₂)) aux
+    EM-SS-+2+ {n} =
+      transport! (λ l → has-level l (EM (S (S n)))) (+2+-βr (S (S (⟨ n ⟩₋₂))) (S ⟨ n ⟩₋₂) ∙ +2+-βr (S (S (S (⟨ n ⟩₋₂)))) ⟨ n ⟩₋₂) aux
       where abstract
         aux : ∀ {n} → has-level (S (S (S (S (⟨ n ⟩₋₂ +2+ ⟨ n ⟩₋₂))))) (EM (S (S n)))
         aux {n} = raise-level-≤T aux2 (EM-level (S (S n))) where
           aux2 : ∀ {n} → ⟨ S (S n) ⟩ ≤T S (S (S (S (⟨ n ⟩₋₂ +2+ ⟨ n ⟩₋₂))))
           aux2 {O} = inl idp
-          aux2 {S n} = transport (λ l → ⟨ S (S (S n)) ⟩ ≤T l) (! (+2+-βr (S (S (S (S (S (⟨ n ⟩₋₂)))))) ⟨ n ⟩₋₂)) (≤T-trans (≤T-ap-S (aux2 {n})) (inr ltS))
+          aux2 {S n} = transport! (λ l → ⟨ S (S (S n)) ⟩ ≤T l) (+2+-βr (S (S (S (S (S (⟨ n ⟩₋₂)))))) ⟨ n ⟩₋₂)
+            (≤T-trans (≤T-ap-S (aux2 {n})) (inr ltS))
 
   -- If n > 1, then K(G , (S n)) is equivalent to the type of torsors over K(G , n).
   ⊙EM-Torsors-≃ : {n : ℕ} → ⊙EM (S (S (S n))) ⊙≃ ⊙Torsors {j = i} (⊙EM (S (S n)))
