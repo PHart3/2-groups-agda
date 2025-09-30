@@ -1,4 +1,5 @@
 name: sinh
+include: ./
 depend:
   hott-core-group
   hott-theorems-group
