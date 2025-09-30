@@ -15,8 +15,15 @@ module lib.types.Torsor where
 Torsors : ({i} j : ULevel) (X : Ptd i) → Type (lmax i (lsucc j))
 Torsors j X = [ Y ∈ Type j ] × Trunc -1 Y × Π Y (λ y → X ⊙≃ ⊙[ Y , y ]) 
 
+Torsor-pr22 : ∀ {i j} {X : Ptd i} (T : Torsors j X)
+  → Π (fst T) (λ y → X ⊙≃ ⊙[ fst T , y ])
+Torsor-pr22 T = snd (snd T)
+
 PtdTorsors : ({i} j : ULevel) (X : Ptd i) → Type (lmax i (lsucc j))
 PtdTorsors j X = Σ (Torsors j X) fst
+
+PtdTorsor-pr1 : ∀ {i j} {X : Ptd i} → PtdTorsors j X → Type j
+PtdTorsor-pr1 T = fst (fst T)
 
 module _ {i : ULevel} (X*@(⊙[ X , x₀ ]) : Ptd i) where
 

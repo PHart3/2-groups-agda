@@ -7,6 +7,8 @@ open import homotopy.IterSuspensionStable
 import homotopy.Pi2HSusp as Pi2HSusp
 open import homotopy.EM1HSpace
 open import homotopy.EilenbergMacLane1
+open import lib.types.Torsor
+open import torsors.Delooping
 
 module homotopy.EilenbergMacLane where
 
@@ -141,7 +143,8 @@ module EMImplicit {i} {X : Ptd i} {{_ : is-connected 0 (de⊙ X)}}
     spectrum0-pres-comp : preserves-comp Ω-∙ Ω-∙ (fst (⊙–> spectrum0))
     spectrum0-pres-comp = =ₜ-equiv-ind (Trunc-elim {{Π-level λ _ → ⟨⟩}} λ p →
       =ₜ-equiv-ind (Trunc-elim λ q →
-        ! (ap2 (λ t₁ t₂ → Trunc-elim (λ x → x) t₁ ∙ Trunc-elim (λ x → x) t₂) (<–-inv-r (=ₜ-equiv [ pt X ] [ pt X ]) [ p ]) (<–-inv-r (=ₜ-equiv [ pt X ] [ pt X ]) [ q ]) ∙
+        ! (ap2 (λ t₁ t₂ → Trunc-elim (λ x → x) t₁ ∙ Trunc-elim (λ x → x) t₂)
+            (<–-inv-r (=ₜ-equiv [ pt X ] [ pt X ]) [ p ]) (<–-inv-r (=ₜ-equiv [ pt X ] [ pt X ]) [ q ]) ∙
         ! (ap (Trunc-elim (λ x → x)) (ap (=ₜ-maps.to [ pt X ] [ pt X ] [ pt X ] [ pt X ]) (∙-ap [_] p q) ∙ <–-inv-r (=ₜ-equiv _ _) [ p ∙ q ])))))
     
     spectrum1 : ⊙Ω (⊙EM 2) ⊙≃ ⊙EM 1
@@ -192,6 +195,23 @@ module EMExplicit {i} (G : AbGroup i) where
   deloop'-fold-pres-comp : (n : ℕ) → preserves-comp (Ω^'S-∙ n) comp (fst (⊙–> (deloop'-fold (S n))))
   deloop'-fold-pres-comp O g₁ g₂ = ap f (Spectrum.spectrum0-pres-comp g₁ g₂) ∙ pres-comp _ _ where open GroupIso (Ω¹-EM₁ grp)
   deloop'-fold-pres-comp (S n) g₁ g₂ = ap (fst (⊙–> (deloop'-fold (S n)))) (Ω^'S-fmap-∙ n (⊙–> (spectrum (S n))) g₁ g₂) ∙ deloop'-fold-pres-comp n _ _
+
+  instance
+    EM-SS-+2+ : {n : ℕ} → has-level (S (S (⟨ n ⟩₋₂ +2+ S (S ⟨ n ⟩₋₂)))) (EM (S (S n)))
+    EM-SS-+2+ {n} = transport (λ l → has-level l (EM (S (S n)))) (! (+2+-βr (S (S (⟨ n ⟩₋₂))) (S ⟨ n ⟩₋₂) ∙ +2+-βr (S (S (S (⟨ n ⟩₋₂)))) ⟨ n ⟩₋₂)) aux
+      where abstract
+        aux : ∀ {n} → has-level (S (S (S (S (⟨ n ⟩₋₂ +2+ ⟨ n ⟩₋₂))))) (EM (S (S n)))
+        aux {n} = raise-level-≤T aux2 (EM-level (S (S n))) where
+          aux2 : ∀ {n} → ⟨ S (S n) ⟩ ≤T S (S (S (S (⟨ n ⟩₋₂ +2+ ⟨ n ⟩₋₂))))
+          aux2 {O} = inl idp
+          aux2 {S n} = transport (λ l → ⟨ S (S (S n)) ⟩ ≤T l) (! (+2+-βr (S (S (S (S (S (⟨ n ⟩₋₂)))))) ⟨ n ⟩₋₂)) (≤T-trans (≤T-ap-S (aux2 {n})) (inr ltS))
+
+  -- If n > 1, then K(G , (S n)) is equivalent to the type of torsors over K(G , n).
+  ⊙EM-Torsors-≃ : {n : ℕ} → ⊙EM (S (S (S n))) ⊙≃ ⊙Torsors {j = i} (⊙EM (S (S n)))
+  ⊙EM-Torsors-≃  {n} = ⊙tors-uniq-map-≃ (⊙EM (S (S n)))
+    {{PtdTorsors-contr {{EM-conn}}}}
+    {{connected-≤T (inr (<T-ap-S (<T-ap-S (-2<T _)))) {{EM-conn}}}}
+    (spectrum (S (S n)) ⊙⁻¹)
 
 module _ {i j} {G : Group i} {H : Group j} (φ : G →ᴳ H) where
 

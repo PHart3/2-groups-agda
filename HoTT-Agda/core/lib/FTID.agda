@@ -64,8 +64,12 @@ module _ {i j} {A : Type i} {B : A → Type j} {{σ : is-contr (Σ A B)}} where
       aux : ∀ {x} (y : B x) → pi (ID-ind-map {b = b} (λ x _ → x == a) σ idp y) == y
       aux = ID-ind-map {b = b} _ σ (ap pi (ID-ind-map-β {b = b} (λ x _ → x == a) σ idp))
 
-  id-sys-==-eqv : {x : A} → is-equiv ((ID-ind-map {b = b} (λ x _ → x == a) σ idp {x}) :> (B x → x == a)) 
-  id-sys-==-eqv = snd id-sys-== 
+  id-sys-==-map : {x : A} → B x → x == a
+  id-sys-==-map {x} = ID-ind-map {b = b} (λ x _ → x == a) σ idp {x}
+
+  abstract
+    id-sys-==-map-β : id-sys-==-map b == idp
+    id-sys-==-map-β = ID-ind-map-β {b = b} (λ x _ → x == a) σ idp
 
 -- another form of univalence
 module _ {i} {A : Type i} where
