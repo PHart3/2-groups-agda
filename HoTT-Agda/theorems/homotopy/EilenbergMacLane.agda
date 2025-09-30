@@ -213,6 +213,15 @@ module EMExplicit {i} (G : AbGroup i) where
     {{connected-≤T (inr (<T-ap-S (<T-ap-S (-2<T _)))) {{EM-conn}}}}
     (spectrum (S (S n)) ⊙⁻¹)
 
+-- making instance argument available for instance search
+module _ {i} {G : AbGroup i} where
+
+  open EMExplicit G renaming (EM-SS-+2+ to EM-SS-+2+-exp)
+  
+  instance
+    EM-SS-+2+ : {n : ℕ} → has-level (S (S (⟨ n ⟩₋₂ +2+ S (S ⟨ n ⟩₋₂)))) (EM (S (S n)))
+    EM-SS-+2+ = EM-SS-+2+-exp 
+
 module _ {i j} {G : Group i} {H : Group j} (φ : G →ᴳ H) where
 
   private
