@@ -9,6 +9,7 @@ open import lib.types.Sigma
 open import lib.types.TLevel
 open import lib.types.Truncation
 open import lib.types.Pointed
+open import lib.types.Paths
 
 -- two equivalent ways of describing n-groups as synthetic higher groups
 
@@ -37,7 +38,7 @@ Type-conn-trunc-== {n = n} {G₁} {G₂} =
 Type-conn-trunc-==-contr : ∀ {i} {n} (G₁ : [ n , i ]-conn-trunc) → is-contr (Σ [ n , i ]-conn-trunc (λ G₂ → fst G₁ ≃ fst G₂))
 Type-conn-trunc-==-contr G₁ = equiv-preserves-level ((Σ-emap-r (λ _ → Type-conn-trunc-==)) ⁻¹) {{pathfrom-is-contr G₁}}
 
-module _ {n : ℕ} {i j : ULevel} where
+module NG-eql (n : ℕ) (i j : ULevel) where
 
   _NG-v2-==_ : [ n , i , j ]-Groups-v2 → [ n , i , j ]-Groups-v2 → Type (lmax i j)
   _NG-v2-==_ (BG₁ , F₁ , p₁) (BG₂ , F₂ , p₂) =
@@ -82,10 +83,13 @@ module _ {n : ℕ} {i j : ULevel} where
       → P BG (NG-v2-idp BG) → {BG₂ : [ n , i , j ]-Groups-v2} (e : BG NG-v2-== BG₂) → P BG₂ e
     NG-v2-ind P = ID-ind-map P NG-v2-contr
 
-  NG-v2-to-== : {BG₁ BG₂ : [ n , i , j ]-Groups-v2} → BG₁ NG-v2-== BG₂ → BG₁ == BG₂ 
-  NG-v2-to-== {BG₁} = NG-v2-ind (λ BG₂ _ → BG₁ == BG₂) idp
+  abstract
+    NG-v2-to-== : {BG₁ BG₂ : [ n , i , j ]-Groups-v2} → BG₁ NG-v2-== BG₂ → BG₁ == BG₂ 
+    NG-v2-to-== {BG₁} = NG-v2-ind (λ BG₂ _ → BG₁ == BG₂) idp
 
 module _ {n : ℕ} {i : ULevel} where
+
+  open NG-eql n i i
 
   private    
 
@@ -100,3 +104,20 @@ module _ {n : ℕ} {i : ULevel} where
     fst (from ((BG , cBG , tBG) , F , p)) = ⊙[ (Σ (de⊙ BG) (fst ∘ F)) , ((pt BG) , p) ]
     fst (snd (from ((BG , cBG , tBG) , F , p))) = Σ-conn cBG λ x → connected-≤T 0≤T {{fst (snd (F x))}}
     snd (snd (from ((BG , cBG , tBG) , F , p))) = Σ-level (raise-level _ tBG) λ x → snd (snd (F x))
+
+    abstract
+
+      base-≃ : (((BG , cBG , tBG) , F , p) : [ n , i , i ]-Groups-v2) → Trunc ⟨ n ⟩ (Σ (de⊙ BG) (λ z → fst (F z))) ≃ de⊙ BG
+      base-≃ ((BG , cBG , tBG) , F , p) = unTrunc-equiv _ {{tBG}} ∘e Trunc-emap (Σ-contr-red-cod {{λ {x} → fst (snd (F x))}}) ∘e Trunc-Σ
+
+      to-from : (G : [ n , i , i ]-Groups-v2) → to (from G) == G
+      to-from G@((BG , cBG , tBG) , F , p) = NG-v2-to-==
+        (≃-to-⊙≃ (base-≃ G) idp ,
+        ((λ x → hfiber-fst (–> (base-≃ G) x) ∘e ≃-tri-hfib (base-≃ G) (λ _ → idp) x) ,
+        idp)) 
+
+      from-to : (G : [ S n , i ]-Groups) → from (to G) == G
+      from-to (X , cX , tX) = –> NGroups-== (≃-to-⊙≃ (total-hfib-≃ [_]) idp)
+
+  N-Grps-≃ : [ S n , i ]-Groups ≃ [ n , i , i ]-Groups-v2
+  N-Grps-≃ = equiv to from to-from from-to

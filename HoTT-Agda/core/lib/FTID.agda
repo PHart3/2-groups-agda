@@ -85,8 +85,7 @@ module _ {i} {A : Type i} where
     → equiv-induction-b P r (ide A) == r
   equiv-induction-β {P = P} = ID-ind-map-β (λ B → P {B}) ≃-tot-contr
 
--- induction principle arising from funext
-
+-- induction principle arising from λ=
 module _ {i j} {A : Type i} {B : A → Type j} {f : Π A B} where
 
   funhom-contr : is-contr (Σ (Π A B) (λ g → f ∼ g))
@@ -113,6 +112,7 @@ module _ {i j} {A : Type i} {B : A → Type j} {f : Π A B} where
   funhom-contr-∼ {g} H = has-level-in
     ((g , H) , uncurry (∼-ind {f = f} (λ h p → _) (! (contr-path funhom-contr (g , H)))))
 
+-- some coherence properties of λ=
 module _ {i j l} {A : Type i} {B : Type j} {C : Type l} {f g : A → B} where
 
   pre∘-λ= : (h : C → A) (H : f ∼ g) → ap (λ k z → k (h z)) (λ= H) == λ= (λ z → H (h z))
