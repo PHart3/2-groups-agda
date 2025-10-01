@@ -4,6 +4,7 @@ open import lib.Basics
 open import lib.FTID
 open import lib.NConnected
 open import lib.NType2
+open import lib.types.Pi
 open import lib.types.Sigma
 open import lib.types.TLevel
 open import lib.types.Truncation
@@ -16,15 +17,25 @@ module N-groups where
 [_,_]-Groups : (n : ℕ) (i : ULevel) → Type (lsucc i)
 [ n , i ]-Groups = Σ (Ptd i) (λ X → is-connected 0 (de⊙ X) × has-level ⟨ n ⟩ (de⊙ X))
 
-NGroups-== : ∀ {i} {n} {G₁ G₂ : [ n , i ]-Groups} → (fst G₁ ⊙≃ fst G₂) ≃ (G₁ == G₂)
-NGroups-== {n = n} {G₁} {G₂} =
-  Subtype=-econv (subtypeprop (λ X → is-connected 0 (de⊙ X) × has-level ⟨ n ⟩ (de⊙ X))) G₁ G₂ ∘e (⊙≃-ua {X = fst G₁} {fst G₂}) ⁻¹
-
 [_,_]-conn-trunc : (n : ℕ) (i : ULevel) → Type (lsucc i)
 [ n , i ]-conn-trunc = Σ (Type i) (λ X → is-connected ⟨ n ⟩ X × has-level ⟨ S n ⟩ X)
 
 [_,_,_]-Groups-v2 : (n : ℕ) (i j : ULevel) → Type (lmax (lsucc i) (lsucc j))
 [ n , i , j ]-Groups-v2 = [ BG ∈ [ n , i ]-Groups ] × [ F ∈ (de⊙ (fst BG) →  [ n , j ]-conn-trunc) ] × fst (F (pt (fst BG)))
+
+NGroups-== : ∀ {i} {n} {G₁ G₂ : [ n , i ]-Groups} → (fst G₁ ⊙≃ fst G₂) ≃ (G₁ == G₂)
+NGroups-== {n = n} {G₁} {G₂} =
+  Subtype=-econv (subtypeprop (λ X → is-connected 0 (de⊙ X) × has-level ⟨ n ⟩ (de⊙ X))) G₁ G₂ ∘e (⊙≃-ua {X = fst G₁} {fst G₂}) ⁻¹
+
+NGroups-==-contr : ∀ {i} {n} (G₁ : [ n , i ]-Groups) → is-contr (Σ  [ n , i ]-Groups (λ G₂ → fst G₁ ⊙≃ fst G₂))
+NGroups-==-contr G₁ = equiv-preserves-level ((Σ-emap-r (λ _ → NGroups-==)) ⁻¹) {{pathfrom-is-contr G₁}}
+
+Type-conn-trunc-== : ∀ {i} {n} {G₁ G₂ : [ n , i ]-conn-trunc} → (fst G₁ ≃ fst G₂) ≃ (G₁ == G₂)
+Type-conn-trunc-== {n = n} {G₁} {G₂} =
+  Subtype=-econv (subtypeprop (λ X → is-connected ⟨ n ⟩ X × has-level ⟨ S n ⟩ X)) G₁ G₂ ∘e ua-equiv {A = fst G₁} {fst G₂}
+
+Type-conn-trunc-==-contr : ∀ {i} {n} (G₁ : [ n , i ]-conn-trunc) → is-contr (Σ [ n , i ]-conn-trunc (λ G₂ → fst G₁ ≃ fst G₂))
+Type-conn-trunc-==-contr G₁ = equiv-preserves-level ((Σ-emap-r (λ _ → Type-conn-trunc-==)) ⁻¹) {{pathfrom-is-contr G₁}}
 
 module _ {n : ℕ} {i j : ULevel} where
 
@@ -38,6 +49,41 @@ module _ {n : ℕ} {i j : ULevel} where
   fst (NG-v2-idp (BG , F , p)) = ⊙ide (fst BG)
   fst (snd (NG-v2-idp (BG , F , p))) b = ide (fst (F b))
   snd (snd (NG-v2-idp (BG , F , p))) = idp
+
+  module _ {BG@(BG₁ , F₁ , p₁) : [ n , i , j ]-Groups-v2} where
+
+    private
+      θ = 
+        Σ (Σ [ n , i ]-Groups (λ BG₂ → fst BG₁ ⊙≃ fst BG₂)) (λ (BG₂ , e , _) →
+          Σ (Σ (de⊙ (fst BG₂) →  [ n , j ]-conn-trunc) (λ F₂ → Π (de⊙ (fst BG₁)) (λ b → fst (F₁ b) ≃ fst (F₂ (fst e b))))) (λ (F₂ , t) →
+            Σ (fst (F₂ (pt (fst BG₂)))) (λ p₂ → transport (fst ∘ F₂) (snd e) (–> (t (pt (fst BG₁))) p₁) == p₂)))
+
+    NG-v2-contr-aux : is-contr θ
+    NG-v2-contr-aux =
+      equiv-preserves-level
+        ((Σ-contr-red {A = Σ [ n , i ]-Groups (λ BG₂ → fst BG₁ ⊙≃ fst BG₂)} (NGroups-==-contr BG₁))⁻¹)
+        {{equiv-preserves-level
+          ((Σ-contr-red (equiv-preserves-level choice {{Π-level λ x → Type-conn-trunc-==-contr (F₁ x)}}))⁻¹)
+          {{pathfrom-is-contr p₁}}}}
+
+    abstract
+      NG-v2-contr : is-contr (Σ [ n , i , j ]-Groups-v2 (λ BG₂ → BG NG-v2-== BG₂))
+      NG-v2-contr = equiv-preserves-level lemma {{NG-v2-contr-aux}}
+        where
+          lemma : θ ≃ Σ [ n , i , j ]-Groups-v2 (λ BG₂ → BG NG-v2-== BG₂)
+          lemma =
+            equiv
+              (λ ((BG , e) , (F , t) , p , c) → (BG , F , p) , (e , t , c))
+              (λ ((BG , F , p) , (e , t , c)) → (BG , e) , ((F , t) , (p , c)))
+              (λ _ → idp)
+              λ _ → idp
+
+    NG-v2-ind : ∀ {k} (P : (BG₂ : [ n , i , j ]-Groups-v2) → (BG NG-v2-== BG₂ → Type k))
+      → P BG (NG-v2-idp BG) → {BG₂ : [ n , i , j ]-Groups-v2} (e : BG NG-v2-== BG₂) → P BG₂ e
+    NG-v2-ind P = ID-ind-map P NG-v2-contr
+
+  NG-v2-to-== : {BG₁ BG₂ : [ n , i , j ]-Groups-v2} → BG₁ NG-v2-== BG₂ → BG₁ == BG₂ 
+  NG-v2-to-== {BG₁} = NG-v2-ind (λ BG₂ _ → BG₁ == BG₂) idp
 
 module _ {n : ℕ} {i : ULevel} where
 

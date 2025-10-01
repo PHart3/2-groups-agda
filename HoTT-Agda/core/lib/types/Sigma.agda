@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
 
@@ -518,3 +518,6 @@ module _ {i j} {A : Type i} {P : A → Type j} where
   Σ-contr-red-cod {{ctr}} =
     equiv fst (λ a → a , (contr-center ctr)) (λ _ → idp)
       λ (a , y) → pair= idp (prop-has-all-paths {{contr-is-prop ⟨⟩}} _ _)
+      
+total-hfib-≃ : ∀ {i j} {A : Type i} {B : Type j} (h : A → B) → Σ B (hfiber h) ≃ A
+total-hfib-≃ h = Σ-contr-red-cod ∘e Σ₁-×-comm

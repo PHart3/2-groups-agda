@@ -442,7 +442,7 @@ module _ {i} {X : Ptd i} where
     → (r : P X (⊙ide X)) → ⊙≃-ind P r (⊙ide X) == r
   ⊙≃-ind-β P = ID-ind-map-β P ⊙≃-contr
 
-module _ {i} {X : Ptd i} {Y : Ptd i} where
+module _ {i} {X Y : Ptd i} where
 
   ⊙≃-to-== : X ⊙≃ Y → X == Y 
   ⊙≃-to-== = ⊙≃-ind {X = X} (λ Y _ → X == Y) idp

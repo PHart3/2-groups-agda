@@ -104,7 +104,7 @@ module _ {i j} {A : Type i} {B : A → Type j} {f : Π A B} where
   funhom-contr-to = equiv-preserves-level (Σ-emap-r (λ g → app=-equiv)) {{pathto-is-contr f}}
 
 ≃-∼-tot-contr : ∀ {i j} {A : Type i} {f : A → Type j}
-  → is-contr (Σ (A → Type j) (λ g → (x : A ) → f x ≃ g x))
+  → is-contr (Σ (A → Type j) (λ g → (x : A) → f x ≃ g x))
 ≃-∼-tot-contr {f} = equiv-preserves-level (Σ-emap-r (λ g → Π-emap-r λ _ → ua-equiv ⁻¹)) {{funhom-contr}}
 
 module _ {i j} {A : Type i} {B : A → Type j} {f : Π A B} where
