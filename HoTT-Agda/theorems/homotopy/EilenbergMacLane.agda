@@ -26,6 +26,7 @@ module EMImplicit {i} {X : Ptd i} {{_ : is-connected 0 (de⊙ X)}}
 
   module _ (n : ℕ) where
     EM = de⊙ (⊙EM n)
+    ptEM = pt (⊙EM n)
 
   EM-level : (n : ℕ) → has-level ⟨ n ⟩ (EM n)
   EM-level O = has-level-apply X-level _ _
@@ -212,10 +213,13 @@ module EMExplicit {i} (G : AbGroup i) where
 
   -- If n > 1, then K(G , (S n)) is equivalent to the type of torsors over K(G , n).
   ⊙EM-Torsors-≃ : {n : ℕ} → ⊙EM (S (S (S n))) ⊙≃ ⊙Torsors {j = i} (⊙EM (S (S n)))
-  ⊙EM-Torsors-≃  {n} = ⊙tors-uniq-map-≃ (⊙EM (S (S n)))
+  ⊙EM-Torsors-≃ {n} = ⊙tors-uniq-map-≃ (⊙EM (S (S n)))
     {{PtdTorsors-contr {{EM-conn}}}}
     {{connected-≤T (inr (<T-ap-S (<T-ap-S (-2<T _)))) {{EM-conn}}}}
     (spectrum (S (S n)) ⊙⁻¹)
+
+  EM-Torsors-≃ : {n : ℕ} → EM (S (S (S n))) ≃ Torsors i (⊙EM (S (S n)))
+  EM-Torsors-≃ = ⊙≃-to-≃ ⊙EM-Torsors-≃
 
 -- making instance argument available for instance search
 module _ {i} {G : AbGroup i} where

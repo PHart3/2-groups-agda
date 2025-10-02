@@ -98,5 +98,5 @@ module _ (n : ℕ) {i} (H : AbGroup i) where
     EM-Ω-==-ext : (X : Ptd i) →
       (is-connected ⟨ S n ⟩ (de⊙ X) × Σ (has-level ⟨ S (S n) ⟩ (de⊙ X)) (λ tX → (Ω^'S-abgroup n X {{tX}} == H)))
         ≃
-      (X ⊙≃ ⊙EM H (S (S n)))
-    EM-Ω-==-ext X = ⊙≃-ua ∘e (EM-Ω-== X)
+      (⊙EM H (S (S n)) ⊙≃ X)
+    EM-Ω-==-ext X = ⊙≃-ua ∘e !-equiv ∘e (EM-Ω-== X)

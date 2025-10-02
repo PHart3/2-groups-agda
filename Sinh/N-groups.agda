@@ -15,6 +15,7 @@ open import lib.types.Paths
 
 module N-groups where
 
+-- the type of n-groups in a given universe
 [_,_]-Groups : (n : ℕ) (i : ULevel) → Type (lsucc i)
 [ n , i ]-Groups = Σ (Ptd i) (λ X → is-connected 0 (de⊙ X) × has-level ⟨ n ⟩ (de⊙ X))
 

@@ -6,6 +6,7 @@ open import lib.FTID
 open import lib.NType2
 open import lib.Equivalence2
 open import lib.types.Sigma
+open import lib.types.Pi
 open import lib.types.Pointed
 open import lib.types.LoopSpace
 open import lib.types.TLevel
@@ -20,6 +21,16 @@ module _ {i j} (X : Ptd i)  where
   -- type of pointed sections
   Π⊙ : (Y : de⊙ X → Type j) → Y (pt X) → Type (lmax i j)
   Π⊙ Y p = [ s ∈ Π (de⊙ X) Y ] × (s (pt X) == p)
+
+module _ {i j k} {X : Ptd i} where
+
+  infixr 50 ⟨_&_⟩Π⊙-==⟨_&_⟩
+  ⟨_&_⟩Π⊙-==⟨_&_⟩ : (Y₁ : de⊙ X → Type j) → Y₁ (pt (X)) → (Y₂ : de⊙ X → Type k) → Y₂ (pt X) → Type (lmax (lmax i j) k)
+  ⟨ Y₁ & p₁ ⟩Π⊙-==⟨ Y₂ & p₂ ⟩ = Σ ((x : de⊙ X) → Y₁ x ≃ Y₂ x) (λ e → –> (e (pt X)) p₁ == p₂)
+
+  Π⊙-==-ext : ∀ {Y₁ p₁ Y₂ p₂} → ⟨ Y₁ & p₁ ⟩Π⊙-==⟨ Y₂ & p₂ ⟩ → Π⊙ X Y₁ p₁ ≃ Π⊙ X Y₂ p₂
+  Π⊙-==-ext {p₁ = p₁} {p₂ = p₂} (f , p) = Σ-emap-l (λ s → s (pt X) == p₂) (Π-emap-r λ x → f x) ∘e Σ-emap-r λ s →
+    post∙-equiv p ∘e ap-equiv (f (pt X)) _ _
 
 -- SIP for pointed sections
 

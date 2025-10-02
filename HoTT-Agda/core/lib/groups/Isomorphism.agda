@@ -490,8 +490,8 @@ module _ {i} {G₁ : Group i} where
 
 instance
 
-  Grp-is-set : ∀ {i} → has-level 1 (Group i)
-  Grp-is-set = has-level-in (λ G₁ G₂ → equiv-preserves-level univᴳ)
+  Grp-isGrpd : ∀ {i} → has-level 1 (Group i)
+  Grp-isGrpd = has-level-in (λ G₁ G₂ → equiv-preserves-level univᴳ)
 
-  AbGrp-is-set : ∀ {i} → has-level 1 (AbGroup i)
-  AbGrp-is-set = Subtype-level (subtypeprop is-abelian)
+  AbGrp-isGrpd : ∀ {i} → has-level 1 (AbGroup i)
+  AbGrp-isGrpd = Subtype-level (subtypeprop is-abelian)
