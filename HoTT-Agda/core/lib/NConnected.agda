@@ -82,6 +82,12 @@ abstract
               helper (k ∘ h) b [ (xl , p) ] == k b
             lemma xl ._ idp = idp
 
+conn-trunc-cst-≃ : ∀ {i j} {A : Type i} {P : Type j} {n : ℕ₋₂} → is-connected n A → has-level n P
+  → P ≃ (A → P)
+conn-trunc-cst-≃ {P = P} cA tP =
+  let eqv = (λ s → s ∘ (λ _ → tt)) , pre∘-conn-is-equiv {B = Unit} (conn-to-conn-fibs {{cA}}) λ _ → P , tP in
+    eqv ∘e Π₁-Unit ⁻¹
+
 conn-extend : ∀ {i j k} {A : Type i} {B : Type j} {n : ℕ₋₂}
   → {h : A → B} → has-conn-fibers n h
   → (P : B → n -Type k)
@@ -321,3 +327,31 @@ module _ {i j} {A : Type i} (a : A) {n : ℕ₋₂} {{_ : is-connected (S n) A}}
 equiv-preserves-conn : ∀ {i j} {A : Type i} {B : Type j} {n : ℕ₋₂} (e : A ≃ B)
   {{_ : is-connected n A}} → is-connected n B
 equiv-preserves-conn {n = n} e = equiv-preserves-level (Trunc-emap e)
+
+-- orthogonality between n-connected types and n-truncated types
+module _ {i j n} {X : Type i} {Y : Type j} (f : X → Y) (cX : is-connected (S n) X) (tY : has-level (S n) Y) where
+
+  private
+    ι = Σ Y (λ y → Π X (λ x → f x == y))
+
+    abstract
+      tι : has-level (S n) ι
+      tι = Σ-level tY λ y → Π-level (λ x → =-preserves-level tY)
+
+  orthog-conn-trunc : is-contr ι
+  orthog-conn-trunc = equiv-preserves-level ((conn-trunc-cst-≃ cX tι)⁻¹) {{lemma}}
+    where abstract
+      lemma : is-contr (X → ι)
+      fst (has-level-apply lemma) x₀ = (f x₀) , (conn-extend-ptd x₀ {{cX}} (λ x → f x == f x₀) {{has-level-apply tY _ _}} idp)
+      snd (has-level-apply lemma) g = λ= λ z → pair= (snd (g z) z)
+        (↓-Π-cst-app-in
+          (conn-extend-ptd z {{cX}}
+            (λ v →
+              (conn-extend-ptd z {{cX}} (λ x → f x == f z) {{has-level-apply tY _ _}} idp v) == (snd (g z) v)
+                [ (λ x → f v == x) ↓ (snd (g z) z) ])
+            {{↓-level {{=-preserves-level tY}}}}
+            (↓-cst=app-in
+              (ap (λ p → p ∙' ap (λ z₁ → z₁) (snd (g z) z))
+                (conn-extend-ptd-β z {{cX}} (λ x → f x == f z) {{has-level-apply tY _ _}} idp) ∙
+              ∙'-unit-l _ ∙ ap-idf (snd (g z) z)))))
+      
