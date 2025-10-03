@@ -14,16 +14,25 @@ module Sinh-classif where
 
 open EMExplicit
 
-Sinh-triples : (n : ℕ) (i : ULevel) → Type (lsucc i)
-Sinh-triples n i =
-  [ (BG , _ , _) ∈ [ n , i ]-Groups ] ×
-    [ H ∈ (de⊙ BG → AbGroup i) ] ×
-      Π⊙ BG (λ x → EM (H x) (S (S n))) (ptEM (H (pt (BG))) (S (S n)))
+module _ (n : ℕ) (i : ULevel) where
+
+  Sinh-triples : Type (lsucc i)
+  Sinh-triples =
+    [ (BG , _ , _) ∈ [ n , i ]-Groups ] ×
+      [ H ∈ (de⊙ BG → AbGroup i) ] ×
+        Π⊙ BG (λ x → EM (H x) (S (S n))) (ptEM (H (pt (BG))) (S (S n)))
+
+  Sinh-triples-set : Type (lsucc i)
+  Sinh-triples-set = Trunc 0 $
+    [ (BG , _ , _) ∈ [ n , i ]-Groups ] ×
+      [ H ∈ (de⊙ BG → AbGroup i) ] ×
+        Trunc 0 (Π⊙ BG (λ x → EM (H x) (S (S n))) (ptEM (H (pt (BG))) (S (S n))))
+        -- this final type is cohomology with local coefficients 
 
 module _ {n : ℕ} {i : ULevel} where
 
-  Grp-Sinh-≃ : [ S (S n) , i ]-Groups ≃ Sinh-triples (S n) i
-  Grp-Sinh-≃ =
+  NGrp-Sinh-≃ : [ S (S n) , i ]-Groups ≃ Sinh-triples (S n) i
+  NGrp-Sinh-≃ =
     [ S (S n) , i ]-Groups
       ≃⟨ N-Grps-≃  ⟩
     [ (S n) , i , i ]-Groups-v2
@@ -155,3 +164,10 @@ module _ {n : ℕ} {i : ULevel} where
                 ↓-app=cst-in' (ap (λ q → ap (λ tr → Ω^'S-abgroup n ⊙[ F u , x ] {{tr}}) q ∙' snd (snd (m u)) x)
                   (prop-has-all-paths {{=-preserves-level ⟨⟩}} _ _))))))))
               idp
+
+  {- a set-truncated version recovering the classical description
+     of the Postnikov invariant as a cohomology class -}
+
+  Sinh-classif-set : Trunc 0 [ S (S n) , i ]-Groups ≃ Sinh-triples-set (S n) i 
+  Sinh-classif-set = -- proof is by standard interaction between truncation and Σ
+    Trunc-Σ ⁻¹ ∘e Trunc-emap (Σ-emap-r λ G → Trunc-Σ) ∘e Trunc-Σ ∘e Trunc-emap NGrp-Sinh-≃
