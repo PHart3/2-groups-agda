@@ -13,7 +13,7 @@ open import lib.types.Paths
 
 -- two equivalent ways of describing n-groups as synthetic higher groups
 
-module N-groups where
+module lib.types.N-groups where
 
 -- the type of n-groups in a given universe
 [_,_]-Groups : (n : ℕ) (i : ULevel) → Type (lsucc i)

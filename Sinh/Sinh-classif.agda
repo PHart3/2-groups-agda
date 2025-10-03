@@ -1,7 +1,7 @@
 {-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import HoTT
-open import N-groups
+open import lib.types.N-groups
 open import lib.types.PtdFibration
 open import lib.types.Torsor
 open import homotopy.EilenbergMacLane
@@ -31,6 +31,7 @@ module _ (n : ℕ) (i : ULevel) where
 
 module _ {n : ℕ} {i : ULevel} where
 
+  -- [ S (S n) , i ]-Groups is defined in lib.types.N-groups
   NGrp-Sinh-≃ : [ S (S n) , i ]-Groups ≃ Sinh-triples (S n) i
   NGrp-Sinh-≃ =
     [ S (S n) , i ]-Groups
