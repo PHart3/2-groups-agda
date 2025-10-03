@@ -15,6 +15,9 @@ space as the process runs. This is crucial because the type-checking uses
 as much as 29 GB of physical memory. Therefore, you will need to increase
 your machine's swap space if you have under 29 GB of available RAM.
 
+**Important:** Comment out the final two imports in `Final-thms` to reduce the type-checking by more than half. Doing so will check
+all relevant type equivalences but not the biequivalence.
+
 ## License
 
 This work is released under Mozilla Public License 2.0.

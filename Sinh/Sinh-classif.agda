@@ -35,7 +35,7 @@ module _ {n : ℕ} {i : ULevel} where
   NGrp-Sinh-≃ : [ S (S n) , i ]-Groups ≃ Sinh-triples (S n) i
   NGrp-Sinh-≃ =
     [ S (S n) , i ]-Groups
-      ≃⟨ N-Grps-≃  ⟩
+      ≃⟨ N-Grps-≃ ⟩
     [ (S n) , i , i ]-Groups-v2
       ≃⟨ (Σ-contr-red-cod {{λ {(BG , F , p)} → Π-level (λ u → ×-level
           (inhab-prop-is-contr (prop-over-connected {{fst (snd BG)}} (λ u → Trunc -1 (fst (F u)) , Trunc-level) [ p ] u))

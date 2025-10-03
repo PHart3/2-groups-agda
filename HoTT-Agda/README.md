@@ -25,17 +25,25 @@ Structure of the source
 
 ### Core library (directory `core/lib/`)
 
-The main library is more or less divided into three parts.
+The main library is more or less divided into four parts.
 
 - The first part is exported in the module `lib.Basics` and contains essential constructions.
-- The second part is found in `lib.types` and develops type formers.
-- The third part is found in `lib.wild-cats` and develops wild category theory.
+- The second part is found in `lib.groups` and develops basic group theory.
+- The third part is found in `lib.types` and develops type formers.
+- The fourth part is found in `lib.wild-cats` and develops wild category theory.
   In particular, it shows that every equivalence of wild categories is fully faithful.
 
-### Homotopy (directory `theorems/homotopy/`)
+### Theorems (directory `theorems/`)
 
-This directory contains a concise proof of the fact that a pointed map f between connected types
-is an equivalence as soon as Loop f is an equivalence.
+#### torsors
+
+This directory contains David Wärn's construction of torsors as the unique connected delooping.
+(See the paper "Eilenberg-MacLane spaces and stabilisation in homotopy type theory.") This construction
+is used in Owen Milner's type equivalence between n-groups (n > 1) and Sính triples.
+
+#### homotopy
+
+This directory contains the theory of Eilenberg-MacLane spaces, including their uniqueness.
 
 Citation
 --------
