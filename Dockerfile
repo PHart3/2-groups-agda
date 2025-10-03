@@ -23,6 +23,7 @@ RUN echo "/HoTT-Agda/hott-theorems.agda-lib" >> /root/.agda/libraries
 RUN echo "/Two-groups/two-group.agda-lib" >> /root/.agda/libraries 
 RUN echo "/Bicats/bicats.agda-lib" >> /root/.agda/libraries
 RUN echo "/Final/final.agda-lib" >> /root/.agda/libraries
+RUN echo "/Sinh/sinh.agda-lib" >> /root/.agda/libraries
 
 WORKDIR /Final
 
