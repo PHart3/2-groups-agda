@@ -7,11 +7,12 @@ open import Sinh-classif public
 
 {- type equivalence between coherent 2-groups and pointed connected 2-types as well as
    composite type equivalence between coherent 2-groups and Sính triples -}
-open import Type-equiv-main public  -- this will take some time
+{- This file takes over an hour and up to 22 GB of memory to check. -}
+open import Type-equiv-main public
 
 
 {-
-  The remaining two files take a very long time to type check and consume lots of memory.
+  The remaining two files take over an hour and up to 29 GB of memory to check.
   Comment out the following two imports to avoid checking them.
 -}
 
