@@ -38,8 +38,7 @@ The main library is more or less divided into four parts.
 #### torsors
 
 This directory contains David Wärn's construction of torsors as the unique connected delooping.
-(See the paper "Eilenberg-MacLane spaces and stabilisation in homotopy type theory.") This construction
-is used in Owen Milner's type equivalence between n-groups (n > 1) and Sính triples.
+(See the paper "Eilenberg-MacLane spaces and stabilisation in homotopy type theory.")
 
 #### homotopy
 

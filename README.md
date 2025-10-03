@@ -8,8 +8,8 @@
 
   A preprint outlining our mechanization is located [here](https://phart3.github.io/2Grp-biequiv-preprint.pdf).
 
-- We mechanize Owen Milner's equivalence between the type of n-groups (i.e., pointed connected n-types) and
-  that of Sính triples (where n > 1).
+- We mechanize Owen Milner's equivalence between the type of *n*-groups (i.e., pointed connected *n*-types) and
+  that of Sính triples (where *n* > 1).
 
 The code has been checked with Agda 2.6.4.3. 
 
@@ -40,7 +40,7 @@ collecting the main theorems.
 
 - `Sinh/`
 
-  Our formalization of Owen Milner's proof of equivalence between pointed connected n-types (n > 1) and Sính triples.
+  Our formalization of Owen Milner's proof of equivalence between pointed connected *n*-types (*n* > 1) and Sính triples.
 
   See `Sinh/README.md` for details and for the license of the work inside this directory.
 
