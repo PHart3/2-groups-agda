@@ -1,6 +1,4 @@
-{-# OPTIONS --without-K --rewriting #-}
-
-{- confluence-check causes an internal error -}
+{-# OPTIONS --without-K --rewriting --confluence-check #-}
 
 open import lib.Basics
 open import lib.types.Pointed
@@ -11,32 +9,30 @@ open import lib.types.Paths
 
 module lib.types.Pushout where
 
-module _ {i j k} where
+postulate  -- HIT
+  Pushout : ∀ {i j k} → Span {i} {j} {k} → Type (lmax (lmax i j) k)
+
+module _ {i j k} {d : Span {i} {j} {k}} where
 
   postulate  -- HIT
-    Pushout : (d : Span {i} {j} {k}) → Type (lmax (lmax i j) k)
+    left : Span.A d → Pushout d
+    right : Span.B d → Pushout d
+    glue : (c : Span.C d) → left (Span.f d c) == right (Span.g d c)
 
-  module _ {d : Span} where
+module PushoutElim {i j k} {d : Span {i} {j} {k}} {l} {P : Pushout {i} {j} {k} d → Type l}
+  (left* : (a : Span.A d) → P (left a))
+  (right* : (b : Span.B d) → P (right b))
+  (glue* : (c : Span.C d) → left* (Span.f d c) == right* (Span.g d c) [ P ↓ glue c ]) where
 
-    postulate  -- HIT
-      left : Span.A d → Pushout d
-      right : Span.B d → Pushout d
-      glue : (c : Span.C d) → left (Span.f d c) == right (Span.g d c)
+  postulate  -- HIT
+    f : Π (Pushout d) P
+    left-β : ∀ a → f (left a) ↦ left* a
+    right-β : ∀ b → f (right b) ↦ right* b
+  {-# REWRITE left-β #-}
+  {-# REWRITE right-β #-}
 
-  module PushoutElim {d : Span} {l} {P : Pushout d → Type l}
-    (left* : (a : Span.A d) → P (left a))
-    (right* : (b : Span.B d) → P (right b))
-    (glue* : (c : Span.C d) → left* (Span.f d c) == right* (Span.g d c) [ P ↓ glue c ]) where
-
-    postulate  -- HIT
-      f : Π (Pushout d) P
-      left-β : ∀ a → f (left a) ↦ left* a
-      right-β : ∀ b → f (right b) ↦ right* b
-    {-# REWRITE left-β #-}
-    {-# REWRITE right-β #-}
-
-    postulate  -- HIT
-      glue-β : (c : Span.C d) → apd f (glue c) == glue* c
+  postulate  -- HIT
+    glue-β : (c : Span.C d) → apd f (glue c) == glue* c
 
 Pushout-elim = PushoutElim.f
 
