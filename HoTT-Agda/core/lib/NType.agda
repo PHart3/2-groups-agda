@@ -2,7 +2,7 @@
 
 open import lib.Base
 open import lib.PathGroupoid
-open import lib.Relation
+open import lib.Function
 
 module lib.NType where
 
@@ -41,6 +41,11 @@ module _ {i} where
 
   contr-path : {A : Type i} (p : is-contr A) (y : A) → contr-center p == y
   contr-path p y = snd (has-level-apply p) y
+
+  -- adjusting the paths of a contraction to get idp at the center
+  contr-to-path-idp : {A : Type i} → is-contr A → is-contr A
+  fst (has-level-apply (contr-to-path-idp c)) = contr-center c
+  snd (has-level-apply (contr-to-path-idp c)) y = ! (contr-path c (contr-center c)) ∙ contr-path c y
 
   prop-path : {A : Type i} (p : is-prop A) (x y : A) → x == y
   prop-path p x y = contr-center (has-level-apply p x y)
@@ -200,7 +205,12 @@ module _ {i} where
   UIP-loops {S n} {A} {{t}} = has-level-in (λ _ _ → has-level-in aux)
     where
       aux : {x y : A} (p q : x == y) → has-level (S n) (p == q)
-      aux {x} {y} idp q = has-level-apply (UIP-loops {n}) idp q 
+      aux {x} {y} idp q = has-level-apply (UIP-loops {n}) idp q
+
+-- truncated maps
+has-trunc-fibers : ∀ {i j} {A : Type i} {B : Type j} → ℕ₋₂ → (A → B) → Type (lmax i j)
+has-trunc-fibers {A = A} {B = B} n f =
+  Π B (λ b → has-level n (hfiber f b))
 
 {- Subtypes -}
 

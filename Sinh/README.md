@@ -1,0 +1,13 @@
+## Summary
+
+This directory contains a mechanization of Owen Milner's type equivalence between (*n*+2)-groups
+(i.e., pointed connected (*n*+2)-types) and Sính triples at level *n*, with *n* non-negative.
+
+A *Sính triple (at level *n*)* consists of an *n*-group BG, a G-module H : BG -> Ab, and a cocycle in H^(*n*+2)(G, H).
+We also obtain a set-truncated version of the equivalence, between components of *n*-groups and components of triples
+consisting of an *n*-group BG, a G-module H : BG -> Ab, and a cohomology class in H^(*n*+2)(G, H).
+
+## License
+
+This work is released under Mozilla Public License 2.0.
+See [LICENSE.txt](LICENSE.txt)

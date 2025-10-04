@@ -349,10 +349,16 @@ module _ {i j} {A : Type i} {B : A → Type j} {f g : Π A B} where
     → (u ◃ apd f p == apd g p ▹ v) ≃ (u == v [ (λ x → g x == f x) ↓ p ])
   ↓-=-equiv = ↓-=-in , ↓-=-in-is-equiv
 
-
 -- Dependent path in a type of the form [λ x → g (f x) == x]
 module _ {i j} {A : Type i} {B : Type j} (g : B → A) (f : A → B) where
   ↓-∘=idf-in' : {x y : A} {p : x == y} {u : g (f x) == x} {v : g (f y) == y}
     → ((ap g (ap f p) ∙' v) == (u ∙ p))
     → (u == v [ (λ x → g (f x) == x) ↓ p ])
   ↓-∘=idf-in' {p = idp} q = ! (∙-unit-r _) ∙ (! q) ∙ (∙'-unit-l _)
+
+-- commuting triangle induces equivalence of fibers
+module _ {i j k} {A : Type i} {B : Type j} {C : Type k} {f : A → B} (e@(g , _) : B ≃ C) {h : A → C}
+  (H : h ∼ g ∘ f) (b : B) where
+
+  ≃-tri-hfib : hfiber f b ≃ hfiber h (g b)
+  ≃-tri-hfib = Σ-emap-r λ a → pre∙-equiv (H a) ∘e ap-equiv e (f a) b

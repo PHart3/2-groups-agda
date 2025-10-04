@@ -294,9 +294,10 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} (⊙e : X ⊙≃ Y) where
   ⊙–>-pt = snd ⊙–>
 
   ⊙<– : Y ⊙→ X
-  ⊙<– = is-equiv.g (snd ⊙e) , lemma ⊙e where
-    lemma : {Y : Ptd j} (⊙e : X ⊙≃ Y) → is-equiv.g (snd ⊙e) (pt Y) == pt X
-    lemma ((f , idp) , f-ise) = is-equiv.g-f f-ise (pt X)
+  ⊙<– = is-equiv.g (snd ⊙e) , lemma ⊙e
+    module ⊙e-rev where
+      lemma : {Y : Ptd j} (⊙e : X ⊙≃ Y) → is-equiv.g (snd ⊙e) (pt Y) == pt X
+      lemma ((f , idp) , f-ise) = is-equiv.g-f f-ise (pt X)
 
   ⊙<–-pt = snd ⊙<–
 
@@ -392,8 +393,13 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} (⊙e : X ⊙≃ Y) where
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} (⊙e : X ⊙≃ Y) where
 
-  linv⊙-unique : {f₁ f₂ : Y ⊙→ X} → (f₁ ⊙∘ ⊙–> ⊙e) ⊙-comp ⊙idf X → (f₂ ⊙∘ ⊙–> ⊙e) ⊙-comp ⊙idf X → f₁ == f₂
-  linv⊙-unique {f₁} {f₂} p₁ p₂ = fst= (contr-has-all-paths {{pre⊙∘-hfib-contr ⊙e (⊙idf X)}} (f₁ , p₁) (f₂ , p₂))
+  abstract
+  
+    linv⊙-unique : {f₁ f₂ : Y ⊙→ X} → (f₁ ⊙∘ ⊙–> ⊙e) ⊙-comp ⊙idf X → (f₂ ⊙∘ ⊙–> ⊙e) ⊙-comp ⊙idf X → f₁ == f₂
+    linv⊙-unique {f₁} {f₂} p₁ p₂ = fst= (contr-has-all-paths {{pre⊙∘-hfib-contr ⊙e (⊙idf X)}} (f₁ , p₁) (f₂ , p₂))
+
+    ⊙∘e-lunit : ⊙ide Y ⊙∘e ⊙e == ⊙e
+    ⊙∘e-lunit = pair= (⊙λ= ((λ _ → idp) , (ap-idf-idp (snd (fst ⊙e))))) prop-has-all-paths-↓
 
 -- induction principle for ⊙≃
 
@@ -423,14 +429,66 @@ module _ {i} {X : Ptd i} where
             (λ (Y , ⊙e) → idp)
             λ ((A , e) , (a , p)) → idp
 
+  -- a version revealing the center of contraction
+  ⊙≃-contr-exp : is-contr (Σ (Ptd i) (λ Y → X ⊙≃ Y))
+  fst (has-level-apply ⊙≃-contr-exp) = X , (⊙ide X)
+  snd (has-level-apply ⊙≃-contr-exp) = λ _ → contr-has-all-paths {{⊙≃-contr}} _ _
+
   ⊙≃-ind : ∀ {k} (P : (Y : Ptd i) → (X ⊙≃ Y → Type k))
     → P X (⊙ide X) → {Y : Ptd i} (e : X ⊙≃ Y) → P Y e
   ⊙≃-ind P = ID-ind-map P ⊙≃-contr
 
-module _ {i} {X : Ptd i} {Y : Ptd i} where
+  ⊙≃-ind-β : ∀ {k} (P : (Y : Ptd i) → (X ⊙≃ Y → Type k))
+    → (r : P X (⊙ide X)) → ⊙≃-ind P r (⊙ide X) == r
+  ⊙≃-ind-β P = ID-ind-map-β P ⊙≃-contr
+
+module _ {i} {X Y : Ptd i} where
 
   ⊙≃-to-== : X ⊙≃ Y → X == Y 
   ⊙≃-to-== = ⊙≃-ind {X = X} (λ Y _ → X == Y) idp
+
+  ⊙<–-coher⁻¹ : (⊙e : X ⊙≃ Y) → ⊙e-rev.lemma (⊙e ⊙⁻¹) (⊙e ⊙⁻¹) == snd (fst ⊙e)
+  ⊙<–-coher⁻¹ = ⊙≃-ind {X = X} (λ Y ⊙e → ⊙e-rev.lemma (⊙e ⊙⁻¹) (⊙e ⊙⁻¹) == snd (fst ⊙e)) idp
+
+  abstract
+    ⊙<–-invl : (⊙e : X ⊙≃ Y) → ⊙<– (⊙e ⊙⁻¹) == fst ⊙e
+    ⊙<–-invl ⊙e = ⊙-comp-to-== ((λ _ → idp) , ⊙<–-coher⁻¹ ⊙e)
+
+⊙≃-to-==-β : ∀ {i} {X : Ptd i} {Y : Ptd i} → ⊙≃-to-== (⊙ide X) == idp
+⊙≃-to-==-β {X = X} = ⊙≃-ind-β (λ Y _ → X == Y) idp
+
+⊙≃-from-== : ∀ {i} {X : Ptd i} {Y : Ptd i} → X == Y → X ⊙≃ Y
+⊙≃-from-== idp = ⊙ide _
+
+⊙≃-ua : ∀ {i} {X : Ptd i} {Y : Ptd i} → (X == Y) ≃ (X ⊙≃ Y)
+⊙≃-ua {X = X} = equiv ⊙≃-from-== ⊙≃-to-== rt1 rt2
+  where
+  
+    rt1 : ∀ {Y} (e : X ⊙≃ Y) → ⊙≃-from-== (⊙≃-to-== e) == e
+    rt1 = ⊙≃-ind (λ Y e → ⊙≃-from-== (⊙≃-to-== e) == e) (ap (⊙≃-from-==) (⊙≃-to-==-β {Y = X}))
+
+    rt2 : ∀ {Y} (e : X == Y) → ⊙≃-to-== (⊙≃-from-== e) == e
+    rt2 idp = ⊙≃-to-==-β {Y = X}
+
+module _ {i j} {X : Ptd i} {Y : Ptd j} (⊙e₁ : X ⊙≃ Y)  where
+
+  abstract
+    ⊙<–-∘ : {Z : Ptd j} (⊙e₂ : Y ⊙≃ Z) → ⊙<– (⊙e₂ ⊙∘e ⊙e₁) == ⊙<– ⊙e₁ ⊙∘ ⊙<– ⊙e₂
+    ⊙<–-∘ = ⊙≃-ind {X = Y} (λ Z ⊙e₂ → ⊙<– (⊙e₂ ⊙∘e ⊙e₁) == ⊙<– ⊙e₁ ⊙∘ ⊙<– ⊙e₂) (ap ⊙<– (⊙∘e-lunit ⊙e₁))
+
+{- Biinvertible maps -}
+
+module _ {i j : ULevel} where
+
+  infixr 80 _⊙-binv_
+  _⊙-binv_ : (X : Ptd i) (Y : Ptd j) → Type (lmax i j)
+  X ⊙-binv Y = [ f ∈ X ⊙→ Y ] × [ g ∈ Y ⊙→ X ] × (f ⊙∘ g == ⊙idf Y) × (g ⊙∘ f == ⊙idf X) 
+
+  module _ {X : Ptd i} {Y : Ptd j} where
+
+    ⊙-binv-to-⊙≃ : X ⊙-binv Y → X ⊙≃ Y
+    fst (⊙-binv-to-⊙≃ (f , g , ri , li)) = f
+    snd (⊙-binv-to-⊙≃ (f , g , ri , li)) = is-eq (fst f) (fst g) (fst (⊙app= ri)) (fst (⊙app= li))
 
 {- Pointed maps out of bool -}
 

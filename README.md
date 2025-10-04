@@ -1,12 +1,17 @@
 ## Overview
 
-We construct a fully verified biequivalence between
-  1. the (2,1)-category of coherent 2-groups
-  2. the (2,1)-category of 2-truncated connected pointed types.
-  
-We also derive a verified equality between them by way of univalence.
+- We construct a fully verified biequivalence between
+    1. the (2,1)-category of coherent 2-groups
+    2. the (2,1)-category of 2-truncated connected pointed types.
+    
+  We also derive a verified equality between them by way of univalence.
 
-The code has been checked with Agda 2.6.4.3. A preprint outlining our mechanization is located [here](https://phart3.github.io/2Grp-biequiv-preprint.pdf).
+  A preprint outlining our mechanization is located [here](https://phart3.github.io/2Grp-biequiv-preprint.pdf).
+
+- We mechanize Owen Milner's equivalence between the type of *n*-groups (i.e., pointed connected *n*-types) and
+  that of Sính triples (where *n* > 1).
+
+The code has been checked with Agda 2.6.4.3. 
 
 ## Organization
 
@@ -17,7 +22,7 @@ collecting the main theorems.
 
   A stripped down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
   with many changes and additions motivated by our construction
-  of the biequivalence.
+  of the biequivalence and by Milner's equivalence.
 
   See `HoTT-Agda/README.md` for details and for the license of the work inside this directory.
 
@@ -33,9 +38,16 @@ collecting the main theorems.
 
   See `Two-groups/README.md` for details and for the license of the work inside this directory.
 
+- `Sinh/`
+
+  Our formalization of Owen Milner's proof of equivalence between pointed connected *n*-types (*n* > 1) and Sính triples.
+
+  See `Sinh/README.md` for details and for the license of the work inside this directory.
+
 - `Final/`
 
-  A single file containing the final biequivalence and equality.
+  A single file containing the final biequivalence and equality, Milner's equivalence, and the composite type equivalence
+  between pointed connected 2-types and Sính triples.
 
   See `Final/README.md` for details and for the license of the work inside this directory.
 
@@ -67,6 +79,9 @@ have lots of available RAM.
 
 We have found that type-checking directly on a MacOS with an M1 chip is much
 faster (see `Final/README.md`).
+
+**Important:** Comment out the final two imports in `Final/Final-thms` to reduce the type-checking by over an hour. Doing so will check
+all relevant type equivalences but not the biequivalence.
 
 ## Acknowledgement
 

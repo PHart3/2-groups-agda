@@ -283,8 +283,7 @@ module _ {i} where
   (g : Y ⊙→ Z) (f : X ⊙→ Y)
   → ⊙Ω^-fmap n (g ⊙∘ f) == ⊙Ω^-fmap n g ⊙∘ ⊙Ω^-fmap n f
 ⊙Ω^-fmap-∘ O _ _ = idp
-⊙Ω^-fmap-∘ (S n) g f = ap ⊙Ω-fmap (⊙Ω^-fmap-∘ n g f)
-                     ∙ ⊙Ω-fmap-∘ (⊙Ω^-fmap n g) (⊙Ω^-fmap n f)
+⊙Ω^-fmap-∘ (S n) g f = ap ⊙Ω-fmap (⊙Ω^-fmap-∘ n g f) ∙ ⊙Ω-fmap-∘ (⊙Ω^-fmap n g) (⊙Ω^-fmap n f)
 
 ⊙Ω^-fmap-idf : ∀ {i} (n : ℕ) {X : Ptd i} → ⊙Ω^-fmap n (⊙idf X) == ⊙idf _
 ⊙Ω^-fmap-idf O = idp
@@ -299,6 +298,12 @@ module _ {i} where
 
 Ω^'-fmap-idf : ∀ {i} (n : ℕ) {X : Ptd i} → Ω^'-fmap n (⊙idf X) == idf _
 Ω^'-fmap-idf n = fst= $ ⊙Ω^'-fmap-idf n
+
+⊙Ω^'-fmap-∘ : ∀ {i j k} (n : ℕ) {X : Ptd i} {Y : Ptd j} {Z : Ptd k}
+  (g : Y ⊙→ Z) (f : X ⊙→ Y)
+  → ⊙Ω^'-fmap n (g ⊙∘ f) == ⊙Ω^'-fmap n g ⊙∘ ⊙Ω^'-fmap n f
+⊙Ω^'-fmap-∘ O _ _ = idp
+⊙Ω^'-fmap-∘ (S n) g f = ap (⊙Ω^'-fmap n) (⊙Ω-fmap-∘ g f) ∙ ⊙Ω^'-fmap-∘ n (⊙Ω-fmap g) (⊙Ω-fmap f)
 
 ⊙Ω^-fmap-fmap2 : ∀ {i j k l} (n : ℕ) {X : Ptd i} {Y : Ptd j} {Z : Ptd k} {W : Ptd l}
   (G : Z ⊙→ W) (F : (X ⊙× Y) ⊙→ Z)
@@ -512,6 +517,28 @@ module _ {i j} where
 Ω^'-is-prop O X pX = pX
 Ω^'-is-prop (S n) X pX = Ω^'-is-prop n (⊙Ω X) (has-level-apply pX (pt X) (pt X))
 
+{- Eckmann-Hilton argument -}
+module _ {i} {X : Ptd i} where
+
+  Ω-fmap2-∙ : (α β : Ω^ 2 X) → ap2 _∙_ α β == Ω^S-∙ 1 α β
+  Ω-fmap2-∙ α β = =ₛ-out (ap2-out _∙_ α β) ∙ ap2 _∙_ (lemma α) (ap-idf β)
+    where
+    lemma : ∀ {i} {A : Type i} {x y : A} {p q : x == y} (α : p == q)
+      → ap (λ r → r ∙ idp) α == ∙-unit-r p ∙ α ∙' ! (∙-unit-r q)
+    lemma {p = idp} idp = idp
+
+  ⊙Ω-fmap2-∙ : ⊙Ω-fmap2 (⊙Ω-∙ {X = X}) == ⊙Ω-∙
+  ⊙Ω-fmap2-∙ = ⊙λ=' (uncurry Ω-fmap2-∙) idp
+
+  Ω^2-∙-comm : (α β : Ω^ 2 X) → Ω^S-∙ 1 α β == Ω^S-∙ 1 β α
+  Ω^2-∙-comm α β = ! (⋆2=Ω^S-∙ α β) ∙ ⋆2=⋆'2 α β ∙ ⋆'2=Ω^S-∙ α β
+    where
+      ⋆2=Ω^S-∙ : (α β : Ω^ 2 X) → α ⋆2 β == Ω^S-∙ 1 α β
+      ⋆2=Ω^S-∙ α β = ap (λ π → π ∙ β) (∙-unit-r α)
+
+      ⋆'2=Ω^S-∙ : (α β : Ω^ 2  X) → α ⋆'2 β == Ω^S-∙ 1 β α
+      ⋆'2=Ω^S-∙ α β = ap (λ π → β ∙ π) (∙-unit-r α)
+
 {- Our definition of [Ω^] builds up loops from the outside,
  - but this is equivalent to building up from the inside -}
 module _ {i} where
@@ -583,7 +610,18 @@ module _ {i j} {A : Ptd i} {B : Ptd j} where
       =⟨ ap (λ k → k ⊙∘ ⊙Ω-fmap (⊙Ω^-fmap n (ap f₀ , idp)) ⊙∘ ⊙Ω-fmap (⊙Ω^-Ω-split n A))
            (! (⊙Ω^-Ω-split-rev-S n)) ⟩
     ⊙Ω^-Ω-split-rev (S n) ⊙∘ ⊙Ω-fmap (⊙Ω^-fmap n (ap f₀ , idp)) ⊙∘ ⊙Ω-fmap (⊙Ω^-Ω-split n A) =∎
-    
+
+module _ {i} {X : Type i} {x : X} where
+
+  Ω^-Ω-split-≃-ₚ : (n : ℕ-ₚ) → Ω^ (S (pnat n)) (⊙[ X , x ]) ≃ Ω^ (pnat n) (⊙Ω ⊙[ X , x ])
+  Ω^-Ω-split-≃-ₚ n = Ω^-Ω-split-equiv (pnat n) ⊙[ X , x ]
+
+  Ω^-Ω-split-revₚ : (n : ℕ-ₚ) → Ω^ (pnat n) (⊙Ω ⊙[ X , x ]) → Ω^ (S (pnat n)) ⊙[ X , x ]
+  Ω^-Ω-split-revₚ n = <– (Ω^-Ω-split-≃-ₚ n)
+
+  Ω^-Ω-split-Path-ₚ : (n : ℕ-ₚ) → Ω^ (S (pnat n)) (⊙[ X , x ]) == Ω^ (pnat n) (⊙Ω ⊙[ X , x ])
+  Ω^-Ω-split-Path-ₚ n = ua (Ω^-Ω-split-≃-ₚ n)
+
 module _ {i j} (X : Ptd i) (Y : Ptd j) where
 
   Ω-× : Ω (X ⊙× Y) ≃ Ω X × Ω Y

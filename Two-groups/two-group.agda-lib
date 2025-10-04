@@ -3,6 +3,8 @@ depend:
   hott-core-group
   hott-theorems-group
   bicats
+  2grphom
+  sinh
 include:
   2Grps
   Deloop

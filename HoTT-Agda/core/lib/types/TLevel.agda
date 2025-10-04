@@ -64,6 +64,14 @@ m ≤T n = Coprod (m == n) (m <T n)
 ≤T-trans {m = m} lte₁ (inl p₂) = transport (λ t → m ≤T t) p₂ lte₁
 ≤T-trans (inr lt₁) (inr lt₂) = inr (<T-trans lt₁ lt₂)
 
+0≤T : {n : ℕ} → S (S ⟨-2⟩) ≤T ⟨ n ⟩
+0≤T {O} = inl idp
+0≤T {S n} = ≤T-trans (0≤T {n}) (inr ltS)
+
+⟨⟩-S-≤T : ∀ {n} → S (S ⟨-2⟩) ≤T S ⟨ n ⟩
+⟨⟩-S-≤T {O} = inr ltS
+⟨⟩-S-≤T {S n} = ≤T-trans (⟨⟩-S-≤T {n}) (inr ltS)
+
 <T-ap-S : {m n : ℕ₋₂} → m <T n → S m <T S n
 <T-ap-S ltS = ltS
 <T-ap-S (ltSR lt) = ltSR (<T-ap-S lt)
