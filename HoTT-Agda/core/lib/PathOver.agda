@@ -409,6 +409,7 @@ module _ {i j} {A : Type i} {B : Type j} {f g : A → B} where
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} where 
 
+  -- "crd" stands for "coordinate"
   infixr 30 _⊙-crd∼_
   _⊙-crd∼_ : (f g : X ⊙→ Y) → Type (lmax i j)
   _⊙-crd∼_ f g = Σ (fst f ∼ fst g) λ H → ! (H (pt X)) ∙ snd f == snd g
