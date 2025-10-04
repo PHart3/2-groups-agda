@@ -15,7 +15,7 @@ id₁ (Ptd-wc _) X = ⊙idf X
 _▢_ (Ptd-wc _) g f = g ⊙∘ f
 ρ (Ptd-wc _) f = ⊙-crd∼-to-== (⊙∘-runit f) 
 lamb (Ptd-wc _) f = ⊙-crd∼-to-== (⊙∘-lunit f)
-α (Ptd-wc _) h g f = ⊙-crd∼-to-== (⊙∘-assoc-comp h g f)
+α (Ptd-wc _) h g f = ⊙-crd∼-to-== (⊙∘-assoc-crd h g f)
 
 PtdFunctor : (i j : ULevel) → Type (lsucc (lmax i j))
 PtdFunctor i j = Functor-wc (Ptd-wc i) (Ptd-wc j)
