@@ -24,7 +24,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
 
   open WkSGrpNatIso
 
-  apK₂ : WkSGrpNatIso m₁ m₂ → K₂-map⊙ σ₁ ⊙-comp K₂-map⊙ σ₂
+  apK₂ : WkSGrpNatIso m₁ m₂ → K₂-map⊙ σ₁ ⊙-crd∼ K₂-map⊙ σ₂
   fst (apK₂ iso) = 
     K₂-∼-ind (fst (K₂-map⊙ σ₁)) (fst (K₂-map⊙ σ₂))
     idp
@@ -65,8 +65,8 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
 module aux-hide {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {φ₁ : CohGrpHom {{η₁}} {{η₂}}} where
 
   abstract
-    apK₂-pres-aux : ap K₂-action-hom (natiso2G-to-== {μ = φ₁} {ν = φ₁} (natiso-id2G φ₁)) == ⊙-comp-to-== (apK₂ (natiso-id2G φ₁))
-    apK₂-pres-aux = ap (ap K₂-action-hom) (natiso2G-to-==-β φ₁) ∙ ! (ap ⊙-comp-to-== (⊙→∼-to-== apK₂-idp) ∙ ⊙-comp-to-==-β (K₂-action-hom φ₁))
+    apK₂-pres-aux : ap K₂-action-hom (natiso2G-to-== {μ = φ₁} {ν = φ₁} (natiso-id2G φ₁)) == ⊙-crd∼-to-== (apK₂ (natiso-id2G φ₁))
+    apK₂-pres-aux = ap (ap K₂-action-hom) (natiso2G-to-==-β φ₁) ∙ ! (ap ⊙-crd∼-to-== (⊙→∼-to-== apK₂-idp) ∙ ⊙-crd∼-to-==-β (K₂-action-hom φ₁))
 
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {φ₁@(cohgrphom f₁ {{σ₁}}) : CohGrpHom {{η₁}} {{η₂}}} where
 
@@ -74,9 +74,9 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
 
   abstract
     apK₂-pres : {φ₂@(cohgrphom f₂ {{σ₂}}) : CohGrpHom {{η₁}} {{η₂}}} (iso : CohGrpNatIso φ₁ φ₂)
-      → ap K₂-action-hom (natiso2G-to-== {μ = φ₁} {ν = φ₂} iso) == ⊙-comp-to-== (apK₂ {f₁ = f₁} {f₂ = f₂} {σ₁ = σ₁} {σ₂ = σ₂} iso) 
+      → ap K₂-action-hom (natiso2G-to-== {μ = φ₁} {ν = φ₂} iso) == ⊙-crd∼-to-== (apK₂ {f₁ = f₁} {f₂ = f₂} {σ₁ = σ₁} {σ₂ = σ₂} iso) 
     apK₂-pres =
       natiso2G-ind {μ = φ₁}
         (λ φ₂@(cohgrphom f₂ {{σ₂}}) iso →
-          ap K₂-action-hom (natiso2G-to-== {μ = φ₁} {ν = φ₂} iso) == ⊙-comp-to-== (apK₂ {f₁ = f₁} {f₂ = f₂} {σ₁ = σ₁} {σ₂ = σ₂} iso))
+          ap K₂-action-hom (natiso2G-to-== {μ = φ₁} {ν = φ₂} iso) == ⊙-crd∼-to-== (apK₂ {f₁ = f₁} {f₂ = f₂} {σ₁ = σ₁} {σ₂ = σ₂} iso))
         apK₂-pres-aux

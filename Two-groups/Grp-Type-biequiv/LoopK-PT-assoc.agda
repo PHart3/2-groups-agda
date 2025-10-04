@@ -28,7 +28,7 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
     LoopK-coher-assoc :
       ! (natiso2G-to-== (sq-ΩK (φ₂ ∘2Gσ φ₁))) ∙
       ap (λ m → m ∘2G K₂-loopmap G₁)
-        (ap Loop2Grp-map (⊙-comp-to-== (K₂-map-∘ σ₁ σ₂)) ∙
+        (ap Loop2Grp-map (⊙-crd∼-to-== (K₂-map-∘ σ₁ σ₂)) ∙
         natiso2G-to-== (Loop2Grp-map-∘ (K₂-map⊙ σ₂) (K₂-map⊙ σ₁))) ∙
       ! (natiso2G-to-==
           (assoc-wksgrphom (grphom-forg (Loop2Grp-map (K₂-map⊙ σ₂))) (grphom-forg (Loop2Grp-map (K₂-map⊙ σ₁))) (grphom-forg (K₂-loopmap G₁)))) ∙

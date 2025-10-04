@@ -409,22 +409,22 @@ module _ {i j} {A : Type i} {B : Type j} {f g : A → B} where
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} where 
 
-  infixr 30 _⊙-comp_
-  _⊙-comp_ : (f g : X ⊙→ Y) → Type (lmax i j)
-  _⊙-comp_ f g = Σ (fst f ∼ fst g) λ H → ! (H (pt X)) ∙ snd f == snd g
+  infixr 30 _⊙-crd∼_
+  _⊙-crd∼_ : (f g : X ⊙→ Y) → Type (lmax i j)
+  _⊙-crd∼_ f g = Σ (fst f ∼ fst g) λ H → ! (H (pt X)) ∙ snd f == snd g
 
   comp-⊙∼ : {f g : X ⊙→ Y} (H : f ⊙∼ g) → ! (fst H (pt X)) ∙ snd f == snd g
   comp-⊙∼ {f = f} H = ! (transp-cst=idf-l (fst H (pt X)) (snd f)) ∙ to-transp (snd H)
 
-  ⊙-to-comp : {f g : X ⊙→ Y} → f ⊙∼ g → f ⊙-comp g
+  ⊙-to-comp : {f g : X ⊙→ Y} → f ⊙∼ g → f ⊙-crd∼ g
   ⊙-to-comp H = fst H , comp-⊙∼ H  
 
-  comp-to-⊙ : {f g : X ⊙→ Y} → f ⊙-comp g → f ⊙∼ g
+  comp-to-⊙ : {f g : X ⊙→ Y} → f ⊙-crd∼ g → f ⊙∼ g
   fst (comp-to-⊙ H) = fst H
   snd (comp-to-⊙ {f} H) =
     from-transp (_== pt Y) (fst H (pt X)) (transp-cst=idf-l (fst H (pt X)) (snd f) ∙ snd H)
 
-  ⊙id-to-comp : {f g : X ⊙→ Y} (p : f == g) → f ⊙-comp g
+  ⊙id-to-comp : {f g : X ⊙→ Y} (p : f == g) → f ⊙-crd∼ g
   fst (⊙id-to-comp idp) = λ x → idp
   snd (⊙id-to-comp idp) = idp
 

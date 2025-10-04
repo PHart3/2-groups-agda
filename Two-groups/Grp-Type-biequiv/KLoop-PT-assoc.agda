@@ -26,17 +26,17 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k}
 
   abstract
     KLoop-coher-assoc :
-      ! (⊙-comp-to-== (sq-KΩ (pt X) (pt Z) (g* ⊙∘ f*))) ∙
-      ! (⊙-comp-to-== (⊙∘-α-comp g* f* (K₂-rec-hom (pt X) (idf2G {{Loop2Grp (pt X)}})))) ∙ 
-      ap (λ m → g* ⊙∘ m) (⊙-comp-to-== (sq-KΩ (pt X) (pt Y) f*)) ∙
-      ⊙-comp-to-== (⊙∘-α-comp g* (K₂-rec-hom (pt Y) (idf2G {{Loop2Grp (pt Y)}})) (K₂-action-hom (Loop2Grp-map f*))) ∙
-      ap (λ m → m ⊙∘ K₂-action-hom (Loop2Grp-map f*)) (⊙-comp-to-== (sq-KΩ (pt Y) (pt Z) g*)) ∙
-      ! (⊙-comp-to-==
+      ! (⊙-crd∼-to-== (sq-KΩ (pt X) (pt Z) (g* ⊙∘ f*))) ∙
+      ! (⊙-crd∼-to-== (⊙∘-α-comp g* f* (K₂-rec-hom (pt X) (idf2G {{Loop2Grp (pt X)}})))) ∙ 
+      ap (λ m → g* ⊙∘ m) (⊙-crd∼-to-== (sq-KΩ (pt X) (pt Y) f*)) ∙
+      ⊙-crd∼-to-== (⊙∘-α-comp g* (K₂-rec-hom (pt Y) (idf2G {{Loop2Grp (pt Y)}})) (K₂-action-hom (Loop2Grp-map f*))) ∙
+      ap (λ m → m ⊙∘ K₂-action-hom (Loop2Grp-map f*)) (⊙-crd∼-to-== (sq-KΩ (pt Y) (pt Z) g*)) ∙
+      ! (⊙-crd∼-to-==
           (⊙∘-α-comp (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}})) (K₂-action-hom (Loop2Grp-map g*))
             (K₂-action-hom {{Loop2Grp (pt X)}} {{Loop2Grp (pt Y)}} (Loop2Grp-map f*)))) ∙
       ! (
         ap (λ m → K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ m)
-          (ap K₂-action-hom (natiso2G-to-== (Loop2Grp-map-∘ g* f*)) ∙ ⊙-comp-to-== (K₂-map-∘ (Loop2Grp-map-str f*) (Loop2Grp-map-str g*))))
+          (ap K₂-action-hom (natiso2G-to-== (Loop2Grp-map-∘ g* f*)) ∙ ⊙-crd∼-to-== (K₂-map-∘ (Loop2Grp-map-str f*) (Loop2Grp-map-str g*))))
         ==
       idp {a = K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ K₂-action-hom (Loop2Grp-map (g* ⊙∘ f*))}
     KLoop-coher-assoc = =ₛ-out $

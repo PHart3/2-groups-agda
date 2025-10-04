@@ -251,7 +251,7 @@ module _ {i j} {A : Ptd i} {B : Ptd j} {n : ℕ₋₂} {{_ : has-level (S n) (de
 
   ⊙Ω-Trunc-rec-coh-rot : (f : A ⊙→ B) →
     ⊙Trunc-fmap {n = n} (⊙Ω-fmap f) == [_]-⊙ ⊙∘ ⊙Ω-fmap (⊙Trunc-rec {n = S n} f) ⊙∘ ⊙Ω-UnTrunc-[_] A
-  ⊙Ω-Trunc-rec-coh-rot (f₀ , idp) = ⊙-comp-to-== ((Trunc-elim λ p → ap [_] (ap-∘ (Trunc-elim f₀) [_] p)) , idp)
+  ⊙Ω-Trunc-rec-coh-rot (f₀ , idp) = ⊙-crd∼-to-== ((Trunc-elim λ p → ap [_] (ap-∘ (Trunc-elim f₀) [_] p)) , idp)
 
   ⊙Ω-Trunc-rec-coh : (f : A ⊙→ B) →
     ⊙–> (⊙unTrunc-equiv (⊙Ω B)) ⊙∘ ⊙Trunc-fmap {n = n} (⊙Ω-fmap f) ⊙∘ ⊙Ω-Trunc-[ A ] == ⊙Ω-fmap (⊙Trunc-rec {n = S n} f)
@@ -267,7 +267,7 @@ module _ {i j} {A : Ptd i} {B : Ptd j} {n : ℕ₋₂} {{_ : has-level (S n) (de
     (⊙–> (⊙unTrunc-equiv {n = n} (⊙Ω B)) ⊙∘ [_]-⊙) ⊙∘ ⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ ⊙Ω-UnTrunc-[ A ] ⊙∘ ⊙Ω-Trunc-[ A ]
       =⟨ ap (λ m → m ⊙∘ ⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ ⊙Ω-UnTrunc-[ A ] ⊙∘ ⊙Ω-Trunc-[ A ]) (⊙λ= (⊙<–-inv-r (⊙unTrunc-equiv {n = n} (⊙Ω B)))) ⟩
     ⊙idf (⊙Ω B) ⊙∘ ⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ ⊙Ω-UnTrunc-[ A ] ⊙∘ ⊙Ω-Trunc-[ A ]
-      =⟨ ! (⊙-comp-to-== (⊙∘-lunit (⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ ⊙Ω-UnTrunc-[ A ] ⊙∘ ⊙Ω-Trunc-[ A ]))) ⟩
+      =⟨ ! (⊙-crd∼-to-== (⊙∘-lunit (⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ ⊙Ω-UnTrunc-[ A ] ⊙∘ ⊙Ω-Trunc-[ A ]))) ⟩
     ⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ ⊙Ω-UnTrunc-[ A ] ⊙∘ ⊙Ω-Trunc-[ A ]
       =⟨ ap (λ m → ⊙Ω-fmap (⊙Trunc-rec f) ⊙∘ m) (⊙λ= (⊙<–-inv-l (⊙Ω-Trunc-[ A ]-≃))) ⟩
     ⊙Ω-fmap (⊙Trunc-rec f) =∎
@@ -282,7 +282,7 @@ module _ {i j} {A : Ptd i} {B : Ptd j} {n : ℕ₋₂} {{_ : has-level (S n) (de
   (f : X ⊙→ Y) → f == ⊙–> (⊙unTrunc-equiv Y) ⊙∘ ⊙Trunc-fmap {n = n} f ⊙∘ [_]-⊙
 ⊙-unTrunc-fmap-nat-rot-in {X = X} {Y} f =
   f
-    =⟨ ⊙-comp-to-== (⊙∘-lunit f) ⟩
+    =⟨ ⊙-crd∼-to-== (⊙∘-lunit f) ⟩
   ⊙idf Y ⊙∘ f
     =⟨ ap (λ m → m ⊙∘ f) (! (⊙λ= (⊙<–-inv-r (⊙unTrunc-equiv Y)))) ⟩
   (⊙–> (⊙unTrunc-equiv Y) ⊙∘ [_]-⊙) ⊙∘ f
@@ -310,7 +310,7 @@ module _ {i j} {A : Ptd i} {B : Ptd j} {n : ℕ₋₂} {{_ : has-level (S n) (de
   ap (λ m → ⊙–> (⊙unTrunc-equiv Y) ⊙∘ m) (⊙-unTrunc-fmap-nat-rot-out f) ∙
   ! (⊙λ= (⊙∘-assoc (⊙–> (⊙unTrunc-equiv Y)) [_]-⊙ (f ⊙∘ ⊙–> (⊙unTrunc-equiv X)))) ∙
   ap (λ m → m ⊙∘ f ⊙∘ ⊙–> (⊙unTrunc-equiv X)) (⊙λ= (⊙<–-inv-r (⊙unTrunc-equiv Y))) ∙
-  ! (⊙-comp-to-== (⊙∘-lunit (f ⊙∘ ⊙–> (⊙unTrunc-equiv X))))
+  ! (⊙-crd∼-to-== (⊙∘-lunit (f ⊙∘ ⊙–> (⊙unTrunc-equiv X))))
 
 Trunc-fmap2 : ∀ {i j k} {n : ℕ₋₂} {A : Type i} {B : Type j} {C : Type k}
   → ((A → B → C) → (Trunc n A → Trunc n B → Trunc n C))
@@ -404,7 +404,7 @@ module _ {i j} {n : ℕ₋₂} {A : Ptd i} {B : Ptd j} {{_ : has-level n (de⊙ 
         ([_]-⊙ ⊙∘ ⊙–> (⊙unTrunc-equiv B)) ⊙∘ f ⊙∘ [_]-⊙ ⊙∘ ⊙–> (⊙unTrunc-equiv A)
           =⟨ ap (λ m → m ⊙∘ f ⊙∘ [_]-⊙ ⊙∘ ⊙–> (⊙unTrunc-equiv A)) (⊙λ= (⊙<–-inv-l (⊙unTrunc-equiv B))) ⟩
         ⊙idf (⊙Trunc n B) ⊙∘ f ⊙∘ [_]-⊙ ⊙∘ ⊙–> (⊙unTrunc-equiv A)
-          =⟨ ! (⊙-comp-to-== (⊙∘-lunit (f ⊙∘ [_]-⊙ ⊙∘ ⊙–> (⊙unTrunc-equiv A)))) ⟩
+          =⟨ ! (⊙-crd∼-to-== (⊙∘-lunit (f ⊙∘ [_]-⊙ ⊙∘ ⊙–> (⊙unTrunc-equiv A)))) ⟩
         f ⊙∘ [_]-⊙ ⊙∘ ⊙–> (⊙unTrunc-equiv A)
           =⟨ ap (λ m → f ⊙∘ m) (⊙λ= (⊙<–-inv-l (⊙unTrunc-equiv A))) ⟩
         f =∎))
@@ -418,7 +418,7 @@ module _ {i j} {n : ℕ₋₂} {A : Ptd i} {B : Ptd j} {{_ : has-level n (de⊙ 
         (⊙–> (⊙unTrunc-equiv B) ⊙∘ [_]-⊙) ⊙∘ f ⊙∘ ⊙–> (⊙unTrunc-equiv A) ⊙∘ [_]-⊙
           =⟨ ap (λ m → m ⊙∘ f ⊙∘ ⊙–> (⊙unTrunc-equiv A) ⊙∘ [_]-⊙) (⊙λ= (⊙<–-inv-r (⊙unTrunc-equiv B))) ⟩
         ⊙idf B ⊙∘ f ⊙∘ ⊙–> (⊙unTrunc-equiv A) ⊙∘ [_]-⊙
-          =⟨ ! (⊙-comp-to-== (⊙∘-lunit (f ⊙∘ ⊙–> (⊙unTrunc-equiv A) ⊙∘ [_]-⊙ ))) ⟩
+          =⟨ ! (⊙-crd∼-to-== (⊙∘-lunit (f ⊙∘ ⊙–> (⊙unTrunc-equiv A) ⊙∘ [_]-⊙ ))) ⟩
         f ⊙∘ ⊙–> (⊙unTrunc-equiv A) ⊙∘ [_]-⊙
           =⟨ ap (λ m → f ⊙∘ m) (⊙λ= (⊙<–-inv-r (⊙unTrunc-equiv A))) ⟩
         f =∎)

@@ -109,7 +109,7 @@ module ⊙EM-β (n : ℕ) {X : Ptd i} {{X-level : has-level ⟨ S (S n) ⟩ (de�
       ⊙–> (⊙unTrunc-equiv (⊙Ω X)) ⊙◃∙
       ⊙Trunc-fmap (⊙EM-elimₙ n φ) ⊙◃∙
       ⊙Trunc-fmap [_]-⊙ ⊙◃∎
-        ⊙=ₛ₁⟨ 2 & 1 & ⊙-comp-to-== ((Trunc-elim (λ _ → idp)) , idp) ⟩
+        ⊙=ₛ₁⟨ 2 & 1 & ⊙-crd∼-to-== ((Trunc-elim (λ _ → idp)) , idp) ⟩
       ⊙–> (⊙unTrunc-equiv (⊙Ω X)) ⊙◃∙
       ⊙Trunc-fmap (⊙EM-elimₙ n φ) ⊙◃∙
       [_]-⊙ ⊙◃∎

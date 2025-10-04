@@ -24,7 +24,7 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
     map₁-∘ = K₂-map (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}})
     map₂-∘ = K₂-map σ₂ ∘ K₂-map σ₁
 
-    K₂-map-∘ : K₂-map⊙ (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}) ⊙-comp K₂-map⊙ σ₂ ⊙∘ K₂-map⊙ σ₁ 
+    K₂-map-∘ : K₂-map⊙ (cohgrphom f₂ {{σ₂}} ∘2Gσ cohgrphom f₁ {{σ₁}}) ⊙-crd∼ K₂-map⊙ σ₂ ⊙∘ K₂-map⊙ σ₁ 
     fst K₂-map-∘ =
       K₂-∼-ind
         map₁-∘ map₂-∘

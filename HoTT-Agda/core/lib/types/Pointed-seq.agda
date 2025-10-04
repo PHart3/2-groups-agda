@@ -43,7 +43,7 @@ module _ {i : ULevel} where
 
   ⊙↯-∙∙ : {A B C : Ptd i} (s : A ⊙→-s B) (t : B ⊙→-s C)
     → ⊙↯ (s ⊙-∙∙ t) == ⊙↯ t ⊙∘ ⊙↯ s
-  ⊙↯-∙∙ s [] = ⊙-comp-to-== (⊙∘-lunit _)
+  ⊙↯-∙∙ s [] = ⊙-crd∼-to-== (⊙∘-lunit _)
   ⊙↯-∙∙ [] (m ⊙◃∙ []) = idp
   ⊙↯-∙∙ (p ⊙◃∙ v) (m ⊙◃∙ []) = idp
   ⊙↯-∙∙ s (m ⊙◃∙ v@(_ ⊙◃∙ _)) = ap (λ p → m ⊙∘ p) (⊙↯-∙∙ s v) ∙ ! (⊙λ= (⊙∘-assoc m _ (⊙↯ s)))

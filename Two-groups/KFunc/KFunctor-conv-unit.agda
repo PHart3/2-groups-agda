@@ -22,58 +22,58 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
   
     K₂-ρ :
       ap K₂-action-hom (natiso2G-to-== (unit-wksgrphom-r (grphom-forg φ))) ∙
-      ⊙-comp-to-== (K₂-map-∘ idf2G σ) ∙
-      ap (λ m → K₂-action-hom φ ⊙∘ m) (⊙-comp-to-== (K₂-map-idf {{η₁}}))
+      ⊙-crd∼-to-== (K₂-map-∘ idf2G σ) ∙
+      ap (λ m → K₂-action-hom φ ⊙∘ m) (⊙-crd∼-to-== (K₂-map-idf {{η₁}}))
         ==
-      ⊙-comp-to-== (⊙∘-runit (K₂-action-hom φ))
+      ⊙-crd∼-to-== (⊙∘-runit (K₂-action-hom φ))
     K₂-ρ = =ₛ-out $
       ap K₂-action-hom (natiso2G-to-== (unit-wksgrphom-r (grphom-forg φ))) ◃∙
-      ⊙-comp-to-== (K₂-map-∘ idf2G σ) ◃∙
-      ap (λ m → K₂-action-hom φ ⊙∘ m) (⊙-comp-to-== (K₂-map-idf {{η₁}})) ◃∎
+      ⊙-crd∼-to-== (K₂-map-∘ idf2G σ) ◃∙
+      ap (λ m → K₂-action-hom φ ⊙∘ m) (⊙-crd∼-to-== (K₂-map-idf {{η₁}})) ◃∎
         =ₛ₁⟨ 0 & 1 & apK₂-pres (unit-wksgrphom-r (grphom-forg φ)) ⟩
-      ⊙-comp-to-== (apK₂ (unit-wksgrphom-r (grphom-forg φ))) ◃∙
-      ⊙-comp-to-== (K₂-map-∘ idf2G σ) ◃∙
-      ap (λ m → K₂-action-hom φ ⊙∘ m) (⊙-comp-to-== (K₂-map-idf {{η₁}})) ◃∎
+      ⊙-crd∼-to-== (apK₂ (unit-wksgrphom-r (grphom-forg φ))) ◃∙
+      ⊙-crd∼-to-== (K₂-map-∘ idf2G σ) ◃∙
+      ap (λ m → K₂-action-hom φ ⊙∘ m) (⊙-crd∼-to-== (K₂-map-idf {{η₁}})) ◃∎
         =ₛ₁⟨ 2 & 1 & ! (whisk⊙-conv-l {f₁ = K₂-action-hom φ} (K₂-map-idf {{η₁}})) ⟩
-      ⊙-comp-to-== (apK₂ (unit-wksgrphom-r (grphom-forg φ))) ◃∙
-      ⊙-comp-to-== (K₂-map-∘ idf2G σ) ◃∙
-      ⊙-comp-to-== (⊙∘-post (K₂-action-hom φ) (K₂-map-idf {{η₁}})) ◃∎
+      ⊙-crd∼-to-== (apK₂ (unit-wksgrphom-r (grphom-forg φ))) ◃∙
+      ⊙-crd∼-to-== (K₂-map-∘ idf2G σ) ◃∙
+      ⊙-crd∼-to-== (⊙∘-post (K₂-action-hom φ) (K₂-map-idf {{η₁}})) ◃∎
         =ₛ⟨ !ₛ (⊙∘-conv-tri
                  (apK₂ (unit-wksgrphom-r (grphom-forg φ)))
                  (K₂-map-∘ idf2G σ)
                  (⊙∘-post (K₂-action-hom φ) (K₂-map-idf {{η₁}}))) ⟩
-      ⊙-comp-to-==
+      ⊙-crd∼-to-==
         (apK₂ (unit-wksgrphom-r (grphom-forg φ)) ∙⊙∼
          K₂-map-∘ idf2G σ ∙⊙∼
          ⊙∘-post (K₂-action-hom φ) (K₂-map-idf {{η₁}})) ◃∎
-         =ₛ₁⟨ ap ⊙-comp-to-== (⊙→∼-to-== (KFunc-runit σ)) ⟩
-      ⊙-comp-to-== (⊙∘-runit (K₂-action-hom φ)) ◃∎ ∎ₛ
+         =ₛ₁⟨ ap ⊙-crd∼-to-== (⊙→∼-to-== (KFunc-runit σ)) ⟩
+      ⊙-crd∼-to-== (⊙∘-runit (K₂-action-hom φ)) ◃∎ ∎ₛ
 
     K₂-λ :
       ap K₂-action-hom (natiso2G-to-== (unit-wksgrphom-l (grphom-forg φ))) ∙
-      ⊙-comp-to-== (K₂-map-∘ σ idf2G) ∙
-      ap (λ m → m ⊙∘ K₂-action-hom φ) (⊙-comp-to-== (K₂-map-idf {{η₂}}))
+      ⊙-crd∼-to-== (K₂-map-∘ σ idf2G) ∙
+      ap (λ m → m ⊙∘ K₂-action-hom φ) (⊙-crd∼-to-== (K₂-map-idf {{η₂}}))
         ==
-      ⊙-comp-to-== (⊙∘-lunit (K₂-action-hom φ))
+      ⊙-crd∼-to-== (⊙∘-lunit (K₂-action-hom φ))
     K₂-λ = =ₛ-out $
       ap K₂-action-hom (natiso2G-to-== (unit-wksgrphom-l (grphom-forg φ))) ◃∙
-      ⊙-comp-to-== (K₂-map-∘ σ idf2G) ◃∙
-      ap (λ m → m ⊙∘ K₂-action-hom φ) (⊙-comp-to-== (K₂-map-idf {{η₂}})) ◃∎
+      ⊙-crd∼-to-== (K₂-map-∘ σ idf2G) ◃∙
+      ap (λ m → m ⊙∘ K₂-action-hom φ) (⊙-crd∼-to-== (K₂-map-idf {{η₂}})) ◃∎
           =ₛ₁⟨ 0 & 1 & apK₂-pres (unit-wksgrphom-l (grphom-forg φ)) ⟩
-      ⊙-comp-to-== (apK₂ (unit-wksgrphom-l (grphom-forg φ))) ◃∙
-      ⊙-comp-to-== (K₂-map-∘ σ idf2G) ◃∙
-      ap (λ m → m ⊙∘ K₂-action-hom φ) (⊙-comp-to-== (K₂-map-idf {{η₂}})) ◃∎
+      ⊙-crd∼-to-== (apK₂ (unit-wksgrphom-l (grphom-forg φ))) ◃∙
+      ⊙-crd∼-to-== (K₂-map-∘ σ idf2G) ◃∙
+      ap (λ m → m ⊙∘ K₂-action-hom φ) (⊙-crd∼-to-== (K₂-map-idf {{η₂}})) ◃∎
         =ₛ₁⟨ 2 & 1 & ! (whisk⊙-conv-r {f₁ = K₂-action-hom φ} (K₂-map-idf {{η₂}})) ⟩
-      ⊙-comp-to-== (apK₂ (unit-wksgrphom-l (grphom-forg φ))) ◃∙
-      ⊙-comp-to-== (K₂-map-∘ σ idf2G) ◃∙
-      ⊙-comp-to-== (⊙∘-pre (K₂-action-hom φ) (K₂-map-idf {{η₂}})) ◃∎
+      ⊙-crd∼-to-== (apK₂ (unit-wksgrphom-l (grphom-forg φ))) ◃∙
+      ⊙-crd∼-to-== (K₂-map-∘ σ idf2G) ◃∙
+      ⊙-crd∼-to-== (⊙∘-pre (K₂-action-hom φ) (K₂-map-idf {{η₂}})) ◃∎
         =ₛ⟨ !ₛ (⊙∘-conv-tri
                  (apK₂ (unit-wksgrphom-l (grphom-forg φ)))
                  (K₂-map-∘ σ idf2G)
                  (⊙∘-pre (K₂-action-hom φ) (K₂-map-idf {{η₂}}))) ⟩
-      ⊙-comp-to-==
+      ⊙-crd∼-to-==
         (apK₂ (unit-wksgrphom-l (grphom-forg φ)) ∙⊙∼
          K₂-map-∘ σ idf2G ∙⊙∼
          ⊙∘-pre (K₂-action-hom φ) (K₂-map-idf {{η₂}})) ◃∎
-         =ₛ₁⟨ ap ⊙-comp-to-== (⊙→∼-to-== (KFunc-lunit σ)) ⟩
-      ⊙-comp-to-== (⊙∘-lunit (K₂-action-hom φ)) ◃∎ ∎ₛ
+         =ₛ₁⟨ ap ⊙-crd∼-to-== (⊙→∼-to-== (KFunc-lunit σ)) ⟩
+      ⊙-crd∼-to-== (⊙∘-lunit (K₂-action-hom φ)) ◃∎ ∎ₛ
