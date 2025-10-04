@@ -20,6 +20,7 @@ COPY . .
 RUN mkdir -p /root/.agda
 RUN echo "/HoTT-Agda/hott-core.agda-lib" >> /root/.agda/libraries
 RUN echo "/HoTT-Agda/hott-theorems.agda-lib" >> /root/.agda/libraries
+RUN echo "/Two-groups/2Grps/2grphom.agda-lib" >> /root/.agda/libraries
 RUN echo "/Two-groups/two-group.agda-lib" >> /root/.agda/libraries 
 RUN echo "/Bicats/bicats.agda-lib" >> /root/.agda/libraries
 RUN echo "/Final/final.agda-lib" >> /root/.agda/libraries
