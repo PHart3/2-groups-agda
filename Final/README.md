@@ -21,4 +21,4 @@ all relevant type equivalences but not the biequivalence.
 ## License
 
 This work is released under Mozilla Public License 2.0.
-See [LICENSE.txt](LICENSE.txt)
+See [LICENSE.txt](LICENSE.txt).

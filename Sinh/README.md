@@ -10,4 +10,4 @@ consisting of an *n*-group BG, a G-module H : BG -> Ab, and a cohomology class i
 ## License
 
 This work is released under Mozilla Public License 2.0.
-See [LICENSE.txt](LICENSE.txt)
+See [LICENSE.txt](LICENSE.txt).
