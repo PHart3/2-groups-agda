@@ -26,7 +26,7 @@ module _ {i} (A : Type i) where
   Susp : Type i
   Susp = Pushout susp-span
 
-  -- [north'] and [south'] explictly ask for [A]
+  -- [north'] and [south'] explicitly ask for [A]
 
   north' : Susp
   north' = left tt
