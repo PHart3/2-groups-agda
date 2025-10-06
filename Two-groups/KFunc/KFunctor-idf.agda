@@ -31,7 +31,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
       ap (λ p → ap (idf (K₂ G η)) p) (loop-comp G x y) ◃∎
     K₂-map-idf-coher x y = K₂-map-idf-coher0 x y ∙ₛ K₂-map-idf-coher1 x y ∙ₛ K₂-map-idf-coher2 x y
 
-  K₂-map-idf : K₂-map⊙ idf2G ⊙-comp (idf (K₂ G η) , idp)
+  K₂-map-idf : K₂-map⊙ idf2G ⊙-crd∼ (idf (K₂ G η) , idp)
   fst K₂-map-idf =
     K₂-∼-ind (K₂-map idf2G) (idf (K₂ G η))
       idp

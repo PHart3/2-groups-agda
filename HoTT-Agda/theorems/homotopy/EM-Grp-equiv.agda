@@ -38,7 +38,7 @@ module ⊙EM-β-deloop {i} (G : AbGroup i) where
       ⊙Ω-fmap (EM₁-level₁-rec (pt X) φ , idp) ⊙◃∙
       ⊙–> (⊙unTrunc-equiv (⊙Ω (⊙EM₁ grp)) {{has-level-apply-instance {{EM₁-level₁ grp}}}}) ⊙◃∙
       ⊙Ω-Trunc-[_] (⊙EM₁ grp) ⊙◃∎
-        ⊙=ₛ⟨ 1 & 2 & ⊙=ₛ-in (⊙-comp-to-== (=ₜ-equiv-ind {n = 0}
+        ⊙=ₛ⟨ 1 & 2 & ⊙=ₛ-in (⊙-crd∼-to-== (=ₜ-equiv-ind {n = 0}
           {P = λ (p : [ embase' (fst G) ] == [ embase' (fst G) ]) →
             Trunc-elim {{has-level-apply-instance {{EM₁-level₁ grp}}}} (λ v → v)
               (=ₜ-maps.to [ embase' (fst G) ] [ embase' (fst G) ] [ embase' (fst G) ] [ embase' (fst G) ] p)

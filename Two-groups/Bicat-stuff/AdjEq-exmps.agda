@@ -36,23 +36,23 @@ module _ {i} {X : Ptd02 i} where
           eta adj-str = idp
           eps adj-str = idp
           coher-map adj-str = =ₛ-out $
-            ⊙-comp-to-== (⊙∘-runit (⊙idf (fst X))) ◃∙
-            ⊙-comp-to-== (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
+            ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X))) ◃∙
+            ⊙-crd∼-to-== (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
               =ₛ⟨ !ₛ (⊙∘-conv (⊙∘-runit (⊙idf (fst X))) (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X)))) ⟩
-            ⊙-comp-to-== (⊙∘-runit (⊙idf (fst X)) ∙⊙∼ ⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
-              =ₛ₁⟨ ap ⊙-comp-to-== (⊙→∼-to-== ((λ _ → idp) , idp)) ⟩
-            ⊙-comp-to-== (⊙∘-lunit (⊙idf (fst X))) ◃∎
-              =ₛ₁⟨ ! (∙-unit-r (⊙-comp-to-== (⊙∘-lunit (⊙idf (fst X))))) ⟩
-            (⊙-comp-to-== (⊙∘-lunit (⊙idf (fst X))) ∙ idp) ◃∎ ∎ₛ
+            ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X)) ∙⊙∼ ⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
+              =ₛ₁⟨ ap ⊙-crd∼-to-== (⊙→∼-to-== ((λ _ → idp) , idp)) ⟩
+            ⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ◃∎
+              =ₛ₁⟨ ! (∙-unit-r (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))))) ⟩
+            (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ∙ idp) ◃∎ ∎ₛ
           coher-inv adj-str = =ₛ-out $
-            (⊙-comp-to-== (⊙∘-lunit (⊙idf (fst X))) ∙ idp) ◃∎
-              =ₛ₁⟨ ∙-unit-r (⊙-comp-to-== (⊙∘-lunit (⊙idf (fst X)))) ⟩
-            ⊙-comp-to-== (⊙∘-lunit (⊙idf (fst X))) ◃∎
-              =ₛ₁⟨ ap ⊙-comp-to-== (⊙→∼-to-== ((λ _ → idp) , idp)) ⟩
-            ⊙-comp-to-== (⊙∘-runit (⊙idf (fst X)) ∙⊙∼ ⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
+            (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ∙ idp) ◃∎
+              =ₛ₁⟨ ∙-unit-r (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X)))) ⟩
+            ⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ◃∎
+              =ₛ₁⟨ ap ⊙-crd∼-to-== (⊙→∼-to-== ((λ _ → idp) , idp)) ⟩
+            ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X)) ∙⊙∼ ⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
               =ₛ⟨ ⊙∘-conv (⊙∘-runit (⊙idf (fst X))) (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ⟩
-           ⊙-comp-to-== (⊙∘-runit (⊙idf (fst X))) ◃∙
-           ⊙-comp-to-== (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎ ∎ₛ 
+           ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X))) ◃∙
+           ⊙-crd∼-to-== (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎ ∎ₛ 
 
 -- an equivalence of 2-groups is an adjoint equivalence
 module _ {i} {G₁ : Type i} {η₁ : CohGrp G₁} where

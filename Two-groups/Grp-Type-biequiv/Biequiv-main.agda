@@ -41,9 +41,9 @@ module Biequiv-main where
   -- pseudofunctor from 2-groups to pointed connected 2-types
   map-pf (Ψ₁ (2Grp-Ptd02-bieq _)) = λ (G , η) → ⊙[ K₂ G η , base G {{η}} ] , ((K₂-is-conn G {{η}}) , (K₂-is-2type G {{η}}))
   F₁ (str-pf (Ψ₁ (2Grp-Ptd02-bieq _))) {_ , η₁} {_ , η₂} = K₂-action-hom {{η₁}} {{η₂}}
-  F-id₁ (str-pf (Ψ₁ (2Grp-Ptd02-bieq _))) = λ (_ , η) → ⊙-comp-to-== (K₂-map-idf {{η}})
+  F-id₁ (str-pf (Ψ₁ (2Grp-Ptd02-bieq _))) = λ (_ , η) → ⊙-crd∼-to-== (K₂-map-idf {{η}})
   F-◻ (str-pf (Ψ₁ (2Grp-Ptd02-bieq _))) {_ , η₁} {_ , η₂} {_ , η₃} =
-    λ (cohgrphom _ {{σ₁}}) (cohgrphom _ {{σ₂}}) → ⊙-comp-to-== (K₂-map-∘ {{η₁}} {{η₂}} {{η₃}} σ₁ σ₂)
+    λ (cohgrphom _ {{σ₁}}) (cohgrphom _ {{σ₂}}) → ⊙-crd∼-to-== (K₂-map-∘ {{η₁}} {{η₂}} {{η₃}} σ₁ σ₂)
   F-ρ (str-pf (Ψ₁ (2Grp-Ptd02-bieq _))) {_ , η₁} {_ , η₂} = K₂-ρ {{η₁}} {{η₂}}
   F-λ (str-pf (Ψ₁ (2Grp-Ptd02-bieq _))) {_ , η₁} {_ , η₂}= K₂-λ {{η₁}} {{η₂}}
   F-α (str-pf (Ψ₁ (2Grp-Ptd02-bieq _))) {_ , η₁} {_ , η₂} {_ , η₃} {_ , η₄} = K₂-α {{η₁}} {{η₂}} {{η₃}} {{η₄}}
@@ -65,7 +65,7 @@ module Biequiv-main where
   η₀ (τ₁ (2Grp-Ptd02-bieq _)) (X , _ , tr) =
     K₂-rec-hom {{Loop2Grp (pt X) {{has-level-apply tr (pt X) (pt X)}}}} {{tr}} (pt X)
       (idf2G {{Loop2Grp (pt X) {{has-level-apply tr (pt X) (pt X)}}}})
-  η₁ (τ₁ (2Grp-Ptd02-bieq _)) {X₁ , _ , tr₁} {X₂ , _ , tr₂} = λ f → ⊙-comp-to-== (sq-KΩ {{tr₁}} {{tr₂}} (pt X₁) (pt X₂) f)
+  η₁ (τ₁ (2Grp-Ptd02-bieq _)) {X₁ , _ , tr₁} {X₂ , _ , tr₂} = λ f → ⊙-crd∼-to-== (sq-KΩ {{tr₁}} {{tr₂}} (pt X₁) (pt X₂) f)
   coher-unit (τ₁ (2Grp-Ptd02-bieq _)) {_ , _ , tr} = KLoop-coher-unit {{tr}}
   coher-assoc (τ₁ (2Grp-Ptd02-bieq _)) {_ , _ , tr₁} {_ , _ , tr₂} {_ , _ , tr₃} = KLoop-coher-assoc {{tr₁}} {{tr₂}} {{tr₃}}
 

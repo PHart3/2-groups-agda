@@ -28,7 +28,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
     LoopK-coher-unit :
       natiso2G-to-== (unit-wksgrphom-l (grphom-forg K₂-loopmap)) ∙
       ap (λ m → m ∘2G K₂-loopmap)
-        (! (ap Loop2Grp-map (⊙-comp-to-== (K₂-map-idf {{η}})) ∙
+        (! (ap Loop2Grp-map (⊙-crd∼-to-== (K₂-map-idf {{η}})) ∙
         natiso2G-to-== (Loop2Grp-map-idf ⊙[ K₂ η , base ]))) ∙
       natiso2G-to-== (sq-ΩK (idf2G {{η}})) ∙
       idp
@@ -37,25 +37,25 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
     LoopK-coher-unit = =ₛ-out $
       natiso2G-to-== (unit-wksgrphom-l (grphom-forg K₂-loopmap)) ◃∙
       ap (λ m → m ∘2G K₂-loopmap)
-        (! (ap Loop2Grp-map (⊙-comp-to-== (K₂-map-idf {{η}})) ∙
+        (! (ap Loop2Grp-map (⊙-crd∼-to-== (K₂-map-idf {{η}})) ∙
         natiso2G-to-== (Loop2Grp-map-idf ⊙[ K₂ η , base ]))) ◃∙
       natiso2G-to-== (sq-ΩK (idf2G {{η}})) ◃∙
       idp ◃∎
         =ₛ₁⟨ 1 & 1 & ap-! (λ m → m ∘2G K₂-loopmap) $
-          ap Loop2Grp-map (⊙-comp-to-== (K₂-map-idf {{η}})) ∙ natiso2G-to-== (Loop2Grp-map-idf ⊙[ K₂ η , base ]) ⟩
+          ap Loop2Grp-map (⊙-crd∼-to-== (K₂-map-idf {{η}})) ∙ natiso2G-to-== (Loop2Grp-map-idf ⊙[ K₂ η , base ]) ⟩
       natiso2G-to-== (unit-wksgrphom-l (grphom-forg K₂-loopmap)) ◃∙
       ! (ap (λ m → m ∘2G K₂-loopmap)
-          (ap Loop2Grp-map (⊙-comp-to-== (K₂-map-idf {{η}})) ∙
+          (ap Loop2Grp-map (⊙-crd∼-to-== (K₂-map-idf {{η}})) ∙
           natiso2G-to-== (Loop2Grp-map-idf ⊙[ K₂ η , base ]))) ◃∙
       natiso2G-to-== (sq-ΩK (idf2G {{η}})) ◃∙
       idp ◃∎
         =ₛ⟨ 1 & 1 & !-=ₛ $
           ap-∙◃ (λ m → m ∘2G K₂-loopmap)
-            (ap Loop2Grp-map (⊙-comp-to-== (K₂-map-idf {{η}})))
+            (ap Loop2Grp-map (⊙-crd∼-to-== (K₂-map-idf {{η}})))
             (natiso2G-to-== (Loop2Grp-map-idf ⊙[ K₂ η , base ])) ⟩
       natiso2G-to-== (unit-wksgrphom-l (grphom-forg K₂-loopmap)) ◃∙
       ! (ap (λ m → m ∘2G K₂-loopmap) (natiso2G-to-== (Loop2Grp-map-idf ⊙[ K₂ η , base ]))) ◃∙
-      ! (ap (λ m → m ∘2G K₂-loopmap) (ap Loop2Grp-map (⊙-comp-to-== K₂-map-idf))) ◃∙
+      ! (ap (λ m → m ∘2G K₂-loopmap) (ap Loop2Grp-map (⊙-crd∼-to-== K₂-map-idf))) ◃∙
       natiso2G-to-== (sq-ΩK idf2G) ◃∙
       idp ◃∎
         =ₛ₁⟨ 1 & 1 &
@@ -63,7 +63,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
           ! (natiso2G-! (natiso-whisk-r (Loop2Grp-map-idf ⊙[ K₂ η , base ]))) ⟩
       natiso2G-to-== (unit-wksgrphom-l (grphom-forg K₂-loopmap)) ◃∙
       natiso2G-to-== (!ʷ (natiso-whisk-r (Loop2Grp-map-idf ⊙[ K₂ η , base ]))) ◃∙
-      ! (ap (λ m → m ∘2G K₂-loopmap) (ap Loop2Grp-map (⊙-comp-to-== K₂-map-idf))) ◃∙
+      ! (ap (λ m → m ∘2G K₂-loopmap) (ap Loop2Grp-map (⊙-crd∼-to-== K₂-map-idf))) ◃∙
       natiso2G-to-== (sq-ΩK idf2G) ◃∙
       idp ◃∎
         =ₛ₁⟨ 2 & 1 & ap ! (ap (ap (λ m → m ∘2G K₂-loopmap)) (Ω-fmap-ap-pres (K₂-map-idf))) ⟩

@@ -519,6 +519,6 @@ module EM₁Level₁Rec {j} {C : Type j}
     emloop-β = M.emloop-β
 
     ⊙β-tri : ⊙Ω-fmap (f , idp) ⊙∘ ⊙emloop == GroupHom.⊙f hom*
-    ⊙β-tri = ⊙-comp-to-== (emloop-β , (prop-has-all-paths _ _))
+    ⊙β-tri = ⊙-crd∼-to-== (emloop-β , (prop-has-all-paths _ _))
 
 open EM₁Level₁Rec public using () renaming (f to EM₁-level₁-rec)

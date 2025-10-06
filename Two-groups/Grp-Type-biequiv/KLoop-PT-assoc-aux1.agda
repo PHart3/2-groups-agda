@@ -23,10 +23,10 @@ module KL-PT-aux1 {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k}
   abstract
   
     KLoop-coher-assoc4 : τ₄ =ₛ τ₅
-    KLoop-coher-assoc4 = =ₛ-in (ap ⊙-comp-to-== ç)
+    KLoop-coher-assoc4 = =ₛ-in (ap ⊙-crd∼-to-== ç)
 
     KLoop-coher-assoc5 :
       τ₅
         =ₛ
       idp {a = K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ K₂-action-hom (Loop2Grp-map (g* ⊙∘ f*))} ◃∎
-    KLoop-coher-assoc5 = =ₛ-in (⊙-comp-to-==-β (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ K₂-action-hom (Loop2Grp-map (g* ⊙∘ f*))))
+    KLoop-coher-assoc5 = =ₛ-in (⊙-crd∼-to-==-β (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ K₂-action-hom (Loop2Grp-map (g* ⊙∘ f*))))

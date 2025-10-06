@@ -130,7 +130,7 @@ module _ where
   cst-hom : ∀ {i j} {G : Group i} {H : Group j} → (G →ᴳ H)
   cst-hom {H = H} = group-hom (cst (Group.ident H)) (λ _ _ → ! (Group.unit-l H _))
 
-{- negation is a homomorphism in an abelian gruop -}
+{- negation is a homomorphism in an abelian group -}
 inv-hom : ∀ {i} (G : AbGroup i) → GroupHom (AbGroup.grp G) (AbGroup.grp G)
 inv-hom G = group-hom G.inv inv-pres-comp where
   module G = AbGroup G

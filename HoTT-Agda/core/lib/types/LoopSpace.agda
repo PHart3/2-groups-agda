@@ -163,7 +163,7 @@ module _ {i} {X : Type i} where
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} where
 
-  Ω-fmap-ap : {f* g* : X ⊙→ Y} → (f* ⊙-comp g*) → Ω-fmap f* ∼ Ω-fmap g*
+  Ω-fmap-ap : {f* g* : X ⊙→ Y} → (f* ⊙-crd∼ g*) → Ω-fmap f* ∼ Ω-fmap g*
   Ω-fmap-ap {f*@(f , idp)} =
     ⊙hom-ind f*
       (λ g* _ → Ω-fmap f* ∼ Ω-fmap g*)
@@ -172,7 +172,7 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
   Ω-fmap-ap-β : (f* : X ⊙→ Y) (x : _) → Ω-fmap-ap (⊙∼-id f*) x == idp
   Ω-fmap-ap-β f*@(_ , idp) x = app= (⊙hom-ind-β f* (λ g* _ → Ω-fmap f* ∼ Ω-fmap g*) (λ _ → idp)) x
 
-  Ω-fmap-ap-hnat : {f g : X ⊙→ Y} (H : f ⊙-comp g) (p : Ω X) →
+  Ω-fmap-ap-hnat : {f g : X ⊙→ Y} (H : f ⊙-crd∼ g) (p : Ω X) →
     Ω-fmap-ap H p ◃∎
       =ₛ
     Ω-fmap-β f p ◃∙
@@ -579,12 +579,12 @@ module _ {i} where
   ⊙Ω^-Ω-split-rev n {X} = ⊙<– (Ω^-Ω-split-⊙≃ n X)
 
   Ω^-Ω-split-linv : (n : ℕ) {X : Ptd i}
-    → ⊙Ω-fmap (⊙Ω^-Ω-split-rev n) ⊙∘ ⊙Ω-fmap (⊙Ω^-Ω-split n X) ⊙-comp ⊙idf (⊙Ω^ (S (S n)) X)
-  Ω^-Ω-split-linv n {X} = ==-to-⊙-comp $
+    → ⊙Ω-fmap (⊙Ω^-Ω-split-rev n) ⊙∘ ⊙Ω-fmap (⊙Ω^-Ω-split n X) ⊙-crd∼ ⊙idf (⊙Ω^ (S (S n)) X)
+  Ω^-Ω-split-linv n {X} = ==-to-⊙-crd∼ $
     ⊙Ω-fmap (⊙Ω^-Ω-split-rev n) ⊙∘ ⊙Ω-fmap (⊙Ω^-Ω-split n X)
       =⟨ ! (⊙Ω-fmap-∘ (⊙Ω^-Ω-split-rev n) (⊙Ω^-Ω-split n X)) ⟩
     ⊙Ω-fmap (⊙Ω^-Ω-split-rev n ⊙∘ ⊙Ω^-Ω-split n X)
-      =⟨ ap (⊙Ω-fmap) (⊙-comp-to-== (⊙<–-inv-l-comp (Ω^-Ω-split-⊙≃ n X))) ⟩
+      =⟨ ap (⊙Ω-fmap) (⊙-crd∼-to-== (⊙<–-inv-l-comp (Ω^-Ω-split-⊙≃ n X))) ⟩
     ⊙Ω-fmap (⊙idf (⊙Ω^ (S n) X))
       =⟨ ⊙Ω-fmap-idf ⟩
     ⊙idf (⊙Ω^ (S (S n)) X) =∎
@@ -600,7 +600,7 @@ module _ {i j} {A : Ptd i} {B : Ptd j} where
 
   ⊙Ω^-ap-assoc : (n : ℕ) (f : A ⊙→ B)
     → ⊙Ω^-fmap (S n) f == (⊙Ω^-Ω-split-rev n) ⊙∘ (⊙Ω^-fmap n (⊙Ω-fmap f)) ⊙∘ (⊙Ω^-Ω-split n A)
-  ⊙Ω^-ap-assoc O f@(f₀ , idp) = ⊙-comp-to-== ((λ _ → idp) , idp)
+  ⊙Ω^-ap-assoc O f@(f₀ , idp) = ⊙-crd∼-to-== ((λ _ → idp) , idp)
   ⊙Ω^-ap-assoc (S n) f@(f₀ , idp) =
     ⊙Ω-fmap (⊙Ω-fmap (⊙Ω^-fmap n f))
       =⟨ ap ⊙Ω-fmap (⊙Ω^-ap-assoc n f) ⟩

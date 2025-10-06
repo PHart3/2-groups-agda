@@ -29,7 +29,7 @@ module LKPT-assoc {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
     τ₀ =
       ! (natiso2G-to-== (sq-ΩK (φ₂ ∘2Gσ φ₁))) ◃∙
       ap (λ m → m ∘2G K₂-loopmap G₁)
-        (ap Loop2Grp-map (⊙-comp-to-== (K₂-map-∘ σ₁ σ₂)) ∙
+        (ap Loop2Grp-map (⊙-crd∼-to-== (K₂-map-∘ σ₁ σ₂)) ∙
         natiso2G-to-== (Loop2Grp-map-∘ (K₂-map⊙ σ₂) (K₂-map⊙ σ₁))) ◃∙
       ! (natiso2G-to-==
           (assoc-wksgrphom (grphom-forg (Loop2Grp-map (K₂-map⊙ σ₂))) (grphom-forg (Loop2Grp-map (K₂-map⊙ σ₁))) (grphom-forg (K₂-loopmap G₁)))) ◃∙
@@ -43,7 +43,7 @@ module LKPT-assoc {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
     τ₁ =
       natiso2G-to-== (!ʷ (sq-ΩK (φ₂ ∘2Gσ φ₁))) ◃∙
       ap (λ m → m ∘2G K₂-loopmap G₁)
-        (ap Loop2Grp-map (⊙-comp-to-== (K₂-map-∘ σ₁ σ₂)) ∙
+        (ap Loop2Grp-map (⊙-crd∼-to-== (K₂-map-∘ σ₁ σ₂)) ∙
         natiso2G-to-== (Loop2Grp-map-∘ (K₂-map⊙ σ₂) (K₂-map⊙ σ₁))) ◃∙
       natiso2G-to-==
         (!ʷ (assoc-wksgrphom (grphom-forg (Loop2Grp-map (K₂-map⊙ σ₂))) (grphom-forg (Loop2Grp-map (K₂-map⊙ σ₁))) (grphom-forg (K₂-loopmap G₁)))) ◃∙
@@ -57,7 +57,7 @@ module LKPT-assoc {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
     τ₂ =
       natiso2G-to-== (!ʷ (sq-ΩK (φ₂ ∘2Gσ φ₁))) ◃∙
       ap (λ m → m ∘2G K₂-loopmap G₁)
-        (ap Loop2Grp-map (⊙-comp-to-== (K₂-map-∘ σ₁ σ₂)) ∙
+        (ap Loop2Grp-map (⊙-crd∼-to-== (K₂-map-∘ σ₁ σ₂)) ∙
         natiso2G-to-== (Loop2Grp-map-∘ (K₂-map⊙ σ₂) (K₂-map⊙ σ₁))) ◃∙
       natiso2G-to-==
         {μ = (Loop2Grp-map (K₂-map⊙ σ₂) ∘2G Loop2Grp-map (K₂-map⊙ σ₁)) ∘2G K₂-loopmap G₁}
@@ -101,7 +101,7 @@ module LKPT-assoc {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
         =ₛ₁⟨ 0 & 1 & ! (natiso2G-! (sq-ΩK (φ₂ ∘2Gσ φ₁))) ⟩
       natiso2G-to-== (!ʷ (sq-ΩK (φ₂ ∘2Gσ φ₁))) ◃∙
       ap (λ m → m ∘2G K₂-loopmap G₁)
-        (ap Loop2Grp-map (⊙-comp-to-== (K₂-map-∘ σ₁ σ₂)) ∙
+        (ap Loop2Grp-map (⊙-crd∼-to-== (K₂-map-∘ σ₁ σ₂)) ∙
         natiso2G-to-== (Loop2Grp-map-∘ (K₂-map⊙ σ₂) (K₂-map⊙ σ₁))) ◃∙
       ! (natiso2G-to-==
           (assoc-wksgrphom (grphom-forg (Loop2Grp-map (K₂-map⊙ σ₂))) (grphom-forg (Loop2Grp-map (K₂-map⊙ σ₁))) (grphom-forg (K₂-loopmap G₁)))) ◃∙
@@ -116,7 +116,7 @@ module LKPT-assoc {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
           assoc-wksgrphom (grphom-forg (Loop2Grp-map (K₂-map⊙ σ₂))) (grphom-forg (Loop2Grp-map (K₂-map⊙ σ₁))) (grphom-forg (K₂-loopmap G₁))) ⟩
       natiso2G-to-== (!ʷ (sq-ΩK (φ₂ ∘2Gσ φ₁))) ◃∙
       ap (λ m → m ∘2G K₂-loopmap G₁)
-        (ap Loop2Grp-map (⊙-comp-to-== (K₂-map-∘ σ₁ σ₂)) ∙
+        (ap Loop2Grp-map (⊙-crd∼-to-== (K₂-map-∘ σ₁ σ₂)) ∙
         natiso2G-to-== (Loop2Grp-map-∘ (K₂-map⊙ σ₂) (K₂-map⊙ σ₁))) ◃∙
       natiso2G-to-==
         (!ʷ (assoc-wksgrphom (grphom-forg (Loop2Grp-map (K₂-map⊙ σ₂))) (grphom-forg (Loop2Grp-map (K₂-map⊙ σ₁))) (grphom-forg (K₂-loopmap G₁)))) ◃∙
@@ -137,7 +137,7 @@ module LKPT-assoc {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
         =ₛ₁⟨ 3 & 1 & ! (whisk2G-conv-l (sq-ΩK σ₁)) ⟩
       natiso2G-to-== (!ʷ (sq-ΩK (φ₂ ∘2Gσ φ₁))) ◃∙
       ap (λ m → m ∘2G K₂-loopmap G₁)
-        (ap Loop2Grp-map (⊙-comp-to-== (K₂-map-∘ σ₁ σ₂)) ∙
+        (ap Loop2Grp-map (⊙-crd∼-to-== (K₂-map-∘ σ₁ σ₂)) ∙
         natiso2G-to-== (Loop2Grp-map-∘ (K₂-map⊙ σ₂) (K₂-map⊙ σ₁))) ◃∙
       natiso2G-to-==
         {μ = (Loop2Grp-map (K₂-map⊙ σ₂) ∘2G Loop2Grp-map (K₂-map⊙ σ₁)) ∘2G K₂-loopmap G₁}
@@ -159,10 +159,10 @@ module LKPT-assoc {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
     LoopK-coher-assoc2 =
       τ₂
         =ₛ⟨ 1 & 1 & ap-∙◃ (λ m → m ∘2G K₂-loopmap G₁)
-                      (ap Loop2Grp-map (⊙-comp-to-== (K₂-map-∘ σ₁ σ₂)))
+                      (ap Loop2Grp-map (⊙-crd∼-to-== (K₂-map-∘ σ₁ σ₂)))
                       (natiso2G-to-== (Loop2Grp-map-∘ (K₂-map⊙ σ₂) (K₂-map⊙ σ₁))) ⟩
       natiso2G-to-== (!ʷ (sq-ΩK (φ₂ ∘2Gσ φ₁))) ◃∙
-      ap (λ m → m ∘2G K₂-loopmap G₁) (ap Loop2Grp-map (⊙-comp-to-== (K₂-map-∘ σ₁ σ₂))) ◃∙
+      ap (λ m → m ∘2G K₂-loopmap G₁) (ap Loop2Grp-map (⊙-crd∼-to-== (K₂-map-∘ σ₁ σ₂))) ◃∙
       ap (λ m → m ∘2G K₂-loopmap G₁) (natiso2G-to-== (Loop2Grp-map-∘ (K₂-map⊙ σ₂) (K₂-map⊙ σ₁))) ◃∙
       natiso2G-to-==
         {μ = (Loop2Grp-map (K₂-map⊙ σ₂) ∘2G Loop2Grp-map (K₂-map⊙ σ₁)) ∘2G K₂-loopmap G₁}
@@ -179,7 +179,7 @@ module LKPT-assoc {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k}
       idp ◃∎
         =ₛ₁⟨ 2 & 1 & ! (whisk2G-conv-r (Loop2Grp-map-∘ (K₂-map⊙ σ₂) (K₂-map⊙ σ₁))) ⟩
       natiso2G-to-== (!ʷ (sq-ΩK (φ₂ ∘2Gσ φ₁))) ◃∙
-      ap (λ m → m ∘2G K₂-loopmap G₁) (ap Loop2Grp-map (⊙-comp-to-== (K₂-map-∘ σ₁ σ₂))) ◃∙
+      ap (λ m → m ∘2G K₂-loopmap G₁) (ap Loop2Grp-map (⊙-crd∼-to-== (K₂-map-∘ σ₁ σ₂))) ◃∙
       natiso2G-to-== (natiso-whisk-r (Loop2Grp-map-∘ (K₂-map⊙ σ₂) (K₂-map⊙ σ₁))) ◃∙
       natiso2G-to-==
         {μ = (Loop2Grp-map (K₂-map⊙ σ₂) ∘2G Loop2Grp-map (K₂-map⊙ σ₁)) ∘2G K₂-loopmap G₁}

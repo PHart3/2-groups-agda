@@ -26,7 +26,7 @@ module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-lev
 
   sq-KΩ-lossy : (f* : ⊙[ X , x₀ ] ⊙→ ⊙[ Y , y₀ ]) →
     f* ⊙∘ K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}})
-      ⊙-comp
+      ⊙-crd∼
     K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}}) ⊙∘ (K₂-map (Loop2Grp-map-str f*) , idp)
   fst (sq-KΩ-lossy (f , idp)) =
     K₂-∼-ind

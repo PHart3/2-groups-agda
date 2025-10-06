@@ -17,64 +17,64 @@ module KLoop-PT-assoc-defs
   (f* : X ⊙→ Y) (g* : Y ⊙→ Z) where
   
   υ =
-    ⊙-comp-to-== (⊙∘-α-comp g* (K₂-rec-hom (pt Y) (idf2G {{Loop2Grp (pt Y)}})) (K₂-action-hom (Loop2Grp-map f*)))
+    ⊙-crd∼-to-== (⊙∘-α-comp g* (K₂-rec-hom (pt Y) (idf2G {{Loop2Grp (pt Y)}})) (K₂-action-hom (Loop2Grp-map f*)))
   ρ =
     ! (
       ap (λ m → K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ m)
-        (ap K₂-action-hom (natiso2G-to-== (Loop2Grp-map-∘ g* f*)) ∙ ⊙-comp-to-== (K₂-map-∘ (Loop2Grp-map-str f*) (Loop2Grp-map-str g*))))
+        (ap K₂-action-hom (natiso2G-to-== (Loop2Grp-map-∘ g* f*)) ∙ ⊙-crd∼-to-== (K₂-map-∘ (Loop2Grp-map-str f*) (Loop2Grp-map-str g*))))
   ζ =
     ! (
       ap (λ m → K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ m)
-        ((⊙-comp-to-== {f = K₂-action-hom (Loop2Grp-map (g* ⊙∘ f*))} {g = K₂-action-hom (Loop2Grp-map g* ∘2G Loop2Grp-map f*)}
+        ((⊙-crd∼-to-== {f = K₂-action-hom (Loop2Grp-map (g* ⊙∘ f*))} {g = K₂-action-hom (Loop2Grp-map g* ∘2G Loop2Grp-map f*)}
            (apK₂ {{Loop2Grp (pt X)}} {{Loop2Grp (pt Z)}} (Loop2Grp-map-∘ g* f*))) ∙
-         ⊙-comp-to-== (K₂-map-∘ (Loop2Grp-map-str f*) (Loop2Grp-map-str g*))))
+         ⊙-crd∼-to-== (K₂-map-∘ (Loop2Grp-map-str f*) (Loop2Grp-map-str g*))))
   τ₀ =
-    ⊙-comp-to-== (!-⊙∼ (sq-KΩ (pt X) (pt Z) (g* ⊙∘ f*))) ◃∙
-    ⊙-comp-to-== (!-⊙∼ (⊙∘-α-comp g* f* (K₂-rec-hom (pt X) (idf2G {{Loop2Grp (pt X)}})))) ◃∙ 
-    ⊙-comp-to-== (⊙∘-post g* (sq-KΩ (pt X) (pt Y) f*)) ◃∙
+    ⊙-crd∼-to-== (!-⊙∼ (sq-KΩ (pt X) (pt Z) (g* ⊙∘ f*))) ◃∙
+    ⊙-crd∼-to-== (!-⊙∼ (⊙∘-α-comp g* f* (K₂-rec-hom (pt X) (idf2G {{Loop2Grp (pt X)}})))) ◃∙ 
+    ⊙-crd∼-to-== (⊙∘-post g* (sq-KΩ (pt X) (pt Y) f*)) ◃∙
     υ ◃∙
-    ap (λ m → m ⊙∘ K₂-action-hom (Loop2Grp-map f*)) (⊙-comp-to-== (sq-KΩ (pt Y) (pt Z) g*)) ◃∙
-    ! (⊙-comp-to-==
+    ap (λ m → m ⊙∘ K₂-action-hom (Loop2Grp-map f*)) (⊙-crd∼-to-== (sq-KΩ (pt Y) (pt Z) g*)) ◃∙
+    ! (⊙-crd∼-to-==
         (⊙∘-α-comp (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}})) (K₂-action-hom (Loop2Grp-map g*)) (K₂-action-hom (Loop2Grp-map f*)))) ◃∙
     ρ ◃∎
   τ₁ =
-    ⊙-comp-to-== (!-⊙∼ (sq-KΩ (pt X) (pt Z) (g* ⊙∘ f*))) ◃∙
-    ⊙-comp-to-== (!-⊙∼ (⊙∘-α-comp g* f* (K₂-rec-hom (pt X) (idf2G {{Loop2Grp (pt X)}})))) ◃∙ 
-    ⊙-comp-to-== (⊙∘-post g* (sq-KΩ (pt X) (pt Y) f*)) ◃∙
+    ⊙-crd∼-to-== (!-⊙∼ (sq-KΩ (pt X) (pt Z) (g* ⊙∘ f*))) ◃∙
+    ⊙-crd∼-to-== (!-⊙∼ (⊙∘-α-comp g* f* (K₂-rec-hom (pt X) (idf2G {{Loop2Grp (pt X)}})))) ◃∙ 
+    ⊙-crd∼-to-== (⊙∘-post g* (sq-KΩ (pt X) (pt Y) f*)) ◃∙
     υ ◃∙
-    ⊙-comp-to-== (⊙∘-pre (K₂-action-hom (Loop2Grp-map f*)) (sq-KΩ (pt Y) (pt Z) g*)) ◃∙
-    ⊙-comp-to-== (!-⊙∼
+    ⊙-crd∼-to-== (⊙∘-pre (K₂-action-hom (Loop2Grp-map f*)) (sq-KΩ (pt Y) (pt Z) g*)) ◃∙
+    ⊙-crd∼-to-== (!-⊙∼
       (⊙∘-α-comp
         (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}))
         (K₂-action-hom {{Loop2Grp (pt Y)}} {{Loop2Grp (pt Z)}} (Loop2Grp-map g*))
         (K₂-action-hom {{Loop2Grp (pt X)}} {{Loop2Grp (pt Y)}} (Loop2Grp-map f*)))) ◃∙
     ρ ◃∎
   τ₂ =
-    ⊙-comp-to-== (!-⊙∼ (sq-KΩ (pt X) (pt Z) (g* ⊙∘ f*))) ◃∙
-    ⊙-comp-to-== (!-⊙∼ (⊙∘-α-comp g* f* (K₂-rec-hom (pt X) (idf2G {{Loop2Grp (pt X)}})))) ◃∙ 
-    ⊙-comp-to-== (⊙∘-post g* (sq-KΩ (pt X) (pt Y) f*)) ◃∙
+    ⊙-crd∼-to-== (!-⊙∼ (sq-KΩ (pt X) (pt Z) (g* ⊙∘ f*))) ◃∙
+    ⊙-crd∼-to-== (!-⊙∼ (⊙∘-α-comp g* f* (K₂-rec-hom (pt X) (idf2G {{Loop2Grp (pt X)}})))) ◃∙ 
+    ⊙-crd∼-to-== (⊙∘-post g* (sq-KΩ (pt X) (pt Y) f*)) ◃∙
     υ ◃∙
-    ⊙-comp-to-== (⊙∘-pre (K₂-action-hom (Loop2Grp-map f*)) (sq-KΩ (pt Y) (pt Z) g*)) ◃∙
-    ⊙-comp-to-== (!-⊙∼
+    ⊙-crd∼-to-== (⊙∘-pre (K₂-action-hom (Loop2Grp-map f*)) (sq-KΩ (pt Y) (pt Z) g*)) ◃∙
+    ⊙-crd∼-to-== (!-⊙∼
       (⊙∘-α-comp (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}})) (K₂-action-hom (Loop2Grp-map g*))
         (K₂-action-hom {{Loop2Grp (pt X)}} {{Loop2Grp (pt Y)}} (Loop2Grp-map f*)))) ◃∙
     ζ ◃∎
   τ₃ =
-    ⊙-comp-to-== (!-⊙∼ (sq-KΩ (pt X) (pt Z) (g* ⊙∘ f*))) ◃∙
-    ⊙-comp-to-== (!-⊙∼ (⊙∘-α-comp g* f* (K₂-rec-hom (pt X) (idf2G {{Loop2Grp (pt X)}})))) ◃∙ 
-    ⊙-comp-to-== (⊙∘-post g* (sq-KΩ (pt X) (pt Y) f*)) ◃∙
+    ⊙-crd∼-to-== (!-⊙∼ (sq-KΩ (pt X) (pt Z) (g* ⊙∘ f*))) ◃∙
+    ⊙-crd∼-to-== (!-⊙∼ (⊙∘-α-comp g* f* (K₂-rec-hom (pt X) (idf2G {{Loop2Grp (pt X)}})))) ◃∙ 
+    ⊙-crd∼-to-== (⊙∘-post g* (sq-KΩ (pt X) (pt Y) f*)) ◃∙
     υ ◃∙
-    ⊙-comp-to-== (⊙∘-pre (K₂-action-hom (Loop2Grp-map f*)) (sq-KΩ (pt Y) (pt Z) g*)) ◃∙
-    ⊙-comp-to-== (!-⊙∼
+    ⊙-crd∼-to-== (⊙∘-pre (K₂-action-hom (Loop2Grp-map f*)) (sq-KΩ (pt Y) (pt Z) g*)) ◃∙
+    ⊙-crd∼-to-== (!-⊙∼
       (⊙∘-α-comp (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}})) (K₂-action-hom (Loop2Grp-map g*)) (K₂-action-hom (Loop2Grp-map f*)))) ◃∙
-    ⊙-comp-to-==
+    ⊙-crd∼-to-==
       {f = K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ K₂-action-hom (Loop2Grp-map g*) ⊙∘ K₂-action-hom (Loop2Grp-map f*)}
       {g = K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ K₂-action-hom (Loop2Grp-map (g* ⊙∘ f*))}
       (!-⊙∼ (
         ⊙∘-post (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}))
           (apK₂ {{Loop2Grp (pt X)}} {{Loop2Grp (pt Z)}} (Loop2Grp-map-∘ g* f*) ∙⊙∼ K₂-map-∘ (Loop2Grp-map-str f*) (Loop2Grp-map-str g*)))) ◃∎
   τ₄ =
-    ⊙-comp-to-== (
+    ⊙-crd∼-to-== (
       !-⊙∼ (sq-KΩ (pt X) (pt Z) (g* ⊙∘ f*)) ∙⊙∼
       !-⊙∼ (⊙∘-α-comp g* f* (K₂-rec-hom (pt X) (idf2G {{Loop2Grp (pt X)}}))) ∙⊙∼
       ⊙∘-post g* (sq-KΩ (pt X) (pt Y) f*) ∙⊙∼
@@ -85,4 +85,4 @@ module KLoop-PT-assoc-defs
         ⊙∘-post (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}))
           (apK₂ {σ₁ = Loop2Grp-map-str (g* ⊙∘ f*)} {σ₂ = Loop2Grp-map g* ∘2Gσ Loop2Grp-map f*}
             (Loop2Grp-map-∘ g* f*) ∙⊙∼ K₂-map-∘ (Loop2Grp-map-str f*) (Loop2Grp-map-str g*)))) ◃∎
-  τ₅ = ⊙-comp-to-== (⊙∼-id (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ K₂-action-hom (Loop2Grp-map (g* ⊙∘ f*)))) ◃∎
+  τ₅ = ⊙-crd∼-to-== (⊙∼-id (K₂-rec-hom (pt Z) (idf2G {{Loop2Grp (pt Z)}}) ⊙∘ K₂-action-hom (Loop2Grp-map (g* ⊙∘ f*)))) ◃∎
