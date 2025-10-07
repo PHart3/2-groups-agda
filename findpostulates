@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# modified script orginally due to Guillaume Brunerie
+
+if [[ $1 = "-h" ]] || [[ $1 = "--help" ]]
+then
+    echo "Usage: $0"
+    echo
+    echo "Shows every postulate used in the Agda files present in the directory"
+    echo "except for HIT-related postulates and the univalence axiom."
+    exit 0
+fi
+
+# Only use tput if it’s installed
+
+TPUT="tput"
+
+if ! tput -V &>/dev/null
+then
+    TPUT=":"
+fi
+
+for i in $(git ls-files) $(git ls-files -o --exclude-standard)
+do
+    result=$(awk '/^\s*postulate/\
+                    {if ($0 !~ /HIT$/ &&\                         
+                         tolower($0) !~ /univalence axiom$/)\
+                      {print; getline; print}}' $i)
+
+    if [[ $result != "" ]]
+    then
+        $TPUT setaf 5
+        echo $i:
+        $TPUT setaf 7
+        echo "$result"
+        echo
+    fi
+done
