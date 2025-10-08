@@ -159,6 +159,10 @@ module _ {i} {A : Type i} where
     → ! p ∙ ap (λ v → v ∙ idp) p == ! (∙-unit-r v)
   !-unit-r-inv idp = idp
 
+  RUnCoh : {x y : A} (q : x == y) →
+    ! (∙-unit-r (! q)) ∙ ∙-unit-r (! q) ∙ ap ! (! (∙-unit-r q)) == ap ! (! (∙-unit-r q) ∙ idp)
+  RUnCoh idp = idp
+
   ∙-assoc-!-! : {x₁ x₂ x₃ x₄ x₅ x₆ : A} (p₁ : x₁ == x₂) (p₂ : x₂ == x₃) (p₃ : x₃ == x₄)
     (q₁ : x₆ == x₅) (q₂ : x₅ == x₄)
     → (p₁ ∙ p₂ ∙ p₃) ∙ ! (q₁ ∙ q₂) == p₁ ∙ p₂ ∙ p₃ ∙ ! q₂ ∙ ! q₁
@@ -259,6 +263,9 @@ module _ {i} {A : Type i} where
     assoc-tri-!-mid p idp p idp (! p) ∙ idp
   assoc-tri-!-coher idp = idp
 
+  path-canc-l : {x y : A} (p : x == y) (q : y == y) → p == p ∙ q → idp == q
+  path-canc-l idp q e = e
+
   inv-rid : {x y : A} (p : x == y) → ! p ∙ p ∙ idp == idp
   inv-rid idp = idp
 
@@ -304,6 +311,44 @@ module _ {i} {A : Type i} where
     → ! p₅ ◃∙ ! p₂ ◃∙ ! p₃ ◃∎ =ₛ ! p₁ ◃∙ ! p₄ ◃∎
   !-!-tri-rot idp idp idp idp e = =ₛ-in (ap (λ p → ! p ∙ idp) (! (=ₛ-out e)))
 
+module _ {i} {A : Type i} where
+
+  ∙-assoc2-!-inv-l-aux2 : {x₁ x₂ x₃ x₄ : A} (p₀ : x₁ == x₂) (p₁ : x₃ == x₂) (p₂ : x₄ == x₂)
+    → (p₀ ∙ idp ∙' ! p₁) ∙ p₁ ∙ idp ∙' ! p₂ == p₀ ∙ idp ∙' ! p₂
+  ∙-assoc2-!-inv-l-aux2 p₀ idp idp = ∙-unit-r (p₀ ∙ idp)
+
+module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
+
+  ap-∙' : {x y z : A} (p : x == y) (q : y == z)
+    → ap f (p ∙' q) == ap f p ∙' ap f q
+  ap-∙' p idp = idp
+
+  ∙-assoc2-!-inv-l-aux : {x z : A} {y w u : B} (p₃ : x == z) (p₀ : w == f x) (p₁ : y == f x) (p₂ : u == f z)
+    → (p₀ ∙ idp ∙' ! p₁) ∙ p₁ ∙ ap f p₃ ∙' ! p₂ == p₀ ∙ ap f p₃ ∙' ! p₂
+  ∙-assoc2-!-inv-l-aux idp p₀ p₁ p₂ = ∙-assoc2-!-inv-l-aux2 p₀ p₁ p₂ 
+
+  ∙-assoc2-!-inv-l-aux-idp3 : {x z : A} (p : x == z)
+    → idp == ∙-assoc2-!-inv-l-aux p idp idp idp
+  ∙-assoc2-!-inv-l-aux-idp3 idp = idp
+
+  ∙-assoc2-!-inv-l : {x z : A} {y w : B}
+    (p₀ : w == f z) (p₁ : y == f x) (p₂ : z == x) (p₃ : x == z)
+    → (p₀ ∙ ap f p₂ ∙' ! p₁) ∙ p₁ ∙ ap f p₃ ∙' ! p₀ == p₀ ∙ ap f (p₂ ∙ p₃) ∙' ! p₀
+  ∙-assoc2-!-inv-l p₀ p₁ idp p₃ = ∙-assoc2-!-inv-l-aux p₃ p₀ p₁ p₀
+
+module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {f : A → B} {g : B → C} where
+
+  cmp-inv-l : {x y : A} (p : x == y) → ! (ap (g ∘ f) p) ∙ ap g (ap f p) == idp
+  cmp-inv-l idp = idp
+
+  cmp-inv-r : {x y : A} (p : x == y) → ap g (ap f p) ∙ (ap (g ∘ f) (! p)) == idp
+  cmp-inv-r idp = idp
+
+  cmp-inv-rid : {x y : A} (p : x == y) → idp == ap (g ∘ f) p ∙ ! (ap g (ap f p) ∙ idp)
+  cmp-inv-rid idp = idp
+
+module _ {i} {A : Type i} where
+
   {- Horizontal compositions -}
 
   infixr 80 _∙2_ _∙'2_
@@ -323,85 +368,6 @@ module _ {i} {A : Type i} where
   idp∙'2idp : {x y z : A} (p : x == y) (q : y == z)
     → (idp {a = p}) ∙'2 (idp {a = q}) == idp
   idp∙'2idp idp idp = idp
-
-module _ {i} {A : Type i} where
-
-  ∙-assoc2-!-inv-l-aux2 : {x₁ x₂ x₃ x₄ : A} (p₀ : x₁ == x₂) (p₁ : x₃ == x₂) (p₂ : x₄ == x₂)
-    → (p₀ ∙ idp ∙' ! p₁) ∙ p₁ ∙ idp ∙' ! p₂ == p₀ ∙ idp ∙' ! p₂
-  ∙-assoc2-!-inv-l-aux2 p₀ idp idp = ∙-unit-r (p₀ ∙ idp)
-
-module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
-
-  ∙-assoc2-!-inv-l-aux : {x z : A} {y w u : B} (p₃ : x == z) (p₀ : w == f x) (p₁ : y == f x) (p₂ : u == f z)
-    → (p₀ ∙ idp ∙' ! p₁) ∙ p₁ ∙ ap f p₃ ∙' ! p₂ == p₀ ∙ ap f p₃ ∙' ! p₂
-  ∙-assoc2-!-inv-l-aux idp p₀ p₁ p₂ = ∙-assoc2-!-inv-l-aux2 p₀ p₁ p₂ 
-
-  ∙-assoc2-!-inv-l-aux-idp3 : {x z : A} (p : x == z)
-    → idp == ∙-assoc2-!-inv-l-aux p idp idp idp
-  ∙-assoc2-!-inv-l-aux-idp3 idp = idp
-
-  ∙-assoc2-!-inv-l : {x z : A} {y w : B}
-    (p₀ : w == f z) (p₁ : y == f x) (p₂ : z == x) (p₃ : x == z)
-    → (p₀ ∙ ap f p₂ ∙' ! p₁) ∙ p₁ ∙ ap f p₃ ∙' ! p₀ == p₀ ∙ ap f (p₂ ∙ p₃) ∙' ! p₀
-  ∙-assoc2-!-inv-l p₀ p₁ idp p₃ = ∙-assoc2-!-inv-l-aux p₃ p₀ p₁ p₀
-
-{- Coherence -}
-
-module _ {ℓ₁ ℓ₂ ℓ₃} {A : Type ℓ₁} {B : Type ℓ₂} {C : Type ℓ₃} {f : A → B} {g : B → C} where
-
-  cmp-inv-l : {x y : A} (p : x == y) → ! (ap (g ∘ f) p) ∙ ap g (ap f p) == idp
-  cmp-inv-l idp = idp
-
-  cmp-inv-r : {x y : A} (p : x == y) → ap g (ap f p) ∙ (ap (g ∘ f) (! p)) == idp
-  cmp-inv-r idp = idp
-
-  cmp-inv-rid : {x y : A} (p : x == y) → idp == ap (g ∘ f) p ∙ ! (ap g (ap f p) ∙ idp)
-  cmp-inv-rid idp = idp
-
-module _ {ℓ₁ ℓ₂} {A : Type ℓ₁} {B : Type ℓ₂} {f : A → B} where
-
-  fun-rid-inv1 : {x y : A} (p : x == y) →  ((ap f p ∙ idp) ∙ idp) ∙ ! (ap f p ∙ idp) == idp
-  fun-rid-inv1 idp = idp
-
-  fun-rid-inv2 : {x y : A} (p : x == y) → idp == (ap f p ∙ idp) ∙ ! (ap f (p ∙ idp) ∙ idp)
-  fun-rid-inv2 idp = idp
-
-module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
-
-  ap-∙' : {x y z : A} (p : x == y) (q : y == z)
-    → ap f (p ∙' q) == ap f p ∙' ap f q
-  ap-∙' p idp = idp
-
-  ap-inv-canc : {x y : A} (p : x == y) {z : B} (q : f x == z)
-    → (! (ap f p) ∙ q) ∙ ! (ap f (! p) ∙ q) == idp
-  ap-inv-canc idp idp = idp
-
-  trip-ap-inv-p : {x y : A} {p : x == y} {w z : B} {q : f x == w} {r : w == z}
-    → ! r ∙ (! q ∙ ap f p) == ! (! (ap f p) ∙ q ∙ r)
-  trip-ap-inv-p {p = idp} {q = idp} {r = idp} = idp
-
-  trip-ap-inv : {x y : A} (p : x == y) {w z : B} (q : f x == w) (r : w == z)
-    → ! r ◃∙ (! q ∙ ap f p) ◃∎ =ₛ ! (! (ap f p) ∙ q ∙ r) ◃∎
-  trip-ap-inv idp idp idp = =ₛ-in idp
-
-  ap-concat-drev : {x y z : A} {p : x == y} {q : x == z} {w : B} {r  : f z == w}
-    → (ap f q ∙ r) ∙ ! (ap f (! p ∙ q) ∙ r) == ap f p
-  ap-concat-drev {p = idp} {q = idp} {r = idp} = idp
-
-module _ {i} {A : Type i} {x y : A} where
-
-  path-canc-l : (p : x == y) (q : y == y) → p == p ∙ q → idp == q
-  path-canc-l idp q e = e
-
-  left-canc : {z : A} (p : x == y) {r : x =-= z} → r =ₛ p ◃∙ ! p ◃∙ ↯ r ◃∎
-  left-canc idp = =ₛ-in idp
-
-  trip-inv : {w z : A} {p : y == x} {q : y == z} {r : z == w} → ! r ∙ ! q ∙ p == ! (! p ∙ q ∙ r)
-  trip-inv {p = idp} {q = idp} {r = idp} = idp
-
-  RUnCoh : (q : x == y) →
-    ! (∙-unit-r (! q)) ∙ ∙-unit-r (! q) ∙ ap ! (! (∙-unit-r q)) == ap ! (! (∙-unit-r q) ∙ idp)
-  RUnCoh idp = idp
 
 {-
 Sometimes we need to restart a new section in order to have everything in the
