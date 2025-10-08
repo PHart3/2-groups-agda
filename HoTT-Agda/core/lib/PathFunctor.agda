@@ -101,6 +101,14 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     ==
     ap (λ p → ap g (! p)) (! p₂) ∙ ap (ap g) (!-ap p₁)
   ap3-!-ap-!-rid _ idp idp = idp
+  
+  ap-inv-canc : {x y : A} (p : x == y) {z : B} (q : f x == z)
+    → (! (ap f p) ∙ q) ∙ ! (ap f (! p) ∙ q) == idp
+  ap-inv-canc idp idp = idp
+
+  trip-ap-inv : {x y : A} (p : x == y) {w z : B} (q : f x == w) (r : w == z)
+    → ! r ◃∙ (! q ∙ ap f p) ◃∎ =ₛ ! (! (ap f p) ∙ q ∙ r) ◃∎
+  trip-ap-inv idp idp idp = =ₛ-in idp
 
 {- Dependent stuff -}
 module _ {i j} {A : Type i} {B : A → Type j} (f : Π A B) where
