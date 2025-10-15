@@ -47,8 +47,7 @@ module Sq-aux6 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : h
           (ap-∙ f (ap K₂-rec-x₀ c₁)
             (ap (fst (K₂-rec-hom x₀ idf2G)) c₂)))) ∙ idp
         ==
-      ap (_∙_ (ap f (ap K₂-rec-x₀ c₁)))
-        (ζ₃-free c₂)
+      ap (_∙_ (ap f (ap K₂-rec-x₀ c₁))) (ζ₃-free c₂)
     ζ₃-red-aux idp c₂ = lemma c₂
       where
         lemma : {b : _} (c : base (x₀ == x₀) == b) →
