@@ -141,6 +141,10 @@ module _ {i} where
       set-has-level-SS {n = ⟨-2⟩} p = p
       set-has-level-SS {n = S n} p = raise-level (S (S n)) (set-has-level-SS p)
 
+      grpd-has-level-SSS : {n : ℕ₋₂} → (has-level 1 A → has-level (S (S (S n))) A)
+      grpd-has-level-SSS {n = ⟨-2⟩} p = p
+      grpd-has-level-SSS {n = S n} p = raise-level (S (S (S n))) (grpd-has-level-SSS p)
+      
       contr-is-prop : is-contr A → is-prop A
       contr-is-prop = contr-has-level
 

@@ -7,6 +7,7 @@ open import lib.types.Pi
 open import lib.types.Sigma
 open import lib.types.Pointed
 open import lib.types.LoopSpace
+open import lib.types.Paths
 open import lib.wild-cats.Ptd-wc
 
 module lib.types.Truncation where
@@ -182,7 +183,7 @@ module _ {i} (A : Ptd i) {n : ℕ₋₂} where
 
   ⊙Ω-UnTrunc-[_] : ⊙Trunc n (⊙Ω A) ⊙→ ⊙Ω (⊙Trunc (S n) A)
   ⊙Ω-UnTrunc-[_] = ⊙<– ⊙Ω-Trunc-[_]-≃
-   
+
 {- Universal property -}
 
 abstract
@@ -635,3 +636,30 @@ module _ {i} {n : ℕ₋₂} {A : Type i} where
         ap (–> (=ₜ-equiv ta td)) (∙-assoc p q r) ◃∙
         –>-=ₜ-equiv-pres-∙ p (q ∙ r) ◃∙
         ap (_∙ₜ_ {ta = ta} (–> (=ₜ-equiv ta tb) p)) (–>-=ₜ-equiv-pres-∙ q r) ◃∎
+
+module _ {i j} {A : Type i} {B : Type j} {f : A → B} {x y : A} {b : B} {n : ℕ₋₂} where
+
+  =Σ-econv-hfib-Trunc : {u : Trunc n (f x == b)} {v : Trunc n (f y == b)} →
+    ((x , u) == (y , v)) ≃ (Σ (x == y) (λ p → u == ([_] {n = n} (ap f p) ∙ₜ v)))
+  =Σ-econv-hfib-Trunc {u} {v} = {!!}
+
+-- interaction between higher loop spaces and particular fibers of [_]
+
+⊙Ω-hfib-Trunc : ∀ {i} {n : ℕ} {X : Type i} {x : X} →
+  ⊙Ω ⊙[ Σ X (λ a → [_] {n = ⟨ S n ⟩} a == [ x ]) , (x , idp) ]
+    ⊙≃
+  ⊙[ Σ (x == x) (λ p → [_] {n = ⟨ n ⟩} p == [ idp ]) , (idp , idp) ]
+⊙Ω-hfib-Trunc {n = n} {x = x} = ≃-to-⊙≃
+  ((Σ-emap-r λ _ → (=ₜ-equiv-can (S ⟨ n ⟩₋₂)) ⁻¹) ∘e
+  {!!} ∘e
+  Ω-emap (≃-to-⊙≃ (Σ-emap-r λ _ → =ₜ-equiv-can ⟨ n ⟩) idp))
+  {!!}
+  where
+    aux : (p : x == x) →
+      (idp == idp [ (λ a → [_] {n = ⟨ S n ⟩} a == [ x ]) ↓ p ]) ≃ ([_] {n = ⟨ n ⟩} p == [ idp ])
+    aux p = {!!} ∘e !-equiv ∘e (↓-app=cst-econv-∙' {f = [_] {n = ⟨ S n ⟩}} {p = p} {idp} {idp}) ⁻¹
+
+Ω^'-hfib-Trunc : ∀ {i} (n : ℕ) {X : Type i} {x : X}
+  → Ω^' (S n) ⊙[ hfiber ([_] {n = ⟨ n ⟩}) [ x ] , (x , idp) ] ≃ Ω^' (S n) ⊙[ X , x ]
+Ω^'-hfib-Trunc O {x = x} = Σ-contr-red-cod {{↓-level}} ∘e (=Σ-econv (x , idp) (x , idp)) ⁻¹
+Ω^'-hfib-Trunc (S n) {X} {x} = Ω^'-hfib-Trunc n {Ω ⊙[ X , x ]} {idp} ∘e Ω^'-emap (S n) ⊙Ω-hfib-Trunc
