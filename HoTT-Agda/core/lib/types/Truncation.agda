@@ -463,6 +463,7 @@ Trunc-fuse-≤ A m≤n = equiv
 module _ {i} {n : ℕ₋₂} {A : Type i} where
 
   {- concatenation in _=ₜ_ -}
+  infixr 80 _∙ₜ_ 
   _∙ₜ_ : {ta tb tc : Trunc (S n) A}
     → ta =ₜ tb → tb =ₜ tc → ta =ₜ tc
   _∙ₜ_ {ta = ta} {tb = tb} {tc = tc} =
@@ -482,6 +483,13 @@ module _ {i} {n : ℕ₋₂} {A : Type i} where
     level : (ta tb tc : Trunc (S n) A) → has-level (S n) (C ta tb tc)
     level ta tb tc = raise-level _ $
               Π-level (λ _ → Π-level (λ _ → =ₜ-level ta tc))
+
+  ∙ₜ-lunit : {ta tb : Trunc (S n) A} (u : ta =ₜ tb) → _∙ₜ_ {ta = ta} {ta} {tb} (=ₜ-refl ta) u == u
+  ∙ₜ-lunit {ta} {tb} = Trunc-elim {P = λ ta → (u : ta =ₜ tb) → _∙ₜ_ {ta = ta} {ta} {tb} (=ₜ-refl ta) u == u}
+    {{λ {x} → Π-level (λ u → raise-level n (=-preserves-level (=ₜ-level x tb)))}}
+    (λ a → Trunc-elim {P = λ tb → (u : [ a ] =ₜ tb) → _∙ₜ_ {ta = [ a ]} {[ a ]} {tb} (=ₜ-refl [ a ]) u == u}
+      {{λ {tb} → Π-level (λ u → raise-level n (=-preserves-level (=ₜ-level [ a ] tb)))}}
+        (λ b u → Trunc-elim {P = λ u → _∙ₜ_ {ta = [ a ]} {[ a ]} {[ b ]} (=ₜ-refl [ a ]) u == u} (λ _ → idp) u) tb) ta
 
   ∙ₜ-assoc : {ta tb tc td : Trunc (S n) A}
     (tp : ta =ₜ tb) (tq : tb =ₜ tc) (tr : tc =ₜ td)
@@ -637,29 +645,57 @@ module _ {i} {n : ℕ₋₂} {A : Type i} where
         –>-=ₜ-equiv-pres-∙ p (q ∙ r) ◃∙
         ap (_∙ₜ_ {ta = ta} (–> (=ₜ-equiv ta tb) p)) (–>-=ₜ-equiv-pres-∙ q r) ◃∎
 
-module _ {i j} {A : Type i} {B : Type j} {f : A → B} {x y : A} {b : B} {n : ℕ₋₂} where
-
-  =Σ-econv-hfib-Trunc : {u : Trunc n (f x == b)} {v : Trunc n (f y == b)} →
-    ((x , u) == (y , v)) ≃ (Σ (x == y) (λ p → u == ([_] {n = n} (ap f p) ∙ₜ v)))
-  =Σ-econv-hfib-Trunc {u} {v} = {!!}
-
 -- interaction between higher loop spaces and particular fibers of [_]
 
-⊙Ω-hfib-Trunc : ∀ {i} {n : ℕ} {X : Type i} {x : X} →
+module _ {i} {A : Type i} {x y : A} {a : A} {n : ℕ₋₂} {{_ : has-level (S (S (S n))) A}} where
+
+  =Σ-econv-hfib-Trunc-aux1 : {u : [_] {n = S (S n)} x =ₜ [ a ]} {v : [ y ] =ₜ [ a ]} →
+    ((x , u) == (y , v)) ≃ (Σ (x == y) (λ p → _∙ₜ_ {ta = [ x ]} {[ y ]} {[ a ]} ([_] {n = S n} p) v == u))
+  =Σ-econv-hfib-Trunc-aux1 {u} {v} = equiv to (uncurry λ p h → from p {u' = u} h) (uncurry λ p h → from-to p {v} h) to-from
+    where
+
+      to : {c₁ c₂ : Σ A (λ z → [ z ] =ₜ [ a ])} →
+        c₁ == c₂ → Σ (fst c₁ == fst c₂) (λ p → _∙ₜ_ {ta = [ fst c₁ ]} {[ fst c₂ ]} {[ a ]} [ p ] (snd c₂) == snd c₁)
+      to {c₁} idp = idp , ∙ₜ-lunit {ta = [ fst c₁ ]} {[ a ]} (snd c₁)
+
+      from : ∀ {z} (p : x == z) {q : [ z ] =ₜ [ a ]} {u' : [ x ] =ₜ [ a ]} → _∙ₜ_ {ta = [ x ]} {[ z ]} {[ a ]} [ p ] q == u' → (x , u') == (z , q)
+      from {z} idp {q} e = pair= idp (! (! (∙ₜ-lunit {ta = [ z ]} {[ a ]} q) ∙ e))
+
+      from-to : ∀ {z} (p : x == z) {q : [ z ] =ₜ [ a ]} (h : _∙ₜ_ {ta = [ x ]} {[ z ]} {[ a ]} [ p ] q == u)
+        → to (from p {q} h) == (p , h)
+      from-to idp {q} = Trunc-elim
+        {P = λ q → (h : _∙ₜ_ {ta = [ x ]} {[ x ]} {[ a ]} [ idp ] q == u) → to (ap (x ,_) (! (! (∙ₜ-lunit {ta = [ x ]} {[ a ]} q) ∙ h))) == idp , h}
+        {{Π-level λ h → has-level-apply-instance {{Σ-level ⟨⟩ λ p → has-level-apply-instance {{raise-level (S (S n)) (raise-level (S n) ⟨⟩)}}}}}}
+        (λ q' → aux q') q
+          where
+            aux : ∀ q' {u'} (h : _∙ₜ_ {ta = [ x ]} {[ x ]} {[ a ]} [ idp ] [ q' ] == u') → to (ap (x ,_) (! h)) == idp , h
+            aux q' idp = idp
+
+      to-from : ∀ {c} (h : (x , u) == c) → uncurry (λ p h → from p h) (to h) == h
+      to-from idp = Trunc-elim {P = λ u' → uncurry (λ p → from p {u'} {u'}) (idp , ∙ₜ-lunit {ta = [ x ]} {[ a ]} u') == idp}
+        {{λ {u'} → has-level-apply-instance {{has-level-apply-instance {{Σ-level ⟨⟩ λ x → raise-level (S (S n)) (raise-level (S n) ⟨⟩)}}}}}}
+        (λ _ → idp) u
+
+  =Σ-econv-hfib-Trunc-aux2 : {u : x == a} {v : y == a} →
+    (Σ (x == y) (λ p → _∙ₜ_ {ta = [ x ]} {[ y ]} {[ a ]} ([_] {n = S n} p) [ v ] == [ u ])) ≃ (Σ (x == y) (λ p → Trunc n (p == u ∙ ! v)))
+  =Σ-econv-hfib-Trunc-aux2 {u} {v} = Σ-emap-r (λ p →
+    Trunc-emap (pre∙-equiv (assoc-inv-r p v) ∘e ap-equiv (post∙-equiv (! v)) (p ∙ v) u) ∘e =ₜ-equiv-can n)
+ 
+  =Σ-econv-hfib-Trunc : {u : x == a} {v : y == a} →
+    ((x , [_] {n = S n} u) == (y , [ v ])) ≃ (Σ (x == y) (λ p → Trunc n (p == u ∙ ! v)))
+  =Σ-econv-hfib-Trunc {u} {v} = =Σ-econv-hfib-Trunc-aux2 ∘e =Σ-econv-hfib-Trunc-aux1
+
+⊙Ω-hfib-Trunc : ∀ {i} {n : ℕ} {X : Type i} {x : X} {{_ : has-level (S (S ⟨ n ⟩)) X}} →
   ⊙Ω ⊙[ Σ X (λ a → [_] {n = ⟨ S n ⟩} a == [ x ]) , (x , idp) ]
     ⊙≃
   ⊙[ Σ (x == x) (λ p → [_] {n = ⟨ n ⟩} p == [ idp ]) , (idp , idp) ]
-⊙Ω-hfib-Trunc {n = n} {x = x} = ≃-to-⊙≃
-  ((Σ-emap-r λ _ → (=ₜ-equiv-can (S ⟨ n ⟩₋₂)) ⁻¹) ∘e
-  {!!} ∘e
-  Ω-emap (≃-to-⊙≃ (Σ-emap-r λ _ → =ₜ-equiv-can ⟨ n ⟩) idp))
-  {!!}
-  where
-    aux : (p : x == x) →
-      (idp == idp [ (λ a → [_] {n = ⟨ S n ⟩} a == [ x ]) ↓ p ]) ≃ ([_] {n = ⟨ n ⟩} p == [ idp ])
-    aux p = {!!} ∘e !-equiv ∘e (↓-app=cst-econv-∙' {f = [_] {n = ⟨ S n ⟩}} {p = p} {idp} {idp}) ⁻¹
+⊙Ω-hfib-Trunc {n = n} {X} {x} = ≃-to-⊙≃
+  (Σ-emap-r (λ _ → (=ₜ-equiv-can (S ⟨ n ⟩₋₂)) ⁻¹) ∘e
+  =Σ-econv-hfib-Trunc {u = idp} {v = idp} ∘e
+  Ω-emap {X = ⊙[ Σ X (λ a → [_] {n = ⟨ S n ⟩} a == [ x ]) , (x , idp) ]} (≃-to-⊙≃ (Σ-emap-r λ _ → =ₜ-equiv-can ⟨ n ⟩) idp))
+  idp
 
-Ω^'-hfib-Trunc : ∀ {i} (n : ℕ) {X : Type i} {x : X}
+Ω^'-hfib-Trunc : ∀ {i} (n : ℕ) {X : Type i} {x : X} {{_ : has-level (S ⟨ n ⟩) X}}
   → Ω^' (S n) ⊙[ hfiber ([_] {n = ⟨ n ⟩}) [ x ] , (x , idp) ] ≃ Ω^' (S n) ⊙[ X , x ]
 Ω^'-hfib-Trunc O {x = x} = Σ-contr-red-cod {{↓-level}} ∘e (=Σ-econv (x , idp) (x , idp)) ⁻¹
-Ω^'-hfib-Trunc (S n) {X} {x} = Ω^'-hfib-Trunc n {Ω ⊙[ X , x ]} {idp} ∘e Ω^'-emap (S n) ⊙Ω-hfib-Trunc
+Ω^'-hfib-Trunc (S n) {X} {x} {{tX}} = Ω^'-hfib-Trunc n {Ω ⊙[ X , x ]} {idp} ∘e Ω^'-emap (S n) ⊙Ω-hfib-Trunc

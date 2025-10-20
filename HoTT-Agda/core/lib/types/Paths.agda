@@ -98,7 +98,6 @@ module _ {i} {A : Type i} where
     pathto-is-contr-!idp-instance : {x y : A} {p : x == y} → is-contr (Σ (y == x) (λ t → ! t ∙ idp == p))
     pathto-is-contr-!idp-instance = pathto-is-contr-!idp _
 
-
 module _ {i} {A : Type i} {x y : A} where
 
   post∙idp∘!-is-equiv : (x == y) ≃ (y == x) 
