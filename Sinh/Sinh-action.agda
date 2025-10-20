@@ -4,7 +4,8 @@ open import HoTT
 open import lib.types.N-groups
 open import Sinh-classif
 
--- The action produced by the Sinh-triple is the canonical action of πₙ on πₙ₊₁ (where n ≥ 1).
+{- The action produced by the Sinh-triple for a given higher group
+   is the canonical action of πₙ₊₁ on πₙ₊₂ (where n ≥ 0). -}
 
 module Sinh-action where
 
