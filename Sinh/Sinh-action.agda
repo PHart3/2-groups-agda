@@ -29,5 +29,8 @@ module _ {n : ℕ} {i : ULevel} (G@(X , cX , tX) : [ S (S n) , i ]-Groups) where
   NGrp-Sinh-≃-action : fst (snd (NGrp-Sinh–> G)) ∼ πₙ-can-action
   NGrp-Sinh-≃-action = Trunc-elim {{has-level-apply-instance {{grpd-has-level-SSS ⟨⟩}}}} λ u →
     ! (NGrp-Sinh-≃-action-aux (u , idp)) ∙
-    uaᴳ-Ab {!!}
-  
+    uaᴳ-Ab (group-hom map (Ω^'-hfib-Trunc-∙ {{tX}}) , snd (Ω^'-hfib-Trunc (S n) {{tX}}))
+      where
+        map : {u : de⊙ (fst G)}
+          → Ω^' (S (S n)) ⊙[ hfiber [_] [ u ] , (u , idp) ] → Ω^' (S (S n)) ⊙[ de⊙ (fst G) , u ]
+        map {u} = –> (Ω^'-hfib-Trunc (S n) {x = u} {{tX}})
