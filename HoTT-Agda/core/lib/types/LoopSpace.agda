@@ -202,10 +202,6 @@ module _ {i} where
   Ω^ : (n : ℕ) → Ptd i → Type i
   Ω^ n X = de⊙ (⊙Ω^ n X)
 
-  rebase-Loop-Path : ∀ k {A} {x x' : A} (α : x == x')
-    → Ω^ k (⊙[ x == x' , α ]) == Ω^ k (⊙[ x == x , idp ])
-  rebase-Loop-Path k idp = idp
-
   ⊙Ω^' : (n : ℕ) → Ptd i → Ptd i
   ⊙Ω^' O X = X
   ⊙Ω^' (S n) X = (⊙Ω^' n (⊙Ω X))
@@ -434,20 +430,18 @@ module _ {i} where
   Ω^'S-!-inv-r O = !-inv-r
   Ω^'S-!-inv-r (S n) = Ω^'S-!-inv-r n
 
-module _ where
+Ω^S-fmap-∙ : ∀ {i j} (n : ℕ)
+  {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y) (p q : Ω^ (S n) X)
+  → Ω^-fmap (S n) F (Ω^S-∙ n p q)
+    == Ω^S-∙ n (Ω^-fmap (S n) F p) (Ω^-fmap (S n) F q)
+Ω^S-fmap-∙ n F = Ω-fmap-∙ (⊙Ω^-fmap n F)
 
-  Ω^S-fmap-∙ : ∀ {i j} (n : ℕ)
-    {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y) (p q : Ω^ (S n) X)
-    → Ω^-fmap (S n) F (Ω^S-∙ n p q)
-      == Ω^S-∙ n (Ω^-fmap (S n) F p) (Ω^-fmap (S n) F q)
-  Ω^S-fmap-∙ n F = Ω-fmap-∙ (⊙Ω^-fmap n F)
-
-  Ω^'S-fmap-∙ : ∀ {i j} (n : ℕ)
-    {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y) (p q : Ω^' (S n) X)
-    → Ω^'-fmap (S n) F (Ω^'S-∙ n p q)
-      == Ω^'S-∙ n (Ω^'-fmap (S n) F p) (Ω^'-fmap (S n) F q)
-  Ω^'S-fmap-∙ O = Ω-fmap-∙
-  Ω^'S-fmap-∙ (S n) F = Ω^'S-fmap-∙ n (⊙Ω-fmap F)
+Ω^'S-fmap-∙ : ∀ {i j} (n : ℕ)
+  {X : Ptd i} {Y : Ptd j} (F : X ⊙→ Y) (p q : Ω^' (S n) X)
+  → Ω^'-fmap (S n) F (Ω^'S-∙ n p q)
+    == Ω^'S-∙ n (Ω^'-fmap (S n) F p) (Ω^'-fmap (S n) F q)
+Ω^'S-fmap-∙ O = Ω-fmap-∙
+Ω^'S-fmap-∙ (S n) F = Ω^'S-fmap-∙ n (⊙Ω-fmap F)
 
 {- [Ω^] preserves (pointed) equivalences -}
 module _ {i j} {X : Ptd i} {Y : Ptd j} where

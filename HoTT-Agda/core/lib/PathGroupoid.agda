@@ -163,6 +163,9 @@ module _ {i} {A : Type i} where
     ! (∙-unit-r (! q)) ∙ ∙-unit-r (! q) ∙ ap ! (! (∙-unit-r q)) == ap ! (! (∙-unit-r q) ∙ idp)
   RUnCoh idp = idp
 
+  assoc-inv-r : {x y z : A} (p : x == y) (q : y == z) → p == (p ∙ q) ∙ ! q
+  assoc-inv-r idp idp = idp
+
   ∙-assoc-!-! : {x₁ x₂ x₃ x₄ x₅ x₆ : A} (p₁ : x₁ == x₂) (p₂ : x₂ == x₃) (p₃ : x₃ == x₄)
     (q₁ : x₆ == x₅) (q₂ : x₅ == x₄)
     → (p₁ ∙ p₂ ∙ p₃) ∙ ! (q₁ ∙ q₂) == p₁ ∙ p₂ ∙ p₃ ∙ ! q₂ ∙ ! q₁

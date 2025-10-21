@@ -31,11 +31,11 @@ module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-lev
         (loop (x₀ == x₀) (x ∙ y)))) ◃∎
       =ₛ⟨ =ₛ-in $
             ap (λ p →
-              ∙-ap (f ∘ K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀))
-                (loop (x₀ == x₀) x) (loop (x₀ == x₀) y) ∙
-              ap (ap (f ∘ K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)))
-                (loop-comp (x₀ == x₀) x y) ∙
-              p) idp ⟩
+                ∙-ap (f ∘ K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀))
+                  (loop (x₀ == x₀) x) (loop (x₀ == x₀) y) ∙
+                ap (ap (f ∘ K₂-rec (x₀ == x₀) x₀ (loop' Λx₀) (loop-comp' Λx₀) (loop-assoc' Λx₀)))
+                  (loop-comp (x₀ == x₀) x y) ∙ p)
+              idp ⟩
     ν₁
       =ₛ⟨ 3 & 1 & ap-seq-=ₛ (ap f) (K₂-rec-hom-β-comp x₀ idf2G x y) ⟩
     ν₂

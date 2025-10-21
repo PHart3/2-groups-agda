@@ -98,7 +98,6 @@ module _ {i} {A : Type i} where
     pathto-is-contr-!idp-instance : {x y : A} {p : x == y} → is-contr (Σ (y == x) (λ t → ! t ∙ idp == p))
     pathto-is-contr-!idp-instance = pathto-is-contr-!idp _
 
-
 module _ {i} {A : Type i} {x y : A} where
 
   post∙idp∘!-is-equiv : (x == y) ≃ (y == x) 
@@ -127,7 +126,7 @@ module _ {i j} {A : Type i} {B : Type j}
   {f : A → B} {x y : A} {b : B} where
 
   ↓-app=cst-in : {p : x == y} {u : f x == b} {v : f y == b}
-    → u == (ap f p ∙ v)
+    → u == ap f p ∙ v
     → (u == v [ (λ x → f x == b) ↓ p ])
   ↓-app=cst-in {p = idp} q = q
 
@@ -150,6 +149,14 @@ module _ {i j} {A : Type i} {B : Type j}
     → (u == (ap f p ∙ v)) ≃ (u == v [ (λ x → f x == b) ↓ p ])
   ↓-app=cst-econv {p = p} = equiv ↓-app=cst-in ↓-app=cst-out
     (↓-app=cst-η {p = p}) (↓-app=cst-β {p = p})
+
+  ↓-app=cst-econv-∙' : {p : x == y} {u : f x == b} {v : f y == b}
+    → (u == (ap f p ∙' v)) ≃ (u == v [ (λ x → f x == b) ↓ p ])
+  ↓-app=cst-econv-∙' {p} {v = v} = ↓-app=cst-econv ∘e post∙-equiv (∙'=∙ (ap f p) v)
+
+  =Σ-econv-hfib : {u : f x == b} {v : f y == b} →
+    ((x , u) == (y , v)) ≃ (Σ (x == y) (λ p → u == ap f p ∙' v))
+  =Σ-econv-hfib {u} {v} = (=Σ-econv (x , u) (y , v) ∘e Σ-emap-r (λ p → ↓-app=cst-econv-∙')) ⁻¹
 
   ↓-cst=app-in : {p : x == y} {u : b == f x} {v : b == f y}
     → (u ∙' ap f p) == v

@@ -4,6 +4,8 @@ module Final-thms where
 
 -- Owen Milner's equivalence between pointed connected n-types and Sính triples (with n ≥ 2)
 open import Sinh-classif public
+-- a description of the group action from the Sính triple of a given higher group
+open import Sinh-action public
 
 {- type equivalence between coherent 2-groups and pointed connected 2-types as well as
    composite type equivalence between coherent 2-groups and Sính triples -}
