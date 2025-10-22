@@ -8,8 +8,8 @@ and a cocycle in H^(*n*+2)(G, H).
 We also obtain a set-truncated version of the equivalence, between components of *n*-groups and components of triples
 consisting of an *n*-group BG, a G-module H : BG -> Ab, and a cohomology class in H^(*n*+2)(G, H).
 
-This directory also contains a proof that the action of the Sính triple for a given (*n*+2)-group BG is 
-the canonical action of πₙ₊₁(BG) on πₙ₊₂(BG).
+This directory also contains a proof that the action of the Sính triple for a given *n*-group BG (where n ≥ 2) is 
+the canonical action of the fundamental n-group π₁ⁿ(BG) on the abelian group πₙ(BG).
 
 ## License
 
