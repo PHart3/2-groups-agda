@@ -5,7 +5,7 @@ open import lib.types.N-groups
 open import Sinh-classif
 
 {- The action produced by the Sinh-triple for a given n-group BG is the canonical
-   action of the fundamental n-group π₁ⁿ(BG) on the abelian group πₙ(BG) (where n ≥ 2). -}
+   action of the fundamental n-group Πₙ(BG) on the abelian group πₙ(BG) (where n ≥ 2). -}
 
 module Sinh-action where
 
