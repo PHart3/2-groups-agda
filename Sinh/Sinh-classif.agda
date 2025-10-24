@@ -50,9 +50,9 @@ module _ {n : ℕ} {i : ULevel} where
               Π (F u) (λ x → Ω^'S-abgroup n (⊙[ F u , x ]) {{tF}} == H u))) ×
           F (pt X)
       ≃⟨ Σ-emap-r (λ (X , cX , tX) → Σ-emap-r (λ F → Σ-emap-r (λ H →
-        ×-emap (choice ⁻¹) (ide (F (pt X))) ∘e
-        sub-rearrange X cX ∘e
-        ×-emap choice (ide (F (pt X)))))) ⟩
+          ×-emap (choice ⁻¹) (ide (F (pt X))) ∘e
+          sub-rearrange X cX ∘e
+          ×-emap choice (ide (F (pt X)))))) ⟩
     [ (X , cX , tX) ∈ [ S n , i ]-Groups ] ×
       [ F ∈ (de⊙ X → Type i) ] ×
         [ H ∈ (de⊙ X → AbGroup i) ] ×
@@ -69,9 +69,9 @@ module _ {n : ℕ} {i : ULevel} where
               Σ (has-level ⟨ S (S n) ⟩ (F u)) (λ tF → Ω^'S-abgroup n (⊙[ F u , x ]) {{tF}} == H u))) ×
           F (pt X)
       ≃⟨ Σ-emap-r (λ (X , cX , tX) → Σ-emap-r (λ H → Σ-emap-r (λ F →
-        ×-emap (Π-emap-r λ u →
-          ×-emap (ide (Trunc -1 (F u))) (Π-emap-r (λ x → EM-Ω-==-ext n (H u) ⊙[ F u , x ])))
-        (ide (F (pt X)))))) ⟩
+           ×-emap (Π-emap-r λ u → ×-emap (ide (Trunc -1 (F u)))
+             (Π-emap-r (λ x → EM-Ω-==-ext n (H u) ⊙[ F u , x ])))
+             (ide (F (pt X)))))) ⟩
     [ (X , cX , tX) ∈ [ S n , i ]-Groups ] ×
       [ H ∈ (de⊙ X → AbGroup i) ] ×
         [ F ∈ (de⊙ X → Type i) ] ×
@@ -95,14 +95,22 @@ module _ {n : ℕ} {i : ULevel} where
              (λ _ → idp) λ _ → idp)) ⟩
     [ (X , cX , tX) ∈ [ S n , i ]-Groups ] ×
       [ H ∈ (de⊙ X → AbGroup i) ] ×
-        Π⊙ X (λ u → Torsors i (⊙EM (H u) (S (S n))))
-          (pt (⊙Torsors (⊙EM (H (pt X)) (S (S n))) {{PtdTorsors-contr {{EM-conn (H (pt X))}}}}))
+          Π⊙ X (λ u → Torsors i (⊙EM (H u) (S (S n))))
+            (pt (⊙Torsors (⊙EM (H (pt X)) (S (S n))) {{PtdTorsors-contr {{EM-conn (H (pt X))}}}}))
       ≃⟨ Σ-emap-r (λ (X , cX , tX) →
-        Σ-emap-r (λ H → Π⊙-==-ext ((λ u → (EM-Torsors-≃ (H u)) ⁻¹) , ptdness X H))) ⟩
+           Σ-emap-r (λ H → Π⊙-==-ext ((λ u → (EM-Torsors-≃ (H u)) ⁻¹) , ptdness X H))) ⟩
     [ (X , cX , tX) ∈ [ S n , i ]-Groups ] ×
       [ H ∈ (de⊙ X → AbGroup i) ] ×
         Π⊙ X (λ u → EM (H u) (S (S (S n)))) (ptEM (H (pt X)) (S (S (S n)))) ≃∎
       module Sinh-classif-lemmas where
+
+        -- proof of pointedness in final equivalence
+        ptdness : (X : Ptd i) (H : de⊙ X → AbGroup i) →
+          fst (⊙–> (⊙EM-Torsors-≃ (H (pt X)) ⊙⁻¹))
+            (pt (⊙Torsors (⊙EM (H (pt X)) (S (S n))) {{PtdTorsors-contr {{EM-conn (H (pt X))}}}}))
+            ==
+          pt (⊙EM (H (pt X)) (S (S (S n))))
+        ptdness X H = ⊙–>-pt (⊙EM-Torsors-≃ (H (pt X)) {n} ⊙⁻¹)
 
         -- the second equivalence: adding singletons 
         orthog-contr :
@@ -117,14 +125,6 @@ module _ {n : ℕ} {i : ULevel} where
             Trunc-level) [ p ] u))
           (orthog-conn-trunc (λ x → Ω^'S-abgroup n ⊙[ fst (F u) , x ] {{snd (snd (F u))}})
             (connected-≤T (≤T-ap-S 0≤T) {{fst (snd (F u))}}) AbGrp-isGrpd))}})⁻¹
-
-        -- proof of pointedness in final equivalence
-        ptdness : (X : Ptd i) (H : de⊙ X → AbGroup i) →
-          fst (⊙–> (⊙EM-Torsors-≃ (H (pt X)) ⊙⁻¹))
-            (pt (⊙Torsors (⊙EM (H (pt X)) (S (S n))) {{PtdTorsors-contr {{EM-conn (H (pt X))}}}}))
-            ==
-          pt (⊙EM (H (pt X)) (S (S (S n))))
-        ptdness X H = ⊙–>-pt (⊙EM-Torsors-≃ (H (pt X)) {n} ⊙⁻¹)
 
         rearrange :
           (Σ [ (S n) , i , i ]-Groups-v2 (λ (BG , F , p) → Π (de⊙ (fst BG))
