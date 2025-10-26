@@ -115,7 +115,7 @@ module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} (C : WildCat {ℓc₁} {ℓc
     iso₂-coher-inv x = ap-<–-wc C (iso₂-coher x) (F-equiv-wc (ftor₂ ∘WC ftor₁) (snd iso₂ x)) (snd iso₂ (obj ftor₂ (obj ftor₁ x)))
   open Equiv-wc
 
-  -- half-adjoint equivalence of wild cats
+  -- (component-wise) half-adjoint equivalence of wild cats
   record HAdjEquiv-wc : Type (lmax (lmax ℓc₁ ℓc₂) (lmax ℓd₁ ℓd₂)) where
     constructor AEquivWC
     field
