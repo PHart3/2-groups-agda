@@ -44,16 +44,16 @@ module _ {i} {X : Ptd02 i} where
             ⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ◃∎
               =ₛ₁⟨ ! (∙-unit-r (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))))) ⟩
             (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ∙ idp) ◃∎ ∎ₛ
-          coher-inv adj-str = =ₛ-out $
-            (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ∙ idp) ◃∎
-              =ₛ₁⟨ ∙-unit-r (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X)))) ⟩
-            ⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ◃∎
-              =ₛ₁⟨ ap ⊙-crd∼-to-== (⊙→∼-to-== ((λ _ → idp) , idp)) ⟩
+          coher-inv adj-str = =ₛ-out $              
+            ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X))) ◃∙
+            ⊙-crd∼-to-== (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
+              =ₛ⟨ !ₛ (⊙∘-conv (⊙∘-runit (⊙idf (fst X))) (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X)))) ⟩
             ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X)) ∙⊙∼ ⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
-              =ₛ⟨ ⊙∘-conv (⊙∘-runit (⊙idf (fst X))) (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ⟩
-           ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X))) ◃∙
-           ⊙-crd∼-to-== (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎ ∎ₛ 
-
+              =ₛ₁⟨ ! (ap ⊙-crd∼-to-== (⊙→∼-to-== ((λ _ → idp) , idp))) ⟩
+            ⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ◃∎
+              =ₛ₁⟨ ! (∙-unit-r (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))))) ⟩
+            (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ∙ idp) ◃∎ ∎ₛ
+            
 -- an equivalence of 2-groups is an adjoint equivalence
 module _ {i} {G₁ : Type i} {η₁ : CohGrp G₁} where
 
@@ -107,31 +107,31 @@ module _ {i} {G₁ : Type i} {η₁ : CohGrp G₁} where
               ap (λ m → m ∘2G idfη)
                 (natiso2G-to-== (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∎ ∎ₛ            
           coher-inv (adj-str {{η}}) = let idfη = cohgrphom (idf G₁) {{idf2G}} in
-            =ₛ-out $
-              natiso2G-to-== (unit-wksgrphom-l (grphom-forg idfη)) ◃∙
-              ap (λ m → m ∘2G idfη) (natiso2G-to-== (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∎
-                =ₛ₁⟨ 1 & 1 & ! (whisk2G-conv-r (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ⟩
-              natiso2G-to-== (unit-wksgrphom-l (grphom-forg idfη)) ◃∙
-              natiso2G-to-== (natiso-whisk-r {{η₂ = sgrp η}} {μ = grphom-forg idfη} (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∎
-                =ₛ⟨ !ₛ
-                      (∘2G-conv (unit-wksgrphom-l (grphom-forg idfη)) (natiso-whisk-r {{η₂ = sgrp η}} {μ = grphom-forg idfη}
-                        (cohgrpnatiso (λ _ → idp) (λ _ _ → idp)))) ⟩
-              natiso2G-to-== (natiso-whisk-r (cohgrpnatiso (λ _ → idp) (λ _ _ → idp)) natiso-∘ unit-wksgrphom-l (grphom-forg idfη)) ◃∎
-                =ₛ₁⟨ ap natiso2G-to-== (natiso∼-to-== (λ _ → idp)) ⟩
+            =ₛ-out $                
+              natiso2G-to-== (unit-wksgrphom-r (grphom-forg idfη)) ◃∙
+              ap (λ m → idfη ∘2G m) (natiso2G-to-== (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∙
+              natiso2G-to-== (assoc-wksgrphom (grphom-forg idfη) (grphom-forg idfη) (grphom-forg idfη)) ◃∎
+                =ₛ₁⟨ 1 & 1 & ! (whisk2G-conv-l (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ⟩
+              natiso2G-to-== (unit-wksgrphom-r (grphom-forg idfη)) ◃∙
+              natiso2G-to-== (natiso-whisk-l {{η₂ = sgrp η}} {ν₁ = grphom-forg idfη} (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∙
+              natiso2G-to-== (assoc-wksgrphom (grphom-forg idfη) (grphom-forg idfη) (grphom-forg idfη)) ◃∎
+                =ₛ⟨ !ₛ $
+                    ∘2G-conv-tri
+                      (unit-wksgrphom-r (grphom-forg idfη))
+                      (natiso-whisk-l {{η₂ = sgrp η}} {ν₁ = grphom-forg idfη} (cohgrpnatiso (λ _ → idp) (λ _ _ → idp)))
+                      (assoc-wksgrphom (grphom-forg idfη) (grphom-forg idfη) (grphom-forg idfη)) ⟩
               natiso2G-to-== (
                 assoc-wksgrphom (grphom-forg idfη) (grphom-forg idfη) (grphom-forg idfη)
                   natiso-∘
                 natiso-whisk-l {{η₂ = sgrp η}} {ν₁ = grphom-forg idfη} (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))
                   natiso-∘
                 unit-wksgrphom-r (grphom-forg idfη)) ◃∎
-                =ₛ⟨ ∘2G-conv-tri
-                      (unit-wksgrphom-r (grphom-forg idfη))
-                      (natiso-whisk-l {{η₂ = sgrp η}} {ν₁ = grphom-forg idfη} (cohgrpnatiso (λ _ → idp) (λ _ _ → idp)))
-                      (assoc-wksgrphom (grphom-forg idfη) (grphom-forg idfη) (grphom-forg idfη)) ⟩
-              natiso2G-to-== (unit-wksgrphom-r (grphom-forg idfη)) ◃∙
-              natiso2G-to-== (natiso-whisk-l {{η₂ = sgrp η}} {ν₁ = grphom-forg idfη} (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∙
-              natiso2G-to-== (assoc-wksgrphom (grphom-forg idfη) (grphom-forg idfη) (grphom-forg idfη)) ◃∎
-                =ₛ₁⟨ 1 & 1 & whisk2G-conv-l (cohgrpnatiso (λ _ → idp) (λ _ _ → idp)) ⟩
-              natiso2G-to-== (unit-wksgrphom-r (grphom-forg idfη)) ◃∙
-              ap (λ m → idfη ∘2G m) (natiso2G-to-== (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∙
-              natiso2G-to-== (assoc-wksgrphom (grphom-forg idfη) (grphom-forg idfη) (grphom-forg idfη)) ◃∎ ∎ₛ
+                =ₛ₁⟨ ! (ap natiso2G-to-== (natiso∼-to-== (λ _ → idp))) ⟩
+              natiso2G-to-== (natiso-whisk-r (cohgrpnatiso (λ _ → idp) (λ _ _ → idp)) natiso-∘ unit-wksgrphom-l (grphom-forg idfη)) ◃∎
+                =ₛ⟨ ∘2G-conv (unit-wksgrphom-l (grphom-forg idfη)) (natiso-whisk-r {{η₂ = sgrp η}} {μ = grphom-forg idfη}
+                      (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ⟩
+              natiso2G-to-== (unit-wksgrphom-l (grphom-forg idfη)) ◃∙
+              natiso2G-to-== (natiso-whisk-r {{η₂ = sgrp η}} {μ = grphom-forg idfη} (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∎
+                =ₛ₁⟨ 1 & 1 & whisk2G-conv-r (cohgrpnatiso (λ _ → idp) (λ _ _ → idp)) ⟩
+              natiso2G-to-== (unit-wksgrphom-l (grphom-forg idfη)) ◃∙
+              ap (λ m → m ∘2G idfη) (natiso2G-to-== (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∎ ∎ₛ

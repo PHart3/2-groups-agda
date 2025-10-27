@@ -86,6 +86,7 @@ module _ {ℓv ℓe : ULevel} {ℓc₁ ℓc₂ ℓd₁ ℓd₂} {I : WildCat {�
 
 module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} (C : WildCat {ℓc₁} {ℓc₂}) (D : WildCat {ℓd₁} {ℓd₂}) where
 
+  -- equivalence between wild categories
   record Equiv-wc : Type (lmax (lmax ℓc₁ ℓc₂) (lmax ℓd₁ ℓd₂)) where
     constructor EquivWC
     field
@@ -115,7 +116,7 @@ module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} (C : WildCat {ℓc₁} {ℓc
     iso₂-coher-inv x = ap-<–-wc C (iso₂-coher x) (F-equiv-wc (ftor₂ ∘WC ftor₁) (snd iso₂ x)) (snd iso₂ (obj ftor₂ (obj ftor₁ x)))
   open Equiv-wc
 
-  -- half-adjoint equivalence of wild cats
+  -- (component-wise) half-adjoint equivalence of wild cats
   record HAdjEquiv-wc : Type (lmax (lmax ℓc₁ ℓc₂) (lmax ℓd₁ ℓd₂)) where
     constructor AEquivWC
     field
@@ -137,13 +138,58 @@ module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} (C : WildCat {ℓc₁} {ℓc
           =⟨ ! (ρ D (comp (fst (iso₁ 𝔼)) (obj (ftor₁ 𝔼) x))) ⟩
         comp (fst (iso₁ 𝔼)) (obj (ftor₁ 𝔼) x) =∎  
 
--- Every equivalence of wild cats is part of a half-adjoint equivalence.
-
 module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} {C : WildCat {ℓc₁} {ℓc₂}} {D : WildCat {ℓd₁} {ℓd₂}} where
 
   open Equiv-wc
+
+  -- reverse equivalence
+  Equiv-wc-reverse : Equiv-wc C D → Equiv-wc D C
+  ftor₁ (Equiv-wc-reverse e) = ftor₂ e
+  ftor₂ (Equiv-wc-reverse e) = ftor₁ e
+  comp (fst (iso₁ (Equiv-wc-reverse e))) x = <–-wc C (snd (iso₂ e) x) 
+  sq (fst (iso₁ (Equiv-wc-reverse e))) {x} {y} f =
+    ⟦ C ⟧ f ▢ <–-wc C (snd (iso₂ e) x)
+      =⟨ lamb C (⟦ C ⟧ f ▢ <–-wc C (snd (iso₂ e) x)) ⟩
+    ⟦ C ⟧ id₁ C y ▢ ⟦ C ⟧ f ▢ <–-wc C (snd (iso₂ e) x)
+      =⟨ ap (λ m → ⟦ C ⟧ m ▢ ⟦ C ⟧ f ▢ <–-wc C (snd (iso₂ e) x)) (<–-wc-linv C (snd (iso₂ e) y))  ⟩
+    ⟦ C ⟧ ⟦ C ⟧ <–-wc C (snd (iso₂ e) y) ▢  comp (fst (iso₂ e)) y ▢ ⟦ C ⟧ f ▢ <–-wc C (snd (iso₂ e) x)
+      =⟨ α C (<–-wc C (snd (iso₂ e) y)) (comp (fst (iso₂ e)) y) (⟦ C ⟧ f ▢ <–-wc C (snd (iso₂ e) x)) ⟩
+    ⟦ C ⟧ <–-wc C (snd (iso₂ e) y) ▢  ⟦ C ⟧ comp (fst (iso₂ e)) y ▢ ⟦ C ⟧ f ▢ <–-wc C (snd (iso₂ e) x)
+      =⟨ ap (λ m → ⟦ C ⟧ <–-wc C (snd (iso₂ e) y) ▢ m) (! (α C (comp (fst (iso₂ e)) y) f (<–-wc C (snd (iso₂ e) x)))) ⟩
+    ⟦ C ⟧ <–-wc C (snd (iso₂ e) y) ▢  ⟦ C ⟧ ⟦ C ⟧ comp (fst (iso₂ e)) y ▢ f ▢ <–-wc C (snd (iso₂ e) x)
+      =⟨ ap (λ m → ⟦ C ⟧ <–-wc C (snd (iso₂ e) y) ▢  ⟦ C ⟧ m ▢ <–-wc C (snd (iso₂ e) x)) (! (sq (fst (iso₂ e)) f)) ⟩
+    ⟦ C ⟧ <–-wc C (snd (iso₂ e) y) ▢  ⟦ C ⟧ ⟦ C ⟧ arr (ftor₂ e) (arr (ftor₁ e) f) ▢  comp (fst (iso₂ e)) x ▢ <–-wc C (snd (iso₂ e) x)
+      =⟨ ap (λ m → ⟦ C ⟧ <–-wc C (snd (iso₂ e) y) ▢ m) (α C (arr (ftor₂ e) (arr (ftor₁ e) f)) (comp (fst (iso₂ e)) x) (<–-wc C (snd (iso₂ e) x))) ⟩
+    ⟦ C ⟧ <–-wc C (snd (iso₂ e) y) ▢  ⟦ C ⟧ arr (ftor₂ e) (arr (ftor₁ e) f) ▢  ⟦ C ⟧ comp (fst (iso₂ e)) x ▢ <–-wc C (snd (iso₂ e) x)
+      =⟨ ap (λ m →  ⟦ C ⟧ <–-wc C (snd (iso₂ e) y) ▢  ⟦ C ⟧ arr (ftor₂ e) (arr (ftor₁ e) f) ▢ m) (! (<–-wc-rinv C (snd (iso₂ e) x))) ⟩
+    ⟦ C ⟧ <–-wc C (snd (iso₂ e) y) ▢  ⟦ C ⟧ arr (ftor₂ e) (arr (ftor₁ e) f) ▢  id₁ C (obj (ftor₂ e) (obj (ftor₁ e) x))
+      =⟨ ap (λ m → ⟦ C ⟧ <–-wc C (snd (iso₂ e) y) ▢ m) (! (ρ C (arr (ftor₂ e) (arr (ftor₁ e) f)))) ⟩
+    ⟦ C ⟧ <–-wc C (snd (iso₂ e) y) ▢  arr (ftor₂ e) (arr (ftor₁ e) f) =∎
+  snd (iso₁ (Equiv-wc-reverse e)) x = equiv-wc-rev C (snd (iso₂ e) x)
+  comp (fst (iso₂ (Equiv-wc-reverse e))) x = <–-wc D (snd (iso₁ e) x)
+  sq (fst (iso₂ (Equiv-wc-reverse e))) {x} {y} f = 
+    ⟦ D ⟧ arr (ftor₁ e) (arr (ftor₂ e) f) ▢ <–-wc D (snd (iso₁ e) x)
+      =⟨ ap (λ m → ⟦ D ⟧ m ▢ <–-wc D (snd (iso₁ e) x)) (lamb D (arr (ftor₁ e) (arr (ftor₂ e) f))) ⟩
+    ⟦ D ⟧ ⟦ D ⟧ id₁ D (obj (ftor₁ e) (obj (ftor₂ e) y)) ▢ arr (ftor₁ e) (arr (ftor₂ e) f) ▢ <–-wc D (snd (iso₁ e) x)
+      =⟨ ap (λ m → ⟦ D ⟧ ⟦ D ⟧ m ▢ arr (ftor₁ e) (arr (ftor₂ e) f) ▢ <–-wc D (snd (iso₁ e) x)) (<–-wc-linv D (snd (iso₁ e) y)) ⟩
+    ⟦ D ⟧ ⟦ D ⟧ ⟦ D ⟧ <–-wc D (snd (iso₁ e) y) ▢ comp (fst (iso₁ e)) y ▢ arr (ftor₁ e) (arr (ftor₂ e) f) ▢ <–-wc D (snd (iso₁ e) x)
+      =⟨ ap (λ m → ⟦ D ⟧ m ▢ <–-wc D (snd (iso₁ e) x)) (α D (<–-wc D (snd (iso₁ e) y)) (comp (fst (iso₁ e)) y) (arr (ftor₁ e) (arr (ftor₂ e) f))) ⟩
+    ⟦ D ⟧ ⟦ D ⟧ <–-wc D (snd (iso₁ e) y) ▢ ⟦ D ⟧ comp (fst (iso₁ e)) y ▢ arr (ftor₁ e) (arr (ftor₂ e) f) ▢ <–-wc D (snd (iso₁ e) x)
+      =⟨ ap (λ m → ⟦ D ⟧ ⟦ D ⟧ <–-wc D (snd (iso₁ e) y) ▢ m ▢ <–-wc D (snd (iso₁ e) x)) (! (sq (fst (iso₁ e)) f)) ⟩
+    ⟦ D ⟧ ⟦ D ⟧ <–-wc D (snd (iso₁ e) y) ▢ ⟦ D ⟧ f ▢ comp (fst (iso₁ e)) x ▢ <–-wc D (snd (iso₁ e) x)
+      =⟨ α D (<–-wc D (snd (iso₁ e) y)) (⟦ D ⟧ f ▢ comp (fst (iso₁ e)) x) (<–-wc D (snd (iso₁ e) x)) ⟩
+    ⟦ D ⟧ <–-wc D (snd (iso₁ e) y) ▢ ⟦ D ⟧ ⟦ D ⟧ f ▢ comp (fst (iso₁ e)) x ▢ <–-wc D (snd (iso₁ e) x)
+      =⟨ ap (λ m → ⟦ D ⟧ <–-wc D (snd (iso₁ e) y) ▢ m) (α D f (comp (fst (iso₁ e)) x) (<–-wc D (snd (iso₁ e) x))) ⟩
+    ⟦ D ⟧ <–-wc D (snd (iso₁ e) y) ▢ ⟦ D ⟧ f ▢ ⟦ D ⟧ comp (fst (iso₁ e)) x ▢ <–-wc D (snd (iso₁ e) x)
+      =⟨ ap (λ m → ⟦ D ⟧ <–-wc D (snd (iso₁ e) y) ▢ ⟦ D ⟧ f ▢ m) (! (<–-wc-rinv D (snd (iso₁ e) x))) ⟩
+    ⟦ D ⟧ <–-wc D (snd (iso₁ e) y) ▢ ⟦ D ⟧ f ▢ id₁ D x
+      =⟨ ap (λ m → ⟦ D ⟧ <–-wc D (snd (iso₁ e) y) ▢ m) (! (ρ D f)) ⟩
+    ⟦ D ⟧ <–-wc D (snd (iso₁ e) y) ▢  f =∎
+  snd (iso₂ (Equiv-wc-reverse e)) x = equiv-wc-rev D (snd (iso₁ e) x)
+
   open HAdjEquiv-wc
 
+  -- Every equivalence of wild cats is part of a half-adjoint equivalence.
   Equiv-wc-promote : Equiv-wc C D → HAdjEquiv-wc C D
   ftor₁ (𝔼 (Equiv-wc-promote e)) = ftor₁ e
   ftor₂ (𝔼 (Equiv-wc-promote e)) = ftor₂ e
