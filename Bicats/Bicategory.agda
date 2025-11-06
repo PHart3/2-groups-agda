@@ -47,8 +47,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
         → F₁ (⟦ ξB ⟧ g ◻ f) == ⟦ ξC ⟧ F₁ g ◻ F₁ f
       F-ρ : {a b : B₀} (f : hom a b) → ap F₁ (ρ f) ∙ F-◻ (id₁ a) f ∙ ap (λ m → F₁ f ◻ m) (F-id₁ a) == ρ (F₁ f)
       F-λ : {a b : B₀} (f : hom a b) → ap F₁ (lamb f) ∙ F-◻ f (id₁ b) ∙ ap (λ m → m ◻ F₁ f) (F-id₁ b) == lamb (F₁ f)
-      F-α : {a b c d : B₀} (h : hom c d) (g : hom b c) (f : hom a b)
-        →
+      F-α : {a b c d : B₀} (h : hom c d) (g : hom b c) (f : hom a b) →
         ! (ap (λ m → F₁ h ◻ m) (F-◻ f g)) ∙
         ! (F-◻ (⟦ ξB ⟧ g ◻ f) h) ∙
         ap F₁ (α h g f) ∙
@@ -122,8 +121,7 @@ module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {
         (p₂ : F₁ (str-pf φ₁) g₂ == ⟦ ξC ⟧ F₁ (str-pf φ₁) f ◻ k₁)
         (p₃ : k₁ == k₂) (p₅ : k₃ == k₄)
         {v : hom (map-pf φ₂ (map-pf φ₁ x)) (map-pf φ₂ (map-pf φ₁ a))}
-        (p₆ : F₁ (str-pf φ₂) k₄ == v) (p₄ : _)  
-        → 
+        (p₆ : F₁ (str-pf φ₂) k₄ == v) (p₄ : _) → 
         ap (F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)) p₁ ∙
         (ap (F₁ (str-pf φ₂)) p₂ ∙
         ap (λ m → F₁ (str-pf φ₂) (F₁ (str-pf φ₁) f ◻ m)) p₃ ∙ p₄ ∙'
