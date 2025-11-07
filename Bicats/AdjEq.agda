@@ -27,6 +27,14 @@ module _ {i j} {B₀ : Type i} where
 
     open Adjequiv
 
+    AdjEq-id₁ : {a : B₀} → AdjEquiv ξB a a
+    fst (AdjEq-id₁ {a}) = id₁ a
+    inv (snd (AdjEq-id₁ {a})) = id₁ a
+    eta (snd (AdjEq-id₁ {a})) = lamb (id₁ a)
+    eps (snd (AdjEq-id₁ {a})) = ρ (id₁ a)
+    coher-map (snd (AdjEq-id₁ {a})) = {!!}
+    coher-inv (snd (AdjEq-id₁ {a})) = {!!}
+
     AdjEq-rev :  {a b : B₀} → AdjEquiv ξB a b → AdjEquiv ξB b a
     fst (AdjEq-rev (f , ae)) = inv ae
     inv (snd (AdjEq-rev (f , ae))) = f
@@ -37,3 +45,11 @@ module _ {i j} {B₀ : Type i} where
 
     AdjEq-rev-≃ :  {a b : B₀} → AdjEquiv ξB a b ≃ AdjEquiv ξB b a
     AdjEq-rev-≃ = equiv AdjEq-rev AdjEq-rev (λ _ → idp) λ _ → idp
+
+  -- (globally) univalent bicategories
+
+  ==-to-adjeq : {{ξB : BicatStr j B₀}} {a b : B₀} → a == b → AdjEquiv ξB a b
+  ==-to-adjeq idp = AdjEq-id₁
+
+  is-univ-bc : BicatStr j B₀ → Type (lmax i j)
+  is-univ-bc ξB = (a b : B₀) → is-equiv (==-to-adjeq {{ξB}} {a} {b})
