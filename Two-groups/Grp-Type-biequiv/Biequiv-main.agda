@@ -62,21 +62,21 @@ module Biequiv-main where
   F-α (str-pf (Ψ₂ (2Grp-Ptd02-bieq _))) {_ , _ , tr₁} {_ , _ , tr₂} {_ , _ , tr₃} {_ , _ , tr₄} = Ω-α {{tr₁}} {{tr₂}} {{tr₃}} {{tr₄}}
 
   -- pseudotransformation from K₂ ∘ Ω to identity
-  η₀ (τ₁ (2Grp-Ptd02-bieq _)) (X , _ , tr) =
+  η₀ (fst (ε₁ (2Grp-Ptd02-bieq _))) (X , _ , tr) =
     K₂-rec-hom {{Loop2Grp (pt X) {{has-level-apply tr (pt X) (pt X)}}}} {{tr}} (pt X)
       (idf2G {{Loop2Grp (pt X) {{has-level-apply tr (pt X) (pt X)}}}})
-  η₁ (τ₁ (2Grp-Ptd02-bieq _)) {X₁ , _ , tr₁} {X₂ , _ , tr₂} = λ f → ⊙-crd∼-to-== (sq-KΩ {{tr₁}} {{tr₂}} (pt X₁) (pt X₂) f)
-  coher-unit (τ₁ (2Grp-Ptd02-bieq _)) {_ , _ , tr} = KLoop-coher-unit {{tr}}
-  coher-assoc (τ₁ (2Grp-Ptd02-bieq _)) {_ , _ , tr₁} {_ , _ , tr₂} {_ , _ , tr₃} = KLoop-coher-assoc {{tr₁}} {{tr₂}} {{tr₃}}
+  η₁ (fst (ε₁ (2Grp-Ptd02-bieq _))) {X₁ , _ , tr₁} {X₂ , _ , tr₂} = λ f → ⊙-crd∼-to-== (sq-KΩ {{tr₁}} {{tr₂}} (pt X₁) (pt X₂) f)
+  coher-unit (fst (ε₁ (2Grp-Ptd02-bieq _))) {_ , _ , tr} = KLoop-coher-unit {{tr}}
+  coher-assoc (fst (ε₁ (2Grp-Ptd02-bieq _))) {_ , _ , tr₁} {_ , _ , tr₂} {_ , _ , tr₃} = KLoop-coher-assoc {{tr₁}} {{tr₂}} {{tr₃}}
 
   -- pseudotransformation from identity to Ω ∘ K₂
-  η₀ (τ₂ (2Grp-Ptd02-bieq _)) (G , η) = K₂-loopmap G {{η}}
-  η₁ (τ₂ (2Grp-Ptd02-bieq _)) {_ , η₁} {G₂ , η₂} = λ f →
+  η₀ (fst (ε₂ (2Grp-Ptd02-bieq _))) (G , η) = K₂-loopmap G {{η}}
+  η₁ (fst (ε₂ (2Grp-Ptd02-bieq _))) {_ , η₁} {G₂ , η₂} = λ f →
     natiso2G-to-== {{η₁}} {{Loop2Grp (base G₂ {{η₂}}) {{has-level-apply (K₂-is-2type G₂ {{η₂}}) (base G₂ {{η₂}}) (base G₂ {{η₂}})}}}}
       (sq-ΩK {{η₁}} {{η₂}} (CohGrpHom.str {{η₁}} {{η₂}} f))
-  coher-unit (τ₂ (2Grp-Ptd02-bieq _)) {_ , η} = LoopK-coher-unit {{η}}
-  coher-assoc (τ₂ (2Grp-Ptd02-bieq _)) {_ , η₁} {_ , η₂} {_ , η₃} = LoopK-coher-assoc {{η₁}} {{η₂}} {{η₃}}
+  coher-unit (fst (ε₂ (2Grp-Ptd02-bieq _))) {_ , η} = LoopK-coher-unit {{η}}
+  coher-assoc (fst (ε₂ (2Grp-Ptd02-bieq _))) {_ , η₁} {_ , η₂} {_ , η₃} = LoopK-coher-assoc {{η₁}} {{η₂}} {{η₃}}
 
   -- levelwise adjoint equivalence
-  lev-eq₁ (2Grp-Ptd02-bieq _) (_ , cX , tX) = KLoop-adjeq-str {{cX}} {{tX}}
-  lev-eq₂ (2Grp-Ptd02-bieq _) (_ , η) = Loop-adjeq-str {{η}}
+  snd (ε₁ (2Grp-Ptd02-bieq _)) (_ , cX , tX) = KLoop-adjeq-str {{cX}} {{tX}}
+  snd (ε₂ (2Grp-Ptd02-bieq _)) (_ , η) = Loop-adjeq-str {{η}}

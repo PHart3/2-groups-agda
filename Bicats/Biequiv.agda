@@ -23,10 +23,20 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}  where
     field
       Ψ₁ : Psfunctor {{ξB}} {{ξC}} 
       Ψ₂ : Psfunctor {{ξC}} {{ξB}}
-      τ₁ : Pstrans (Ψ₁ ∘BC Ψ₂) idfBC
-      τ₂ : Pstrans idfBC (Ψ₂ ∘BC Ψ₁)
-      lev-eq₁ : (a : C₀) → Adjequiv {{ξC}} (η₀ τ₁ a)
-      lev-eq₂ : (a : B₀) → Adjequiv {{ξB}} (η₀ τ₂ a)
+      ε₁ : (Ψ₁ ∘BC Ψ₂) ps-≃ idfBC
+      ε₂ : idfBC ps-≃ (Ψ₂ ∘BC Ψ₁)
+
+    τ₁ : Pstrans (Ψ₁ ∘BC Ψ₂) idfBC
+    τ₁ = fst ε₁
+
+    τ₂ : Pstrans idfBC (Ψ₂ ∘BC Ψ₁)
+    τ₂ = fst ε₂
+
+    lev-eq₁ : (a : C₀) → Adjequiv {{ξC}} (η₀ τ₁ a)
+    lev-eq₁ a = snd ε₁ a
+
+    lev-eq₂ : (a : B₀) → Adjequiv {{ξB}} (η₀ τ₂ a)
+    lev-eq₂ a = snd ε₂ a
 
   -- for clarity of final theorem statement
   BiequivStr : (ξB : BicatStr j₁ B₀) (ξC : BicatStr j₂ C₀) → Type (lmax (lmax i₁ j₁) (lmax i₂ j₂))
@@ -54,6 +64,7 @@ module _ {i₁ i₂ j₁ j₂} {B@(B₀ , _) : Bicat j₁ i₁} {C@(C₀ , _) : 
   snd (iso₂ (beqv-to-niso be)) x = aeqv-to-weqv (lev-eq₂ be x)
 
   open Psfunctor
+  open PsfunctorStr
 
   -- Every biequivalence is fully faithful.
   abstract

@@ -6,6 +6,7 @@ open import lib.wild-cats.WildCats renaming
 open import Bicat-wild
 open import Bicategory
 open import Bicat-coher
+open import AdjEq
 
 module Pstransf where
 
@@ -39,136 +40,10 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
           ==
         idp
 
-  open Pstrans
-
-  Pstrans-id : (R : Psfunctor {{ξB}} {{ξC}}) → Pstrans R R
-  η₀ (Pstrans-id R) a = id₁ (map-pf R a)
-  η₁ (Pstrans-id R) f = ! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)
-  coher-unit (Pstrans-id R) {a} = =ₛ-out $
-    lamb (id₁ (map-pf R a)) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R a)) (! (F-id₁ (str-pf R) a)) ◃∙
-    (! (ρ (F₁ (str-pf R) (id₁ a))) ∙
-    lamb (F₁ (str-pf R) (id₁ a))) ◃∙
-    ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R a) ◻ m) (F-id₁ (str-pf R) a) ◃∎
-      =ₛ⟨ 2 & 1 & apCommSq2◃-rev (λ x → ! (ρ x) ∙ lamb x) (F-id₁ (str-pf R) a) ⟩
-    lamb (id₁ (map-pf R a)) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R a)) (! (F-id₁ (str-pf R) a)) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R a)) (F-id₁ (str-pf R) a) ◃∙
-    (! (ρ (id₁ (map-pf R a))) ∙ lamb (id₁ (map-pf R a))) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R a) ◻ m) (F-id₁ (str-pf R) a)) ◃∙
-    ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R a) ◻ m) (F-id₁ (str-pf R) a) ◃∎
-      =ₛ₁⟨ 3 & 1 & ap (λ p → ! (ρ (id₁ (map-pf R a))) ∙ p) lamb-ρ-id₁-bc ∙ !-inv-l (ρ (id₁ (map-pf R a))) ⟩
-    lamb (id₁ (map-pf R a)) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R a)) (! (F-id₁ (str-pf R) a)) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R a)) (F-id₁ (str-pf R) a) ◃∙
-    idp ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R a) ◻ m) (F-id₁ (str-pf R) a)) ◃∙
-    ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R a) ◻ m) (F-id₁ (str-pf R) a) ◃∎
-      =ₛ₁⟨ 3 & 3 & !-inv-l (ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R a) ◻ m) (F-id₁ (str-pf R) a)) ⟩
-    lamb (id₁ (map-pf R a)) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R a)) (! (F-id₁ (str-pf R) a)) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R a)) (F-id₁ (str-pf R) a) ◃∙
-    idp ◃∎
-      =ₛ₁⟨ 1 & 1 & ap-! (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R a)) (F-id₁ (str-pf R) a) ⟩
-    lamb (id₁ (map-pf R a)) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R a)) (F-id₁ (str-pf R) a)) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R a)) (F-id₁ (str-pf R) a) ◃∙
-    idp ◃∎
-      =ₛ₁⟨ 1 & 2 & !-inv-l (ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R a)) (F-id₁ (str-pf R) a)) ⟩
-    lamb (id₁ (map-pf R a)) ◃∙
-    idp ◃∙
-    idp ◃∎
-      =ₛ₁⟨ ∙-unit-r (lamb (id₁ (map-pf R a))) ∙ lamb-ρ-id₁-bc ⟩
-    ρ (id₁ (map-pf R a)) ◃∎ ∎ₛ
-  coher-assoc (Pstrans-id R) {a} {b} {c} f g = =ₛ-out $
-    ! (! (ρ (F₁ (str-pf R) (⟦ ξB ⟧ g ◻ f))) ∙ lamb (F₁ (str-pf R) (⟦ ξB ⟧ g ◻ f))) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R a)) (F-◻ (str-pf R) f g) ◃∙
-    ! (α (F₁ (str-pf R) g) (F₁ (str-pf R) f) (id₁ (map-pf R a))) ◃∙
-    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R) g ◻ m) (! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)) ◃∙
-    α (F₁ (str-pf R) g) (id₁ (map-pf R b)) (F₁ (str-pf R) f) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R) f) (! (ρ (F₁ (str-pf R) g)) ∙ lamb (F₁ (str-pf R) g)) ◃∙
-    ! (α (id₁ (map-pf R c)) (F₁ (str-pf R) g) (F₁ (str-pf R) f)) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R c) ◻ m) (F-◻ (str-pf R) f g)) ◃∎
-      =ₛ⟨ 0 & 1 & hmtpy-nat-!◃ (λ x → ! (ρ x) ∙ lamb x) (F-◻ (str-pf R) f g) ⟩
-    ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R c) ◻ m) (F-◻ (str-pf R) f g) ◃∙
-    ! (! (ρ (⟦ ξC ⟧ F₁ (str-pf R) g ◻ F₁ (str-pf R) f)) ∙ lamb (⟦ ξC ⟧ F₁ (str-pf R) g ◻ F₁ (str-pf R) f)) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ m ◻ (id₁ (map-pf R a))) (F-◻ (str-pf R) f g)) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R a)) (F-◻ (str-pf R) f g) ◃∙
-    ! (α (F₁ (str-pf R) g) (F₁ (str-pf R) f) (id₁ (map-pf R a))) ◃∙
-    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R) g ◻ m) (! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)) ◃∙
-    α (F₁ (str-pf R) g) (id₁ (map-pf R b)) (F₁ (str-pf R) f) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R) f) (! (ρ (F₁ (str-pf R) g)) ∙ lamb (F₁ (str-pf R) g)) ◃∙
-    ! (α (id₁ (map-pf R c)) (F₁ (str-pf R) g) (F₁ (str-pf R) f)) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R c) ◻ m) (F-◻ (str-pf R) f g)) ◃∎
-      =ₛ₁⟨ 2 & 2 & !-inv-l (ap (λ m → ⟦ ξC ⟧ m ◻ (id₁ (map-pf R a))) (F-◻ (str-pf R) f g)) ⟩
-    ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R c) ◻ m) (F-◻ (str-pf R) f g) ◃∙
-    ! (! (ρ (⟦ ξC ⟧ F₁ (str-pf R) g ◻ F₁ (str-pf R) f)) ∙ lamb (⟦ ξC ⟧ F₁ (str-pf R) g ◻ F₁ (str-pf R) f)) ◃∙
-    idp ◃∙
-    ! (α (F₁ (str-pf R) g) (F₁ (str-pf R) f) (id₁ (map-pf R a))) ◃∙
-    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R) g ◻ m) (! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)) ◃∙
-    α (F₁ (str-pf R) g) (id₁ (map-pf R b)) (F₁ (str-pf R) f) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R) f) (! (ρ (F₁ (str-pf R) g)) ∙ lamb (F₁ (str-pf R) g)) ◃∙
-    ! (α (id₁ (map-pf R c)) (F₁ (str-pf R) g) (F₁ (str-pf R) f)) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R c) ◻ m) (F-◻ (str-pf R) f g)) ◃∎
-      =ₛ⟨ 5 & 1 & tri-bc◃ (F₁ (str-pf R) f) (F₁ (str-pf R) g) ⟩
-    ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R c) ◻ m) (F-◻ (str-pf R) f g) ◃∙
-    ! (! (ρ (⟦ ξC ⟧ F₁ (str-pf R) g ◻ F₁ (str-pf R) f)) ∙ lamb (⟦ ξC ⟧ F₁ (str-pf R) g ◻ F₁ (str-pf R) f)) ◃∙
-    idp ◃∙
-    ! (α (F₁ (str-pf R) g) (F₁ (str-pf R) f) (id₁ (map-pf R a))) ◃∙
-    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R) g ◻ m) (! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R) g ◻ m) (lamb (F₁ (str-pf R) f))) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R) f) (ρ (F₁ (str-pf R) g)) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R) f) (! (ρ (F₁ (str-pf R) g)) ∙ lamb (F₁ (str-pf R) g)) ◃∙
-    ! (α (id₁ (map-pf R c)) (F₁ (str-pf R) g) (F₁ (str-pf R) f)) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R c) ◻ m) (F-◻ (str-pf R) f g)) ◃∎
-      =ₛ⟨ 7 & 1 & ap-!∙◃ (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R) f) (ρ (F₁ (str-pf R) g)) (lamb (F₁ (str-pf R) g)) ⟩
-    ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R c) ◻ m) (F-◻ (str-pf R) f g) ◃∙
-    ! (! (ρ (⟦ ξC ⟧ F₁ (str-pf R) g ◻ F₁ (str-pf R) f)) ∙ lamb (⟦ ξC ⟧ F₁ (str-pf R) g ◻ F₁ (str-pf R) f)) ◃∙
-    idp ◃∙
-    ! (α (F₁ (str-pf R) g) (F₁ (str-pf R) f) (id₁ (map-pf R a))) ◃∙
-    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R) g ◻ m) (! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R) g ◻ m) (lamb (F₁ (str-pf R) f))) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R) f) (ρ (F₁ (str-pf R) g)) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R) f) (ρ (F₁ (str-pf R) g))) ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R) f) (lamb (F₁ (str-pf R) g)) ◃∙
-    ! (α (id₁ (map-pf R c)) (F₁ (str-pf R) g) (F₁ (str-pf R) f)) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R c) ◻ m) (F-◻ (str-pf R) f g)) ◃∎
-      =ₛ₁⟨ 6 & 2 & !-inv-r (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R) f) (ρ (F₁ (str-pf R) g))) ⟩
-    ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R c) ◻ m) (F-◻ (str-pf R) f g) ◃∙
-    ! (! (ρ (⟦ ξC ⟧ F₁ (str-pf R) g ◻ F₁ (str-pf R) f)) ∙ lamb (⟦ ξC ⟧ F₁ (str-pf R) g ◻ F₁ (str-pf R) f)) ◃∙
-    idp ◃∙
-    ! (α (F₁ (str-pf R) g) (F₁ (str-pf R) f) (id₁ (map-pf R a))) ◃∙
-    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R) g ◻ m) (! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R) g ◻ m) (lamb (F₁ (str-pf R) f))) ◃∙
-    idp ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R) f) (lamb (F₁ (str-pf R) g)) ◃∙
-    ! (α (id₁ (map-pf R c)) (F₁ (str-pf R) g) (F₁ (str-pf R) f)) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R c) ◻ m) (F-◻ (str-pf R) f g)) ◃∎
-      =ₛ⟨ 4 & 1 & ap-!∙◃ (λ m → ⟦ ξC ⟧ F₁ (str-pf R) g ◻ m) (ρ (F₁ (str-pf R) f)) (lamb (F₁ (str-pf R) f)) ⟩
-    ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R c) ◻ m) (F-◻ (str-pf R) f g) ◃∙
-    ! (! (ρ (⟦ ξC ⟧ F₁ (str-pf R) g ◻ F₁ (str-pf R) f)) ∙ lamb (⟦ ξC ⟧ F₁ (str-pf R) g ◻ F₁ (str-pf R) f)) ◃∙
-    idp ◃∙
-    ! (α (F₁ (str-pf R) g) (F₁ (str-pf R) f) (id₁ (map-pf R a))) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R) g ◻ m) (ρ (F₁ (str-pf R) f))) ◃∙
-    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R) g ◻ m) (lamb (F₁ (str-pf R) f)) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R) g ◻ m) (lamb (F₁ (str-pf R) f))) ◃∙
-    idp ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R) f) (lamb (F₁ (str-pf R) g)) ◃∙
-    ! (α (id₁ (map-pf R c)) (F₁ (str-pf R) g) (F₁ (str-pf R) f)) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R c) ◻ m) (F-◻ (str-pf R) f g)) ◃∎
-      =ₛ₁⟨ 5 & 2 & !-inv-r (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R) g ◻ m) (lamb (F₁ (str-pf R) f))) ⟩
-    ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R c) ◻ m) (F-◻ (str-pf R) f g) ◃∙
-    ! (! (ρ (⟦ ξC ⟧ F₁ (str-pf R) g ◻ F₁ (str-pf R) f)) ∙ lamb (⟦ ξC ⟧ F₁ (str-pf R) g ◻ F₁ (str-pf R) f)) ◃∙
-    idp ◃∙
-    ! (α (F₁ (str-pf R) g) (F₁ (str-pf R) f) (id₁ (map-pf R a))) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R) g ◻ m) (ρ (F₁ (str-pf R) f))) ◃∙
-    idp ◃∙
-    idp ◃∙
-    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R) f) (lamb (F₁ (str-pf R) g)) ◃∙
-    ! (α (id₁ (map-pf R c)) (F₁ (str-pf R) g) (F₁ (str-pf R) f)) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R c) ◻ m) (F-◻ (str-pf R) f g)) ◃∎
-      =ₛ⟨ 1 & 1 & {!!} ⟩
-    {!!}
+  -- pseudonatural equivalence
+  infixr 70 _ps-≃_
+  _ps-≃_ : Psfunctor {{ξB}} {{ξC}} → Psfunctor {{ξB}} {{ξC}} → Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
+  F ps-≃ G = Σ (Pstrans F G) (λ φ → (b : B₀) → Adjequiv (Pstrans.η₀ φ b))
 
 -- induced wild functor
 module _ {i₁ i₂ j₁ j₂} {B@(B₀ , _) : Bicat j₁ i₁} {C@(C₀ , _) : Bicat j₂ i₂} where
