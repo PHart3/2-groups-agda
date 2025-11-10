@@ -23,6 +23,24 @@ module _ (j : ULevel) where
         → α i h (g ◻ f) ∙ α (i ◻ h) g f == ap (λ m → i ◻ m) (α h g f) ∙ α i (h ◻ g) f ∙ ap (λ m → m ◻ f) (α i h g)
       {{hom-trunc}} : {a b : B₀} → has-level 1 (hom a b)
 
+    abstract
+
+      tri-bc◃ : {a b c : B₀} (f : hom a b) (g : hom b c) →
+        ap (λ m → g ◻ m) (lamb f) ◃∙
+        α g (id₁ b) f ◃∎
+          =ₛ
+        ap (λ m → m ◻ f) (ρ g) ◃∎
+      tri-bc◃ f g = pre-rotate-out (=ₛ-in (tri-bc f g))
+
+      pent-bc◃ : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e) →
+        α i h (g ◻ f) ◃∙
+        α (i ◻ h) g f ◃∎
+          =ₛ
+        ap (λ m → i ◻ m) (α h g f) ◃∙
+        α i (h ◻ g) f ◃∙
+        ap (λ m → m ◻ f) (α i h g) ◃∎
+      pent-bc◃ f g h i = =ₛ-in (pent-bc f g h i)
+
   Bicat : (i : ULevel) → Type (lmax (lsucc j) (lsucc i))
   Bicat i = Σ (Type i) BicatStr
 
@@ -162,8 +180,7 @@ module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {
         (p₃ : k₁ == k₂) (p₅ : k₃ == k₄)
         (p₂ : F₁ (str-pf φ₁) g₂ == ⟦ ξC ⟧ k₁ ◻ F₁ (str-pf φ₁) f)
         {t : hom (map-pf φ₂ (map-pf φ₁ b)) (map-pf φ₂ (map-pf φ₁ x))}
-        (p₆ : F₁ (str-pf φ₂) k₄ == t) (p₄ : _)  
-        → 
+        (p₆ : F₁ (str-pf φ₂) k₄ == t) (p₄ : _) → 
         ap (F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)) p₁ ∙
         (ap (F₁ (str-pf φ₂)) p₂ ∙
         ap (λ m → F₁ (str-pf φ₂) (m ◻ F₁ (str-pf φ₁) f)) p₃ ∙ p₄ ∙'

@@ -22,6 +22,22 @@ infixr 82 ⟦_⟧_▢_
 ⟦_⟧_▢_ : ∀ {i j} (C : WildCat {i} {j}) {a b c : ob C} → hom C b c → hom C a b → hom C a c
 ⟦_⟧_▢_ ξ g f = _▢_ ξ g f 
 
+id₁-lft-≃ : ∀ {i j} {C : WildCat {i} {j}} → ∀ {x y} → hom C x y ≃ hom C x y
+fst (id₁-lft-≃ {C = C}) f = ⟦ C ⟧ id₁ C _ ▢ f
+snd (id₁-lft-≃ {C = C}) = ∼-preserves-equiv (λ x → lamb C x) (idf-is-equiv _)
+
+id₁-rght-≃ : ∀ {i j} {C : WildCat {i} {j}} → ∀ {x y} → hom C x y ≃ hom C x y
+fst (id₁-rght-≃ {C = C}) f = ⟦ C ⟧ f ▢ id₁ C _
+snd (id₁-rght-≃ {C = C}) = ∼-preserves-equiv (λ x → ρ C x) (idf-is-equiv _)
+
+id₁-comm-reflect-l : ∀ {i j} {C : WildCat {i} {j}} → ∀ {x y} {f₁ f₂ : hom C x y} {p₁ p₂ : f₁ == f₂}
+  → ap (λ m → ⟦ C ⟧ id₁ C _ ▢ m) p₁ == ap (λ m → ⟦ C ⟧ id₁ C _ ▢ m) p₂ → p₁ == p₂
+id₁-comm-reflect-l {C = C} e = equiv-is-inj (ap-is-equiv (snd (id₁-lft-≃ {C = C})) _ _) _ _ e
+
+id₁-comm-reflect-r : ∀ {i j} {C : WildCat {i} {j}} → ∀ {x y} {f₁ f₂ : hom C x y} {p₁ p₂ : f₁ == f₂}
+  → ap (λ m → ⟦ C ⟧ m ▢ id₁ C _) p₁ == ap (λ m → ⟦ C ⟧ m ▢ id₁ C _) p₂ → p₁ == p₂
+id₁-comm-reflect-r {C = C} e = equiv-is-inj (ap-is-equiv (snd (id₁-rght-≃ {C = C})) _ _) _ _ e
+
 module _ {i j} (C : WildCat {i} {j}) where
 
   equiv-wc : {a b : ob C} → hom C a b → Type j
@@ -88,3 +104,118 @@ _▢_ (Type-wc i) g f = g ∘ f
 ρ (Type-wc i) = λ _ → idp
 lamb (Type-wc i) = λ _ → idp
 α (Type-wc i) = λ _ _ _ → idp
+
+-- triangle identity
+
+triangle-wc : ∀ {i j} (C : WildCat {i} {j}) → Type (lmax i j)
+triangle-wc C = {a b c : ob C} (g : hom C b c) (f : hom C a b) → 
+  ap (λ m → ⟦ C ⟧ m ▢ f) (ρ C g) ∙
+  α C g (id₁ C b) f
+    ==
+  ap (λ m → ⟦ C ⟧ g ▢ m) (lamb C f)
+
+triangle-wc-ty : ∀ {i} → triangle-wc (Type-wc i)
+triangle-wc-ty _ _ = idp
+
+module _ {i j} {C : WildCat {i} {j}} (trig : triangle-wc C)
+  {a b c : ob C} (g : hom C b c) (f : hom C a b) where
+
+  abstract
+
+    triangle-wc◃ :
+      ap (λ m → ⟦ C ⟧ m ▢ f) (ρ C g) ◃∙
+      α C g (id₁ C b) f ◃∎
+        =ₛ
+      ap (λ m → ⟦ C ⟧ g ▢ m) (lamb C f) ◃∎
+    triangle-wc◃ = =ₛ-in (trig g f)
+
+    triangle-wc-rot1 :
+      ap (λ m → ⟦ C ⟧ m ▢ f) (ρ C g) ◃∙
+      α C g (id₁ C b) f ◃∙
+      ! (ap (λ m → ⟦ C ⟧ g ▢ m) (lamb C f)) ◃∎
+        =ₛ
+      []
+    triangle-wc-rot1 = post-rotate'-in triangle-wc◃
+    
+    triangle-wc-rot2 :
+      ap (λ m → ⟦ C ⟧ m ▢ f) (ρ C g) ◃∎
+        =ₛ
+      ap (λ m → ⟦ C ⟧ g ▢ m) (lamb C f) ◃∙
+      ! (α C g (id₁ C b) f) ◃∎
+    triangle-wc-rot2 = post-rotate-in triangle-wc◃
+
+-- pentagon identity
+
+pentagon-wc : ∀ {i j} (C : WildCat {i} {j}) → Type (lmax i j)
+pentagon-wc C = {a b c d e : ob C} (k : hom C d e) (g : hom C c d) (h : hom C b c) (f : hom C a b) →
+  ap (λ m → ⟦ C ⟧ m ▢ f) (α C k g h) ∙ α C k (⟦ C ⟧ g ▢ h) f ∙ ap (λ m → ⟦ C ⟧ k ▢ m) (α C g h f)
+    ==
+  α C (⟦ C ⟧ k ▢ g) h f ∙ α C k g (⟦ C ⟧ h ▢ f)
+
+pentagon-wc-ty : ∀ {i} → pentagon-wc (Type-wc i)
+pentagon-wc-ty _ _ _ _ = idp
+
+module _ {i j} {C : WildCat {i} {j}} (pent : pentagon-wc C)
+  {a b c d e : ob C} (k : hom C d e) (g : hom C c d) (h : hom C b c) (f : hom C a b) where
+
+  abstract
+
+    pentagon-wc◃ :
+      ap (λ m → ⟦ C ⟧ m ▢ f) (α C k g h) ◃∙ α C k (⟦ C ⟧ g ▢ h) f ◃∙ ap (λ m → ⟦ C ⟧ k ▢ m) (α C g h f) ◃∎
+        =ₛ
+      α C (⟦ C ⟧ k ▢ g) h f ◃∙ α C k g (⟦ C ⟧ h ▢ f) ◃∎
+    pentagon-wc◃ = =ₛ-in (pent k g h f)
+
+    pentagon-wc-! :
+      ! (ap (λ m → ⟦ C ⟧ k ▢ m) (α C g h f)) ◃∙ ! (α C k (⟦ C ⟧ g ▢ h) f) ◃∙ ! (ap (λ m → ⟦ C ⟧ m ▢ f) (α C k g h)) ◃∎ 
+        =ₛ
+      ! (α C k g (⟦ C ⟧ h ▢ f)) ◃∙ ! (α C (⟦ C ⟧ k ▢ g) h f) ◃∎
+    pentagon-wc-! = !-=ₛ pentagon-wc◃
+
+    pentagon-wc-!-rot1 :
+      α C k g (⟦ C ⟧ h ▢ f) ◃∙ ! (ap (λ m → ⟦ C ⟧ k ▢ m) (α C g h f)) ◃∙ ! (α C k (⟦ C ⟧ g ▢ h) f) ◃∙ ! (ap (λ m → ⟦ C ⟧ m ▢ f) (α C k g h)) ◃∎ 
+        =ₛ
+      ! (α C (⟦ C ⟧ k ▢ g) h f) ◃∎
+    pentagon-wc-!-rot1 = pre-rotate-out pentagon-wc-!
+
+    pentagon-wc-rot1 : 
+      ! (α C (⟦ C ⟧ k ▢ g) h f) ◃∙ ap (λ m → ⟦ C ⟧ m ▢ f) (α C k g h) ◃∙ α C k (⟦ C ⟧ g ▢ h) f ◃∎
+        =ₛ
+      α C k g (⟦ C ⟧ h ▢ f) ◃∙ ! (ap (λ m → ⟦ C ⟧ k ▢ m) (α C g h f)) ◃∎
+    pentagon-wc-rot1 = post-rotate-in (pre-rotate'-in pentagon-wc◃)
+
+    pentagon-wc-rot2 : 
+      ! (α C k (⟦ C ⟧ g ▢ h) f) ◃∙ ap (λ m → ⟦ C ⟧ m ▢ f) (! (α C k g h)) ◃∙ α C (⟦ C ⟧ k ▢ g) h f ◃∎
+        =ₛ
+      ap (λ m → ⟦ C ⟧ k ▢ m) (α C g h f) ◃∙ ! (α C k g (⟦ C ⟧ h ▢ f)) ◃∎
+    pentagon-wc-rot2 = 
+      ! (α C k (⟦ C ⟧ g ▢ h) f) ◃∙ ap (λ m → ⟦ C ⟧ m ▢ f) (! (α C k g h)) ◃∙ α C (⟦ C ⟧ k ▢ g) h f ◃∎
+        =ₛ₁⟨ 1 & 1 & ap-! (λ m → ⟦ C ⟧ m ▢ f) (α C k g h) ⟩
+      ! (α C k (⟦ C ⟧ g ▢ h) f) ◃∙ ! (ap (λ m → ⟦ C ⟧ m ▢ f) (α C k g h)) ◃∙ α C (⟦ C ⟧ k ▢ g) h f ◃∎
+        =ₛ₁⟨ 2 & 1 & ! (!-! _) ⟩
+      ! (α C k (⟦ C ⟧ g ▢ h) f) ◃∙ ! (ap (λ m → ⟦ C ⟧ m ▢ f) (α C k g h)) ◃∙ ! (! (α C (⟦ C ⟧ k ▢ g) h f)) ◃∎
+        =ₛ⟨ !-=ₛ pentagon-wc-rot1 ⟩
+      ! (! (ap (λ m → ⟦ C ⟧ k ▢ m) (α C g h f))) ◃∙ ! (α C k g (⟦ C ⟧ h ▢ f)) ◃∎
+        =ₛ₁⟨ 0 & 1 & !-! _ ⟩
+      ap (λ m → ⟦ C ⟧ k ▢ m) (α C g h f) ◃∙ ! (α C k g (⟦ C ⟧ h ▢ f)) ◃∎ ∎ₛ
+
+    pentagon-wc-rot3 :
+      ap (λ m → ⟦ C ⟧ k ▢ m) (α C g h f) ◃∎
+          =ₛ
+      ! (α C k (⟦ C ⟧ g ▢ h) f) ◃∙ ap (λ m → ⟦ C ⟧ m ▢ f) (! (α C k g h)) ◃∙ α C (⟦ C ⟧ k ▢ g) h f ◃∙ α C k g (⟦ C ⟧ h ▢ f) ◃∎
+    pentagon-wc-rot3 = pre-rotate-in (pre-rotate-in pentagon-wc◃) ∙ₛ aux
+      where abstract
+        aux :
+          ! (α C k (⟦ C ⟧ g ▢ h) f) ◃∙ ! (ap (λ m → ⟦ C ⟧ m ▢ f) (α C k g h)) ◃∙ α C (⟦ C ⟧ k ▢ g) h f ◃∙ α C k g (⟦ C ⟧ h ▢ f) ◃∎
+            =ₛ
+          ! (α C k (⟦ C ⟧ g ▢ h) f) ◃∙ ap (λ m → ⟦ C ⟧ m ▢ f) (! (α C k g h)) ◃∙ α C (⟦ C ⟧ k ▢ g) h f ◃∙ α C k g (⟦ C ⟧ h ▢ f) ◃∎
+        aux =
+          ! (α C k (⟦ C ⟧ g ▢ h) f) ◃∙ ! (ap (λ m → ⟦ C ⟧ m ▢ f) (α C k g h)) ◃∙ α C (⟦ C ⟧ k ▢ g) h f ◃∙ α C k g (⟦ C ⟧ h ▢ f) ◃∎
+            =ₛ₁⟨ 1 & 1 & !-ap (λ m → ⟦ C ⟧ m ▢ f) (α C k g h) ⟩
+          ! (α C k (⟦ C ⟧ g ▢ h) f) ◃∙ ap (λ m → ⟦ C ⟧ m ▢ f) (! (α C k g h)) ◃∙ α C (⟦ C ⟧ k ▢ g) h f ◃∙ α C k g (⟦ C ⟧ h ▢ f) ◃∎ ∎ₛ
+
+    pentagon-wc-rot4 :
+      ! (α C (⟦ C ⟧ k ▢ g) h f) ◃∙ ap (λ m → ⟦ C ⟧ m ▢ f) (α C k g h) ◃∙ α C k (⟦ C ⟧ g ▢ h) f ◃∙ ap (λ m → ⟦ C ⟧ k ▢ m) (α C g h f) ◃∎
+        =ₛ
+      α C k g (⟦ C ⟧ h ▢ f) ◃∎
+    pentagon-wc-rot4 = pre-rotate'-in pentagon-wc◃ 
