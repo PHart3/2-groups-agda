@@ -133,7 +133,7 @@ module MapUnit0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{
     ! (ap (λ z → mu (map id) (mu (map x) z)) (map-inv x)) ◃∙
     ! (ap (mu (map id)) (rinv (map x))) ◃∙
     rho (map id) ◃∎
-      =ₛ⟨ 3 & 1 & apCommSq2◃' (λ z → map-comp z (inv x)) (lam x) ⟩
+      =ₛ⟨ 3 & 1 & apCommSq2◃-rev (λ z → map-comp z (inv x)) (lam x) ⟩
     rinv (map x) ◃∙
     ap (mu (map x)) (map-inv x) ◃∙
     ! (ap (λ z → mu z (map (inv x))) (ap map (lam x))) ◃∙

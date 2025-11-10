@@ -35,7 +35,7 @@ module KLPC-aux2 {i j k} {X : Type i} {Y : Type j} {Z : Type k}
       ! (ap (ap (λ z → fst (K₂-rec-hom z₀ idf2G ⊙∘ K₂-map⊙ (Loop2Grp-map-str (g , idp))) z)) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x)) ◃∎
     K₂-β-3-β-pts =
       hmtpy-nat-∙' (fst (sq-KΩ y₀ z₀ (g , idp))) (ap (fst (K₂-map⊙ (Loop2Grp-map-str (f , idp)))) (loop (x₀ == x₀) x)) ◃∎
-        =ₛ⟨ apCommSq2◃' (λ (p : base (y₀ == y₀) == base (y₀ == y₀)) → hmtpy-nat-∙' (fst (sq-KΩ y₀ z₀ (g , idp))) p) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x) ⟩
+        =ₛ⟨ apCommSq2◃-rev (λ (p : base (y₀ == y₀) == base (y₀ == y₀)) → hmtpy-nat-∙' (fst (sq-KΩ y₀ z₀ (g , idp))) p) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x) ⟩
       ap (ap (fst ((g , idp) ⊙∘ K₂-rec-hom y₀ idf2G))) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x) ◃∙
       hmtpy-nat-∙' (fst (sq-KΩ y₀ z₀ (g , idp))) (loop (y₀ == y₀) (ap f x)) ◃∙
       ! (ap (ap (λ z → fst (K₂-rec-hom z₀ idf2G ⊙∘ K₂-map⊙ (Loop2Grp-map-str (g , idp))) z)) (K₂-map-β-pts (Loop2Grp-map-str (f , idp)) x)) ◃∎

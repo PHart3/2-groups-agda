@@ -22,7 +22,7 @@ module _ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} where
   bc-wc-tri {a} {b} g f = =ₛ-out $
     ap (λ m → ⟦ ξC ⟧ m ◻ f) (ρ g) ◃∙
     ! (α g (id₁ b) f) ◃∎
-      =ₛ⟨ !ₛ (post-rotate-in (tri-bc◃ f g)) ⟩
+      =ₛ⟨ !ₛ (post-rotate-in (tri-bc◃-rot f g)) ⟩
     ap (λ m → ⟦ ξC ⟧ g ◻ m) (lamb f) ◃∎ ∎ₛ 
 
   bc-wc-pent : pentagon-wc (bc-to-wc (_ , ξC))

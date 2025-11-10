@@ -26,11 +26,18 @@ module _ (j : ULevel) where
     abstract
 
       tri-bc◃ : {a b c : B₀} (f : hom a b) (g : hom b c) →
+        α g (id₁ b) f ◃∎
+          =ₛ
+        ! (ap (λ m → g ◻ m) (lamb f)) ◃∙
+        ap (λ m → m ◻ f) (ρ g) ◃∎
+      tri-bc◃ f g = =ₛ-in (tri-bc f g)
+
+      tri-bc◃-rot : {a b c : B₀} (f : hom a b) (g : hom b c) →
         ap (λ m → g ◻ m) (lamb f) ◃∙
         α g (id₁ b) f ◃∎
           =ₛ
         ap (λ m → m ◻ f) (ρ g) ◃∎
-      tri-bc◃ f g = pre-rotate-out (=ₛ-in (tri-bc f g))
+      tri-bc◃-rot f g = pre-rotate-out (tri-bc◃ f g)
 
       pent-bc◃ : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e) →
         α i h (g ◻ f) ◃∙
@@ -73,6 +80,16 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
         ap (λ m → m ◻ F₁ f) (F-◻ g h)
          ==
         α (F₁ h) (F₁ g) (F₁ f)
+
+    F-α-◃ : {a b c d : B₀} (h : hom c d) (g : hom b c) (f : hom a b) →
+      α (F₁ h) (F₁ g) (F₁ f) ◃∎
+        =ₛ
+      ! (ap (λ m → F₁ h ◻ m) (F-◻ f g)) ◃∙
+      ! (F-◻ (⟦ ξB ⟧ g ◻ f) h) ◃∙
+      ap F₁ (α h g f) ◃∙
+      F-◻ f (⟦ ξB ⟧ h ◻ g) ◃∙
+      ap (λ m → m ◻ F₁ f) (F-◻ g h) ◃∎
+    F-α-◃ h g f = !ₛ (=ₛ-in (F-α h g f))      
         
     -- hnat properties of F-◻
     F-◻-nat-l : {a b c : B₀} {m₁ m₂ : hom a b} (m₃ : hom b c) (q : m₁ == m₂)

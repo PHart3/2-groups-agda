@@ -290,7 +290,7 @@ coe-β-∘ h₁ h₂ idp =
       ap (λ z → coe (ua z) x) (∘e-unit-r (ide A)) ◃∙
       coe-β (ide A) x ◃∙
       ! (ap (λ z → –> z x) (∘e-unit-r (ide A))) ◃∎
-        =ₛ⟨ !ₛ (apCommSq2◃' (λ z → coe-β z x) (∘e-unit-r (ide A)) ) ⟩
+        =ₛ⟨ !ₛ (apCommSq2◃-rev (λ z → coe-β z x) (∘e-unit-r (ide A)) ) ⟩
       coe-β (ide A ∘e ide A) x ◃∎ ∎ₛ
       where
         aux-path : {a : A} {e : A ≃ A} (p₁ : e == ide A) (p₂ : _ == a) → 
@@ -361,7 +361,7 @@ ap-ua-∘e {C = C} {A} =
       ap (λ u → u ∘e ide A) (! (coe-equiv-β e₂)) ◃∙
       idp ◃∙
       ∘e-unit-r (coe-equiv (ua e₂)) ◃∎
-        =ₛ⟨ 2 & 1 & apCommSq2◃' ∘e-unit-r (coe-equiv-β e₂) ⟩
+        =ₛ⟨ 2 & 1 & apCommSq2◃-rev ∘e-unit-r (coe-equiv-β e₂) ⟩
       ap (λ z → z ∘e ide A) (! (coe-equiv-β e₂)) ◃∙
       idp ◃∙
       ap (λ z → z ∘e ide A) (coe-equiv-β e₂) ◃∙
@@ -414,7 +414,7 @@ ap-ua-∘e {C = C} {A} =
       ap (λ z → coe-equiv (ua e₂) ∘e coe-equiv z) (ua-η idp) ◃∙
       ∘e-unit-r (coe-equiv (ua e₂)) ◃∙
       ! (ap (λ z → coe-equiv (z ∙ ua e₂)) (ua-η idp)) ◃∎
-        =ₛ⟨ 2 & 3 & !ₛ (apCommSq2◃' (λ z → ∙-coe-equiv z (ua e₂)) (ua-η idp)) ⟩
+        =ₛ⟨ 2 & 3 & !ₛ (apCommSq2◃-rev (λ z → ∙-coe-equiv z (ua e₂)) (ua-η idp)) ⟩
       coe-equiv-β (e₂ ∘e ide A) ◃∙
       ap2 _∘e_ (! (coe-equiv-β e₂)) (! (coe-equiv-β (ide A))) ◃∙
       ∙-coe-equiv (ua (ide A)) (ua e₂) ◃∎ ∎ₛ

@@ -69,7 +69,7 @@ module MapUnit3 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{
     al (inv (map x)) (map x) (map id) ◃∙
     ap2 mu (linv (map x)) idp ◃∙
     lam (map id) ◃∎
-      =ₛ⟨ 5 & 1 & apCommSq2◃' (λ z → al z (map x) (map id)) (map-inv x) ⟩
+      =ₛ⟨ 5 & 1 & apCommSq2◃-rev (λ z → al z (map x) (map id)) (map-inv x) ⟩
     ! (linv (map x)) ◃∙
     ap (λ v → mu v (map x)) (map-inv x) ◃∙
     ! (ap (mu (map (inv x))) (ap map (rho x))) ◃∙
@@ -125,7 +125,7 @@ module MapUnit3 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{
     ! (ap (λ z → mu (mu z (map x)) (map id)) (map-inv x)) ◃∙
     ap2 (mu) (linv (map x)) idp ◃∙
     lam (map id) ◃∎
-      =ₛ⟨ 3 & 1 & apCommSq2◃' (map-comp (inv x)) (rho x) ⟩
+      =ₛ⟨ 3 & 1 & apCommSq2◃-rev (map-comp (inv x)) (rho x) ⟩
     ! (linv (map x)) ◃∙
     ap (λ v → mu v (map x)) (map-inv x) ◃∙
     ! (ap (mu (map (inv x))) (ap map (rho x))) ◃∙
