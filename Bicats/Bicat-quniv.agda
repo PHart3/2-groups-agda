@@ -33,8 +33,8 @@ module _ {i j} {B@(B₀ , _) C@(C₀ , _) : Bicat j i} where
   module _ (quB : is-quniv-bc ξB) (quC : is-quniv-bc ξC) where
 
     biequiv-to-iso : BiequivStr ξB ξC → ξB iso-bc ξC
-    fst (biequiv-to-iso (bequiv Ψ₁ Ψ₂ τ₁ τ₂ lev-eq₁ lev-eq₂)) = Ψ₁
-    fst (snd (biequiv-to-iso (bequiv Ψ₁ Ψ₂ τ₁ τ₂ lev-eq₁ lev-eq₂))) = is-eq (map-pf Ψ₁) (map-pf Ψ₂)
+    fst (biequiv-to-iso (bequiv Ψ₁ Ψ₂ (τ₁ , lev-eq₁) (τ₂ , lev-eq₂))) = Ψ₁
+    fst (snd (biequiv-to-iso (bequiv Ψ₁ Ψ₂ (τ₁ , lev-eq₁) (τ₂ , lev-eq₂)))) = is-eq (map-pf Ψ₁) (map-pf Ψ₂)
       (λ c → quC (η₀ τ₁ c , lev-eq₁ c)) λ b → ! (quB ((η₀ τ₂ b) , (lev-eq₂ b))) 
     snd (snd (biequiv-to-iso be)) x y = beqv-is-ff be {x} {y} 
 
