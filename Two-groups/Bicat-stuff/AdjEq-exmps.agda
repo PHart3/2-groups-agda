@@ -11,13 +11,39 @@ open import 2Grp-bc
 open import Ptd-bc
 open import Univ-bc
 
+-- adjoint equivalences in our two specific settings of interest
+
 module AdjEq-exmps where
 
 open Adjequiv
 
--- an equivalence of pointed types is an adjoint equivalence
 module _ {i} {X : Ptd02 i} where
 
+  adjeq-to-⊙≃ : {Y : Ptd02 i} → AdjEquiv (Ptd02-bicat i) X Y →  fst X ⊙≃ fst Y
+  fst (adjeq-to-⊙≃ φ) = fst φ
+  is-equiv.g (snd (adjeq-to-⊙≃ (φ , ae))) = fst (inv ae)
+  is-equiv.f-g (snd (adjeq-to-⊙≃ (φ , ae))) b = ! (fst (==-to-⊙-crd∼  (eps ae)) b)
+  is-equiv.g-f (snd (adjeq-to-⊙≃ (φ , ae))) a = ! (fst (==-to-⊙-crd∼  (eta ae)) a)
+  is-equiv.adj (snd (adjeq-to-⊙≃ (φ , ae))) a = ap-! (fst φ) (fst (==-to-⊙-crd∼ (eta ae)) a) ∙ ! (!-∙ _ idp) ∙ ap ! (app= (ap fst lemma) a)
+    where abstract
+      lemma : (⊙∘-runit φ ∙⊙∼ ⊙∘-post φ (==-to-⊙-crd∼ (eta ae)) ∙⊙∼ ⊙∘-α-comp φ (inv ae) φ) == (⊙∘-lunit φ ∙⊙∼ ⊙∘-pre φ (==-to-⊙-crd∼ (eps ae)))
+      lemma =
+        ⊙∘-runit φ ∙⊙∼ ⊙∘-post φ (==-to-⊙-crd∼ (eta ae)) ∙⊙∼ ⊙∘-α-comp φ (inv ae) φ
+          =⟨ ap3 (λ h₁ h₂ h₃ → h₁ ∙⊙∼ h₂ ∙⊙∼ h₃)
+               (! (<–-inv-r ⊙-crd∼-==-≃ (⊙∘-runit φ))) (! (==-to-⊙-crd∼-whisk-l (eta ae))) (! (<–-inv-r ⊙-crd∼-==-≃ (⊙∘-α-comp φ (inv ae) φ))) ⟩
+        ==-to-⊙-crd∼ (⊙-crd∼-to-== (⊙∘-runit φ)) ∙⊙∼
+        ==-to-⊙-crd∼  (ap (λ f → φ ⊙∘ f) (eta ae)) ∙⊙∼
+        ==-to-⊙-crd∼  (⊙-crd∼-to-== (⊙∘-α-comp φ (inv ae) φ))
+          =⟨ ! (==-to-⊙-crd∼-∙2 (⊙-crd∼-to-== (⊙∘-runit φ)) (ap (λ f → φ ⊙∘ f) (eta ae)) (⊙-crd∼-to-== (⊙∘-α-comp φ (inv ae) φ))) ⟩
+        ==-to-⊙-crd∼ (⊙-crd∼-to-== (⊙∘-runit φ) ∙ ap (λ f → φ ⊙∘ f) (eta ae) ∙ ⊙-crd∼-to-== (⊙∘-α-comp φ (inv ae) φ))
+          =⟨ ap ==-to-⊙-crd∼ (coher-map ae) ⟩
+        ==-to-⊙-crd∼ (⊙-crd∼-to-== (⊙∘-lunit φ) ∙ ap (λ m → m ⊙∘ φ) (eps ae))
+          =⟨ ==-to-⊙-crd∼-∙ (⊙-crd∼-to-== (⊙∘-lunit φ)) (ap (λ m → m ⊙∘ φ) (eps ae)) ⟩
+        ==-to-⊙-crd∼ (⊙-crd∼-to-== (⊙∘-lunit φ)) ∙⊙∼ ==-to-⊙-crd∼ (ap (λ m → m ⊙∘ φ) (eps ae))
+          =⟨ ap2 _∙⊙∼_ (<–-inv-r ⊙-crd∼-==-≃ (⊙∘-lunit φ)) (==-to-⊙-crd∼-whisk-r (eps ae)) ⟩
+        (⊙∘-lunit φ ∙⊙∼ ⊙∘-pre φ (==-to-⊙-crd∼ (eps ae))) =∎
+        
+  -- an equivalence of pointed types is an adjoint equivalence
   abstract
     ⊙≃-to-adjeq : {Y : Ptd i} ((φ , _) : fst X ⊙≃ Y) {c : is-connected 0 (de⊙ Y)} {t : has-level 2 (de⊙ Y)}
       → Adjequiv {a = X} {b = (Y , c , t)} φ

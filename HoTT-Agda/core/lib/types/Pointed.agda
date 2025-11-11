@@ -189,16 +189,16 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y) where
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} where
 
-  ⊙-crd∼-to-== : {f : X ⊙→ Y} {g : X ⊙→ Y} → f ⊙-crd∼ g → f == g
+  ⊙-crd∼-to-== : {f g : X ⊙→ Y} → f ⊙-crd∼ g → f == g
   ⊙-crd∼-to-== {f} = ⊙hom-ind f (λ g _ → f == g) idp
 
   ⊙-crd∼-to-==-β : (f : X ⊙→ Y) → ⊙-crd∼-to-== (⊙∼-id f) == idp
   ⊙-crd∼-to-==-β f = ⊙hom-ind-β f (λ g _ → f == g) idp
 
-  ==-to-⊙-crd∼ : {f : X ⊙→ Y} {g : X ⊙→ Y} → f == g → f ⊙-crd∼ g
+  ==-to-⊙-crd∼ : {f g : X ⊙→ Y} → f == g → f ⊙-crd∼ g
   ==-to-⊙-crd∼ idp = ⊙∼-id _
 
-  ⊙-crd∼-==-≃ : {f : X ⊙→ Y} {g : X ⊙→ Y} → (f == g) ≃ (f ⊙-crd∼ g)
+  ⊙-crd∼-==-≃ : {f g : X ⊙→ Y} → (f == g) ≃ (f ⊙-crd∼ g)
   ⊙-crd∼-==-≃ {f} {g} = equiv ==-to-⊙-crd∼ ⊙-crd∼-to-== aux1 aux2
     where
       aux1 : {k : X ⊙→ Y} (H : f ⊙-crd∼ k) → ==-to-⊙-crd∼ (⊙-crd∼-to-== H) == H
@@ -208,6 +208,25 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
 
       aux2 : {k : X ⊙→ Y} (p : f == k) → ⊙-crd∼-to-== (==-to-⊙-crd∼ p) == p
       aux2 idp = ⊙-crd∼-to-==-β f 
+
+-- some groupoid laws obeyed by ==-to-⊙-crd∼
+
+  ==-to-⊙-crd∼-∙ : {f g h : X ⊙→ Y} (p : f == g) (q : g == h) → ==-to-⊙-crd∼ (p ∙ q) == (==-to-⊙-crd∼ p ∙⊙∼ ==-to-⊙-crd∼ q)
+  ==-to-⊙-crd∼-∙ {(_ , idp)} idp idp = idp
+
+  ==-to-⊙-crd∼-∙2 : {f g h k : X ⊙→ Y} (p : f == g) (q : g == h) (r : h == k) →
+    ==-to-⊙-crd∼ (p ∙ q ∙ r) == (==-to-⊙-crd∼ p ∙⊙∼ ==-to-⊙-crd∼ q ∙⊙∼ ==-to-⊙-crd∼ r)
+  ==-to-⊙-crd∼-∙2 {(_ , idp)} idp idp idp = idp
+
+module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
+
+  ==-to-⊙-crd∼-whisk-r : {h : Z ⊙→ X} {f g : X ⊙→ Y} (p : f == g) →
+    ==-to-⊙-crd∼ (ap (λ m → m ⊙∘ h) p) == (⊙∘-pre h (==-to-⊙-crd∼ p))
+  ==-to-⊙-crd∼-whisk-r {(_ , idp)} idp = idp 
+
+  ==-to-⊙-crd∼-whisk-l : {h : Y ⊙→ Z} {f g : X ⊙→ Y} (p : f == g) →
+    ==-to-⊙-crd∼ (ap (λ m → h ⊙∘ m) p) == (⊙∘-post h (==-to-⊙-crd∼ p))
+  ==-to-⊙-crd∼-whisk-l {(_ , idp)} idp = idp 
 
 -- induction principle for ⊙∼→
 
@@ -253,24 +272,24 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} {f g : X ⊙→ Y} {H₁ H₂ : f ⊙-crd
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} where
 
- ∙⊙∼-! : (f : X ⊙→ Y) → !-⊙∼ (⊙∼-id f) == ⊙∼-id f
- ∙⊙∼-! (f₀ , idp) = ⊙→∼-to-== ((λ _ → idp) , idp)
+  ∙⊙∼-! : (f : X ⊙→ Y) → !-⊙∼ (⊙∼-id f) == ⊙∼-id f
+  ∙⊙∼-! (f₀ , idp) = ⊙→∼-to-== ((λ _ → idp) , idp)
 
- ∙⊙∼-unit-l : {f g : X ⊙→ Y} (H : f ⊙-crd∼ g) → (⊙∼-id f ∙⊙∼ H) == H
- ∙⊙∼-unit-l {f = (f₀ , idp)} H = ⊙→∼-to-== ((λ _ → idp) , aux (snd H))
-   where
-     aux : ∀ {k} {A : Type k} {x y : A} {r : y == x} {q₂ : x == y} (q₁ : ! r ∙ idp == q₂) →
-       q₁ == ap (λ p → ! p ∙ idp) (tri-exch q₁) ∙ ∙-unit-r (! (! q₂)) ∙ !-! q₂
-     aux {r = idp} idp = idp
+  ∙⊙∼-unit-l : {f g : X ⊙→ Y} (H : f ⊙-crd∼ g) → (⊙∼-id f ∙⊙∼ H) == H
+  ∙⊙∼-unit-l {f = (f₀ , idp)} H = ⊙→∼-to-== ((λ _ → idp) , aux (snd H))
+    where
+      aux : ∀ {k} {A : Type k} {x y : A} {r : y == x} {q₂ : x == y} (q₁ : ! r ∙ idp == q₂) →
+        q₁ == ap (λ p → ! p ∙ idp) (tri-exch q₁) ∙ ∙-unit-r (! (! q₂)) ∙ !-! q₂
+      aux {r = idp} idp = idp
 
- ∙⊙∼-unit-r : {f g : X ⊙→ Y} (H : f ⊙-crd∼ g)→ (H ∙⊙∼ ⊙∼-id g) == H
- ∙⊙∼-unit-r {g = (g₀ , idp)} H = ⊙→∼-to-== ((λ x → ∙-unit-r (fst H x)) , aux {r = fst H (pt X)} (snd H))
-   where
-     aux : ∀ {k} {A : Type k} {x y : A} {r q₂ : x == y} (q₁ : ! r ∙ q₂ == idp) →
-       ap (λ p → ! p ∙ q₂) (∙-unit-r r) ∙ q₁
-         ==
-       ap (λ p → ! (p ∙ idp) ∙ q₂) (tri-exch q₁) ∙ !3-∙3 q₂ idp idp
-     aux {r = idp} idp = idp
+  ∙⊙∼-unit-r : {f g : X ⊙→ Y} (H : f ⊙-crd∼ g)→ (H ∙⊙∼ ⊙∼-id g) == H
+  ∙⊙∼-unit-r {g = (g₀ , idp)} H = ⊙→∼-to-== ((λ x → ∙-unit-r (fst H x)) , aux {r = fst H (pt X)} (snd H))
+    where
+      aux : ∀ {k} {A : Type k} {x y : A} {r q₂ : x == y} (q₁ : ! r ∙ q₂ == idp) →
+        ap (λ p → ! p ∙ q₂) (∙-unit-r r) ∙ q₁
+          ==
+        ap (λ p → ! (p ∙ idp) ∙ q₂) (tri-exch q₁) ∙ !3-∙3 q₂ idp idp
+      aux {r = idp} idp = idp
 
 module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
 
