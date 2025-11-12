@@ -1,6 +1,8 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.NType2
+open import lib.Equivalence2
 open import lib.NConnected
 open import lib.types.Pointed
 open import lib.types.PtdMap-conv
@@ -22,13 +24,14 @@ open Adjequiv
 
 module _ {i} {X : Ptd02 i} where
 
+  -- an adjoint equivalence in Ptd02 is an equivalence of underlying pointed types
   adjeq-to-⊙≃ : {Y : Ptd02 i} → AdjEquiv (Ptd02-bicat i) X Y →  fst X ⊙≃ fst Y
   fst (adjeq-to-⊙≃ φ) = fst φ
   is-equiv.g (snd (adjeq-to-⊙≃ (φ , ae))) = fst (inv ae)
   is-equiv.f-g (snd (adjeq-to-⊙≃ (φ , ae))) b = ! (fst (==-to-⊙-crd∼  (eps ae)) b)
   is-equiv.g-f (snd (adjeq-to-⊙≃ (φ , ae))) a = ! (fst (==-to-⊙-crd∼  (eta ae)) a)
   is-equiv.adj (snd (adjeq-to-⊙≃ (φ , ae))) a = ap-! (fst φ) (fst (==-to-⊙-crd∼ (eta ae)) a) ∙ ! (!-∙ _ idp) ∙ ap ! (app= (ap fst lemma) a)
-    where abstract
+    module ae-⊙≃ where abstract
       lemma : (⊙∘-runit φ ∙⊙∼ ⊙∘-post φ (==-to-⊙-crd∼ (eta ae)) ∙⊙∼ ⊙∘-α-comp φ (inv ae) φ) == (⊙∘-lunit φ ∙⊙∼ ⊙∘-pre φ (==-to-⊙-crd∼ (eps ae)))
       lemma =
         ⊙∘-runit φ ∙⊙∼ ⊙∘-post φ (==-to-⊙-crd∼ (eta ae)) ∙⊙∼ ⊙∘-α-comp φ (inv ae) φ
@@ -45,7 +48,11 @@ module _ {i} {X : Ptd02 i} where
         ==-to-⊙-crd∼ (⊙-crd∼-to-== (⊙∘-lunit φ)) ∙⊙∼ ==-to-⊙-crd∼ (ap (λ m → m ⊙∘ φ) (eps ae))
           =⟨ ap2 _∙⊙∼_ (<–-inv-r ⊙-crd∼-==-≃ (⊙∘-lunit φ)) (==-to-⊙-crd∼-whisk-r (eps ae)) ⟩
         (⊙∘-lunit φ ∙⊙∼ ⊙∘-pre φ (==-to-⊙-crd∼ (eps ae))) =∎
-        
+
+  abstract
+    adjeq-to-⊙≃-β : adjeq-to-⊙≃ AdjEq-id₁ == ⊙ide (fst X)
+    adjeq-to-⊙≃-β = Subtype=-out (subtypeprop (is-equiv ∘ fst)) idp
+
   -- an equivalence of pointed types is an adjoint equivalence
   abstract
     ⊙≃-to-adjeq : {Y : Ptd i} ((φ , _) : fst X ⊙≃ Y) {c : is-connected 0 (de⊙ Y)} {t : has-level 2 (de⊙ Y)}
@@ -85,13 +92,14 @@ module _ {i} {G₁ : Type i} {{η₁ : CohGrp G₁}} where
 
   open WkSGrpNatIso
 
-  adjeq-to-2g≃ : {G₂ : Type i} {{η₂ : CohGrp G₂}} → AdjEquiv (2grp-bicat i) (_ , η₁) (_ , η₂) → η₁ 2g≃ η₂
-  fst (fst (adjeq-to-2g≃ (f , ae))) = map f
-  is-equiv.g (snd (fst (adjeq-to-2g≃ (f , ae)))) = map (inv ae)
-  is-equiv.f-g (snd (fst (adjeq-to-2g≃ (f , ae)))) b = ! (θ (natiso2G-from-== (eps ae)) b)
-  is-equiv.g-f (snd (fst (adjeq-to-2g≃ (f , ae)))) a = ! (θ (natiso2G-from-== (eta ae)) a)
-  is-equiv.adj (snd (fst (adjeq-to-2g≃ {{η₂}} (f , ae)))) a = ap-! (map f) (θ (natiso2G-from-== (eta ae)) a) ∙ ! (!-∙ _ idp) ∙ ap ! (app= (ap θ lemma) a)
-    where abstract
+  -- an adjoint equivalence in 2grp-bicat is an equivalence of 2-groups
+  adjeq-to-2g≃ : {G₂ : Type i} {{η₂ : CohGrp G₂}} → AdjEquiv (2grp-bicat i) (_ , η₁) (_ , η₂) → Σ (CohGrpHom {{η₁}} {{η₂}}) (λ φ → is-equiv (map φ))
+  fst (adjeq-to-2g≃ ⦃ η₂ = η₂ ⦄ (f , ae)) = f
+  is-equiv.g (snd (adjeq-to-2g≃ ⦃ η₂ = η₂ ⦄ (f , ae))) = map (inv ae)
+  is-equiv.f-g (snd (adjeq-to-2g≃ ⦃ η₂ = η₂ ⦄ (f , ae))) b = ! (θ (natiso2G-from-== (eps ae)) b)
+  is-equiv.g-f (snd (adjeq-to-2g≃ ⦃ η₂ = η₂ ⦄ (f , ae))) a = ! (θ (natiso2G-from-== (eta ae)) a)
+  is-equiv.adj (snd (adjeq-to-2g≃ ⦃ η₂ = η₂ ⦄ (f , ae))) a = ap-! (map f) (θ (natiso2G-from-== (eta ae)) a) ∙ ! (!-∙ _ idp) ∙ ap ! (app= (ap θ lemma) a)
+    module ae-2g≃ where abstract
       lemma :
         assoc-wksgrphom (grphom-forg f) (grphom-forg (inv ae)) (grphom-forg f) natiso-∘
         natiso-whisk-l {μ = grphom-forg f} (natiso2G-from-== (eta ae)) natiso-∘
@@ -125,7 +133,10 @@ module _ {i} {G₁ : Type i} {{η₁ : CohGrp G₁}} where
                (natiso2G-from-==-whisk-r {{η₁ = η₂}} {{η₂ = η₁}} {{η₃ = η₁}} {h = f} (eps ae))
                (<–-inv-r natiso2G-==-≃ (unit-wksgrphom-l (grphom-forg f))) ⟩
         (natiso-whisk-r (natiso2G-from-== (eps ae)) natiso-∘ unit-wksgrphom-l (grphom-forg f)) =∎
-  snd (adjeq-to-2g≃ (f , ae)) = str f
+
+  abstract
+    adjeq-to-2g≃-β : adjeq-to-2g≃  AdjEq-id₁ == (cohgrphom (idf G₁) {{idf2G}} , idf-is-equiv G₁)
+    adjeq-to-2g≃-β = Subtype=-out (subtypeprop (is-equiv ∘ map)) idp
 
 -- an equivalence of 2-groups is an adjoint equivalence
 module _ {i} {G₁ : Type i} {η₁ : CohGrp G₁} where

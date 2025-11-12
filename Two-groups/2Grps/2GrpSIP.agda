@@ -14,6 +14,8 @@ module 2GrpSIP where
 
 -- SIP for 2-groups (using the short definition of 2-group morphism)
 
+open CohGrpHom
+
 module _ {i j} {G₁ : Type i} {G₂ : Type j} where
 
   infix 30 _2g≃-f_
@@ -23,6 +25,9 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} where
   infix 30 _2g≃_
   _2g≃_ : CohGrp G₁ → CohGrp G₂ → Type (lmax i j)
   η₁ 2g≃ η₂ = Σ (G₁ ≃ G₂) (λ (map , _) → CohGrpHomStr {{η₁}} {{η₂}} map)
+
+  2g≃-alt : {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} → (η₁ 2g≃ η₂) ≃ Σ (CohGrpHom {{η₁}} {{η₂}}) (λ φ → is-equiv (map φ))
+  2g≃-alt = equiv (λ (e , s) → (cohgrphom (fst e) {{s}}) , (snd e)) (λ (φ , e) → ((map φ) , e) , (str φ)) (λ _ → idp) λ _ → idp
 
   2g≃-f-≃ : (η₁ : CohGrp G₁) (η₂ : CohGrp G₂) → (η₁ 2g≃-f η₂) ≃ (η₁ 2g≃ η₂)
   2g≃-f-≃ η₁ η₂ = Σ-emap-r λ e → 2GrpHomf-≃ {{η₁}} {{η₂}} (fst e)  
@@ -122,8 +127,33 @@ module _ {i} {G₁ : Type i} {η₁ : CohGrp G₁} where
     → P (G₁ , η₁) (ide2G η₁) → {(G₂ , η₂) : Σ (Type i) (λ G₂ → CohGrp G₂)} (m : η₁ 2g≃ η₂) → P (G₂ , η₂) m
   2grphom-ind P = ID-ind-map P (2grphom-contr G₁ η₁)
 
+  2grphom-ind-β : ∀ {k} {P : ((_ , η₂) : Σ (Type i) (λ G₂ → CohGrp G₂)) → η₁ 2g≃ η₂ → Type k}
+    → (r : P (G₁ , η₁) (ide2G η₁)) → 2grphom-ind P r (ide2G η₁) == r
+  2grphom-ind-β {P = P} = ID-ind-map-β P (2grphom-contr G₁ η₁)
+
   2grphom-to-== : {(G₂ , η₂) : Σ (Type i) (λ G₂ → CohGrp G₂)} → η₁ 2g≃ η₂ → (G₁ , η₁) == (G₂ , η₂)
   2grphom-to-== = 2grphom-ind (λ (G₂ , η₂) _ → (G₁ , η₁) == (G₂ , η₂)) idp
 
-  2grphom-from-== : {C : Σ (Type i) (λ G₂ → CohGrp G₂)} → (G₁ , η₁) == C → η₁ 2g≃ (snd C)
-  2grphom-from-== idp = ide2G η₁
+  2grphom-to-==-β : {(G₂ , _) : Σ (Type i) (λ G₂ → CohGrp G₂)} → 2grphom-to-== (ide2G η₁) == idp
+  2grphom-to-==-β = 2grphom-ind-β {P = λ (G₂ , η₂) _ → (G₁ , η₁) == (G₂ , η₂)} idp
+
+  2grpphom-from-== : {C : Σ (Type i) (λ G₂ → CohGrp G₂)} → (G₁ , η₁) == C → η₁ 2g≃ (snd C)
+  2grpphom-from-== idp = ide2G η₁
+
+  2grpphom-==-≃ : {C : Σ (Type i) (λ G₂ → CohGrp G₂)} → ((G₁ , η₁) == C) ≃ (η₁ 2g≃ (snd C))
+  2grpphom-==-≃ {C} = equiv 2grpphom-from-== 2grphom-to-== (aux1 {C}) (aux2 {C})
+    where abstract
+
+      aux1 : {(_ , η₂) : Σ (Type i) (λ G₂ → CohGrp G₂)} (p : η₁ 2g≃ η₂) → 2grpphom-from-== {(_ , η₂)} (2grphom-to-== p) == p
+      aux1 = 2grphom-ind (λ C p → 2grpphom-from-== {C} (2grphom-to-== p) == p) (ap 2grpphom-from-== (2grphom-to-==-β {(_ , η₁)}))
+
+      aux2 : {C : Σ (Type i) (λ G₂ → CohGrp G₂)} (p : (G₁ , η₁) == C) → 2grphom-to-== (2grpphom-from-== p) == p
+      aux2 idp = 2grphom-to-==-β {(_ , η₁)}
+
+  2grpphom-==-≃-alt : {C : Σ (Type i) (λ G₂ → CohGrp G₂)} →
+    ((G₁ , η₁) == C) ≃ (Σ (CohGrpHom {{η₁}} {{snd C}}) (λ φ → is-equiv (map {{η₁}} {{snd C}} φ)))
+  2grpphom-==-≃-alt {C} = 2g≃-alt {{η₁}} {{snd C}} ∘e 2grpphom-==-≃ 
+
+  abstract
+    2grpphom-==-≃-alt-β : –> 2grpphom-==-≃-alt idp == (cohgrphom (idf G₁) {{idf2G {{η₁}}}} , idf-is-equiv G₁)
+    2grpphom-==-≃-alt-β = idp

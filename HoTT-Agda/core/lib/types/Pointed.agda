@@ -301,6 +301,11 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
 
 {- Pointed equivalences -}
 
+-- equality of pointed equivalences
+⊙≃-== : ∀ {i j} {X : Ptd i} {Y : Ptd j} {τ₁ τ₂ : X ⊙≃ Y} → (fst τ₁ == fst τ₂) ≃ (τ₁ == τ₂)
+⊙≃-== {τ₁ = τ₁} {τ₂} = =Σ-econv τ₁ τ₂ ∘e equiv (λ e → e , prop-has-all-paths-↓) fst
+  (λ _ → pair= idp (prop-has-all-paths {{↓-level}} _ _)) λ _ → idp
+
 -- Extracting data from an pointed equivalence
 module _ {i j} {X : Ptd i} {Y : Ptd j} (⊙e : X ⊙≃ Y) where
 
