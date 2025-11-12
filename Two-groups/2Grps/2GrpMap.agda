@@ -113,9 +113,22 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
 
     natiso2G-to-== : {ν : CohGrpHom {{η₁}} {{η₂}}} → CohGrpNatIso μ ν → μ == ν
     natiso2G-to-== = natiso2G-ind (λ δ _ → μ == δ) idp
-
+    
   natiso2G-to-==-β : (μ : CohGrpHom {{η₁}} {{η₂}}) → natiso2G-to-== (natiso-id2G μ) == idp
   natiso2G-to-==-β μ = natiso2G-ind-β (λ δ _ → μ == δ) idp  
+
+  natiso2G-from-== : {μ ν : CohGrpHom {{η₁}} {{η₂}}} → μ == ν → CohGrpNatIso μ ν
+  natiso2G-from-== {μ} idp = natiso-id2G μ
+
+  natiso2G-==-≃ : {μ ν : CohGrpHom {{η₁}} {{η₂}}} → (μ == ν) ≃ (CohGrpNatIso μ ν)
+  natiso2G-==-≃ {μ} {ν} = equiv natiso2G-from-== natiso2G-to-== (aux1 {ν}) (aux2 {ν})
+    where abstract
+
+      aux1 : {ν : CohGrpHom {{η₁}} {{η₂}}} (p : CohGrpNatIso μ ν) → natiso2G-from-== {μ} {ν} (natiso2G-to-== p) == p
+      aux1 = natiso2G-ind (λ ν p → natiso2G-from-== {μ} {ν} (natiso2G-to-== p) == p) (ap natiso2G-from-== (natiso2G-to-==-β μ))
+
+      aux2 : {ν : CohGrpHom {{η₁}} {{η₂}}} (p : μ == ν) → natiso2G-to-== (natiso2G-from-== p) == p
+      aux2 idp = natiso2G-to-==-β μ
 
   natiso2G-! : {μ ν : CohGrpHom {{η₁}} {{η₂}}} (iso : CohGrpNatIso μ ν)
     → natiso2G-to-== {μ = ν} {ν = μ} (!ʷ iso) == ! (natiso2G-to-== iso)
@@ -241,3 +254,29 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
           idp
             =⟨ ap (ap (λ m → f₂ ∘2G m)) (! (natiso2G-to-==-β f₁)) ⟩
           ap (λ m → f₂ ∘2G m) (natiso2G-to-== (natiso-id2G f₁)) =∎
+
+-- some groupoid laws obeyed by natiso2G-from-==
+
+module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} where
+
+  abstract
+  
+    natiso2G-from-==-∙ : {f g h : CohGrpHom {{η₁}} {{η₂}}} (p : f == g) (q : g == h) →
+      natiso2G-from-== (p ∙ q) == (natiso2G-from-== q natiso-∘ natiso2G-from-== p)
+    natiso2G-from-==-∙ idp idp = natiso∼-to-== λ _ → idp
+
+    natiso2G-from-==-∙2 : {f g h k : CohGrpHom {{η₁}} {{η₂}}} (p : f == g) (q : g == h) (r : h == k) →
+      natiso2G-from-== (p ∙ q ∙ r) == (natiso2G-from-== r natiso-∘ natiso2G-from-== q natiso-∘ natiso2G-from-== p)
+    natiso2G-from-==-∙2 idp idp idp = natiso∼-to-== λ _ → idp
+
+  module _ {i j k} {G₁ : Type i} {G₂ : Type j} {G₃ : Type k} {{η₁ : CohGrp G₁}} {{η₂ : CohGrp G₂}} {{η₃ : CohGrp G₃}} where
+
+    abstract
+
+      natiso2G-from-==-whisk-r : {h : CohGrpHom {{η₃}} {{η₁}}} {f g : CohGrpHom {{η₁}} {{η₂}}} (p : f == g) →
+        natiso2G-from-== (ap (λ m → m ∘2G h) p) == (natiso-whisk-r (natiso2G-from-== p))
+      natiso2G-from-==-whisk-r idp = natiso∼-to-== λ _ → idp
+
+      natiso2G-from-==-whisk-l : {h : CohGrpHom {{η₂}} {{η₃}}} {f g : CohGrpHom {{η₁}} {{η₂}}} (p : f == g) →
+        natiso2G-from-== (ap (λ m → h ∘2G m) p) == (natiso-whisk-l {μ = grphom-forg h} (natiso2G-from-== p))
+      natiso2G-from-==-whisk-l idp = natiso∼-to-== λ _ → idp
