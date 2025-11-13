@@ -166,6 +166,9 @@ module _ {i} {A : Type i} where
   assoc-inv-r : {x y z : A} (p : x == y) (q : y == z) → p == (p ∙ q) ∙ ! q
   assoc-inv-r idp idp = idp
 
+  assoc-inv-l : {x y z : A} (p : y == x) (q : y == z) → p ∙ ! p ∙ q == q
+  assoc-inv-l idp idp = idp
+
   ∙-assoc-!-! : {x₁ x₂ x₃ x₄ x₅ x₆ : A} (p₁ : x₁ == x₂) (p₂ : x₂ == x₃) (p₃ : x₃ == x₄)
     (q₁ : x₆ == x₅) (q₂ : x₅ == x₄)
     → (p₁ ∙ p₂ ∙ p₃) ∙ ! (q₁ ∙ q₂) == p₁ ∙ p₂ ∙ p₃ ∙ ! q₂ ∙ ! q₁
@@ -199,9 +202,7 @@ module _ {i} {A : Type i} where
     → ap (λ v → v ∙ q) (∙-unit-r p) == ! (! (∙-assoc p idp q)) ∙ idp
   tri-id idp q = idp
 
-  pent-id : {x y z w u : A} (p₁ : x == y) (p₂ : y == z)
-    (p₃ : z == w) (p₄ : w == u)
-    →
+  pent-id : {x y z w u : A} (p₁ : x == y) (p₂ : y == z) (p₃ : z == w) (p₄ : w == u) →
     ! (∙-assoc p₁ p₂ (p₃ ∙ p₄)) ∙ ! (∙-assoc (p₁ ∙ p₂) p₃ p₄)
     ==
     ap (λ v → p₁ ∙ v) (! (∙-assoc p₂ p₃ p₄)) ∙
@@ -268,6 +269,10 @@ module _ {i} {A : Type i} where
 
   path-canc-l : {x y : A} (p : x == y) (q : y == y) → p == p ∙ q → idp == q
   path-canc-l idp q e = e
+
+  ∙'-rot-out : {x y z : A} (p : x == y) (q : y == z) {r : x == z}
+    → p ∙' q == r → q == ! p ∙ r
+  ∙'-rot-out idp idp e = e
 
   inv-rid : {x y : A} (p : x == y) → ! p ∙ p ∙ idp == idp
   inv-rid idp = idp

@@ -289,6 +289,9 @@ ap-idf idp = idp
 !-ap-idf-l : ∀ {i} {A : Type i} {u v : A} (p : u == v) → ! (ap (λ v → v) p) ∙ p == idp
 !-ap-idf-l idp = idp
 
+!-ap-idf-r : ∀ {i} {A : Type i} {u v : A} (p : u == v) → p ∙ ! (ap (λ v → v) p) == idp
+!-ap-idf-r idp = idp
+
 ap-idf-idp : ∀ {i} {A : Type i} {u v : A} (p : u == v) → ap (λ v → v) p ∙ idp == p
 ap-idf-idp idp = idp
 

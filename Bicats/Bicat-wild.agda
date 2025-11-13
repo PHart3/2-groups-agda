@@ -2,7 +2,6 @@
 
 open import lib.Basics
 open import Bicategory
-open import AdjEq
 open import lib.wild-cats.WildCats renaming
   (hom to homW; id₁ to id₁W; ρ to ρW; lamb to lambW; α to αW)
 
@@ -11,7 +10,6 @@ open import lib.wild-cats.WildCats renaming
 module Bicat-wild where
 
 open BicatStr
-open Adjequiv
 
 bc-to-wc : ∀ {i j} → Bicat j i → WildCat {i} {j}
 ob (bc-to-wc (B₀ , _)) = B₀
@@ -21,10 +19,3 @@ _▢_ (bc-to-wc (_ , ξB)) = _◻_ ξB
 ρW (bc-to-wc (_ , ξB)) = ρ ξB
 lambW (bc-to-wc (_ , ξB)) = lamb ξB
 αW (bc-to-wc (_ , ξB)) h g f = ! (α ξB h g f)
-
-module _ {i j} {B@(B₀ , ξB) : Bicat j i} where
-
-  aeqv-to-weqv : {a b : B₀} {f : hom ξB a b} → Adjequiv {{ξB}} f → equiv-wc (bc-to-wc B) f
-  fst (aeqv-to-weqv ae) = inv {{ξB}} ae
-  fst (snd (aeqv-to-weqv ae)) = eta {{ξB}} ae
-  snd (snd (aeqv-to-weqv ae)) = eps {{ξB}} ae

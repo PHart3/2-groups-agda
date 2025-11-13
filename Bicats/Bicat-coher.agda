@@ -53,6 +53,14 @@ module _ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} where
         lamb (⟦ ξC ⟧ g ◻ f) ◃∎
       trig-lamb-bc = trig-lamb {C = bc-to-wc (_ , ξC)} bc-wc-tri bc-wc-pent g f
 
+      trig-lamb-bc-rot :
+        ap (λ m → ⟦ ξC ⟧ m ◻ f) (lamb g) ◃∙
+        ! (α (id₁ c) g f) ◃∙
+        ! (lamb (⟦ ξC ⟧ g ◻ f)) ◃∎
+          =ₛ
+        []
+      trig-lamb-bc-rot = post-rotate'-in trig-lamb-bc
+
       trig-ρ-bc :
         ap (λ m → ⟦ ξC ⟧ g ◻ m) (ρ f) ◃∙
         α g f (id₁ a) ◃∎
@@ -66,6 +74,23 @@ module _ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} where
         ! (! (α g f (id₁ a))) ◃∎
           =ₛ⟨ trig-ρ {C = bc-to-wc (_ , ξC)} bc-wc-tri bc-wc-pent g f ⟩
         ρ (⟦ ξC ⟧ g ◻ f) ◃∎ ∎ₛ
+
+      trig-ρ-bc-rot : 
+        ρ (⟦ ξC ⟧ g ◻ f) ◃∙
+        ! (α g f (id₁ a)) ◃∙
+        ap (λ m → ⟦ ξC ⟧ g ◻ m) (! (ρ f)) ◃∎
+          =ₛ
+        []
+      trig-ρ-bc-rot = 
+        ρ (⟦ ξC ⟧ g ◻ f) ◃∙
+        ! (α g f (id₁ a)) ◃∙
+        ap (λ m → ⟦ ξC ⟧ g ◻ m) (! (ρ f)) ◃∎
+          =ₛ₁⟨ 2 & 1 & ap-! (λ m → ⟦ ξC ⟧ g ◻ m) (ρ f) ⟩
+        ρ (⟦ ξC ⟧ g ◻ f) ◃∙
+        ! (α g f (id₁ a)) ◃∙
+        ! (ap (λ m → ⟦ ξC ⟧ g ◻ m) (ρ f)) ◃∎
+          =ₛ⟨ !ₛ (post-rotate-in (post-rotate-in trig-ρ-bc)) ⟩
+        [] ∎ₛ
 
   abstract
 

@@ -39,6 +39,23 @@ module _ (j : ULevel) where
         ap (λ m → m ◻ f) (ρ g) ◃∎
       tri-bc◃-rot f g = pre-rotate-out (tri-bc◃ f g)
 
+      tri-bc◃-rot2 : {a b c : B₀} (f : hom a b) (g : hom b c) →
+        ap (λ m → g ◻ m) (lamb f) ◃∙
+        α g (id₁ b) f ◃∙
+        ap (λ m → m ◻ f) (! (ρ g)) ◃∎
+          =ₛ
+        []
+      tri-bc◃-rot2 {b = b} f g =
+        ap (λ m → g ◻ m) (lamb f) ◃∙
+        α g (id₁ b) f ◃∙
+        ap (λ m → m ◻ f) (! (ρ g)) ◃∎
+          =ₛ₁⟨ 2 & 1 & ap-! (λ m → m ◻ f) (ρ g) ⟩
+        ap (λ m → g ◻ m) (lamb f) ◃∙
+        α g (id₁ b) f ◃∙
+        ! (ap (λ m → m ◻ f) (ρ g)) ◃∎
+          =ₛ⟨ post-rotate'-in (tri-bc◃-rot f g) ⟩
+        [] ∎ₛ
+
       pent-bc◃ : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e) →
         α i h (g ◻ f) ◃∙
         α (i ◻ h) g f ◃∎
@@ -47,6 +64,35 @@ module _ (j : ULevel) where
         α i (h ◻ g) f ◃∙
         ap (λ m → m ◻ f) (α i h g) ◃∎
       pent-bc◃ f g h i = =ₛ-in (pent-bc f g h i)
+
+      pent-bc◃-rot : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e) →
+        α (i ◻ h) g f ◃∙
+        ap (λ m → m ◻ f) (! (α i h g)) ◃∙
+        ! (α i (h ◻ g) f) ◃∙
+        ap (λ m → i ◻ m) (! (α h g f)) ◃∙
+        α i h (g ◻ f) ◃∎
+          =ₛ
+        []
+      pent-bc◃-rot f g h i = 
+        α (i ◻ h) g f ◃∙
+        ap (λ m → m ◻ f) (! (α i h g)) ◃∙
+        ! (α i (h ◻ g) f) ◃∙
+        ap (λ m → i ◻ m) (! (α h g f)) ◃∙
+        α i h (g ◻ f) ◃∎
+          =ₛ₁⟨ 1 & 1 & ap-! (λ m → m ◻ f) (α i h g) ⟩
+        α (i ◻ h) g f ◃∙
+        ! (ap (λ m → m ◻ f) (α i h g)) ◃∙
+        ! (α i (h ◻ g) f) ◃∙
+        ap (λ m → i ◻ m) (! (α h g f)) ◃∙
+        α i h (g ◻ f) ◃∎
+          =ₛ₁⟨ 3 & 1 & ap-! (λ m → i ◻ m) (α h g f) ⟩
+        α (i ◻ h) g f ◃∙
+        ! (ap (λ m → m ◻ f) (α i h g)) ◃∙
+        ! (α i (h ◻ g) f) ◃∙
+        ! (ap (λ m → i ◻ m) (α h g f)) ◃∙
+        α i h (g ◻ f) ◃∎
+          =ₛ⟨ post-rotate-out (pre-rotate-in (post-rotate'-in (post-rotate'-in (post-rotate'-in (pent-bc◃ f g h i))))) ⟩
+        [] ∎ₛ
 
   Bicat : (i : ULevel) → Type (lmax (lsucc j) (lsucc i))
   Bicat i = Σ (Type i) BicatStr
