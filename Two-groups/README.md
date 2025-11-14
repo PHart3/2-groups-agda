@@ -22,7 +22,10 @@ pointed connected 2-types.
   We derive the recursion principle from the elimination principle.
 
 - The `Bicat-stuff/` folder collects the data defining the two (2,1)-categories
-  of interest. It also shows how to construct adjoint equivalences inside them.
+  of interest. It also shows how to construct adjoint equivalences inside them
+  and that both are globally univalent, in the sense that the canonical map
+  from the identity type between objects to the adjoint equivalence type between
+  them is an equivalence.
 
 - The `KFunc/` folder contains constructions making the delooping into
   a pseudofunctor from 2-groups to pointed connected 2-types along with
