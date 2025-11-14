@@ -41,6 +41,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
   open MapUnit4 map map-comp map-inv map-id map-linv map-lam-id x
 
   abstract
+    -- the following equality is equivalent to the preservation of rho by map
     lam-to-rho :
       ! (al (inv (map x)) (map x) id ∙
         ap2 mu (linv (map x)) idp ∙
