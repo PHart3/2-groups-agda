@@ -43,7 +43,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
   -- pseudonatural equivalence
   infixr 70 _ps-≃_
   _ps-≃_ : Psfunctor {{ξB}} {{ξC}} → Psfunctor {{ξB}} {{ξC}} → Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
-  F ps-≃ G = Σ (Pstrans F G) (λ φ → (b : B₀) → Adjequiv (Pstrans.η₀ φ b))
+  F ps-≃ G = Σ (Pstrans F G) (λ φ → (b : B₀) → Adjequiv {{ξC}} (Pstrans.η₀ φ b))
 
 -- induced wild functor
 module _ {i₁ i₂ j₁ j₂} {B@(B₀ , _) : Bicat j₁ i₁} {C@(C₀ , _) : Bicat j₂ i₂} where

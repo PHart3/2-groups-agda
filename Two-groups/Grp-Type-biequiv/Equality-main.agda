@@ -1,11 +1,10 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
-open import lib.NType2
-open import lib.types.Sigma
 open import lib.wild-cats.WildCats
 open import Bicategory
 open import AdjEq
+open import AdjEq-exmps
 open import 2Grp
 open import 2Grp-bc
 open import Ptd-bc
@@ -18,7 +17,6 @@ open import Biequiv-main
 
 module Equality-main (i : ULevel) where
 
-  open Adjequiv
   open CohGrpHom
 
   -- Both (2,1)-cats in question are quasi-univalent.
