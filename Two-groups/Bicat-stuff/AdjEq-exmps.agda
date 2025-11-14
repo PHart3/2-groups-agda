@@ -4,6 +4,7 @@ open import lib.Basics
 open import lib.NType2
 open import lib.Equivalence2
 open import lib.NConnected
+open import lib.types.Sigma
 open import lib.types.Pointed
 open import lib.types.PtdMap-conv
 open import AdjEq
@@ -86,6 +87,18 @@ module _ {i} {X : Ptd02 i} where
               =ₛ₁⟨ ! (∙-unit-r (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))))) ⟩
             (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ∙ idp) ◃∎ ∎ₛ
 
+  adjeq-to-⊙≃-≃ : {Y : Ptd02 i} → (AdjEquiv (Ptd02-bicat i) X Y) ≃  (fst X ⊙≃ fst Y)
+  adjeq-to-⊙≃-≃ = Σ-emap-r λ f → props-BiImp-≃ (λ ae → snd (adjeq-to-⊙≃ (_ , ae))) λ ise → ⊙≃-to-adjeq (f , ise)
+
+-- the pointed connected 2-types are globally univalent
+abstract
+  univ-Pt02 : ∀ {i} → is-univ-bc (Ptd02-bicat i)
+  univ-Pt02 X _ = 3-for-2-e-sw (⊙≃-from-== ∘ fst=) aux
+    (snd adjeq-to-⊙≃-≃) (snd ⊙≃-ua ∘ise Subtype=-equiv (subtypeprop (λ Z → is-connected 0 (de⊙ Z) × has-level 2 (de⊙ Z))))
+    where
+      aux : ∀ {Z} (p : X == Z) → (fst adjeq-to-⊙≃-≃ ∘ ==-to-adjeq) p == (⊙≃-from-== ∘ fst=) p
+      aux idp = pair= idp (prop-has-all-paths _ _)
+
 open CohGrpHom
 
 module _ {i} {G₁ : Type i} {{η₁ : CohGrp G₁}} where
@@ -149,3 +162,16 @@ module _ {i} {G₁ : Type i} {η₁ : CohGrp G₁} where
         (λ ((_ , η₂) : 2Grp-tot i) (((map , _) , σ) : η₁ 2g≃ η₂)
           → Adjequiv (cohgrphom {{η₁}} {{η₂}} map {{σ}}))
         (snd (AdjEq-id₁ {{2grp-bicat-instance}}))
+
+  adjeq-to-2g≃-≃ : {G₂ : Type i} {{η₂ : CohGrp G₂}} →
+    (AdjEquiv (2grp-bicat i) (_ , η₁) (_ , η₂)) ≃ (Σ (CohGrpHom {{η₁}} {{η₂}}) (λ φ → is-equiv (map {{η₁}} φ)))
+  adjeq-to-2g≃-≃ = Σ-emap-r
+    (λ f → props-BiImp-≃ (λ ae → snd (adjeq-to-2g≃  {{η₁}} (_ , ae))) λ ise → 2g≃-to-adjeq (((map {{η₁}} f) , ise) , (str {{η₁}} f)))
+
+-- the 2-groups are globally univalent
+abstract
+  univ-2G : ∀ {i} → is-univ-bc (2grp-bicat i)
+  univ-2G G₁ G₂@(_ , η₂) = 3-for-2-e-sw (fst 2grpphom-==-≃-alt) aux (snd (adjeq-to-2g≃-≃ {{η₂ = η₂}})) (snd 2grpphom-==-≃-alt)
+    where
+      aux : ∀ {H} (p : G₁ == H) → (fst (adjeq-to-2g≃-≃ {{snd H}}) ∘ ==-to-adjeq) p == (fst 2grpphom-==-≃-alt) p
+      aux idp = pair= idp (prop-has-all-paths _ _)

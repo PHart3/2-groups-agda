@@ -7,6 +7,7 @@ open import Biequiv
 open import AdjEq
 open import Bicat-iso
 open import Bicat-wild
+open import Univ-bc
 
 -- quasi-univalent (2,1)-categories
 
@@ -16,6 +17,9 @@ open BicatStr
 
 is-quniv-bc : ∀ {i j} {B₀ : Type i} (ξB : BicatStr j B₀) → Type (lmax i j)
 is-quniv-bc {B₀ = B₀} ξB = {a b : B₀} → AdjEquiv ξB a b → a == b 
+
+univ-to-quniv : ∀ {i j} {B₀ : Type i} {ξB : BicatStr j B₀} → is-univ-bc ξB → is-quniv-bc ξB
+univ-to-quniv u = is-equiv.g (u _ _) 
 
 module _ {i j} {B@(B₀ , _) C@(C₀ , _) : Bicat j i} where
 

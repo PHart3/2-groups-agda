@@ -153,11 +153,18 @@ is-equiv-prop = subtypeprop is-equiv {{λ {f} → is-equiv-is-prop}}
 ∘e-unit-r e = pair= idp (prop-has-all-paths _ _)
 
 -- 3-for-2
+
 3-for-2-e : ∀ {i j k} {A : Type i} {B : Type j} {C : Type k} {f₀ : A → B} {f₁ : B → C}
   (f₂ : A → C) → f₁ ∘ f₀ ∼ f₂ → is-equiv f₀ → is-equiv f₂ → is-equiv f₁
 3-for-2-e {f₀ = f₀} {f₁ = f₁} =
   ∼-ind (λ f₂ _ → is-equiv f₀ → is-equiv f₂ → is-equiv f₁)
     λ e₀ e₁ → ∼-preserves-equiv {f₀ = f₁ ∘ f₀ ∘ is-equiv.g e₀} (λ x → ap f₁ (is-equiv.f-g e₀ x)) (e₁ ∘ise is-equiv-inverse e₀) 
+
+3-for-2-e-sw : ∀ {i j k} {A : Type i} {B : Type j} {C : Type k} {f₀ : A → B} {f₁ : B → C}
+  (f₂ : A → C) → f₁ ∘ f₀ ∼ f₂ → is-equiv f₁ → is-equiv f₂ → is-equiv f₀
+3-for-2-e-sw {f₀ = f₀} {f₁ = f₁} =
+  ∼-ind (λ f₂ _ → is-equiv f₁ → is-equiv f₂ → is-equiv f₀)
+    λ e₀ e₁ → ∼-preserves-equiv {f₀ = is-equiv.g e₀ ∘ f₁ ∘ f₀} (λ x → is-equiv.g-f e₀ (f₀ x)) (is-equiv-inverse e₀ ∘ise e₁ ) 
 
 equiv-induction-bi : ∀ {i j}
   (P : {A B C : Type i} (f₁ : A ≃ B) (f₂ : B ≃ C) → Type j)
@@ -201,8 +208,7 @@ ua-∘e-β : ∀ {i} {A C : Type i} (e : A ≃ C)
 ua-∘e-β {C = C} e =
   app= (equiv-induction-β {P = λ {B} e₁ → ∀ (e₂ : B ≃ C) → ua (e₂ ∘e e₁) == ua e₁ ∙ ua e₂} _) e 
 
-ua-∘e-coh : ∀ {i} {C A B : Type i} (e₂ : B ≃ C) {e₁ e₁' : A ≃ B} (p : e₁ == e₁')
-  →
+ua-∘e-coh : ∀ {i} {C A B : Type i} (e₂ : B ≃ C) {e₁ e₁' : A ≃ B} (p : e₁ == e₁') →
   ua-∘e e₁ e₂ ◃∎
     =ₛ
   ap ua (ap (λ e → e₂ ∘e e) p) ◃∙
@@ -312,8 +318,7 @@ coe-β-∘ h₁ h₂ idp =
               idp
             aux-path-aux idp = idp
           
-ap-ua-∘e : ∀ {i} {C A B : Type i} (e₁ : A ≃ B) (e₂ : B ≃ C)
-  →
+ap-ua-∘e : ∀ {i} {C A B : Type i} (e₁ : A ≃ B) (e₂ : B ≃ C) →
   ap coe-equiv (ua-∘e e₁ e₂) ◃∎
     =ₛ
   coe-equiv-β (e₂ ∘e e₁) ◃∙
