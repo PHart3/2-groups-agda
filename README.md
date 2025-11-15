@@ -78,7 +78,7 @@ If you can avoid the overhead of Docker, we suggest that you do so even if you
 have lots of available RAM.
 
 We have found that type-checking directly on a MacOS with an M1 chip is much
-faster (see `Final/README.md`).
+faster (but still intensive). See `Final/README.md` for relevant details.
 
 **Important:** Comment out the final two imports in `Final/Final-thms` to reduce the type-checking by over an hour. Doing so will check
 all relevant type equivalences but not the biequivalence.
