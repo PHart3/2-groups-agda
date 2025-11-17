@@ -73,8 +73,8 @@ module ae-unique {{_ : BicatStr j B₀}} {a b : B₀} {f : hom a b} where
   α₁ Adjeq≃ α₂ = [ e-inv ∈ inv α₁ == inv α₂ ] ×
     ((eta α₁ ∙' ap (λ m → m ◻ f) e-inv == eta α₂) × (eps α₁ ∙' ap (λ m → f ◻ m) e-inv == eps α₂))
 
-  Adjeq≃-idf : (α₁ : Adjequiv f) → α₁ Adjeq≃ α₁
-  Adjeq≃-idf _ = idp , (idp , idp)
+  Adjeq≃-id : (α₁ : Adjequiv f) → α₁ Adjeq≃ α₁
+  Adjeq≃-id _ = idp , (idp , idp)
 
   abstract
     -- eta coherence of Adjeq≃ implies eps coherence
@@ -455,11 +455,11 @@ module ae-unique {{_ : BicatStr j B₀}} {a b : B₀} {f : hom a b} where
               λ _ → idp
 
     Adjeq≃-ind : ∀ {k} (P : (α₂ : Adjequiv f) → (α₁ Adjeq≃ α₂ → Type k))
-      → P α₁ (Adjeq≃-idf α₁) → {α₂ : Adjequiv f} (e : α₁ Adjeq≃ α₂) → P α₂ e
+      → P α₁ (Adjeq≃-id α₁) → {α₂ : Adjequiv f} (e : α₁ Adjeq≃ α₂) → P α₂ e
     Adjeq≃-ind P = ID-ind-map P Adjeq≃-contr
 
     Adjeq≃-ind-β : ∀ {k} (P : (α₂ : Adjequiv f) → (α₁ Adjeq≃ α₂ → Type k))
-      → (r : P α₁ (Adjeq≃-idf α₁)) → Adjeq≃-ind P r (Adjeq≃-idf α₁) == r
+      → (r : P α₁ (Adjeq≃-id α₁)) → Adjeq≃-ind P r (Adjeq≃-id α₁) == r
     Adjeq≃-ind-β P = ID-ind-map-β P Adjeq≃-contr
 
     Adjeq≃-to-== : {α₂ : Adjequiv f} → α₁ Adjeq≃ α₂ → α₁ == α₂ 
