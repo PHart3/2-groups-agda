@@ -124,6 +124,9 @@ module _ {i} {A : Type i} where
   !-inv-r-front : {x y z : A} (p₁ : x == y) (p₂ : z == y) → p₁ ∙ʳ ! p₁ ∙ʳ p₂ == p₂
   !-inv-r-front idp idp = idp
 
+  !-inv-l-unit-r : {x y : A} (p : x == y) → ! p ∙ p ∙ idp == idp
+  !-inv-l-unit-r idp = idp
+
 {- induction rules for !-! -}
 module _ {i j} {A : Type i} {x y : A} {p : x == y} where
 

@@ -2,10 +2,10 @@
 
 open import lib.Basics
 open import lib.FTID
+open import lib.types.Paths
 open import lib.types.Sigma
 open import lib.types.Pi
 open import Bicategory
-open import Bicat-coher
 open import Pstransf
 
 -- SIP for pseudotransformations
@@ -26,13 +26,13 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
     field
       η₀-∼ : (a : B₀) → η₀ T₁ a == η₀ T₂ a
       η₁-∼ : {a b : B₀} (f : hom a b) →
-        ap (λ m → F₁ (str-pf S) f ◻ m) (η₀-∼ a) ∙ η₁ T₂ f == η₁ T₁ f ∙' ap (λ m → m ◻ F₁ (str-pf R) f) (η₀-∼ b)
+        ! (η₁ T₁ f) ∙ ap (λ m → F₁ (str-pf S) f ◻ m) (η₀-∼ a) ∙ η₁ T₂ f ∙ ! (ap (λ m → m ◻ F₁ (str-pf R) f) (η₀-∼ b)) == idp
 
   open Pst-≃
 
   Pst-≃-id : (T : Pstrans R S) → Pst-≃ T T
   η₀-∼ (Pst-≃-id T) _ = idp
-  η₁-∼ (Pst-≃-id T) _ = idp
+  η₁-∼ (Pst-≃-id T) f = !-inv-l-unit-r (η₁ T f)
 
   module _ {T₁ : Pstrans R S} where
 
@@ -42,7 +42,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
           [ η₁2 ∈
             ((((a , b) , f) : Σ (B₀ × B₀) (λ (a , b) → hom a b)) →
               Σ (F₁ (str-pf S) f ◻ fst (η₀2 a) == ⟦ ξC ⟧ fst (η₀2 b) ◻ F₁ (str-pf R) f) (λ η₁2cmp →
-                ap (λ m → F₁ (str-pf S) f ◻ m) (snd (η₀2 a)) ∙ η₁2cmp == η₁ T₁ f ∙' ap (λ m → m ◻ F₁ (str-pf R) f) (snd (η₀2 b)))) ] ×
+                ! (η₁ T₁ f) ∙ ap (λ m → F₁ (str-pf S) f ◻ m) (snd (η₀2 a)) ∙ η₁2cmp ∙ ! (ap (λ m → m ◻ F₁ (str-pf R) f) (snd (η₀2 b))) == idp)) ] ×
             (((a : B₀) →
               lamb (fst (η₀2 a)) ∙
               ap (λ m → m ◻ fst (η₀2 a)) (! (F-id₁ (str-pf S) a)) ∙
@@ -68,7 +68,8 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
       equiv-preserves-level
         ((Σ-contr-red
           {A = (a : B₀) → Σ (hom (map-pf R a) (map-pf S a)) (λ η₀2 → η₀ T₁ a == η₀2)} Π-level-instance)⁻¹)
-        {{equiv-preserves-level ((Σ-contr-red (Π-level-instance))⁻¹)
+        {{equiv-preserves-level ((Σ-contr-red (Π-level-instance {{λ {(_ , f)} →
+            equiv-preserves-level (Σ-emap-r (λ η₁2cmp → !-∙-idp-idp-≃ (η₁ T₁ f) η₁2cmp))}}))⁻¹)
           {{×-level (inhab-prop-is-contr (λ _ → coher-unit T₁)) (inhab-prop-is-contr (λ (_ , f , g) → coher-assoc T₁ f g))}}}}
     abstract
       Pst-≃-contr : is-contr (Σ (Pstrans R S) (λ T₂ → Pst-≃ T₁ T₂))
