@@ -206,6 +206,10 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
   !-ap-∘ : {x y : A} (p : x == y) → ! (ap (g ∘ f) p) == ap g (! (ap f p))
   !-ap-∘ idp = idp
 
+  ∘-!-ap-! : {x y : A} (p : x == y)
+    → ! (ap g (! (ap f p))) == ap (g ∘ f) p
+  ∘-!-ap-! idp = idp
+
   !-∘-ap : {x y : A} (p : x == y) → ap g (! (ap f p)) == ! (ap (g ∘ f) p)
   !-∘-ap idp = idp
 

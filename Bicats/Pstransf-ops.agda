@@ -203,8 +203,406 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
       α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) g)) ◃∙
     ! (α (⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)) ◃∙
     ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)) ◃∎
+      =ₛ⟨ 5 & 1 & ap-seq-∙ (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f)
+        (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (η₀ T₁ b) ◃∙
+        ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ b) (η₁ T₂ g) ◃∙
+        ! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (η₀ T₁ b)) ◃∙
+        ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ g) ◃∙
+        α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) g) ◃∎) ⟩
+    ! (α (F₁ (str-pf R₃) (⟦ ξB ⟧ g ◻ f)) (η₀ T₂ a) (η₀ T₁ a) ∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ (⟦ ξB ⟧ g ◻ f)) ∙
+    ! (α (η₀ T₂ c) (F₁ (str-pf R₂) (⟦ ξB ⟧ g ◻ f)) (η₀ T₁ a)) ∙
+    ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ (⟦ ξB ⟧ g ◻ f)) ∙
+    α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ ⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a) (F-◻ (str-pf R₃) f g) ◃∙
+    ! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m)
+      (α (F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a) ∙
+      ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ f) ∙
+      ! (α (η₀ T₂ b) (F₁ (str-pf R₂) f) (η₀ T₁ a)) ∙
+      ap (λ m → ⟦ ξC ⟧ η₀ T₂ b ◻ m) (η₁ T₁ f) ∙
+      α (η₀ T₂ b) (η₀ T₁ b) (F₁ (str-pf R₁) f)) ◃∙
+    α (F₁ (str-pf R₃) g) (⟦ ξC ⟧ η₀ T₂ b ◻ η₀ T₁ b) (F₁ (str-pf R₁) f) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (η₀ T₁ b)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ b) (η₁ T₂ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (η₀ T₁ b))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) g)) ◃∙
+    ! (α (⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)) ◃∎
+      =ₛ⟨ 3 & 1 & ap-seq-∙ (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m)
+        (α (F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a) ◃∙
+        ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ f) ◃∙
+        ! (α (η₀ T₂ b) (F₁ (str-pf R₂) f) (η₀ T₁ a)) ◃∙
+        ap (λ m → ⟦ ξC ⟧ η₀ T₂ b ◻ m) (η₁ T₁ f) ◃∙
+        α (η₀ T₂ b) (η₀ T₁ b) (F₁ (str-pf R₁) f) ◃∎) ⟩
+    ! (α (F₁ (str-pf R₃) (⟦ ξB ⟧ g ◻ f)) (η₀ T₂ a) (η₀ T₁ a) ∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ (⟦ ξB ⟧ g ◻ f)) ∙
+    ! (α (η₀ T₂ c) (F₁ (str-pf R₂) (⟦ ξB ⟧ g ◻ f)) (η₀ T₁ a)) ∙
+    ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ (⟦ ξB ⟧ g ◻ f)) ∙
+    α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ ⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a) (F-◻ (str-pf R₃) f g) ◃∙
+    ! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (! (α (η₀ T₂ b) (F₁ (str-pf R₂) f) (η₀ T₁ a))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ b ◻ m) (η₁ T₁ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (η₀ T₂ b) (η₀ T₁ b) (F₁ (str-pf R₁) f)) ◃∙
+    α (F₁ (str-pf R₃) g) (⟦ ξC ⟧ η₀ T₂ b ◻ η₀ T₁ b) (F₁ (str-pf R₁) f) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (η₀ T₁ b)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ b) (η₁ T₂ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (η₀ T₁ b))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) g)) ◃∙
+    ! (α (⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)) ◃∎
+      =ₛ⟨ 0 & 1 & !-∙-seq
+        (α (F₁ (str-pf R₃) (⟦ ξB ⟧ g ◻ f)) (η₀ T₂ a) (η₀ T₁ a) ◃∙
+        ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ (⟦ ξB ⟧ g ◻ f)) ◃∙
+        ! (α (η₀ T₂ c) (F₁ (str-pf R₂) (⟦ ξB ⟧ g ◻ f)) (η₀ T₁ a)) ◃∙
+        ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ (⟦ ξB ⟧ g ◻ f)) ◃∙
+        α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) (⟦ ξB ⟧ g ◻ f)) ◃∎) ⟩
+    ! (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (! (α (η₀ T₂ c) (F₁ (str-pf R₂) (⟦ ξB ⟧ g ◻ f)) (η₀ T₁ a))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (α (F₁ (str-pf R₃) (⟦ ξB ⟧ g ◻ f)) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ ⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a) (F-◻ (str-pf R₃) f g) ◃∙
+    ! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (! (α (η₀ T₂ b) (F₁ (str-pf R₂) f) (η₀ T₁ a))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ b ◻ m) (η₁ T₁ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (η₀ T₂ b) (η₀ T₁ b) (F₁ (str-pf R₁) f)) ◃∙
+    α (F₁ (str-pf R₃) g) (⟦ ξC ⟧ η₀ T₂ b ◻ η₀ T₁ b) (F₁ (str-pf R₁) f) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (η₀ T₁ b)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ b) (η₁ T₂ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (η₀ T₁ b))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) g)) ◃∙
+    ! (α (⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)) ◃∎
+      =ₛ⟨ 3 & 1 & !-=ₛ (ap-seq-=ₛ (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (!ₛ (coher-assoc◃-rot T₂ f g))) ⟩
+    ! (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (! (α (η₀ T₂ c) (F₁ (str-pf R₂) (⟦ ξB ⟧ g ◻ f)) (η₀ T₁ a))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (F-◻ (str-pf R₂) f g)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₂) f) (η₁ T₂ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (F₁ (str-pf R₂) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (η₁ T₂ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (η₀ T₂ a)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₂ a) (F-◻ (str-pf R₃) f g))) ◃∙
+    ! (α (F₁ (str-pf R₃) (⟦ ξB ⟧ g ◻ f)) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ ⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a) (F-◻ (str-pf R₃) f g) ◃∙
+    ! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (! (α (η₀ T₂ b) (F₁ (str-pf R₂) f) (η₀ T₁ a))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ b ◻ m) (η₁ T₁ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (η₀ T₂ b) (η₀ T₁ b) (F₁ (str-pf R₁) f)) ◃∙
+    α (F₁ (str-pf R₃) g) (⟦ ξC ⟧ η₀ T₂ b ◻ η₀ T₁ b) (F₁ (str-pf R₁) f) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (η₀ T₁ b)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ b) (η₁ T₂ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (η₀ T₁ b))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) g)) ◃∙
+    ! (α (⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)) ◃∎
+      =ₛ₁⟨ 9 & 1 & ap ! (∘-ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (λ m → ⟦ ξC ⟧ m ◻ η₀ T₂ a) (F-◻ (str-pf R₃) f g)) ⟩
+    ! (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (! (α (η₀ T₂ c) (F₁ (str-pf R₂) (⟦ ξB ⟧ g ◻ f)) (η₀ T₁ a))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (F-◻ (str-pf R₂) f g)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₂) f) (η₁ T₂ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (F₁ (str-pf R₂) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (η₁ T₂ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (η₀ T₂ a)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ η₀ T₂ a ◻ η₀ T₁ a) (F-◻ (str-pf R₃) f g)) ◃∙
+    ! (α (F₁ (str-pf R₃) (⟦ ξB ⟧ g ◻ f)) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ ⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a) (F-◻ (str-pf R₃) f g) ◃∙
+    ! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (! (α (η₀ T₂ b) (F₁ (str-pf R₂) f) (η₀ T₁ a))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ b ◻ m) (η₁ T₁ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (η₀ T₂ b) (η₀ T₁ b) (F₁ (str-pf R₁) f)) ◃∙
+    α (F₁ (str-pf R₃) g) (⟦ ξC ⟧ η₀ T₂ b ◻ η₀ T₁ b) (F₁ (str-pf R₁) f) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (η₀ T₁ b)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ b) (η₁ T₂ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (η₀ T₁ b))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) g)) ◃∙
+    ! (α (⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)) ◃∎
+      =ₛ⟨ 9 & 3 & !ₛ (apCommSq2◃! (λ m → α m (η₀ T₂ a) (η₀ T₁ a)) (F-◻ (str-pf R₃) f g)) ⟩
+    ! (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (! (α (η₀ T₂ c) (F₁ (str-pf R₂) (⟦ ξB ⟧ g ◻ f)) (η₀ T₁ a))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (F-◻ (str-pf R₂) f g)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₂) f) (η₁ T₂ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (F₁ (str-pf R₂) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (η₁ T₂ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (η₀ T₂ a)))) ◃∙
+    ! (α (F₁ (str-pf R₃) g ◻ F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (! (α (η₀ T₂ b) (F₁ (str-pf R₂) f) (η₀ T₁ a))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ b ◻ m) (η₁ T₁ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (η₀ T₂ b) (η₀ T₁ b) (F₁ (str-pf R₁) f)) ◃∙
+    α (F₁ (str-pf R₃) g) (⟦ ξC ⟧ η₀ T₂ b ◻ η₀ T₁ b) (F₁ (str-pf R₁) f) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (η₀ T₁ b)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ b) (η₁ T₂ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (η₀ T₁ b))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) g)) ◃∙
+    ! (α (⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)) ◃∎
+      =ₛ⟨ 1 & 1 & !-=ₛ (ap-seq-=ₛ (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (!ₛ (coher-assoc◃-rot T₁ f g))) ⟩
+    ! (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (ap (λ m → ⟦ ξC ⟧ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (α (η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (η₁ T₁ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (α (F₁ (str-pf R₂) g) (η₀ T₁ b) (F₁ (str-pf R₁) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₂) g ◻ m) (η₁ T₁ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (α (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f) (η₀ T₁ a)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (F-◻ (str-pf R₂) f g))) ◃∙
+    ! (! (α (η₀ T₂ c) (F₁ (str-pf R₂) (⟦ ξB ⟧ g ◻ f)) (η₀ T₁ a))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (F-◻ (str-pf R₂) f g)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₂) f) (η₁ T₂ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (F₁ (str-pf R₂) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (η₁ T₂ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (η₀ T₂ a)))) ◃∙
+    ! (α (F₁ (str-pf R₃) g ◻ F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (! (α (η₀ T₂ b) (F₁ (str-pf R₂) f) (η₀ T₁ a))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ b ◻ m) (η₁ T₁ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (η₀ T₂ b) (η₀ T₁ b) (F₁ (str-pf R₁) f)) ◃∙
+    α (F₁ (str-pf R₃) g) (⟦ ξC ⟧ η₀ T₂ b ◻ η₀ T₁ b) (F₁ (str-pf R₁) f) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (η₀ T₁ b)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ b) (η₁ T₂ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (η₀ T₁ b))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) g)) ◃∙
+    ! (α (⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)) ◃∎
+      =ₛ₁⟨ 7 & 1 & ap ! (∘-ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (F-◻ (str-pf R₂) f g)) ⟩
+    ! (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (ap (λ m → ⟦ ξC ⟧ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (α (η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (η₁ T₁ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (α (F₁ (str-pf R₂) g) (η₀ T₁ b) (F₁ (str-pf R₁) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₂) g ◻ m) (η₁ T₁ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (α (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f) (η₀ T₁ a)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ ⟦ ξC ⟧ m ◻ η₀ T₁ a) (F-◻ (str-pf R₂) f g)) ◃∙
+    ! (! (α (η₀ T₂ c) (F₁ (str-pf R₂) (⟦ ξB ⟧ g ◻ f)) (η₀ T₁ a))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (F-◻ (str-pf R₂) f g)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₂) f) (η₁ T₂ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (F₁ (str-pf R₂) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (η₁ T₂ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (η₀ T₂ a)))) ◃∙
+    ! (α (F₁ (str-pf R₃) g ◻ F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (! (α (η₀ T₂ b) (F₁ (str-pf R₂) f) (η₀ T₁ a))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ b ◻ m) (η₁ T₁ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (η₀ T₂ b) (η₀ T₁ b) (F₁ (str-pf R₁) f)) ◃∙
+    α (F₁ (str-pf R₃) g) (⟦ ξC ⟧ η₀ T₂ b ◻ η₀ T₁ b) (F₁ (str-pf R₁) f) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (η₀ T₁ b)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ b) (η₁ T₂ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (η₀ T₁ b))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) g)) ◃∙
+    ! (α (⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)) ◃∎
+      =ₛ₁⟨ 8 & 1 & !-! (α (η₀ T₂ c) (F₁ (str-pf R₂) (⟦ ξB ⟧ g ◻ f)) (η₀ T₁ a)) ⟩
+    ! (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (ap (λ m → ⟦ ξC ⟧ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (α (η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (η₁ T₁ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (α (F₁ (str-pf R₂) g) (η₀ T₁ b) (F₁ (str-pf R₁) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₂) g ◻ m) (η₁ T₁ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (α (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f) (η₀ T₁ a)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ ⟦ ξC ⟧ m ◻ η₀ T₁ a) (F-◻ (str-pf R₂) f g)) ◃∙
+    α (η₀ T₂ c) (F₁ (str-pf R₂) (⟦ ξB ⟧ g ◻ f)) (η₀ T₁ a) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (F-◻ (str-pf R₂) f g)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₂) f) (η₁ T₂ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (F₁ (str-pf R₂) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (η₁ T₂ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (η₀ T₂ a)))) ◃∙
+    ! (α (F₁ (str-pf R₃) g ◻ F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (! (α (η₀ T₂ b) (F₁ (str-pf R₂) f) (η₀ T₁ a))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ b ◻ m) (η₁ T₁ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (η₀ T₂ b) (η₀ T₁ b) (F₁ (str-pf R₁) f)) ◃∙
+    α (F₁ (str-pf R₃) g) (⟦ ξC ⟧ η₀ T₂ b ◻ η₀ T₁ b) (F₁ (str-pf R₁) f) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (η₀ T₁ b)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ b) (η₁ T₂ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (η₀ T₁ b))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) g)) ◃∙
+    ! (α (⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)) ◃∎
+      =ₛ₁⟨ 9 & 1 & ∘-!-ap-! (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (F-◻ (str-pf R₂) f g) ⟩
+    ! (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (ap (λ m → ⟦ ξC ⟧ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (α (η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (η₁ T₁ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (α (F₁ (str-pf R₂) g) (η₀ T₁ b) (F₁ (str-pf R₁) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₂) g ◻ m) (η₁ T₁ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (α (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f) (η₀ T₁ a)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ ⟦ ξC ⟧ m ◻ η₀ T₁ a) (F-◻ (str-pf R₂) f g)) ◃∙
+    α (η₀ T₂ c) (F₁ (str-pf R₂) (⟦ ξB ⟧ g ◻ f)) (η₀ T₁ a) ◃∙
+    ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ η₀ T₂ c ◻ m ◻ η₀ T₁ a) (F-◻ (str-pf R₂) f g) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₂) f) (η₁ T₂ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (F₁ (str-pf R₂) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (η₁ T₂ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (η₀ T₂ a)))) ◃∙
+    ! (α (F₁ (str-pf R₃) g ◻ F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (! (α (η₀ T₂ b) (F₁ (str-pf R₂) f) (η₀ T₁ a))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ b ◻ m) (η₁ T₁ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (η₀ T₂ b) (η₀ T₁ b) (F₁ (str-pf R₁) f)) ◃∙
+    α (F₁ (str-pf R₃) g) (⟦ ξC ⟧ η₀ T₂ b ◻ η₀ T₁ b) (F₁ (str-pf R₁) f) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (η₀ T₁ b)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ b) (η₁ T₂ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (η₀ T₁ b))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) g)) ◃∙
+    ! (α (⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)) ◃∎
+      =ₛ⟨ 7 & 3 & !ₛ (apCommSq2◃ (λ m → α (η₀ T₂ c) m (η₀ T₁ a)) (F-◻ (str-pf R₂) f g)) ⟩
+    ! (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (ap (λ m → ⟦ ξC ⟧ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (α (η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (η₁ T₁ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (α (F₁ (str-pf R₂) g) (η₀ T₁ b) (F₁ (str-pf R₁) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₂) g ◻ m) (η₁ T₁ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (α (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f) (η₀ T₁ a)))) ◃∙
+    α (η₀ T₂ c) (F₁ (str-pf R₂) g ◻ F₁ (str-pf R₂) f) (η₀ T₁ a) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₂) f) (η₁ T₂ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (F₁ (str-pf R₂) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (η₁ T₂ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (η₀ T₂ a)))) ◃∙
+    ! (α (F₁ (str-pf R₃) g ◻ F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (! (α (η₀ T₂ b) (F₁ (str-pf R₂) f) (η₀ T₁ a))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ b ◻ m) (η₁ T₁ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (η₀ T₂ b) (η₀ T₁ b) (F₁ (str-pf R₁) f)) ◃∙
+    α (F₁ (str-pf R₃) g) (⟦ ξC ⟧ η₀ T₂ b ◻ η₀ T₁ b) (F₁ (str-pf R₁) f) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (η₀ T₁ b)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ b) (η₁ T₂ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (η₀ T₁ b))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) g)) ◃∙
+    ! (α (⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)) ◃∎
+      =ₛ₁⟨ 6 & 1 & !-!-ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (α (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f) (η₀ T₁ a)) ⟩
+    ! (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (ap (λ m → ⟦ ξC ⟧ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (α (η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (η₁ T₁ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (α (F₁ (str-pf R₂) g) (η₀ T₁ b) (F₁ (str-pf R₁) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₂) g ◻ m) (η₁ T₁ f))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (α (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f) (η₀ T₁ a)) ◃∙
+    α (η₀ T₂ c) (F₁ (str-pf R₂) g ◻ F₁ (str-pf R₂) f) (η₀ T₁ a) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₂) f) (η₁ T₂ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (F₁ (str-pf R₂) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (η₁ T₂ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (η₀ T₂ a)))) ◃∙
+    ! (α (F₁ (str-pf R₃) g ◻ F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (! (α (η₀ T₂ b) (F₁ (str-pf R₂) f) (η₀ T₁ a))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ b ◻ m) (η₁ T₁ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (η₀ T₂ b) (η₀ T₁ b) (F₁ (str-pf R₁) f)) ◃∙
+    α (F₁ (str-pf R₃) g) (⟦ ξC ⟧ η₀ T₂ b ◻ η₀ T₁ b) (F₁ (str-pf R₁) f) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (η₀ T₁ b)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ b) (η₁ T₂ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (η₀ T₁ b))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) g)) ◃∙
+    ! (α (⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)) ◃∎
+      =ₛ₁⟨ 8 & 1 & !-!-ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f)) ⟩
+    ! (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (ap (λ m → ⟦ ξC ⟧ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (α (η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (η₁ T₁ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (α (F₁ (str-pf R₂) g) (η₀ T₁ b) (F₁ (str-pf R₁) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₂) g ◻ m) (η₁ T₁ f))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (α (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f) (η₀ T₁ a)) ◃∙
+    α (η₀ T₂ c) (F₁ (str-pf R₂) g ◻ F₁ (str-pf R₂) f) (η₀ T₁ a) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f)) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₂) f) (η₁ T₂ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (F₁ (str-pf R₂) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (η₁ T₂ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (η₀ T₂ a)))) ◃∙
+    ! (α (F₁ (str-pf R₃) g ◻ F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (! (α (η₀ T₂ b) (F₁ (str-pf R₂) f) (η₀ T₁ a))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ b ◻ m) (η₁ T₁ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (η₀ T₂ b) (η₀ T₁ b) (F₁ (str-pf R₁) f)) ◃∙
+    α (F₁ (str-pf R₃) g) (⟦ ξC ⟧ η₀ T₂ b ◻ η₀ T₁ b) (F₁ (str-pf R₁) f) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (η₀ T₁ b)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ b) (η₁ T₂ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (η₀ T₁ b))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) g)) ◃∙
+    ! (α (⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)) ◃∎
+      =ₛ⟨ 6 & 3 & !ₛ (pent-bc◃ (η₀ T₁ a) (F₁ (str-pf R₂) f) (F₁ (str-pf R₂) g) (η₀ T₂ c)) ⟩
+    ! (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) (⟦ ξB ⟧ g ◻ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (ap (λ m → ⟦ ξC ⟧ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (! (α (η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (η₁ T₁ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (α (F₁ (str-pf R₂) g) (η₀ T₁ b) (F₁ (str-pf R₁) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₂) g ◻ m) (η₁ T₁ f))) ◃∙
+    α (η₀ T₂ c) (F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f ◻ η₀ T₁ a) ◃∙
+    α (η₀ T₂ c ◻ F₁ (str-pf R₂) g) (F₁ (str-pf R₂) f) (η₀ T₁ a) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₂) f) (η₁ T₂ g))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (F₁ (str-pf R₂) f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (η₁ T₂ f))) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (η₀ T₂ a)))) ◃∙
+    ! (α (F₁ (str-pf R₃) g ◻ F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ! (α (F₁ (str-pf R₃) g) (F₁ (str-pf R₃) f) (⟦ ξC ⟧ η₀ T₂ a ◻ η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (F₁ (str-pf R₃) f) (η₀ T₂ a) (η₀ T₁ a)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ a) (η₁ T₂ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (! (α (η₀ T₂ b) (F₁ (str-pf R₂) f) (η₀ T₁ a))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ b ◻ m) (η₁ T₁ f)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) g ◻ m) (α (η₀ T₂ b) (η₀ T₁ b) (F₁ (str-pf R₁) f)) ◃∙
+    α (F₁ (str-pf R₃) g) (⟦ ξC ⟧ η₀ T₂ b ◻ η₀ T₁ b) (F₁ (str-pf R₁) f) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (F₁ (str-pf R₃) g) (η₀ T₂ b) (η₀ T₁ b)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ m ◻ η₀ T₁ b) (η₁ T₂ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (! (α (η₀ T₂ c) (F₁ (str-pf R₂) g) (η₀ T₁ b))) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (ap (λ m → ⟦ ξC ⟧ η₀ T₂ c ◻ m) (η₁ T₁ g)) ◃∙
+    ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (α (η₀ T₂ c) (η₀ T₁ c) (F₁ (str-pf R₁) g)) ◃∙
+    ! (α (⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)) ◃∙
+    ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ η₀ T₂ c ◻ η₀ T₁ c ◻ m) (F-◻ (str-pf R₁) f g)) ◃∎
       =ₛ⟨ {!!} ⟩
     {!!}
+
 
   -- left whiskering
 
