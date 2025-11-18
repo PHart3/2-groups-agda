@@ -40,6 +40,62 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
         ! (ap (λ m → η₀ c ◻ m) (F-◻ (str-pf R) f g))
           ==
         idp
+        
+    abstract
+
+      coher-unit◃ : {a : B₀} →
+        lamb (η₀ a) ◃∙
+        ap (λ m → m ◻ η₀ a) (! (F-id₁ (str-pf S) a)) ◃∙
+        η₁ (id₁ a) ◃∙
+        ap (λ m → η₀ a ◻ m) (F-id₁ (str-pf R) a) ◃∎
+          =ₛ
+        ρ (η₀ a) ◃∎
+      coher-unit◃ = =ₛ-in coher-unit
+
+      coher-unit◃-rot : {a : B₀} →
+        η₁ (id₁ a) ◃∎
+          =ₛ
+        ap (λ m → m ◻ η₀ a) (F-id₁ (str-pf S) a) ◃∙
+        ! (lamb (η₀ a)) ◃∙
+        ρ (η₀ a) ◃∙
+        ! (ap (λ m → η₀ a ◻ m) (F-id₁ (str-pf R) a)) ◃∎
+      coher-unit◃-rot {a} =
+        η₁ (id₁ a) ◃∎
+          =ₛ⟨ post-rotate-in (pre-rotate-in (pre-rotate-in coher-unit◃)) ⟩
+        ! (ap (λ m → m ◻ η₀ a) (! (F-id₁ (str-pf S) a))) ◃∙
+        ! (lamb (η₀ a)) ◃∙
+        ρ (η₀ a) ◃∙
+        ! (ap (λ m → η₀ a ◻ m) (F-id₁ (str-pf R) a)) ◃∎
+          =ₛ₁⟨ 0 & 1 & !-!-ap (λ m → m ◻ η₀ a) (F-id₁ (str-pf S) a) ⟩
+        ap (λ m → m ◻ η₀ a) (F-id₁ (str-pf S) a) ◃∙
+        ! (lamb (η₀ a)) ◃∙
+        ρ (η₀ a) ◃∙
+        ! (ap (λ m → η₀ a ◻ m) (F-id₁ (str-pf R) a)) ◃∎ ∎ₛ
+
+      coher-assoc◃ : {a b c : B₀} (f : hom a b) (g : hom b c) →
+        ! (η₁ (⟦ ξB ⟧ g ◻ f)) ◃∙
+        ap (λ m → m ◻ η₀ a) (F-◻ (str-pf S) f g) ◃∙
+        ! (α (F₁ (str-pf S) g) (F₁ (str-pf S) f) (η₀ a)) ◃∙
+        ap (λ m → F₁ (str-pf S) g ◻ m) (η₁ f) ◃∙
+        α (F₁ (str-pf S) g) (η₀ b) (F₁ (str-pf R) f) ◃∙
+        ap (λ m → m ◻ (F₁ (str-pf R) f)) (η₁ g) ◃∙
+        ! (α (η₀ c) (F₁ (str-pf R) g) (F₁ (str-pf R) f)) ◃∙
+        ! (ap (λ m → η₀ c ◻ m) (F-◻ (str-pf R) f g)) ◃∎
+            =ₛ
+        []
+      coher-assoc◃ f g = =ₛ-in (coher-assoc f g)
+
+      coher-assoc◃-rot : {a b c : B₀} (f : hom a b) (g : hom b c) →
+        ap (λ m → m ◻ η₀ a) (F-◻ (str-pf S) f g) ◃∙
+        ! (α (F₁ (str-pf S) g) (F₁ (str-pf S) f) (η₀ a)) ◃∙
+        ap (λ m → F₁ (str-pf S) g ◻ m) (η₁ f) ◃∙
+        α (F₁ (str-pf S) g) (η₀ b) (F₁ (str-pf R) f) ◃∙
+        ap (λ m → m ◻ (F₁ (str-pf R) f)) (η₁ g) ◃∙
+        ! (α (η₀ c) (F₁ (str-pf R) g) (F₁ (str-pf R) f)) ◃∙
+        ! (ap (λ m → η₀ c ◻ m) (F-◻ (str-pf R) f g)) ◃∎
+            =ₛ
+        η₁ (⟦ ξB ⟧ g ◻ f) ◃∎
+      coher-assoc◃-rot f g = pre-rotate'-out (coher-assoc◃ f g)
 
   -- pseudonatural equivalence
   infixr 70 _ps-≃_

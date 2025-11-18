@@ -56,6 +56,23 @@ module _ (j : ULevel) where
           =ₛ⟨ post-rotate'-in (tri-bc◃-rot f g) ⟩
         [] ∎ₛ
 
+      tri-bc◃-rot3 : {a b c : B₀} (f : hom a b) (g : hom b c) →
+        []
+          =ₛ
+        ap (λ m → m ◻ f) (ρ g) ◃∙
+        ! (α g (id₁ b) f) ◃∙
+        ap (λ m → g ◻ m) (! (lamb f)) ◃∎
+      tri-bc◃-rot3 {b = b} f g =
+        []
+          =ₛ⟨ post-rotate-in (post-rotate-in (tri-bc◃-rot f g)) ⟩
+        ap (λ m → m ◻ f) (ρ g) ◃∙
+        ! (α g (id₁ b) f) ◃∙
+        ! (ap (λ m → g ◻ m) (lamb f)) ◃∎
+          =ₛ₁⟨ 2 & 1 & !-ap (λ m → g ◻ m) (lamb f) ⟩
+        ap (λ m → m ◻ f) (ρ g) ◃∙
+        ! (α g (id₁ b) f) ◃∙
+        ap (λ m → g ◻ m) (! (lamb f)) ◃∎ ∎ₛ
+
       pent-bc◃ : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e) →
         α i h (g ◻ f) ◃∙
         α (i ◻ h) g f ◃∎

@@ -61,6 +61,23 @@ module _ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} where
         []
       trig-lamb-bc-rot = post-rotate'-in trig-lamb-bc
 
+      trig-lamb-bc-rot2 :
+        []
+          =ₛ
+        lamb (⟦ ξC ⟧ g ◻ f) ◃∙
+        α (id₁ c) g f ◃∙
+        ap (λ m → ⟦ ξC ⟧ m ◻ f) (! (lamb g)) ◃∎
+      trig-lamb-bc-rot2 =
+        []
+          =ₛ⟨ post-rotate-in (post-rotate'-out trig-lamb-bc) ⟩
+        lamb (⟦ ξC ⟧ g ◻ f) ◃∙
+        α (id₁ c) g f ◃∙
+        ! (ap (λ m → ⟦ ξC ⟧ m ◻ f) (lamb g)) ◃∎
+          =ₛ₁⟨ 2 & 1 & !-ap (λ m → ⟦ ξC ⟧ m ◻ f) (lamb g) ⟩
+        lamb (⟦ ξC ⟧ g ◻ f) ◃∙
+        α (id₁ c) g f ◃∙
+        ap (λ m → ⟦ ξC ⟧ m ◻ f) (! (lamb g)) ◃∎ ∎ₛ
+
       trig-ρ-bc :
         ap (λ m → ⟦ ξC ⟧ g ◻ m) (ρ f) ◃∙
         α g f (id₁ a) ◃∎
