@@ -74,7 +74,7 @@ module _ {ℓv ℓe : ULevel} {ℓc₁ ℓc₂ ℓd₁ ℓd₂} {I : WildCat {�
 
   nat-trans-whisk-l : (τ : Nat-trans F₁ F₂) (G : Functor-wc D I) → Nat-trans (F₁ ∘WC G) (F₂ ∘WC G)
   comp (nat-trans-whisk-l τ G) x = comp τ (obj G x)
-  sq (nat-trans-whisk-l τ G) {x} {y} f = sq τ (arr G f)
+  sq (nat-trans-whisk-l τ G) f = sq τ (arr G f)
   
   nat-iso-whisk-r : (τ : Nat-iso F₁ F₂) (G : Functor-wc C D) → Nat-iso (G ∘WC F₁) (G ∘WC F₂)
   fst (nat-iso-whisk-r τ G) = nat-trans-whisk-r (fst τ) G
