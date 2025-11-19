@@ -22,7 +22,7 @@ module _ (j : ULevel) where
       pent-bc : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e)
         → α i h (g ◻ f) ∙ α (i ◻ h) g f == ap (λ m → i ◻ m) (α h g f) ∙ α i (h ◻ g) f ∙ ap (λ m → m ◻ f) (α i h g)
       {{hom-trunc}} : {a b : B₀} → has-level 1 (hom a b)
-
+    
     abstract
 
       tri-bc◃ : {a b c : B₀} (f : hom a b) (g : hom b c) →
@@ -110,6 +110,15 @@ module _ (j : ULevel) where
         α i h (g ◻ f) ◃∎
           =ₛ⟨ post-rotate-out (pre-rotate-in (post-rotate'-in (post-rotate'-in (post-rotate'-in (pent-bc◃ f g h i))))) ⟩
         [] ∎ₛ
+
+      pent-bc◃-rot2 : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e) →
+        ! (ap (λ m → m ◻ f) (α i h g)) ◃∙
+        ! (α i (h ◻ g) f) ◃∎
+          =ₛ
+        ! (α (i ◻ h) g f) ◃∙
+        ! (α i h (g ◻ f)) ◃∙
+        ap (λ m → i ◻ m) (α h g f) ◃∎
+      pent-bc◃-rot2 f g h i = post-rotate'-in (post-rotate'-in (pre-rotate-in (pre-rotate-in (pent-bc◃ f g h i))))
 
   Bicat : (i : ULevel) → Type (lmax (lsucc j) (lsucc i))
   Bicat i = Σ (Type i) BicatStr
