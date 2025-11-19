@@ -61,11 +61,29 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
 
     assoc-psf–> : Pstrans-nc (R₃ ∘BC (R₂ ∘BC R₁)) ((R₃ ∘BC R₂) ∘BC R₁)
     η₀-nc assoc-psf–> a = id₁ (map-pf R₃ (map-pf R₂ (map-pf R₁ a)))
-    η₁-nc assoc-psf–> {a} {b} f = {!!}
+    η₁-nc assoc-psf–> f =
+      ! (ρ (F₁ (str-pf R₃) (F₁ (str-pf R₂) (F₁ (str-pf R₁) f)))) ∙ lamb (F₁ (str-pf R₃) (F₁ (str-pf R₂) (F₁ (str-pf R₁) f)))
 
     assoc-psf<– : Pstrans-nc ((R₃ ∘BC R₂) ∘BC R₁) (R₃ ∘BC (R₂ ∘BC R₁))
     η₀-nc assoc-psf<– a = id₁ (map-pf R₃ (map-pf R₂ (map-pf R₁ a)))
-    η₁-nc assoc-psf<– {a} {b} f = {!!}
+    η₁-nc assoc-psf<– f = 
+      ! (ρ (F₁ (str-pf R₃) (F₁ (str-pf R₂) (F₁ (str-pf R₁) f)))) ∙ lamb (F₁ (str-pf R₃) (F₁ (str-pf R₂) (F₁ (str-pf R₁) f)))
 
-  -- unit pseudotransformations
+  -- unit pseudotransformations (and their inverses)
   module _ {R : Psfunctor {{ξB}} {{ξC}}} where
+
+    unitl-pst–> : Pstrans-nc (idfBC ∘BC R) R
+    η₀-nc unitl-pst–> a = id₁ (map-pf R a)
+    η₁-nc unitl-pst–> f = ! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)
+
+    unitl-pst<– : Pstrans-nc R (idfBC ∘BC R)
+    η₀-nc unitl-pst<– a = id₁ (map-pf R a)
+    η₁-nc unitl-pst<– f = ! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)
+
+    unitr-pst–> : Pstrans-nc (R ∘BC idfBC) R
+    η₀-nc unitr-pst–> a = id₁ (map-pf R a)
+    η₁-nc unitr-pst–> f = ! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)
+
+    unitr-pst<– : Pstrans-nc R (R ∘BC idfBC)
+    η₀-nc unitr-pst<– a = id₁ (map-pf R a)
+    η₁-nc unitr-pst<– f = ! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)
