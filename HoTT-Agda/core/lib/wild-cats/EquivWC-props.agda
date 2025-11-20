@@ -23,7 +23,7 @@ module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} {C : WildCat {ℓc₁} {ℓc
         arr ftor₁ (⟦ C ⟧ <–-wc C (iso₂-s y) ▢ ⟦ C ⟧ arr ftor₂ g ▢ comp iso₂-f x)
           =⟨ comp-tri ftor₁ (comp iso₂-f x) (arr ftor₂ g) (<–-wc C (iso₂-s y)) ⟩
         ⟦ D ⟧ arr ftor₁ (<–-wc C (iso₂-s y)) ▢ ⟦ D ⟧ arr ftor₁ (arr ftor₂ g) ▢ arr ftor₁ (comp iso₂-f x)
-          =⟨ ap (λ m → ⟦ D ⟧ m ▢ ⟦ D ⟧ arr ftor₁ (arr ftor₂ g) ▢ arr ftor₁ (comp iso₂-f x)) (zig-zag-eq a𝔼 y) ⟩
+          =⟨ ap (λ m → ⟦ D ⟧ m ▢ ⟦ D ⟧ arr ftor₁ (arr ftor₂ g) ▢ arr ftor₁ (comp iso₂-f x)) (zig-zag-rot a𝔼 y) ⟩
         ⟦ D ⟧ comp (fst (iso₁ hae)) (obj ftor₁ y) ▢
         (⟦ D ⟧ arr ftor₁ (arr ftor₂ g) ▢
         arr ftor₁ (comp iso₂-f x))
