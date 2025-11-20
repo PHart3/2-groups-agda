@@ -5,16 +5,17 @@ open import lib.wild-cats.WildCats
 open import Bicategory
 open import AdjEq
 open import Bicat-wild
+open import Biadj
+open import Pstransf-SIP
 
 module Biequiv where
 
 open BicatStr {{...}}
 
 open import Pstransf public
-        
-module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}  where
+open Pstrans
 
-  open Pstrans
+module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}  where
 
   -- biequiv structure between two bicats
   
@@ -70,3 +71,23 @@ module _ {i₁ i₂ j₁ j₂} {B@(B₀ , _) : Bicat j₁ i₁} {C@(C₀ , _) : 
   abstract
     beqv-is-ff : (be : BiequivStr ξB ξC) → {x y : B₀} → is-equiv (F₁ (str-pf (Ψ₁ be)) {x} {y})
     beqv-is-ff be = Equiv-wc-ff (beqv-to-niso be)
+
+  open HAdjEquiv-wc
+  open Biadj-data
+  open InvMod
+  
+  baeqv-to-niso : (be : BiequivStr ξB ξC) → Biadj-data (τ₁ be) (τ₂ be) → HAdjEquiv-wc (bc-to-wc B) (bc-to-wc C)
+  ftor₁ (𝔼 (baeqv-to-niso be ba)) = pf-to-wf (Ψ₁ be)
+  ftor₂ (𝔼 (baeqv-to-niso be ba)) = pf-to-wf (Ψ₂ be)
+  fst (iso₁ (𝔼 (baeqv-to-niso be ba))) = ptr-to-ntr (τ₁ be)
+  snd (iso₁ (𝔼 (baeqv-to-niso be ba))) x = aeqv-to-weqv (lev-eq₁ be x)
+  fst (iso₂ (𝔼 (baeqv-to-niso be ba))) = ptr-to-ntr (τ₂ be)
+  snd (iso₂ (𝔼 (baeqv-to-niso be ba))) x = aeqv-to-weqv (lev-eq₂ be x)
+  zig-zag (baeqv-to-niso be ba) x =
+    ap (λ m → m ◻ F₁ (str-pf (Ψ₁ be)) (η₀ (τ₂ be) x)) (ρ ξC (η₀ (τ₁ be) (map-pf (Ψ₁ be) x))) ∙
+    η₀-∼ (ζ₂ ba) x ∙
+    ! (lamb ξC (id₁ ξC (map-pf (Ψ₁ be) x)))
+
+  baeqv-is-ff : (be : BiequivStr ξB ξC) → Biadj-data (τ₁ be) (τ₂ be) →
+    {x y : B₀} → is-equiv (F₁ (str-pf (Ψ₁ be)) {x} {y})
+  baeqv-is-ff be ba = HAEquiv-wc-ff {C = bc-to-wc B} {D = bc-to-wc C} (baeqv-to-niso be ba)

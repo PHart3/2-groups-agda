@@ -61,9 +61,9 @@ open Nat-trans
 module _ {ℓv ℓe : ULevel} {ℓc₁ ℓc₂ ℓd₁ ℓd₂} {I : WildCat {ℓv} {ℓe}} {C : WildCat {ℓc₁} {ℓc₂}} {D : WildCat {ℓd₁} {ℓd₂}}
   {F₁ F₂ : Functor-wc I C} where
 
-  nat-trans-whisk-r : (τ : Nat-trans F₁ F₂) (G : Functor-wc C D) → Nat-trans (G ∘WC F₁) (G ∘WC F₂)
-  comp (nat-trans-whisk-r τ G) x = arr G (comp τ x)
-  sq (nat-trans-whisk-r τ G) {x} {y} f = 
+  nat-trans-whisk-l : (τ : Nat-trans F₁ F₂) (G : Functor-wc C D) → Nat-trans (G ∘WC F₁) (G ∘WC F₂)
+  comp (nat-trans-whisk-l τ G) x = arr G (comp τ x)
+  sq (nat-trans-whisk-l τ G) {x} {y} f = 
     ⟦ D ⟧ arr G (arr F₂ f) ▢ arr G (comp τ x)
       =⟨ ! (comp G (comp τ x) (arr F₂ f)) ⟩
     arr G (⟦ C ⟧ arr F₂ f ▢ comp τ x)
@@ -72,17 +72,17 @@ module _ {ℓv ℓe : ULevel} {ℓc₁ ℓc₂ ℓd₁ ℓd₂} {I : WildCat {�
       =⟨ comp G (arr F₁ f) (comp τ y) ⟩
     ⟦ D ⟧ arr G (comp τ y) ▢ arr G (arr F₁ f) =∎
 
-  nat-trans-whisk-l : (τ : Nat-trans F₁ F₂) (G : Functor-wc D I) → Nat-trans (F₁ ∘WC G) (F₂ ∘WC G)
-  comp (nat-trans-whisk-l τ G) x = comp τ (obj G x)
-  sq (nat-trans-whisk-l τ G) f = sq τ (arr G f)
+  nat-trans-whisk-r : (τ : Nat-trans F₁ F₂) (G : Functor-wc D I) → Nat-trans (F₁ ∘WC G) (F₂ ∘WC G)
+  comp (nat-trans-whisk-r τ G) x = comp τ (obj G x)
+  sq (nat-trans-whisk-r τ G) f = sq τ (arr G f)
   
-  nat-iso-whisk-r : (τ : Nat-iso F₁ F₂) (G : Functor-wc C D) → Nat-iso (G ∘WC F₁) (G ∘WC F₂)
-  fst (nat-iso-whisk-r τ G) = nat-trans-whisk-r (fst τ) G
-  snd (nat-iso-whisk-r τ G) x = F-equiv-wc G (snd τ x)
-
-  nat-iso-whisk-l : (τ : Nat-iso F₁ F₂) (G : Functor-wc D I) → Nat-iso (F₁ ∘WC G) (F₂ ∘WC G)
+  nat-iso-whisk-l : (τ : Nat-iso F₁ F₂) (G : Functor-wc C D) → Nat-iso (G ∘WC F₁) (G ∘WC F₂)
   fst (nat-iso-whisk-l τ G) = nat-trans-whisk-l (fst τ) G
-  snd (nat-iso-whisk-l τ G) x = snd τ (obj G x)
+  snd (nat-iso-whisk-l τ G) x = F-equiv-wc G (snd τ x)
+
+  nat-iso-whisk-r : (τ : Nat-iso F₁ F₂) (G : Functor-wc D I) → Nat-iso (F₁ ∘WC G) (F₂ ∘WC G)
+  fst (nat-iso-whisk-r τ G) = nat-trans-whisk-r (fst τ) G
+  snd (nat-iso-whisk-r τ G) x = snd τ (obj G x)
 
 module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} (C : WildCat {ℓc₁} {ℓc₂}) (D : WildCat {ℓd₁} {ℓd₂}) where
 
@@ -233,7 +233,7 @@ module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} {C : WildCat {ℓc₁} {ℓc
     <–-wc D (F-equiv-wc (ftor₁ e) (snd (iso₂ e) (obj (ftor₂ e) x)))) ▢
     <–-wc D (snd (iso₁ e) (obj (ftor₁ e) (obj (ftor₂ e) x)))
       =⟨ ap (λ m → ⟦ D ⟧ comp (fst (iso₁ e)) y ▢ ⟦ D ⟧ m ▢ <–-wc D (snd (iso₁ e) (obj (ftor₁ e) (obj (ftor₂ e) x)))) (
-           sq (fst (Nat-iso-rev (nat-iso-whisk-r (nat-iso-whisk-l (iso₂ e) (ftor₂ e)) (ftor₁ e)))) f) ⟩
+           sq (fst (Nat-iso-rev (nat-iso-whisk-l (nat-iso-whisk-r (iso₂ e) (ftor₂ e)) (ftor₁ e)))) f) ⟩
     ⟦ D ⟧ comp (fst (iso₁ e)) y ▢
     ⟦ D ⟧ (⟦ D ⟧ <–-wc D (F-equiv-wc (ftor₁ e) (snd (iso₂ e) (obj (ftor₂ e) y))) ▢
       (arr (ftor₁ e) ∘ (arr (ftor₂ e) ∘ arr (ftor₁ e)) ∘ arr (ftor₂ e)) f) ▢
@@ -248,7 +248,7 @@ module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} {C : WildCat {ℓc₁} {ℓc
     ⟦ D ⟧ (arr (ftor₁ e) ∘ (arr (ftor₂ e) ∘ arr (ftor₁ e)) ∘ arr (ftor₂ e)) f ▢
     <–-wc D (snd (iso₁ e) (obj (ftor₁ e) (obj (ftor₂ e) x)))
       =⟨ ap (λ m → ⟦ D ⟧ comp (fst (iso₁ e)) y ▢ ⟦ D ⟧ <–-wc D (F-equiv-wc (ftor₁ e) (snd (iso₂ e) (obj (ftor₂ e) y))) ▢ m)
-           (sq (fst (Nat-iso-rev (nat-iso-whisk-l (iso₁ e) (ftor₁ e ∘WC ftor₂ e)))) f) ⟩
+           (sq (fst (Nat-iso-rev (nat-iso-whisk-r (iso₁ e) (ftor₁ e ∘WC ftor₂ e)))) f) ⟩
     ⟦ D ⟧ comp (fst (iso₁ e)) y ▢
     ⟦ D ⟧ <–-wc D (F-equiv-wc (ftor₁ e) (snd (iso₂ e) (obj (ftor₂ e) y))) ▢
     ⟦ D ⟧ <–-wc D (snd (iso₁ e) ((obj (ftor₁ e) ∘ obj (ftor₂ e)) y)) ▢
