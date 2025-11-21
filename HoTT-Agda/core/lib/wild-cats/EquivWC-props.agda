@@ -5,6 +5,8 @@ open import lib.wild-cats.WildCat
 open import lib.wild-cats.WildFunctor
 open import lib.wild-cats.WildNatTr
 
+-- Every equivalence of wild categories is a fully faithful functor.
+
 module lib.wild-cats.EquivWC-props where
 
 module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} {C : WildCat {ℓc₁} {ℓc₂}} {D : WildCat {ℓd₁} {ℓd₂}} where
@@ -12,8 +14,6 @@ module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} {C : WildCat {ℓc₁} {ℓc
   open Nat-trans
   open Equiv-wc
   open HAdjEquiv-wc
-
-  -- Every equivalence of wild categories is a fully faithful functor.
   
   HAEquiv-wc-ff : (e : HAdjEquiv-wc C D) → {x y : ob C} → is-equiv (arr (ftor₁ (𝔼 e)) {x} {y})
   HAEquiv-wc-ff a𝔼@(AEquivWC (hae@(EquivWC ftor₁ ftor₂ (iso₁-f , iso₁-s) (iso₂-f , iso₂-s))) zz) {x} {y} = 

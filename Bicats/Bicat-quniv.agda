@@ -45,3 +45,13 @@ module _ {i j} {B@(B₀ , _) C@(C₀ , _) : Bicat j i} where
     -- A biequivalence between quasi-univalent bicats implies they are equal.
     biequiv-to-== : BiequivStr ξB ξC → B == C
     biequiv-to-== = iso-bc-to-== ∘ biequiv-to-iso
+
+    -- more coherent variant
+
+    baequiv-to-iso : (be : BiequivStr ξB ξC) → Biadj-data (τ₁ be) (τ₂ be) → ξB iso-bc ξC
+    fst (biequiv-to-iso be _) = fst (biequiv-to-iso be)
+    fst (snd (biequiv-to-iso be _)) = fst (snd (biequiv-to-iso be))
+    snd (snd (biequiv-to-iso be ba)) x y = baeqv-is-ff be ba {x} {y} 
+
+    beequiv-to-== : (be : BiequivStr ξB ξC) → Biadj-data (τ₁ be) (τ₂ be) → B == C
+    beequiv-to-== be ba = iso-bc-to-== (baequiv-to-iso be ba)
