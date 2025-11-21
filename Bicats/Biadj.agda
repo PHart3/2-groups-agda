@@ -31,10 +31,10 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
           ⇔
         unitl-pst–> R pstrans-∙ unitr-pst<– R 
       ζ₂ :
-        pstrans-whisk-l (pstrans-forg η) L pstrans-∙ assoc-psf<– L R L pstrans-∙ pstrans-whisk-r (pstrans-forg ε) L
+        (pstrans-whisk-l (pstrans-forg η) L pstrans-∙ assoc-psf<– L R L) pstrans-∙ pstrans-whisk-r (pstrans-forg ε) L
           ⇔
         unitr-pst–> L pstrans-∙ unitl-pst<– L
-        
+{-        
       -- two coherence conditions on the modifications:
       ζ-zz₁ : (x : C₀) →
         ap (λ m → ⟦ ξC ⟧ η₀ ε x ◻ F₁ (str-pf L) m) (η₀-∼ ζ₁ x)
@@ -65,3 +65,4 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
         ap (λ m → ⟦ ξB ⟧ F₁ (str-pf R) m ◻ η₀ η x) (η₀-∼ ζ₂ x) ∙
         ap (λ m → ⟦ ξB ⟧ m ◻ η₀ η x) (F-◻ (str-pf R) (id₁ (map-pf L x)) (id₁ (map-pf L x))) ∙
         ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ m ◻ m ◻ η₀ η x) (F-id₁ (str-pf R) (map-pf L x))
+-}

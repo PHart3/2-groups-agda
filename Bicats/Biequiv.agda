@@ -84,7 +84,7 @@ module _ {i₁ i₂ j₁ j₂} {B@(B₀ , _) : Bicat j₁ i₁} {C@(C₀ , _) : 
   fst (iso₂ (𝔼 (baeqv-to-niso be ba))) = ptr-to-ntr (τ₂ be)
   snd (iso₂ (𝔼 (baeqv-to-niso be ba))) x = aeqv-to-weqv (lev-eq₂ be x)
   zig-zag (baeqv-to-niso be ba) x =
-    ap (λ m → m ◻ F₁ (str-pf (Ψ₁ be)) (η₀ (τ₂ be) x)) (ρ ξC (η₀ (τ₁ be) (map-pf (Ψ₁ be) x))) ∙
+    ap (λ m → η₀ (τ₁ be) (map-pf (Ψ₁ be) x) ◻ m) (lamb ξC (F₁ (str-pf (Ψ₁ be)) (η₀ (τ₂ be) x))) ∙
     η₀-∼ (ζ₂ ba) x ∙
     ! (lamb ξC (id₁ ξC (map-pf (Ψ₁ be) x)))
 
