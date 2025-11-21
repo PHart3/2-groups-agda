@@ -59,6 +59,12 @@ module _ {i j} (C : WildCat {i} {j}) where
     fst (snd equiv-wc-rev) = <–-wc-rinv
     snd (snd equiv-wc-rev) = <–-wc-linv
 
+    -- equivalence of objects induces equivalence of hom types
+    hom-dom-eqv : {c : ob C} → hom C b c ≃ hom C a c
+    hom-dom-eqv = equiv (λ g → ⟦ C ⟧ g ▢ f) (λ g → ⟦ C ⟧ g ▢ <–-wc)
+      (λ g → α C g <–-wc f ∙ ap (λ m → ⟦ C ⟧ g ▢ m) (! <–-wc-linv) ∙ ! (ρ C g))
+      λ g → α C g f <–-wc ∙ ap (λ m → ⟦ C ⟧ g ▢ m) (! <–-wc-rinv) ∙ ! (ρ C g)
+
   equiv-wc-∘ : {a b c : ob C} {f : hom C a b} {g : hom C b c}
     → equiv-wc g → equiv-wc f → equiv-wc (⟦ C ⟧ g ▢ f)
   fst (equiv-wc-∘ eg ef) = ⟦ C ⟧ <–-wc ef ▢ <–-wc eg

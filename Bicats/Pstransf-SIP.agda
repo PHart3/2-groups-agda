@@ -74,7 +74,3 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
     InvMod-ind-β : ∀ {k} (P : (T₂ : Pstrans-nc R S) → (InvMod T₁ T₂ → Type k))
       → (r : P T₁ (InvMod-id T₁)) → InvMod-ind P r (InvMod-id T₁) == r
     InvMod-ind-β P = ID-ind-map-β P InvMod-contr
-
-    abstract
-      InvMod-to-== : {T₂ : Pstrans-nc R S} → InvMod T₁ T₂ → T₁ == T₂ 
-      InvMod-to-== = InvMod-ind (λ T₂ _ → T₁ == T₂) idp

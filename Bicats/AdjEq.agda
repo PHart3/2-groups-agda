@@ -54,7 +54,7 @@ AdjEquiv ξB a b = Σ (hom {{ξB}} a b) (λ f → Adjequiv {{ξB}} f)
 
 module _ {{ξB : BicatStr j B₀}} where
 
-  AdjEq-rev :  {a b : B₀} → AdjEquiv ξB a b → AdjEquiv ξB b a
+  AdjEq-rev : {a b : B₀} → AdjEquiv ξB a b → AdjEquiv ξB b a
   fst (AdjEq-rev (f , ae)) = inv ae
   inv (snd (AdjEq-rev (f , ae))) = f
   eta (snd (AdjEq-rev (f , ae))) = eps ae
@@ -62,7 +62,7 @@ module _ {{ξB : BicatStr j B₀}} where
   coher-map (snd (AdjEq-rev (f , ae))) = coher-inv ae
   coher-inv (snd (AdjEq-rev (f , ae))) = coher-map ae
 
-  AdjEq-rev-≃ :  {a b : B₀} → AdjEquiv ξB a b ≃ AdjEquiv ξB b a
+  AdjEq-rev-≃ : {a b : B₀} → AdjEquiv ξB a b ≃ AdjEquiv ξB b a
   AdjEq-rev-≃ = equiv AdjEq-rev AdjEq-rev (λ _ → idp) λ _ → idp
 
 module ae-unique {{_ : BicatStr j B₀}} {a b : B₀} {f : hom a b} where

@@ -5,6 +5,7 @@ open import lib.Equivalence2
 open import Bicategory
 open import Biequiv
 open import AdjEq
+open import Biadj
 open import Bicat-iso
 open import Bicat-wild
 open import Univ-bc
@@ -48,10 +49,12 @@ module _ {i j} {B@(B₀ , _) C@(C₀ , _) : Bicat j i} where
 
     -- more coherent variant
 
+    open BiequivStr-inst
+    
     baequiv-to-iso : (be : BiequivStr ξB ξC) → Biadj-data (τ₁ be) (τ₂ be) → ξB iso-bc ξC
-    fst (biequiv-to-iso be _) = fst (biequiv-to-iso be)
-    fst (snd (biequiv-to-iso be _)) = fst (snd (biequiv-to-iso be))
-    snd (snd (biequiv-to-iso be ba)) x y = baeqv-is-ff be ba {x} {y} 
+    fst (baequiv-to-iso be _) = fst (biequiv-to-iso be)
+    fst (snd (baequiv-to-iso be _)) = fst (snd (biequiv-to-iso be))
+    snd (snd (baequiv-to-iso be ba)) x y = baeqv-is-ff be ba {x} {y} 
 
     beequiv-to-== : (be : BiequivStr ξB ξC) → Biadj-data (τ₁ be) (τ₂ be) → B == C
     beequiv-to-== be ba = iso-bc-to-== (baequiv-to-iso be ba)
