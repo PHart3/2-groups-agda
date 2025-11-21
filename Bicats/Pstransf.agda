@@ -132,7 +132,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
     constructor pstrans-nc
     field
       η₀-nc : (a : B₀) → hom (map-pf R a) (map-pf S a)
-      η₁-nc : {a b : B₀} (f : hom a b) → F₁ (str-pf S) f ◻ η₀-nc a == ⟦ ξC ⟧ η₀-nc b ◻ F₁ (str-pf R) f
+      η₁-nc : {a b : B₀} (f : hom a b) → ⟦ ξC ⟧ F₁ (str-pf S) f ◻ η₀-nc a == ⟦ ξC ⟧ η₀-nc b ◻ F₁ (str-pf R) f
   open Pstrans-nc public
 
   open Pstrans

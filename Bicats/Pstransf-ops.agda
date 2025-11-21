@@ -19,11 +19,15 @@ open PsfunctorStr
 
 module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}} where
 
-  -- composition
+  -- identity
+  pstrans-id : (R : Psfunctor {{ξB}} {{ξC}}) → Pstrans-nc R R
+  η₀-nc (pstrans-id R) a = id₁ (map-pf R a)
+  η₁-nc (pstrans-id R) f = ! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)
 
+  -- composition
   infixr 10 _pstrans-∙_
   _pstrans-∙_ : {R₁ R₂ R₃ : Psfunctor {{ξB}} {{ξC}}} → Pstrans-nc R₁ R₂ → Pstrans-nc R₂ R₃ → Pstrans-nc R₁ R₃
-  η₀-nc (T₁ pstrans-∙ T₂) a = η₀-nc T₂ a ◻ η₀-nc T₁ a
+  η₀-nc (T₁ pstrans-∙ T₂) a = ⟦ ξC ⟧ η₀-nc T₂ a ◻ η₀-nc T₁ a
   η₁-nc (_pstrans-∙_ {R₁} {R₂} {R₃} T₁ T₂) {x} {y} f = 
     -- ⟦ ξC ⟧ F₁ (str-pf R₃) f ◻ ⟦ ξC ⟧ η₀-nc T₂ x ◻ η₀-nc T₁ x
     α (F₁ (str-pf R₃) f) (η₀-nc T₂ x) (η₀-nc T₁ x) ∙
