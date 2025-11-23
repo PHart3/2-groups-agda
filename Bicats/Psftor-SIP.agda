@@ -17,8 +17,8 @@ open import Univ-bc
 module Psftor-SIP where
 
 open BicatStr {{...}}
-open Psfunctor
-open PsfunctorStr
+open Psfunctor-nc
+open PsfunctorNcStr
 open Pstrans
 
 module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}}
@@ -53,12 +53,12 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
                    ==
                  idp))
                  
-    wftor-contr-aux2 : is-contr $
+    psftor-contr-aux2 : is-contr $
       Σ (Π B₀ (λ x → Σ C₀ (λ c → Σ (hom (map-pf R₁ x) c) Adjequiv)))
         (λ M → (((x , y) , f) : Σ (B₀ × B₀) (λ (x , y) → hom x y)) →
           Σ (hom (fst (M x)) (fst (M y))) (λ k →
             ⟦ ξC ⟧ k ◻ fst (snd (M x)) == ⟦ ξC ⟧ fst (snd (M y)) ◻ F₁ (str-pf R₁) f))
-    wftor-contr-aux2 =
+    psftor-contr-aux2 =
       equiv-preserves-level
         ((Σ-contr-red
           {A = Π B₀ (λ x → Σ C₀ (λ c → Σ (hom (map-pf R₁ x) c) Adjequiv))}
@@ -67,10 +67,10 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
             equiv-preserves-level
               (Σ-emap-r (λ k → pre∙'-equiv (! (ρ k))))}}
 
-    wftor-contr-aux : is-contr tot-sp
-    wftor-contr-aux = let cc = snd (contr-center wftor-contr-aux2) in
+    psftor-contr-aux : is-contr tot-sp
+    psftor-contr-aux = let cc = snd (contr-center psftor-contr-aux2) in
       equiv-preserves-level
-        ((Σ-contr-red wftor-contr-aux2)⁻¹)
+        ((Σ-contr-red psftor-contr-aux2)⁻¹)
         {{×-level
           (Π-level (λ x → ∙-≃-∙2-contr {b = id₁ _} id₁-bc-rght-≃ (lamb (id₁ _)) (ap (λ m → ⟦ ξC ⟧ id₁ _ ◻ m) (F-id₁ (str-pf R₁) x))))
           (Π-level (λ ((x , y , z) , f , g) → 
@@ -79,10 +79,10 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
 
 {-
     abstract
-      wftor-contr : is-contr (Σ (Psfunctor-nc {{ξB}} {{ξC}}) (λ R₂ → R₁ ps-≃-stripped R₂))
-      wftor-contr = equiv-preserves-level lemma {{wftor-contr-aux}}
+      psftor-contr : is-contr (Σ (Psfunctor-nc {{ξB}} {{ξC}}) (λ R₂ → R₁ ps-≃ R₂))
+      psftor-contr = equiv-preserves-level lemma {{psftor-contr-aux}}
         where
-          lemma : tot-sp ≃ Σ (Psfunctor-nc {{ξB}} {{ξC}}) (λ R₂ → R₁ ps-≃-stripped R₂)
+          lemma : tot-sp ≃ Σ (Psfunctor-nc {{ξB}} {{ξC}}) (λ R₂ → R₁ ps-≃ R₂)
           lemma = 
             equiv
               (λ ((M , Ar) , R-id , R-∘) →
@@ -95,11 +95,11 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
               (λ _ → idp)
               λ _ → idp
 
-    wftor-ind : ∀ {k} (Q : (F₂ : Psfunctor-nc {{ξB}} {{ξC}}) → (R₁ ps-≃-stripped R₂ → Type k))
-      → Q R₁ ps-≃-stripped-id → {F₂ : Psfunctor-nc {{ξB}} {{ξC}}} (e : R₁ ps-≃-stripped R₂) → Q R₂ e
-    wftor-ind Q = ID-ind-map Q wftor-contr
+    psftor-ind : ∀ {k} (Q : (F₂ : Psfunctor-nc {{ξB}} {{ξC}}) → (R₁ ps-≃ R₂ → Type k))
+      → Q R₁ ps-≃-id → {F₂ : Psfunctor-nc {{ξB}} {{ξC}}} (e : R₁ ps-≃ R₂) → Q R₂ e
+    psftor-ind Q = ID-ind-map Q psftor-contr
 
-    wftor-ind-β : ∀ {k} (Q : (F₂ : Psfunctor-nc {{ξB}} {{ξC}}) → (R₁ ps-≃-stripped R₂ → Type k))
-      → (r : Q R₁ ps-≃-stripped-id) → wftor-ind Q r ps-≃-stripped-id == r
-    wftor-ind-β Q = ID-ind-map-β Q wftor-contr
+    psftor-ind-β : ∀ {k} (Q : (F₂ : Psfunctor-nc {{ξB}} {{ξC}}) → (R₁ ps-≃ R₂ → Type k))
+      → (r : Q R₁ ps-≃-id) → psftor-ind Q r ps-≃-id == r
+    psftor-ind-β Q = ID-ind-map-β Q psftor-contr
 -}

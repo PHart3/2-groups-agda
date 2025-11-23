@@ -12,14 +12,14 @@ open import Univ-bc
 module Pstransf-id where
 
 open BicatStr {{...}}
-open Psfunctor
-open PsfunctorStr
+open Psfunctor-nc
+open PsfunctorNcStr
 open Pstrans
 
 module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}
   {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}} where
 
-    Pstrans-id : (R : Psfunctor {{ξB}} {{ξC}}) → Pstrans R R
+    Pstrans-id : (R : Psfunctor-nc {{ξB}} {{ξC}}) → Pstrans R R
     η₀ (Pstrans-id R) x = id₁ (map-pf R x)
     η₁ (Pstrans-id R) f = ! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)
     coher-unit (Pstrans-id R) {x} = =ₛ-out $
@@ -147,6 +147,6 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}
         =ₛ₁⟨ !-inv-r (ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R z) ◻ m) (F-◻ (str-pf R) f g)) ⟩
       idp ◃∎ ∎ₛ
 
-    ps-≃-id : {R : Psfunctor {{ξB}} {{ξC}}} → R ps-≃ R
+    ps-≃-id : {R : Psfunctor-nc {{ξB}} {{ξC}}} → R ps-≃ R
     fst (ps-≃-id {R}) = Pstrans-id R
     snd ps-≃-id _ = snd AdjEq-id₁

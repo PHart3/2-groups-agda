@@ -200,9 +200,32 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
 open PsfunctorStr
 open Psfunctor
 
+-- pseudofunctors with the proposition-valued fields omitted
+module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}} where
+
+  record PsfunctorNcStr (F₀ : B₀ → C₀) : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
+    constructor psfunctorncstr
+    field
+      F₁ : {a b : B₀} → hom a b → hom (F₀ a) (F₀ b)
+      F-id₁ : (a : B₀) → F₁ (id₁ a) == id₁ (F₀ a)
+      F-◻ : {a b c : B₀} (f : hom a b) (g : hom b c)
+        → F₁ (⟦ ξB ⟧ g ◻ f) == ⟦ ξC ⟧ F₁ g ◻ F₁ f
+
+  record Psfunctor-nc : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
+    constructor psfunctornc
+    field
+      map-pf : B₀ → C₀
+      {{str-pf}} : PsfunctorNcStr map-pf
+
+  open Psfunctor-nc
+  -- the underlying structure of a pseudofunctor
+  psftor-str : Psfunctor {{ξB}} {{ξC}} → Psfunctor-nc
+  map-pf (psftor-str R) = map-pf R
+  str-pf (psftor-str R) = psfunctorncstr (F₁ (str-pf R)) (F-id₁ (str-pf R)) (F-◻ (str-pf R))
+
+-- identity pseudofunctor
 module _ {i j} {B₀ : Type i} {{ξ : BicatStr j B₀}} where
   
-  -- identity pseudofunctor
   idfBCσ : PsfunctorStr (idf B₀)
   F₁ idfBCσ = λ f → f
   F-id₁ idfBCσ = λ a → idp
@@ -215,15 +238,30 @@ module _ {i j} {B₀ : Type i} {{ξ : BicatStr j B₀}} where
   map-pf idfBC = idf B₀
   str-pf idfBC = idfBCσ
 
+  idpfBC : Psfunctor-nc
+  idpfBC = psftor-str idfBC
+
+
+-- composition of pseudofunctors  
 module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {D₀ : Type i₃}
   {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}} {{ξD : BicatStr j₃ D₀}} where
 
-  -- composition of pseudofunctors  
+  open Psfunctor-nc
+  open PsfunctorNcStr
+
+  -- "s" stands for "stripped"
+  infixr 50 _∘BC-s_
+  _∘BC-s_ :  (φ₂ : Psfunctor-nc {{ξC}} {{ξD}}) (φ₁ : Psfunctor-nc {{ξB}} {{ξC}}) → Psfunctor-nc {{ξB}} {{ξD}}
+  map-pf (φ₂ ∘BC-s φ₁) = map-pf φ₂ ∘ map-pf φ₁
+  F₁ (str-pf (φ₂ ∘BC-s φ₁)) = F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)
+  F-id₁ (str-pf (φ₂ ∘BC-s φ₁)) a = ap (F₁ (str-pf φ₂)) (F-id₁ (str-pf φ₁) a) ∙ F-id₁ (str-pf φ₂) (map-pf φ₁ a)
+  F-◻ (str-pf (φ₂ ∘BC-s φ₁)) f g = ap (F₁ (str-pf φ₂)) (F-◻ (str-pf φ₁) f g) ∙ F-◻ (str-pf φ₂) (F₁ (str-pf φ₁) f) (F₁ (str-pf φ₁) g)
+
   infixr 60 _∘BCσ_
   _∘BCσ_ : (φ₂ : Psfunctor {{ξC}} {{ξD}}) (φ₁ : Psfunctor {{ξB}} {{ξC}}) → PsfunctorStr (map-pf φ₂ ∘ map-pf φ₁)
-  F₁ (φ₂ ∘BCσ φ₁) = F₁ (str-pf φ₂) ∘ F₁ (str-pf φ₁)
-  F-id₁ (φ₂ ∘BCσ φ₁) a = ap (F₁ (str-pf φ₂)) (F-id₁ (str-pf φ₁) a) ∙ F-id₁ (str-pf φ₂) (map-pf φ₁ a)
-  F-◻ (φ₂ ∘BCσ φ₁) f g = ap (F₁ (str-pf φ₂)) (F-◻ (str-pf φ₁) f g) ∙ F-◻ (str-pf φ₂) (F₁ (str-pf φ₁) f) (F₁ (str-pf φ₁) g)
+  F₁ (φ₂ ∘BCσ φ₁) = F₁ (str-pf (psftor-str φ₂ ∘BC-s psftor-str φ₁))
+  F-id₁ (φ₂ ∘BCσ φ₁) = F-id₁ (str-pf (psftor-str φ₂ ∘BC-s psftor-str φ₁)) 
+  F-◻ (φ₂ ∘BCσ φ₁) =  F-◻ (str-pf (psftor-str φ₂ ∘BC-s psftor-str φ₁))
   F-ρ (φ₂ ∘BCσ φ₁) {a} {b} f =
     ap
       (λ q →

@@ -11,13 +11,13 @@ open import AdjEq
 module Pstransf where
 
 open BicatStr {{...}}
-open Psfunctor
-open PsfunctorStr
+open Psfunctor-nc
+open PsfunctorNcStr
 
 module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}}  where
 
   -- pseudotransformations
-  record Pstrans (R S : Psfunctor {{ξB}} {{ξC}}) : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
+  record Pstrans (R S : Psfunctor-nc {{ξB}} {{ξC}}) : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
     constructor pstrans
     field
       η₀ : (a : B₀) → hom (map-pf R a) (map-pf S a)
@@ -99,10 +99,10 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
 
   -- pseudonatural equivalence
   infixr 70 _ps-≃_
-  _ps-≃_ : Psfunctor {{ξB}} {{ξC}} → Psfunctor {{ξB}} {{ξC}} → Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
+  _ps-≃_ : Psfunctor-nc {{ξB}} {{ξC}} → Psfunctor-nc {{ξB}} {{ξC}} → Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
   F ps-≃ G = Σ (Pstrans F G) (λ φ → (b : B₀) → Adjequiv {{ξC}} (Pstrans.η₀ φ b))
 
--- induced wild functor
+-- induced wild natural transformation
 module _ {i₁ i₂ j₁ j₂} {B@(B₀ , _) : Bicat j₁ i₁} {C@(C₀ , _) : Bicat j₂ i₂} where
 
   private
@@ -112,30 +112,15 @@ module _ {i₁ i₂ j₁ j₂} {B@(B₀ , _) : Bicat j₁ i₁} {C@(C₀ , _) : 
       ξC : BicatStr j₂ C₀
       ξC = snd C
 
-  pf-to-wf : Psfunctor {{ξB}} {{ξC}} → Functor-wc (bc-to-wc B) (bc-to-wc C)
-  obj (pf-to-wf (psfunctor map-pf ⦃ σ ⦄)) = map-pf
-  arr (pf-to-wf (psfunctor map-pf ⦃ σ ⦄)) = F₁ σ
-  id (pf-to-wf (psfunctor map-pf ⦃ σ ⦄)) = F-id₁ σ
-  comp (pf-to-wf (psfunctor map-pf ⦃ σ ⦄)) = F-◻ σ
+  pf-to-wf : Psfunctor-nc {{ξB}} {{ξC}} → Functor-wc (bc-to-wc B) (bc-to-wc C)
+  obj (pf-to-wf (psfunctornc map-pf ⦃ σ ⦄)) = map-pf
+  arr (pf-to-wf (psfunctornc map-pf ⦃ σ ⦄)) = F₁ σ
+  id (pf-to-wf (psfunctornc map-pf ⦃ σ ⦄)) = F-id₁ σ
+  comp (pf-to-wf (psfunctornc map-pf ⦃ σ ⦄)) = F-◻ σ
 
   open Nat-trans
   open Pstrans
 
-  ptr-to-ntr : {φ₁ φ₂ : Psfunctor {{ξB}} {{ξC}}} → Pstrans φ₁ φ₂ → Nat-trans (pf-to-wf φ₁) (pf-to-wf φ₂)
+  ptr-to-ntr : {φ₁ φ₂ : Psfunctor-nc {{ξB}} {{ξC}}} → Pstrans φ₁ φ₂ → Nat-trans (pf-to-wf φ₁) (pf-to-wf φ₂)
   comp (ptr-to-ntr τ) = η₀ τ
   sq (ptr-to-ntr τ) = η₁ τ
-
--- non-coherent version of a pseudotransformation
-module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}}  where
-
-  record Pstrans-nc (R S : Psfunctor {{ξB}} {{ξC}}) : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
-    constructor pstrans-nc
-    field
-      η₀-nc : (a : B₀) → hom (map-pf R a) (map-pf S a)
-      η₁-nc : {a b : B₀} (f : hom a b) → ⟦ ξC ⟧ F₁ (str-pf S) f ◻ η₀-nc a == ⟦ ξC ⟧ η₀-nc b ◻ F₁ (str-pf R) f
-  open Pstrans-nc public
-
-  open Pstrans
-  pstrans-forg : {R S : Psfunctor {{ξB}} {{ξC}}} → Pstrans R S → Pstrans-nc R S
-  η₀-nc (pstrans-forg ψ) = η₀ ψ
-  η₁-nc (pstrans-forg ψ) = η₁ ψ
