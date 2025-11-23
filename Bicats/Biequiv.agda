@@ -77,12 +77,7 @@ module _ {i₁ i₂ j₁ j₂} {B@(B₀ , _) : Bicat j₁ i₁} {C@(C₀ , _) : 
   open InvMod
   
   baeqv-to-niso : (be : BiequivStr ξB ξC) → Biadj-data (τ₁ be) (τ₂ be) → HAdjEquiv-wc (bc-to-wc B) (bc-to-wc C)
-  ftor₁ (𝔼 (baeqv-to-niso be ba)) = pf-to-wf (Ψ₁ be)
-  ftor₂ (𝔼 (baeqv-to-niso be ba)) = pf-to-wf (Ψ₂ be)
-  fst (iso₁ (𝔼 (baeqv-to-niso be ba))) = ptr-to-ntr (τ₁ be)
-  snd (iso₁ (𝔼 (baeqv-to-niso be ba))) x = aeqv-to-weqv (lev-eq₁ be x)
-  fst (iso₂ (𝔼 (baeqv-to-niso be ba))) = ptr-to-ntr (τ₂ be)
-  snd (iso₂ (𝔼 (baeqv-to-niso be ba))) x = aeqv-to-weqv (lev-eq₂ be x)
+  𝔼 (baeqv-to-niso be ba) = beqv-to-niso be
   zig-zag (baeqv-to-niso be ba) x =
     ap (λ m → η₀ (τ₁ be) (map-pf (Ψ₁ be) x) ◻ m) (lamb ξC (F₁ (str-pf (Ψ₁ be)) (η₀ (τ₂ be) x))) ∙
     η₀-∼ (ζ₂ ba) x ∙

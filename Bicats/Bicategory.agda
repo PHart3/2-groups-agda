@@ -39,6 +39,14 @@ module _ (j : ULevel) where
         ap (λ m → m ◻ f) (ρ g) ◃∎
       tri-bc◃-rot f g = pre-rotate-out (tri-bc◃ f g)
 
+      tri-bc◃-rot2-pre : {a b c : B₀} (f : hom a b) (g : hom b c) →
+        ap (λ m → g ◻ m) (lamb f) ◃∙
+        α g (id₁ b) f ◃∙
+        ! (ap (λ m → m ◻ f) (ρ g)) ◃∎
+          =ₛ
+        []
+      tri-bc◃-rot2-pre f g = post-rotate'-in (tri-bc◃-rot f g)
+
       tri-bc◃-rot2 : {a b c : B₀} (f : hom a b) (g : hom b c) →
         ap (λ m → g ◻ m) (lamb f) ◃∙
         α g (id₁ b) f ◃∙
@@ -53,8 +61,16 @@ module _ (j : ULevel) where
         ap (λ m → g ◻ m) (lamb f) ◃∙
         α g (id₁ b) f ◃∙
         ! (ap (λ m → m ◻ f) (ρ g)) ◃∎
-          =ₛ⟨ post-rotate'-in (tri-bc◃-rot f g) ⟩
+          =ₛ⟨ tri-bc◃-rot2-pre f g ⟩
         [] ∎ₛ
+
+      tri-bc◃-rot3-pre : {a b c : B₀} (f : hom a b) (g : hom b c) →
+        []
+          =ₛ
+        ap (λ m → m ◻ f) (ρ g) ◃∙
+        ! (α g (id₁ b) f) ◃∙
+        ! (ap (λ m → g ◻ m) (lamb f)) ◃∎
+      tri-bc◃-rot3-pre f g = post-rotate-in (post-rotate-in (tri-bc◃-rot f g))
 
       tri-bc◃-rot3 : {a b c : B₀} (f : hom a b) (g : hom b c) →
         []
@@ -64,7 +80,7 @@ module _ (j : ULevel) where
         ap (λ m → g ◻ m) (! (lamb f)) ◃∎
       tri-bc◃-rot3 {b = b} f g =
         []
-          =ₛ⟨ post-rotate-in (post-rotate-in (tri-bc◃-rot f g)) ⟩
+          =ₛ⟨ tri-bc◃-rot3-pre f g ⟩
         ap (λ m → m ◻ f) (ρ g) ◃∙
         ! (α g (id₁ b) f) ◃∙
         ! (ap (λ m → g ◻ m) (lamb f)) ◃∎
@@ -131,6 +147,10 @@ module _ {i j} {B₀ : Type i} where
   infixr 82 ⟦_⟧_◻_
   ⟦_⟧_◻_ : (ξ : BicatStr j B₀) {a b c : B₀} → hom {{ξ}} b c → hom {{ξ}} a b → hom {{ξ}} a c
   ⟦_⟧_◻_ ξ g f = _◻_ {{ξ}} g f 
+
+  id₁-bc-rght-≃ : {{ξB : BicatStr j B₀}} {x y : B₀} → hom x y ≃ hom x y
+  fst (id₁-bc-rght-≃  {{ξB}}) f = ⟦ ξB ⟧ f ◻ id₁ _
+  snd id₁-bc-rght-≃ = ∼-preserves-equiv (λ x → ρ x) (idf-is-equiv _)
 
 module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}} where
 

@@ -516,6 +516,12 @@ module _ {i} {A : Type i} where
   homotopy-naturality f g h {x} idp =
     =ₛ-in (! (∙-unit-r (h x)))
 
+  homotopy-naturality-! : ∀ {k} {B : Type k} {f g : A → B}
+    (h : (x : A) → f x == g x) {x y : A} (p : x == y)
+    → ! (h x) ◃∙ ap f p ◃∎ =ₛ ap g p ◃∙ ! (h y) ◃∎
+  homotopy-naturality-! h {x} idp =
+    =ₛ-in (∙-unit-r (! (h x)))
+
   homotopy-naturality-to-idf : (f : A → A)
     (h : (x : A) → f x == x) {x y : A} (p : x == y)
     → ap f p ◃∙ h y ◃∎ =ₛ h x ◃∙ p ◃∎

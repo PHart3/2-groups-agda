@@ -61,6 +61,14 @@ module _ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} where
         []
       trig-lamb-bc-rot = post-rotate'-in trig-lamb-bc
 
+      trig-lamb-bc-rot2-pre :
+        []
+          =ₛ
+        lamb (⟦ ξC ⟧ g ◻ f) ◃∙
+        α (id₁ c) g f ◃∙
+        ! (ap (λ m → ⟦ ξC ⟧ m ◻ f) (lamb g)) ◃∎
+      trig-lamb-bc-rot2-pre = post-rotate-in (post-rotate'-out trig-lamb-bc)
+
       trig-lamb-bc-rot2 :
         []
           =ₛ
@@ -69,7 +77,7 @@ module _ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} where
         ap (λ m → ⟦ ξC ⟧ m ◻ f) (! (lamb g)) ◃∎
       trig-lamb-bc-rot2 =
         []
-          =ₛ⟨ post-rotate-in (post-rotate'-out trig-lamb-bc) ⟩
+          =ₛ⟨ trig-lamb-bc-rot2-pre ⟩
         lamb (⟦ ξC ⟧ g ◻ f) ◃∙
         α (id₁ c) g f ◃∙
         ! (ap (λ m → ⟦ ξC ⟧ m ◻ f) (lamb g)) ◃∎
@@ -77,6 +85,14 @@ module _ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} where
         lamb (⟦ ξC ⟧ g ◻ f) ◃∙
         α (id₁ c) g f ◃∙
         ap (λ m → ⟦ ξC ⟧ m ◻ f) (! (lamb g)) ◃∎ ∎ₛ
+
+      trig-lamb-bc-rot3 :
+        ! (lamb (⟦ ξC ⟧ g ◻ f)) ◃∙
+        ap (λ m → ⟦ ξC ⟧ m ◻ f) (lamb g) ◃∙
+        ! (α (id₁ c) g f) ◃∎
+          =ₛ
+        []
+      trig-lamb-bc-rot3 = pre-rotate'-in trig-lamb-bc
 
       trig-ρ-bc :
         ap (λ m → ⟦ ξC ⟧ g ◻ m) (ρ f) ◃∙
@@ -92,6 +108,14 @@ module _ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} where
           =ₛ⟨ trig-ρ {C = bc-to-wc (_ , ξC)} bc-wc-tri bc-wc-pent g f ⟩
         ρ (⟦ ξC ⟧ g ◻ f) ◃∎ ∎ₛ
 
+      trig-ρ-bc-rot-pre :
+        ρ (⟦ ξC ⟧ g ◻ f) ◃∙
+        ! (α g f (id₁ a)) ◃∙
+        ! (ap (λ m → ⟦ ξC ⟧ g ◻ m) (ρ f)) ◃∎
+          =ₛ
+        []
+      trig-ρ-bc-rot-pre = !ₛ (post-rotate-in (post-rotate-in trig-ρ-bc))
+
       trig-ρ-bc-rot : 
         ρ (⟦ ξC ⟧ g ◻ f) ◃∙
         ! (α g f (id₁ a)) ◃∙
@@ -106,7 +130,7 @@ module _ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} where
         ρ (⟦ ξC ⟧ g ◻ f) ◃∙
         ! (α g f (id₁ a)) ◃∙
         ! (ap (λ m → ⟦ ξC ⟧ g ◻ m) (ρ f)) ◃∎
-          =ₛ⟨ !ₛ (post-rotate-in (post-rotate-in trig-ρ-bc)) ⟩
+          =ₛ⟨ trig-ρ-bc-rot-pre ⟩
         [] ∎ₛ
 
   abstract

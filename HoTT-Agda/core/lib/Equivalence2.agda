@@ -515,9 +515,22 @@ replace-inverse {f = f} f-ise {g₁ = g₁} g∼ =
   is-eq f g₁ (λ b → ap f (! (g∼ b)) ∙ f-g b) (λ a → ! (g∼ (f a)) ∙ g-f a)
   where open is-equiv f-ise
 
+≃-==-contr : ∀ {i j} {A : Type i} {B : Type j} {b : B} (e : A ≃ B)
+  → is-contr (Σ A (λ a → b == –> e a))
+≃-==-contr e@(f , ise) = equiv-preserves-level (Σ-emap-r (λ a → equiv-adj-≃ (e ⁻¹)))
+
+≃-==-contr-back : ∀ {i j} {A : Type i} {B : Type j} {b : B} (e : A ≃ B)
+  → is-contr (Σ A (λ a → –> e a == b))
+≃-==-contr-back e@(f , ise) = equiv-preserves-level (Σ-emap-r (λ _ → !-equiv)) {{≃-==-contr e}}
+
 -- some lemmas for rearranging identity types
 
 module _ {i} {A : Type i} where
+
+
+  pre-rotate-out-≃ : {a a' a'' : A} (q : a' == a'') (p : a == a') {r : a == a''}
+    → (p == r ∙ ! q) ≃ (p ∙ q == r)
+  pre-rotate-out-≃ idp q {r = idp} = pre∙-equiv (∙-unit-r q)
 
   pre-rotate-in-≃ : {a a' a'' : A} (q : a' == a'') (p : a == a') {r : a == a''}
     → (r == p ∙ q) ≃ (! p ∙' r == q)
@@ -534,3 +547,18 @@ module _ {i} {A : Type i} where
   pre-rotate-in-!≃-back : {a a' a'' : A} (q : a' == a'') (p : a' == a) {r : a == a''}
     → (p ∙' r == q) ≃ (r == ! p ∙ q)
   pre-rotate-in-!≃-back q p = (pre-rotate-in-!≃ q p)⁻¹
+
+module _ {i j} {A : Type i} {B : Type j} {b : B} (e : A ≃ B) where
+
+  abstract
+
+    ∙-≃-∙2-contr : ∀ {x y z : B} {a b : A} (p₁ : x == –> e b) {p₂ : –> e a == y} (p₃ : y == z) {p₄ : x == z} →
+      is-contr (Σ (a == b) (λ q → p₁ ∙ ap (–> e) (! q) ∙ p₂ ∙ p₃ == p₄))
+    ∙-≃-∙2-contr idp {idp} idp =
+      equiv-preserves-level (Σ-emap-r (λ q → pre∙'-equiv (∙-unit-r (ap (–> e) (! q))))) {{≃-==-contr-back (ap-equiv e _ _ ∘e !-equiv)}}
+
+    ∙-≃-∙6-contr : ∀ {u x y z w v : B} {a b : A}
+      {p₀ : u == –> e a} (p₁ : –> e b == x) {p₂ : x == y} (p₃ : y == z) {p₄ : z == w} (p₅ : w == v) (p₆ : v == u) →
+      is-contr (Σ (a == b) (λ q → p₀ ∙ ap (–> e) q ∙ p₁ ∙ p₂ ∙ p₃ ∙ p₄ ∙ p₅ ∙ p₆ == idp))
+    ∙-≃-∙6-contr {p₀ = idp} idp {idp} idp {idp} idp p₆ =
+      equiv-preserves-level (Σ-emap-r (λ q → pre-rotate-out-≃ p₆ (ap (–> e) q))) {{≃-==-contr-back (ap-equiv e _ _)}}

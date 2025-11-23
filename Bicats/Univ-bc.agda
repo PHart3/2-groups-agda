@@ -58,3 +58,7 @@ module _ {i j} {B₀ : Type i} {{ξB : BicatStr j B₀}} where
 
 is-univ-bc : ∀ {i j} {B₀ : Type i} → BicatStr j B₀ → Type (lmax i j)
 is-univ-bc {B₀ = B₀} ξB = (a b : B₀) → is-equiv (==-to-adjeq {{ξB}} {a} {b})
+
+is-univ-bc-≃ : ∀ {i j} {B₀ : Type i} {{ξB : BicatStr j B₀}} → is-univ-bc ξB → {a b : B₀}
+  → (a == b) ≃ (AdjEquiv ξB a b)
+is-univ-bc-≃ {{ξB}} uB {a} {b} = ==-to-adjeq , uB a b
