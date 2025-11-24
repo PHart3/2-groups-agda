@@ -124,3 +124,19 @@ module _ {i₁ i₂ j₁ j₂} {B@(B₀ , _) : Bicat j₁ i₁} {C@(C₀ , _) : 
   ptr-to-ntr : {φ₁ φ₂ : Psfunctor-nc {{ξB}} {{ξC}}} → Pstrans φ₁ φ₂ → Nat-trans (pf-to-wf φ₁) (pf-to-wf φ₂)
   comp (ptr-to-ntr τ) = η₀ τ
   sq (ptr-to-ntr τ) = η₁ τ
+
+-- non-coherent version of a pseudotransformation
+module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}}  where
+
+  record Pstrans-nc (R S : Psfunctor-nc {{ξB}} {{ξC}}) : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
+    constructor pstransnc
+    field
+      η₀ : (a : B₀) → hom (map-pf R a) (map-pf S a)
+      η₁ : {a b : B₀} (f : hom a b) → ⟦ ξC ⟧ F₁ (str-pf S) f ◻ η₀ a == ⟦ ξC ⟧ η₀ b ◻ F₁ (str-pf R) f
+
+  open Pstrans
+  open Pstrans-nc
+  --underlying structure of a pseudotransformation
+  pstrans-str : {R S : Psfunctor-nc {{ξB}} {{ξC}}} → Pstrans R S → Pstrans-nc R S
+  η₀ (pstrans-str ψ) = η₀ ψ
+  η₁ (pstrans-str ψ) = η₁ ψ
