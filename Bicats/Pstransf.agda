@@ -1,6 +1,8 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
+open import lib.types.Sigma
+open import lib.types.Pi
 open import lib.wild-cats.WildCats renaming
   (hom to homW; id₁ to id₁W; ρ to ρW; lamb to lambW; α to αW)
 open import Bicat-wild
@@ -136,7 +138,43 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
 
   open Pstrans
   open Pstrans-nc
+  
   --underlying structure of a pseudotransformation
   pstrans-str : {R S : Psfunctor-nc {{ξB}} {{ξC}}} → Pstrans R S → Pstrans-nc R S
   η₀ (pstrans-str ψ) = η₀ ψ
   η₁ (pstrans-str ψ) = η₁ ψ
+
+  -- making Pstrans into a Σ-type
+  module _ {R S : Psfunctor-nc {{ξB}} {{ξC}}} where
+
+    Pst-coh-data : Pstrans-nc R S → Type (lmax (lmax i₁ j₁) j₂)
+    Pst-coh-data (pstransnc η₀ η₁) =
+      ({a : B₀} →
+        lamb (η₀ a) ∙
+        ap (λ m → m ◻ η₀ a) (! (F-id₁ (str-pf S) a)) ∙
+        η₁ (id₁ a) ∙
+        ap (λ m → η₀ a ◻ m) (F-id₁ (str-pf R) a)
+          ==
+        ρ (η₀ a)) ×
+      ({a b c : B₀} (f : hom a b) (g : hom b c) →
+        ! (η₁ (⟦ ξB ⟧ g ◻ f)) ∙
+        ap (λ m → m ◻ η₀ a) (F-◻ (str-pf S) f g) ∙
+        ! (α (F₁ (str-pf S) g) (F₁ (str-pf S) f) (η₀ a)) ∙
+        ap (λ m → F₁ (str-pf S) g ◻ m) (η₁ f) ∙
+        α (F₁ (str-pf S) g) (η₀ b) (F₁ (str-pf R) f) ∙
+        ap (λ m → m ◻ (F₁ (str-pf R) f)) (η₁ g) ∙
+        ! (α (η₀ c) (F₁ (str-pf R) g) (F₁ (str-pf R) f)) ∙
+        ! (ap (λ m → η₀ c ◻ m) (F-◻ (str-pf R) f g))
+          ==
+        idp)
+
+    instance
+      Pst-coh-data-is-prop : ∀ {ψ} → is-prop (Pst-coh-data ψ)
+      Pst-coh-data-is-prop = ×-level ⟨⟩ ⟨⟩
+
+    Pstrans-Σ-≃ : Pstrans R S ≃ Σ (Pstrans-nc R S) Pst-coh-data
+    Pstrans-Σ-≃ = equiv
+      (λ (pstrans η₀ η₁ cu ca) → (pstransnc η₀ η₁) , (cu , ca))
+      (λ ((pstransnc η₀ η₁) , (cu , ca)) → pstrans η₀ η₁ cu ca)
+      (λ _ → idp)
+      λ _ → idp

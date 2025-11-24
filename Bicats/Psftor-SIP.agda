@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=3 --lossy-unification #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=3 #-}
 
 open import lib.Basics
 open import lib.Equivalence2
@@ -74,10 +74,12 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
         {{×-level
           (Π-level (λ x → ∙-≃-∙2-contr {b = id₁ _} id₁-bc-rght-≃ (lamb (id₁ _)) (ap (λ m → ⟦ ξC ⟧ id₁ _ ◻ m) (F-id₁ (str-pf R₁) x))))
           (Π-level (λ ((x , y , z) , f , g) → 
-            ∙-≃-∙6-contr {b = ⟦ ξC ⟧ fst (cc (_ , g)) ◻ fst (cc (_ , f))} id₁-bc-rght-≃ (! (α _ _ (id₁ _))) (α _ (id₁ _) (F₁ (str-pf R₁) f))
-               (! (α (id₁ _) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f))) (! (ap (λ m → ⟦ ξC ⟧ id₁ _ ◻ m) (F-◻ (str-pf R₁) f g)))))}}
+            ∙-≃-∙6-contr {b = ⟦ ξC ⟧ fst (cc (_ , g)) ◻ fst (cc (_ , f))} id₁-bc-rght-≃
+              {p₀ = ! (snd (cc (_ ,  ⟦ ξB ⟧ g ◻ f)))}
+              (! (α _ _ (id₁ _))) {p₂ = ap (λ m → ⟦ ξC ⟧ fst (cc (_ ,  g)) ◻ m) (snd (cc (_ ,  f)))} (α _ (id₁ _) (F₁ (str-pf R₁) f))
+              {p₄ = ap (λ m → ⟦ ξC ⟧ m ◻ (F₁ (str-pf R₁) f)) (snd (cc (_ ,  g)))}
+              (! (α (id₁ _) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f))) (! (ap (λ m → ⟦ ξC ⟧ id₁ _ ◻ m) (F-◻ (str-pf R₁) f g)))))}}
 
-{-
     abstract
       psftor-contr : is-contr (Σ (Psfunctor-nc {{ξB}} {{ξC}}) (λ R₂ → R₁ ps-≃ R₂))
       psftor-contr = equiv-preserves-level lemma {{psftor-contr-aux}}
@@ -85,21 +87,25 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
           lemma : tot-sp ≃ Σ (Psfunctor-nc {{ξB}} {{ξC}}) (λ R₂ → R₁ ps-≃ R₂)
           lemma = 
             equiv
-              (λ ((M , Ar) , R-id , R-∘) →
-                (functor-wc (fst ∘ M) (λ f → fst (Ar (_ , f))) (fst ∘ R-id) λ f g → fst (F-∘ (_ , f , g))) ,
-                ((pstrans (λ x → fst (snd (M x))) (λ f → snd (Ar (_ , f))) (snd ∘ R-id) λ f g → snd (F-∘ (_ , f , g))) ,
-                  λ x → snd (snd (M x))))
-              (λ ((functor-wc M₁ Ar₁ R-id₁ R-∘₁) , (pstrans M₁₂ Ar₂ R-id₂ R-∘₂ , M₂₂)) →
-                ((λ x → (M₁ x) , ((M₁₂ x) , (M₂₂ x))) , (λ (_ , f) → (Ar₁ f) , (Ar₂ f))) ,
-                (λ x → (F-id₁ x) , (F-id₂ x)) , (λ (_ , f , g) → (F-∘₁ f g) , (F-∘₂ f g)))
+              (λ ((M , Ar) , R-ids , R-∘s) → psfunctornc (fst ∘ M)
+                {{psfunctorncstr (λ f → fst (Ar (_ , f))) (fst ∘ R-ids) λ f g → fst (R-∘s (_ , f , g))}} ,
+                (pstrans (fst ∘ snd ∘ M) (λ f → snd (Ar (_ , f))) (λ {a} → snd (R-ids a)) λ f g → snd (R-∘s (_ , f , g))) ,
+                snd ∘ snd ∘ M)
+              (λ (psfunctornc M {{psfunctorncstr Ar R-id R-∘}} , (pstrans cs sqs cu ca , es)) → ((λ x → (M x) , ((cs x) , (es x))) ,
+                (λ (_ , f) → (Ar f) , (sqs f))) , ((λ x → (R-id x) , cu {x}) , (λ (_ , f , g) → R-∘ f g , ca f g)))
               (λ _ → idp)
               λ _ → idp
 
-    psftor-ind : ∀ {k} (Q : (F₂ : Psfunctor-nc {{ξB}} {{ξC}}) → (R₁ ps-≃ R₂ → Type k))
-      → Q R₁ ps-≃-id → {F₂ : Psfunctor-nc {{ξB}} {{ξC}}} (e : R₁ ps-≃ R₂) → Q R₂ e
+    psftor-ind : ∀ {k} (Q : (R₂ : Psfunctor-nc {{ξB}} {{ξC}}) → (R₁ ps-≃ R₂ → Type k))
+      → Q R₁ ps-≃-id → {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} (e : R₁ ps-≃ R₂) → Q R₂ e
     psftor-ind Q = ID-ind-map Q psftor-contr
-
-    psftor-ind-β : ∀ {k} (Q : (F₂ : Psfunctor-nc {{ξB}} {{ξC}}) → (R₁ ps-≃ R₂ → Type k))
+    
+    psftor-ind-β : ∀ {k} (Q : (R₂ : Psfunctor-nc {{ξB}} {{ξC}}) → (R₁ ps-≃ R₂ → Type k))
       → (r : Q R₁ ps-≃-id) → psftor-ind Q r ps-≃-id == r
     psftor-ind-β Q = ID-ind-map-β Q psftor-contr
--}
+
+    ps-≃-to-== : {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} → R₁ ps-≃ R₂ → R₁ == R₂
+    ps-≃-to-== {R₂} = psftor-ind (λ R₂ _ → R₁ == R₂) idp
+
+    ps-≃-to-==-β : ps-≃-to-== ps-≃-id == idp
+    ps-≃-to-==-β = psftor-ind-β (λ R₂ _ → R₁ == R₂) idp

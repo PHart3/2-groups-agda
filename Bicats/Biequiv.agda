@@ -24,13 +24,13 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}  where
     field
       Ψ₁ : Psfunctor {{ξB}} {{ξC}} 
       Ψ₂ : Psfunctor {{ξC}} {{ξB}}
-      ε₁ : (Ψ₁ ∘BC Ψ₂) ps-≃ idfBC
-      ε₂ : idfBC ps-≃ (Ψ₂ ∘BC Ψ₁)
+      ε₁ : (psftor-str (Ψ₁ ∘BC Ψ₂)) ps-≃ idpfBC
+      ε₂ : idpfBC ps-≃ (psftor-str (Ψ₂ ∘BC Ψ₁))
 
-    τ₁ : Pstrans (Ψ₁ ∘BC Ψ₂) idfBC
+    τ₁ : Pstrans (psftor-str (Ψ₁ ∘BC Ψ₂)) idpfBC
     τ₁ = fst ε₁
 
-    τ₂ : Pstrans idfBC (Ψ₂ ∘BC Ψ₁)
+    τ₂ : Pstrans idpfBC (psftor-str (Ψ₂ ∘BC Ψ₁))
     τ₂ = fst ε₂
 
     lev-eq₁ : (a : C₀) → Adjequiv {{ξC}} (η₀ τ₁ a)

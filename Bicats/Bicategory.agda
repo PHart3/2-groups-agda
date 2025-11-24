@@ -482,3 +482,6 @@ module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {
   _∘BC_ :  (φ₂ : Psfunctor {{ξC}} {{ξD}}) (φ₁ : Psfunctor {{ξB}} {{ξC}}) → Psfunctor {{ξB}} {{ξD}}
   map-pf (φ₂ ∘BC φ₁) = map-pf φ₂ ∘ map-pf φ₁
   str-pf (φ₂ ∘BC φ₁) = φ₂ ∘BCσ φ₁
+
+  psf-str-∘ : {φ₂ : Psfunctor {{ξC}} {{ξD}}} {φ₁ : Psfunctor {{ξB}} {{ξC}}} → psftor-str (φ₂ ∘BC φ₁) == (psftor-str φ₂) ∘BC-s (psftor-str φ₁)
+  psf-str-∘ = idp
