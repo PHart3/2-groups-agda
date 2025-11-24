@@ -281,7 +281,38 @@ module MapInv0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{�
       ! (ap (mu (map (inv x))) (rinv (map x))) ◃∙
       rho (map (inv x)) ◃∎
         =ₛ⟨ 23 & 1 & hmtpy-nat-∙◃! (λ z → ap (λ v → mu v z) map-id) (map-inv x) ⟩
-      _
+      ap (λ z → z) (map-inv x) ◃∙
+      ! (ap map (lam (inv x))) ◃∙
+      ! (ap (λ z → map (mu z (inv x))) (linv x)) ◃∙
+      ! (map-comp (mu (inv x) x) (inv x)) ◃∙
+      ! (ap (λ v → mu v (map (inv x))) (map-comp (inv x) x)) ◃∙
+      ap (λ v → mu v (map (inv x))) (map-comp (inv x) x) ◃∙
+      map-comp (mu (inv x) x) (inv x) ◃∙
+      ! (ap map (al (inv x) x (inv x))) ◃∙
+      ! (ap (λ z → map (mu (inv x) z)) (rinv x)) ◃∙
+      ap map (ap (mu (inv x)) (rinv x)) ◃∙
+      ap map (al (inv x) x (inv x)) ◃∙
+      ap map (ap (λ z → mu z (inv x)) (linv x)) ◃∙
+      ap map (lam (inv x)) ◃∙
+      ! (rho (map (inv x))) ◃∙
+      ap (mu (map (inv x))) map-id ◃∙
+      ap (λ z → mu (map (inv x)) (map z)) (rinv x) ◃∙
+      ! (ap (mu (map (inv x))) (map-comp x (inv x))) ◃∙
+      ! (ap (λ z → mu (map (inv x)) (mu (map x) z)) (map-inv x)) ◃∙
+      al (map (inv x)) (map x) (inv (map x)) ◃∙
+      ap (λ v → mu v (inv (map x))) (map-comp (inv x) x) ◃∙
+      ap (λ z → mu (map z) (inv (map x))) (linv x) ◃∙
+      ap (mu (map id)) (map-inv x) ◃∙
+      ! (ap (λ z → mu z (map (inv x))) map-id) ◃∙
+      ap (λ v → mu v (map (inv x))) map-id ◃∙
+      ! (ap (mu (map id)) (map-inv x)) ◃∙
+      ! (ap (λ v → mu v (inv (map x))) map-id) ◃∙
+      ap (λ z → mu z (inv (map x))) map-id ◃∙
+      ! (ap (λ z → mu z (inv (map x))) (ap map (linv x))) ◃∙
+      ! (ap (λ z → mu z (inv (map x))) (map-comp (inv x) x)) ◃∙
+      ! (al (map (inv x)) (map x) (inv (map x))) ◃∙
+      ! (ap (mu (map (inv x))) (rinv (map x))) ◃∙
+      rho (map (inv x)) ◃∎
         =ₛ₁⟨ 17 & 1 & !-ap-∘ (mu (map (inv x))) (mu (map x)) (map-inv x) ⟩
       _
         =ₛ⟨ 17 & 1 & ap-seq-=ₛ (mu (map (inv x))) map-rinv ⟩
