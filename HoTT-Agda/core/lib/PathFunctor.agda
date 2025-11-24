@@ -226,6 +226,10 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
     → ap g (ap f p ∙ q) == ap (g ∘ f) p ∙ ap g q
   ap-∘-∙ idp q = idp
 
+  ap-∘-∙-s : {x y : A} (p : x == y) {b : B} (q : f y == b) {c : C} (s : g b == c)
+    → ap g (ap f p ∙ q) ∙ s == ap (g ∘ f) p ∙ ap g q ∙ s
+  ap-∘-∙-s idp idp s = idp
+
   ap-!-∙-∘ : {x y : A} (p : x == y) {b : B} (q : f x == b)
     → ap g (! q ∙ ap f p) ◃∎ =ₛ ! (ap g q) ◃∙ ap (g ∘ f) p ◃∎
   ap-!-∙-∘ idp idp = =ₛ-in idp
@@ -270,8 +274,8 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
     → ! (ap g p) ∙ (ap (g ∘ f) q) ∙ (ap g r) ∙ s == ap g (! p ∙ ap f q ∙ r) ∙ s
   ap-cp-revR idp {r = r} {s = s} p = !-ap-∙-s g p {r = r} {s = s}
 
-  inv-canc-cmp : {a b : A} (p : a == b) {z : B} (S : f a == z) {w : C} (gₚ : g z == w)
-    → ! (ap (g ∘ f) p) ∙ (ap g S ∙ gₚ) ∙ ! (ap g (! (ap f p) ∙ S ∙ idp) ∙ gₚ) == idp
+  inv-canc-cmp : {a b : A} (p : a == b) {z : B} (T : f a == z) {w : C} (gₚ : g z == w)
+    → ! (ap (g ∘ f) p) ∙ (ap g T ∙ gₚ) ∙ ! (ap g (! (ap f p) ∙ T ∙ idp) ∙ gₚ) == idp
   inv-canc-cmp idp idp idp = idp
 
   ap-!-∘-rid-coher : {x y : A} (p : x == y)
@@ -521,6 +525,18 @@ module _ {i} {A : Type i} where
     → ! (h x) ◃∙ ap f p ◃∎ =ₛ ap g p ◃∙ ! (h y) ◃∎
   homotopy-naturality-! h {x} idp =
     =ₛ-in (∙-unit-r (! (h x)))
+
+  homotopy-naturality-!ap : ∀ {k} {B : Type k} {f g : A → B}
+    (h : (x : A) → f x == g x) {x y : A} (p : x == y)
+    → h y ◃∙ ! (ap g p) ◃∎ =ₛ ! (ap f p) ◃∙ h x ◃∎
+  homotopy-naturality-!ap h {x} idp =
+    =ₛ-in (∙-unit-r (h x))
+
+  homotopy-naturality-!-! : ∀ {k} {B : Type k} {f g : A → B}
+    (h : (x : A) → f x == g x) {x y : A} (p : x == y)
+    → ! (ap g p) ◃∙ ! (h x) ◃∎ =ₛ ! (h y) ◃∙ ! (ap f p) ◃∎
+  homotopy-naturality-!-! h {x} idp =
+    =ₛ-in (! (∙-unit-r (! (h x))))
 
   homotopy-naturality-to-idf : (f : A → A)
     (h : (x : A) → f x == x) {x y : A} (p : x == y)

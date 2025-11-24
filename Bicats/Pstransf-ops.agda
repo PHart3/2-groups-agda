@@ -6,12 +6,7 @@ open import Pstransf
 open import Pstransf-id
 open import Pstransf-SIP
 
--- operations on (non-coherent) pseudotransformations
-
-{- Here we omit the proposition-valued coherence conditions of pseudotransformations
-   because we only use these operations, which are completely standard, to formulate
-   the triangle identities of a biadjunction (in a different file), which ignore such
-   coherence conditions. -}
+-- operations on pseudotransformations
 
 module Pstransf-ops where
 
@@ -56,38 +51,3 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
     pstrans-whisk-r : (τ : Pstrans-nc R₁ R₂) (G : Psfunctor-nc {{ξD}} {{ξB}}) → Pstrans-nc (R₁ ∘BC-s G) (R₂ ∘BC-s G)
     η₀(pstrans-whisk-r τ G) x = η₀ τ (map-pf G x)
     η₁ (pstrans-whisk-r τ G) f = η₁ τ (F₁ (str-pf G) f)
-
-  -- associativity pseudotransformation (and its inverse)
-  module _ {i₃ i₄ j₃ j₄} {D₀ : Type i₃} {{ξD : BicatStr j₃ D₀}} {E₀ : Type i₄} {{ξE : BicatStr j₄ E₀}}
-    (R₁ : Psfunctor-nc {{ξB}} {{ξC}}) (R₂ : Psfunctor-nc {{ξC}} {{ξD}}) (R₃ : Psfunctor-nc {{ξD}} {{ξE}}) where
-
-    assoc-psf–> : Pstrans-nc ((R₃ ∘BC-s R₂) ∘BC-s R₁) (R₃ ∘BC-s (R₂ ∘BC-s R₁))
-    η₀ assoc-psf–> a = id₁ (map-pf R₃ (map-pf R₂ (map-pf R₁ a)))
-    η₁ assoc-psf–> f = 
-      ! (ρ (F₁ (str-pf R₃) (F₁ (str-pf R₂) (F₁ (str-pf R₁) f)))) ∙
-      lamb (F₁ (str-pf R₃) (F₁ (str-pf R₂) (F₁ (str-pf R₁) f)))
-
-    assoc-psf<– : Pstrans-nc (R₃ ∘BC-s (R₂ ∘BC-s R₁)) ((R₃ ∘BC-s R₂) ∘BC-s R₁)
-    η₀ assoc-psf<– a = id₁ (map-pf R₃ (map-pf R₂ (map-pf R₁ a)))
-    η₁ assoc-psf<– f =
-      ! (ρ (F₁ (str-pf R₃) (F₁ (str-pf R₂) (F₁ (str-pf R₁) f)))) ∙
-      lamb (F₁ (str-pf R₃) (F₁ (str-pf R₂) (F₁ (str-pf R₁) f)))
-
-  -- unit pseudotransformations (and their inverses)
-  module _ (R : Psfunctor-nc {{ξB}} {{ξC}}) where
-
-    unitl-pst–> : Pstrans-nc (idpfBC ∘BC-s R) R
-    η₀ unitl-pst–> a = id₁ (map-pf R a)
-    η₁ unitl-pst–> f = ! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)
-
-    unitl-pst<– : Pstrans-nc R (idpfBC ∘BC-s R)
-    η₀ unitl-pst<– a = id₁ (map-pf R a)
-    η₁ unitl-pst<– f = ! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)
-
-    unitr-pst–> : Pstrans-nc (R ∘BC-s idpfBC) R
-    η₀ unitr-pst–> a = id₁ (map-pf R a)
-    η₁ unitr-pst–> f = ! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)
-
-    unitr-pst<– : Pstrans-nc R (R ∘BC-s idpfBC)
-    η₀ unitr-pst<– a = id₁ (map-pf R a)
-    η₁ unitr-pst<– f = ! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)

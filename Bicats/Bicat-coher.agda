@@ -137,3 +137,6 @@ module _ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} where
 
     lamb-ρ-id₁-bc : {a : C₀} → lamb (id₁ a) == ρ (id₁ a)
     lamb-ρ-id₁-bc = lamb-ρ-id₁ {C = bc-to-wc (_ , ξC)} bc-wc-tri bc-wc-pent
+
+    lamb-ρ-canc : {a : C₀} → lamb (id₁ a) ◃∙ ! (ρ (id₁ a)) ◃∎ =ₛ []
+    lamb-ρ-canc {a} = =ₛ-in (ap (λ p → p ∙ ! (ρ (id₁ a))) lamb-ρ-id₁-bc ∙ !-inv-r (ρ (id₁ a)))

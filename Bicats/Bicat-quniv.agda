@@ -51,10 +51,10 @@ module _ {i j} {B@(B₀ , _) C@(C₀ , _) : Bicat j i} where
 
     open BiequivStr-inst
     
-    baequiv-to-iso : (be : BiequivStr ξB ξC) → Biadj-data (τ₁ be) (τ₂ be) → ξB iso-bc ξC
+    baequiv-to-iso : (be : BiequivStr ξB ξC) → Biequiv-coh (ε be) (η be) → ξB iso-bc ξC
     fst (baequiv-to-iso be _) = fst (biequiv-to-iso be)
     fst (snd (baequiv-to-iso be _)) = fst (snd (biequiv-to-iso be))
     snd (snd (baequiv-to-iso be ba)) x y = baeqv-is-ff be ba {x} {y} 
 
-    beequiv-to-== : (be : BiequivStr ξB ξC) → Biadj-data (τ₁ be) (τ₂ be) → B == C
+    beequiv-to-== : (be : BiequivStr ξB ξC) → Biequiv-coh (ε be) (η be) → B == C
     beequiv-to-== be ba = iso-bc-to-== (baequiv-to-iso be ba)
