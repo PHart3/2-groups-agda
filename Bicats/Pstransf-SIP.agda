@@ -2,6 +2,7 @@
 
 open import lib.Basics
 open import lib.FTID
+open import lib.NType2
 open import lib.types.Paths
 open import lib.types.Sigma
 open import lib.types.Pi
@@ -33,9 +34,9 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
 
   open InvMod
 
-  InvMod-id : (T : Pstrans-nc R S) → InvMod T T
-  η₀-∼ (InvMod-id T) _ = idp
-  η₁-∼ (InvMod-id T) f = !-inv-l-unit-r (η₁ T f)
+  InvMod-id : {T : Pstrans-nc R S} → InvMod T T
+  η₀-∼ (InvMod-id {T}) _ = idp
+  η₁-∼ (InvMod-id {T}) f = !-inv-l-unit-r (η₁ T f)
 
   module _ {T₁ : Pstrans-nc R S} where
 
@@ -69,9 +70,39 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
               λ _ → idp
 
     InvMod-ind : ∀ {k} (P : (T₂ : Pstrans-nc R S) → (InvMod T₁ T₂ → Type k))
-      → P T₁ (InvMod-id T₁) → {T₂ : Pstrans-nc R S} (e : InvMod T₁ T₂) → P T₂ e
+      → P T₁ InvMod-id → {T₂ : Pstrans-nc R S} (e : InvMod T₁ T₂) → P T₂ e
     InvMod-ind P = ID-ind-map P InvMod-contr
 
     InvMod-ind-β : ∀ {k} (P : (T₂ : Pstrans-nc R S) → (InvMod T₁ T₂ → Type k))
-      → (r : P T₁ (InvMod-id T₁)) → InvMod-ind P r (InvMod-id T₁) == r
+      → (r : P T₁ InvMod-id) → InvMod-ind P r InvMod-id == r
     InvMod-ind-β P = ID-ind-map-β P InvMod-contr
+
+    InvMod-to-== : {T₂ : Pstrans-nc R S} → InvMod T₁ T₂ → T₁ == T₂
+    InvMod-to-== {T₂} = InvMod-ind (λ T₂ _ → T₁ == T₂) idp
+
+    InvMod-to-==-β : InvMod-to-== InvMod-id == idp
+    InvMod-to-==-β = InvMod-ind-β (λ T₂ _ → T₁ == T₂) idp
+
+    InvMod-from-== : {T₂ : Pstrans-nc R S} → T₁ == T₂ → InvMod T₁ T₂
+    InvMod-from-== idp = InvMod-id
+
+  InvMod-==-≃ : {T₁ T₂ : Pstrans-nc R S} → (T₁ == T₂) ≃ (InvMod T₁ T₂)
+  InvMod-==-≃ {T₁} = equiv InvMod-from-== InvMod-to-== aux1 aux2
+    where
+      aux1 : ∀ {T₂} (p : InvMod T₁ T₂) → InvMod-from-== (InvMod-to-== p) == p
+      aux1 = InvMod-ind (λ _ p → InvMod-from-== (InvMod-to-== p) == p) (ap InvMod-from-== InvMod-to-==-β)
+
+      aux2 : ∀ {T₂} (p : T₁ == T₂) → InvMod-to-== (InvMod-from-== p) == p
+      aux2 idp = InvMod-to-==-β
+
+  InvModc-==-≃ : {T₁ T₂ : Pstrans R S} → (T₁ == T₂) ≃ (InvMod (pstrans-str T₁) (pstrans-str T₂))
+  InvModc-==-≃ =
+    InvMod-==-≃ ∘e
+    (Subtype=-econv (subtypeprop Pst-coh-data {{λ {ψ} → Pst-coh-data-is-prop {ψ = ψ}}}) _ _)⁻¹ ∘e
+    ap-equiv Pstrans-Σ-≃  _ _
+
+  open Pstrans
+
+  abstract
+    Pstrans-coh-induce : (T₁ : Pstrans R S) {T₂ : Pstrans-nc R S} → InvMod (pstrans-str T₁) T₂ → Pst-coh-data T₂
+    Pstrans-coh-induce T₁ = InvMod-ind (λ T₂ _ → Pst-coh-data T₂) (coher-unit T₁ , coher-assoc T₁) 

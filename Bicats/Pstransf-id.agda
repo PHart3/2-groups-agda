@@ -19,10 +19,10 @@ open Pstrans
 module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}
   {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}} where
 
-    Pstrans-id : (R : Psfunctor-nc {{ξB}} {{ξC}}) → Pstrans R R
-    η₀ (Pstrans-id R) x = id₁ (map-pf R x)
-    η₁ (Pstrans-id R) f = ! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)
-    coher-unit (Pstrans-id R) {x} = =ₛ-out $
+    Pstrans-id : {R : Psfunctor-nc {{ξB}} {{ξC}}} → Pstrans R R
+    η₀ (Pstrans-id {R}) x = id₁ (map-pf R x)
+    η₁ (Pstrans-id {R}) f = ! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)
+    coher-unit (Pstrans-id {R}) {x} = =ₛ-out $
       lamb (id₁ (map-pf R x)) ◃∙
       ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R x)) (! (F-id₁ (str-pf R) x)) ◃∙
       (! (ρ (F₁ (str-pf R) (id₁ x))) ∙ lamb (F₁ (str-pf R) (id₁ x))) ◃∙
@@ -58,7 +58,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}
       lamb (id₁ (map-pf R x)) ◃∎
         =ₛ₁⟨ lamb-ρ-id₁-bc ⟩
       ρ (id₁ (map-pf R x)) ◃∎ ∎ₛ 
-    coher-assoc (Pstrans-id R) {x} {y} {z} f g = =ₛ-out $
+    coher-assoc (Pstrans-id {R}) {x} {y} {z} f g = =ₛ-out $
       ! (! (ρ (F₁ (str-pf R) (⟦ ξB ⟧ g ◻ f))) ∙ lamb (F₁ (str-pf R) (⟦ ξB ⟧ g ◻ f))) ◃∙
       ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R x)) (F-◻ (str-pf R) f g) ◃∙
       ! (α (F₁ (str-pf R) g) (F₁ (str-pf R) f) (id₁ (map-pf R x))) ◃∙
@@ -148,5 +148,5 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}
       idp ◃∎ ∎ₛ
 
     ps-≃-id : {R : Psfunctor-nc {{ξB}} {{ξC}}} → R ps-≃ R
-    fst (ps-≃-id {R}) = Pstrans-id R
+    fst (ps-≃-id {R}) = Pstrans-id {R}
     snd ps-≃-id _ = snd AdjEq-id₁
