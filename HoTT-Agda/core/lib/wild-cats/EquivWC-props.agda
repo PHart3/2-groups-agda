@@ -23,7 +23,7 @@ module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} {C : WildCat {ℓc₁} {ℓc
         arr ftor₁ (⟦ C ⟧ <–-wc C (iso₂-s y) ▢ ⟦ C ⟧ arr ftor₂ g ▢ comp iso₂-f x)
           =⟨ comp-tri ftor₁ (comp iso₂-f x) (arr ftor₂ g) (<–-wc C (iso₂-s y)) ⟩
         ⟦ D ⟧ arr ftor₁ (<–-wc C (iso₂-s y)) ▢ ⟦ D ⟧ arr ftor₁ (arr ftor₂ g) ▢ arr ftor₁ (comp iso₂-f x)
-          =⟨ ap (λ m → ⟦ D ⟧ m ▢ ⟦ D ⟧ arr ftor₁ (arr ftor₂ g) ▢ arr ftor₁ (comp iso₂-f x)) (zig-zag-rot a𝔼 y) ⟩
+          =⟨ ap (λ m → ⟦ D ⟧ m ▢ ⟦ D ⟧ arr ftor₁ (arr ftor₂ g) ▢ arr ftor₁ (comp iso₂-f x)) (zig-zag-swap-rot a𝔼 y) ⟩
         ⟦ D ⟧ comp (fst (iso₁ hae)) (obj ftor₁ y) ▢
         (⟦ D ⟧ arr ftor₁ (arr ftor₂ g) ▢
         arr ftor₁ (comp iso₂-f x))
@@ -33,7 +33,7 @@ module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} {C : WildCat {ℓc₁} {ℓc
         ⟦ D ⟧ (⟦ D ⟧ g ▢ comp (fst (iso₁ hae)) (obj ftor₁ x)) ▢ arr ftor₁ (comp iso₂-f x)
           =⟨ α D g (comp (fst (iso₁ hae)) (obj ftor₁ x)) (arr ftor₁ (comp iso₂-f x)) ⟩
         ⟦ D ⟧ g ▢  ⟦ D ⟧ comp (fst (iso₁ hae)) (obj ftor₁ x) ▢ arr ftor₁ (comp iso₂-f x)
-          =⟨ ap (λ m → ⟦ D ⟧ g ▢ m) (zig-zag a𝔼 x) ⟩
+          =⟨ ap (λ m → ⟦ D ⟧ g ▢ m) (zig-zag-swap a𝔼 x) ⟩
         ⟦ D ⟧ g ▢ id₁ D (obj ftor₁ x)
           =⟨ ! (ρ D g) ⟩
         g =∎)
@@ -46,10 +46,5 @@ module _ {ℓc₁ ℓc₂ ℓd₁ ℓd₂ : ULevel} {C : WildCat {ℓc₁} {ℓc
         ap (λ m → ⟦ C ⟧ m ▢ g) (! (<–-wc-linv C (iso₂-s y))) ∙
         -- ⟦ C ⟧ id₁ C y ▢ g
         ! (lamb C g))
-        -- g
-
-  abstract
-    Equiv-wc-ff : (e : Equiv-wc C D) → {x y : ob C} → is-equiv (arr (ftor₁ e) {x} {y})
-    Equiv-wc-ff e {x} {y} = let a𝔼 = Equiv-wc-promote e in HAEquiv-wc-ff a𝔼
-      
+        -- g     
       
