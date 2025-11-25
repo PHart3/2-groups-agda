@@ -102,8 +102,20 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
     (Subtype=-econv (subtypeprop Pst-coh-data {{λ {ψ} → Pst-coh-data-is-prop {ψ = ψ}}}) _ _)⁻¹ ∘e
     ap-equiv Pstrans-Σ-≃  _ _
 
+  InvModc-to-== : {T₁ T₂ : Pstrans R S} → InvMod (pstrans-str T₁) (pstrans-str T₂) → T₁ == T₂
+  InvModc-to-== m = <– InvModc-==-≃ m
+
   open Pstrans
 
   abstract
+  
     Pstrans-coh-induce : (T₁ : Pstrans R S) {T₂ : Pstrans-nc R S} → InvMod (pstrans-str T₁) T₂ → Pst-coh-data T₂
-    Pstrans-coh-induce T₁ = InvMod-ind (λ T₂ _ → Pst-coh-data T₂) (coher-unit T₁ , coher-assoc T₁) 
+    Pstrans-coh-induce T₁ = InvMod-ind (λ T₂ _ → Pst-coh-data T₂) (coher-unit T₁ , coher-assoc T₁)
+    
+    Pstrans-coh-induce-ii : ∀ {k} {T₁ : Pstrans R S} {T₂ : Pstrans-nc R S} (M : InvMod (pstrans-str T₁) T₂)
+      (P : Pstrans R S → Type k) →
+      P T₁ → P (pstrans (η₀ T₂) (η₁ T₂) (fst (Pstrans-coh-induce T₁ M)) (snd (Pstrans-coh-induce T₁ M)))
+    Pstrans-coh-induce-ii {k} {T₁} = InvMod-ind
+      (λ T₂ M → (P : Pstrans R S → Type k) →
+        P T₁ → P (pstrans (η₀ T₂) (η₁ T₂) (fst (Pstrans-coh-induce T₁ M)) (snd (Pstrans-coh-induce T₁ M))))
+      λ P p → coe (ap P (InvModc-to-== (pst-≃ (λ _ → idp) (λ f → !-inv-l-unit-r (η₁ T₁ f))))) p

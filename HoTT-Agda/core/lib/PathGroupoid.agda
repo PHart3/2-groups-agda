@@ -70,6 +70,12 @@ module _ {i} {A : Type i} where
   !-inv-l : {x y : A} (p : x == y) → (! p) ∙ p == idp
   !-inv-l idp = idp
 
+  !-inv-l◃ : {x y : A} (p : x == y) → (! p) ◃∙ p ◃∎ =ₛ []
+  !-inv-l◃ idp = =ₛ-in idp
+
+  !-inv-r◃ : {x y : A} (p : x == y) → p ◃∙ (! p) ◃∎ =ₛ []
+  !-inv-r◃ idp = =ₛ-in idp
+
   !-inv'-l : {x y : A} (p : x == y) → (! p) ∙' p == idp
   !-inv'-l idp = idp
 

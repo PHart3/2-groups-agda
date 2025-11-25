@@ -75,8 +75,7 @@ module _ {i j} {B₀ : Type i} {{ξB : BicatStr j B₀}} (uB : is-univ-bc ξB) {
     → P a AdjEq-id₁ → {b : B₀} (e : AdjEquiv ξB a b) → P b e
   AdjEq-ind P = ID-ind-map P AdjEq-contr
 
-module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}}
-  {R : Psfunctor-nc {{ξB}} {{ξC}}} (uB : is-univ-bc ξB) where
+module _ {i₁ j₁} {B₀ : Type i₁} {{ξB : BicatStr j₁ B₀}} (uB : is-univ-bc ξB) where
 
   open Psfunctor-nc
   open PsfunctorNcStr
@@ -84,8 +83,9 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
   abstract
 
     -- pseudofunctors preserve adjoint equivalences
-    univ-pf-ae : {a b : B₀} ((f , _) : AdjEquiv ξB a b) → Adjequiv (F₁ (str-pf R) f)
-    univ-pf-ae {a} = AdjEq-ind uB (λ _ (f , _) →  Adjequiv (F₁ (str-pf R) f))
+    univ-pf-ae : ∀ {i₂ j₂} {C₀ : Type i₂} {{ξC : BicatStr j₂ C₀}}
+      {R : Psfunctor-nc {{ξB}} {{ξC}}} {a b : B₀} ((f , _) : AdjEquiv ξB a b) → Adjequiv (F₁ (str-pf R) f)
+    univ-pf-ae {R = R} {a} = AdjEq-ind uB (λ _ (f , _) →  Adjequiv (F₁ (str-pf R) f))
       (transport Adjequiv (! (F-id₁ (str-pf R) a)) (snd AdjEq-id₁))
 
     -- the composite of adoint equivalences is an adjoint equivalence
