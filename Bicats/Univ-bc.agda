@@ -1,6 +1,8 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
+open import lib.FTID
+open import lib.types.Sigma
 open import Bicategory
 open import AdjEq
 open import Bicat-coher
@@ -59,6 +61,27 @@ module _ {i j} {B₀ : Type i} {{ξB : BicatStr j B₀}} where
 is-univ-bc : ∀ {i j} {B₀ : Type i} → BicatStr j B₀ → Type (lmax i j)
 is-univ-bc {B₀ = B₀} ξB = (a b : B₀) → is-equiv (==-to-adjeq {{ξB}} {a} {b})
 
-is-univ-bc-≃ : ∀ {i j} {B₀ : Type i} {{ξB : BicatStr j B₀}} → is-univ-bc ξB → {a b : B₀}
-  → (a == b) ≃ (AdjEquiv ξB a b)
+is-univ-bc-≃ : ∀ {i j} {B₀ : Type i} {{ξB : BicatStr j B₀}} → is-univ-bc ξB
+  → {a b : B₀} → (a == b) ≃ (AdjEquiv ξB a b)
 is-univ-bc-≃ {{ξB}} uB {a} {b} = ==-to-adjeq , uB a b
+
+module _ {i j} {B₀ : Type i} {{ξB : BicatStr j B₀}} (uB : is-univ-bc ξB) {a : B₀} where
+
+  abstract
+    AdjEq-contr : is-contr (Σ B₀ (λ b → AdjEquiv ξB a b))
+    AdjEq-contr = equiv-preserves-level (Σ-emap-r (λ b → is-univ-bc-≃ uB)) {{⟨⟩}}
+
+  AdjEq-ind : ∀ {k} (P : (b : B₀) → (AdjEquiv ξB a b → Type k))
+    → P a AdjEq-id₁ → {b : B₀} (e : AdjEquiv ξB a b) → P b e
+  AdjEq-ind P = ID-ind-map P AdjEq-contr
+
+module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}}
+  {R : Psfunctor-nc {{ξB}} {{ξC}}} where
+
+  open Psfunctor-nc
+  open PsfunctorNcStr
+
+  abstract
+    pf-ae : is-univ-bc ξB → {a b : B₀} ((f , _) : AdjEquiv ξB a b) → Adjequiv (F₁ (str-pf R) f)
+    pf-ae uB {a} = AdjEq-ind uB (λ _ (f , _) →  Adjequiv (F₁ (str-pf R) f))
+      (transport Adjequiv (! (F-id₁ (str-pf R) a)) (snd AdjEq-id₁))

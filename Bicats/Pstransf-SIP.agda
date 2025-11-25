@@ -54,6 +54,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
         ((Σ-contr-red
           {A = (a : B₀) → Σ (hom (map-pf R a) (map-pf S a)) (λ η₀2 → η₀ T₁ a == η₀2)} Π-level-instance)⁻¹)
         {{Π-level-instance {{λ {(_ , f)} → equiv-preserves-level (Σ-emap-r (λ η₁2cmp → !-∙-idp-idp-≃ (η₁ T₁ f) η₁2cmp))}}}}
+        
     abstract
       InvMod-contr : is-contr (Σ (Pstrans-nc R S) (λ T₂ → InvMod T₁ T₂))
       InvMod-contr = equiv-preserves-level lemma {{InvMod-contr-aux}}
