@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --lossy-unification #-}
 
 open import lib.Basics
 open import lib.NType2
@@ -17,6 +17,8 @@ open import Bicat-coher
 module Pstransf-ops where
 
 open BicatStr {{...}}
+open Psfunctor
+open PsfunctorStr
 open Psfunctor-nc
 open PsfunctorNcStr
 open Pstrans-nc
@@ -131,7 +133,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
                     (psftor-ind-β uC (λ R₂ pe → ∀ p →
                       R₁ ps-≃ fst p) snd) (R₃ , T₂))) ∙
                   ρ (η₀ (fst T₂) b))) ◃∎
-              =ₛ⟨ 3 & 1 & ap-∘-∙!◃ (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (λ t → η₀ t b)
+              =ₛ⟨ 3 & 1 & !-ap-∘-∙◃ (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R₁) f) (λ t → η₀ t b)
                 (ap fst (app=
                   (psftor-ind-β uC (λ R₂ pe → ∀ p →
                     R₁ ps-≃ fst p) snd) (R₃ , T₂)))
@@ -159,7 +161,12 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
                 ! (α (η₀ (fst T₂) b) (F₁ (str-pf R₁) f) (id₁ (map-pf R₁ a))) ◃∙
                 ap (λ m → ⟦ ξC ⟧ η₀ (fst T₂) b ◻ m) (! (ρ (F₁ (str-pf R₁) f)) ∙ lamb (F₁ (str-pf R₁) f)) ◃∙
                 α (η₀ (fst T₂) b) (id₁ (map-pf R₁ b)) (F₁ (str-pf R₁) f) ◃∎
-                % =ₛ-in idp ⟩
+                % =ₛ-in (idp {a =
+                    (α (F₁ (str-pf R₃) f) (η₀ (fst T₂) a) (id₁ (map-pf R₁ a)) ∙
+                    ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R₁ a)) (η₁ (fst T₂) f) ∙
+                    ! (α (η₀ (fst T₂) b) (F₁ (str-pf R₁) f) (id₁ (map-pf R₁ a))) ∙
+                    ap (λ m → ⟦ ξC ⟧ η₀ (fst T₂) b ◻ m) (! (ρ (F₁ (str-pf R₁) f)) ∙ lamb (F₁ (str-pf R₁) f)) ∙
+                    α (η₀ (fst T₂) b) (id₁ (map-pf R₁ b)) (F₁ (str-pf R₁) f))}) ⟩
             ! (η₁ (fst (ps-≃-∙ uC ps-≃-id (R₃ , T₂))) f) ◃∙
             ap (λ m → ⟦ ξC ⟧ F₁ (str-pf R₃) f ◻ m)
               (ap (λ t → η₀ t a)
@@ -312,3 +319,191 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
         pair= (! (InvModc-to-== (pst-≃ (pstrans-∙-cd.aux-comp {R₂ = R₂} _)
           λ f → =ₛ-out (pstrans-∙-cd.aux-sq {R₂ = R₂} _ f)))) prop-has-all-paths-↓  ∙
         app= (psftor-ind-β uC (λ _ pe → ∀ p → R₁ ps-≃ fst p) snd) (R₂ , T)
+
+    module _ {i₃ j₃} {D₀ : Type i₃} {{ξD : BicatStr j₃ D₀}} {R₁ : Psfunctor-nc {{ξB}} {{ξC}}} where
+
+      pstrans-whisk-l-coh-data : {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} (T : R₁ ps-≃ R₂) (G : Psfunctor {{ξC}} {{ξD}})
+        → Pst-coh-data (pstrans-whisk-l (pstrans-str (fst T)) (psftor-str G))
+      pstrans-whisk-l-coh-data = psftor-ind uC
+        (λ R₂ T → (G : Psfunctor {{ξC}} {{ξD}}) → Pst-coh-data (pstrans-whisk-l (pstrans-str (fst T)) (psftor-str G)))
+        λ (G : Psfunctor {{ξC}} {{ξD}}) →
+          Pstrans-coh-induce (fst (ps-≃-whisk-l {R₁ = R₁} uC {R₂ = R₁} (ps-≃-id {R = R₁}) (psftor-str G)))
+          {pstrans-whisk-l (pstrans-str (fst ps-≃-id)) (psftor-str G)}
+          (pst-≃ (aux-comp (psftor-str G)) λ f → =ₛ-out (aux-sq G f))
+        module pstrans-whisk-l-cd where
+
+          aux-comp : (G : Psfunctor-nc {{ξC}} {{ξD}}) (x : B₀) →
+            η₀ (fst (ps-≃-whisk-l {R₁ = R₁} uC {R₂ = R₁} (ps-≃-id {R = R₁}) G)) x
+              ==
+            F₁ (str-pf G) (id₁ (map-pf R₁ x))
+          aux-comp G x = 
+            ap (λ t → η₀ t x) (ap fst (app=
+              (psftor-ind-β uC (λ R₂ _ → ∀ G' → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id {R = G' ∘BC-s R₁})) G)) ∙
+            ! (F-id₁ (str-pf G) (map-pf R₁ x))
+
+          abstract
+            aux-sq : (G : Psfunctor {{ξC}} {{ξD}}) {a b : B₀} (f : hom a b) →
+              ! (η₁ (fst (ps-≃-whisk-l uC ps-≃-id (psftor-str G))) f) ◃∙
+              ap (λ m → ⟦ ξD ⟧ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f ◻ m) (aux-comp (psftor-str G) a) ◃∙
+              (! (F-◻ (str-pf G) (id₁ (map-pf R₁ a)) (F₁ (str-pf R₁) f)) ∙
+              ap (F₁ (str-pf G)) (! (ρ (F₁ (str-pf R₁) f)) ∙ lamb (F₁ (str-pf R₁) f)) ∙
+              F-◻ (str-pf G) (F₁ (str-pf R₁) f) (id₁ (map-pf R₁ b))) ◃∙
+              ! (ap (λ m → ⟦ ξD ⟧ m ◻ ((F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f)) (aux-comp (psftor-str G) b)) ◃∎
+                =ₛ
+              idp ◃∎
+            aux-sq G {a} {b} f = 
+              ! (η₁ (fst (ps-≃-whisk-l uC ps-≃-id (psftor-str G))) f) ◃∙
+              ap (λ m → ⟦ ξD ⟧ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f ◻ m) (aux-comp (psftor-str G) a) ◃∙
+              (! (F-◻ (str-pf G) (id₁ (map-pf R₁ a)) (F₁ (str-pf R₁) f)) ∙
+              ap (F₁ (str-pf G)) (! (ρ (F₁ (str-pf R₁) f)) ∙ lamb (F₁ (str-pf R₁) f)) ∙
+              F-◻ (str-pf G) (F₁ (str-pf R₁) f) (id₁ (map-pf R₁ b))) ◃∙
+              ! (ap (λ m → ⟦ ξD ⟧ m ◻ ((F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f)) (aux-comp (psftor-str G) b)) ◃∎
+                =ₛ⟨ 3 & 1 & ap-!!-∙-∘ (λ m → ⟦ ξD ⟧ m ◻ ((F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f)) (λ t → η₀ t b)
+                  (ap fst (app= (psftor-ind-β uC (λ R₂ _ → ∀ G' → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂))
+                    (λ G' → ps-≃-id {R = G' ∘BC-s R₁})) (psftor-str G)))
+                  (F-id₁ (str-pf G) (map-pf R₁ b)) ⟩
+              ! (η₁ (fst (ps-≃-whisk-l uC ps-≃-id (psftor-str G))) f) ◃∙
+              ap (λ m → ⟦ ξD ⟧ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f ◻ m) (aux-comp (psftor-str G) a) ◃∙
+              (! (F-◻ (str-pf G) (id₁ (map-pf R₁ a)) (F₁ (str-pf R₁) f)) ∙
+              ap (F₁ (str-pf G)) (! (ρ (F₁ (str-pf R₁) f)) ∙ lamb (F₁ (str-pf R₁) f)) ∙
+              F-◻ (str-pf G) (F₁ (str-pf R₁) f) (id₁ (map-pf R₁ b))) ◃∙
+              ap (λ m → ⟦ ξD ⟧ m ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f)
+                (F-id₁ (str-pf G) (map-pf R₁ b)) ◃∙
+              ! (ap ((λ m → ⟦ ξD ⟧ m ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f) ∘ (λ t → η₀ t b))
+                  (ap fst (app=
+                    (psftor-ind-β uC (λ R₂ _ → (G' : Psfunctor-nc) → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id))
+                      (psftor-str G)))) ◃∎
+                =ₑ⟨ 2 & 1 &
+                  (! (F-◻ (str-pf G) (id₁ (map-pf R₁ a)) (F₁ (str-pf R₁) f)) ◃∙
+                  ap (F₁ (str-pf G)) (! (ρ (F₁ (str-pf R₁) f)) ∙ lamb (F₁ (str-pf R₁) f)) ◃∙
+                  F-◻ (str-pf G) (F₁ (str-pf R₁) f) (id₁ (map-pf R₁ b)) ◃∎)
+                  % =ₛ-in (idp {a =
+                    ! (F-◻ (str-pf G) (id₁ (map-pf R₁ a)) (F₁ (str-pf R₁) f)) ∙
+                    ap (F₁ (str-pf G)) (! (ρ (F₁ (str-pf R₁) f)) ∙ lamb (F₁ (str-pf R₁) f)) ∙
+                    F-◻ (str-pf G) (F₁ (str-pf R₁) f) (id₁ (map-pf R₁ b))}) ⟩
+              ! (η₁ (fst (ps-≃-whisk-l uC ps-≃-id (psftor-str G))) f) ◃∙
+              ap (λ m → ⟦ ξD ⟧ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f ◻ m) (aux-comp (psftor-str G) a) ◃∙
+              ! (F-◻ (str-pf G) (id₁ (map-pf R₁ a)) (F₁ (str-pf R₁) f)) ◃∙
+              ap (F₁ (str-pf G)) (! (ρ (F₁ (str-pf R₁) f)) ∙ lamb (F₁ (str-pf R₁) f)) ◃∙
+              F-◻ (str-pf G) (F₁ (str-pf R₁) f) (id₁ (map-pf R₁ b)) ◃∙
+              ap (λ m → ⟦ ξD ⟧ m ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f)
+                (F-id₁ (str-pf G) (map-pf R₁ b)) ◃∙
+              ! (ap ((λ m → ⟦ ξD ⟧ m ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f) ∘ (λ t → η₀ t b))
+                  (ap fst (app=
+                    (psftor-ind-β uC (λ R₂ _ → (G' : Psfunctor-nc) → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id))
+                      (psftor-str G)))) ◃∎
+                =ₛ⟨ 1 & 1 & ap-∘-∙!◃ (λ m → ⟦ ξD ⟧ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f ◻ m) (λ t → η₀ t a)
+                  (ap fst (app=
+                    (psftor-ind-β uC (λ R₂ _ → ∀ G' → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id {R = G' ∘BC-s R₁}))
+                      (psftor-str G)))
+                  (F-id₁ (str-pf G) (map-pf R₁ a)) ⟩
+              ! (η₁ (fst (ps-≃-whisk-l uC ps-≃-id (psftor-str G))) f) ◃∙
+              ap (λ t → ⟦ ξD ⟧ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f ◻ η₀ t a)
+                (ap fst (app=
+                  (psftor-ind-β uC (λ R₂ _ → ∀ G' → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id {R = G' ∘BC-s R₁}))
+                    (psftor-str G))) ◃∙
+              ! (ap (λ m → ⟦ ξD ⟧ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f ◻ m)
+                  (F-id₁ (str-pf G) (map-pf R₁ a))) ◃∙
+              ! (F-◻ (str-pf G) (id₁ (map-pf R₁ a)) (F₁ (str-pf R₁) f)) ◃∙
+              ap (F₁ (str-pf G)) (! (ρ (F₁ (str-pf R₁) f)) ∙ lamb (F₁ (str-pf R₁) f)) ◃∙
+              F-◻ (str-pf G) (F₁ (str-pf R₁) f) (id₁ (map-pf R₁ b)) ◃∙
+              ap (λ m → ⟦ ξD ⟧ m ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f)
+                (F-id₁ (str-pf G) (map-pf R₁ b)) ◃∙
+              ! (ap ((λ m → ⟦ ξD ⟧ m ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f) ∘ (λ t → η₀ t b))
+                  (ap fst (app=
+                    (psftor-ind-β uC (λ R₂ _ → (G' : Psfunctor-nc) → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id))
+                      (psftor-str G)))) ◃∎
+                =ₛ⟨ 0 & 2 & homotopy-naturality-! (λ t → η₁ t f)
+                  (ap fst (app=
+                    (psftor-ind-β uC (λ R₂ _ → ∀ G' → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id {R = G' ∘BC-s R₁}))
+                      (psftor-str G))) ⟩
+              ap (λ t → ⟦ ξD ⟧ η₀ t b ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f)
+                (ap fst (app=
+                  (psftor-ind-β uC (λ R₂ _ → ∀ G' → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id {R = G' ∘BC-s R₁}))
+                    (psftor-str G))) ◃∙
+              ! (! (ρ (F₁ (str-pf G) (F₁ (str-pf R₁) f))) ∙
+                lamb (F₁ (str-pf G) (F₁ (str-pf R₁) f))) ◃∙
+              ! (ap (λ m → ⟦ ξD ⟧ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f ◻ m)
+                  (F-id₁ (str-pf G) (map-pf R₁ a))) ◃∙
+              ! (F-◻ (str-pf G) (id₁ (map-pf R₁ a)) (F₁ (str-pf R₁) f)) ◃∙
+              ap (F₁ (str-pf G)) (! (ρ (F₁ (str-pf R₁) f)) ∙ lamb (F₁ (str-pf R₁) f)) ◃∙
+              F-◻ (str-pf G) (F₁ (str-pf R₁) f) (id₁ (map-pf R₁ b)) ◃∙
+              ap (λ m → ⟦ ξD ⟧ m ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f)
+                (F-id₁ (str-pf G) (map-pf R₁ b)) ◃∙
+              ! (ap ((λ m → ⟦ ξD ⟧ m ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f) ∘ (λ t → η₀ t b))
+                  (ap fst (app=
+                    (psftor-ind-β uC (λ R₂ _ → (G' : Psfunctor-nc) → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id))
+                      (psftor-str G)))) ◃∎
+                =ₛ⟨ 4 & 1 & ap-!∙◃ (F₁ (str-pf G)) (ρ (F₁ (str-pf R₁) f)) (lamb (F₁ (str-pf R₁) f)) ⟩
+              ap (λ t → ⟦ ξD ⟧ η₀ t b ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f)
+                (ap fst (app=
+                  (psftor-ind-β uC (λ R₂ _ → ∀ G' → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id {R = G' ∘BC-s R₁}))
+                    (psftor-str G))) ◃∙
+              ! (! (ρ (F₁ (str-pf G) (F₁ (str-pf R₁) f))) ∙
+                lamb (F₁ (str-pf G) (F₁ (str-pf R₁) f))) ◃∙
+              ! (ap (λ m → ⟦ ξD ⟧ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f ◻ m)
+                  (F-id₁ (str-pf G) (map-pf R₁ a))) ◃∙
+              ! (F-◻ (str-pf G) (id₁ (map-pf R₁ a)) (F₁ (str-pf R₁) f)) ◃∙
+              ! (ap (F₁ (str-pf G)) (ρ (F₁ (str-pf R₁) f))) ◃∙
+              ap (F₁ (str-pf G)) (lamb (F₁ (str-pf R₁) f)) ◃∙
+              F-◻ (str-pf G) (F₁ (str-pf R₁) f) (id₁ (map-pf R₁ b)) ◃∙
+              ap (λ m → ⟦ ξD ⟧ m ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f)
+                (F-id₁ (str-pf G) (map-pf R₁ b)) ◃∙
+              ! (ap ((λ m → ⟦ ξD ⟧ m ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f) ∘ (λ t → η₀ t b))
+                  (ap fst (app=
+                    (psftor-ind-β uC (λ R₂ _ → (G' : Psfunctor-nc) → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id))
+                      (psftor-str G)))) ◃∎
+                =ₛ⟨ 1 & 1 & !-!-∙ (ρ (F₁ (str-pf G) (F₁ (str-pf R₁) f))) (lamb (F₁ (str-pf G) (F₁ (str-pf R₁) f))) ⟩
+              ap (λ t → ⟦ ξD ⟧ η₀ t b ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f)
+                (ap fst (app=
+                  (psftor-ind-β uC (λ R₂ _ → ∀ G' → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id {R = G' ∘BC-s R₁}))
+                    (psftor-str G))) ◃∙
+              ! (lamb (F₁ (str-pf G) (F₁ (str-pf R₁) f))) ◃∙
+              ρ (F₁ (str-pf G) (F₁ (str-pf R₁) f)) ◃∙
+              ! (ap (λ m → ⟦ ξD ⟧ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f ◻ m)
+                  (F-id₁ (str-pf G) (map-pf R₁ a))) ◃∙
+              ! (F-◻ (str-pf G) (id₁ (map-pf R₁ a)) (F₁ (str-pf R₁) f)) ◃∙
+              ! (ap (F₁ (str-pf G)) (ρ (F₁ (str-pf R₁) f))) ◃∙
+              ap (F₁ (str-pf G)) (lamb (F₁ (str-pf R₁) f)) ◃∙
+              F-◻ (str-pf G) (F₁ (str-pf R₁) f) (id₁ (map-pf R₁ b)) ◃∙
+              ap (λ m → ⟦ ξD ⟧ m ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f)
+                (F-id₁ (str-pf G) (map-pf R₁ b)) ◃∙
+              ! (ap ((λ m → ⟦ ξD ⟧ m ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f) ∘ (λ t → η₀ t b))
+                  (ap fst (app=
+                    (psftor-ind-β uC (λ R₂ _ → (G' : Psfunctor-nc) → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id))
+                      (psftor-str G)))) ◃∎
+                =ₛ⟨ 2 & 4 & !ₛ (F-ρ-rot-!3 (str-pf G) (F₁ (str-pf R₁) f)) ⟩ 
+              ap (λ t → ⟦ ξD ⟧ η₀ t b ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f)
+                (ap fst (app=
+                  (psftor-ind-β uC (λ R₂ _ → ∀ G' → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id {R = G' ∘BC-s R₁}))
+                    (psftor-str G))) ◃∙
+              ! (lamb (F₁ (str-pf G) (F₁ (str-pf R₁) f))) ◃∙
+              ap (F₁ (str-pf G)) (lamb (F₁ (str-pf R₁) f)) ◃∙
+              F-◻ (str-pf G) (F₁ (str-pf R₁) f) (id₁ (map-pf R₁ b)) ◃∙
+              ap (λ m → ⟦ ξD ⟧ m ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f)
+                (F-id₁ (str-pf G) (map-pf R₁ b)) ◃∙
+              ! (ap ((λ m → ⟦ ξD ⟧ m ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f) ∘ (λ t → η₀ t b))
+                  (ap fst (app=
+                    (psftor-ind-β uC (λ R₂ _ → (G' : Psfunctor-nc) → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id))
+                      (psftor-str G)))) ◃∎
+                =ₛ⟨ 1 & 4 & F-λ-rot (str-pf G) (F₁ (str-pf R₁) f) ⟩
+              ap (λ t → ⟦ ξD ⟧ η₀ t b ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f)
+                (ap fst (app=
+                  (psftor-ind-β uC (λ R₂ _ → ∀ G' → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id {R = G' ∘BC-s R₁}))
+                    (psftor-str G))) ◃∙
+              ! (ap ((λ m → ⟦ ξD ⟧ m ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f) ∘ (λ t → η₀ t b))
+                  (ap fst (app=
+                    (psftor-ind-β uC (λ R₂ _ → (G' : Psfunctor-nc) → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id))
+                      (psftor-str G)))) ◃∎
+                =ₛ₁⟨ !-inv-r
+                       (ap ((λ m → ⟦ ξD ⟧ m ◻ (F₁ (str-pf G) ∘ F₁ (str-pf R₁)) f) ∘ (λ t → η₀ t b))
+                         (ap fst (app=
+                           (psftor-ind-β uC (λ R₂ _ → (G' : Psfunctor-nc) → (G' ∘BC-s R₁) ps-≃ (G' ∘BC-s R₂)) (λ G' → ps-≃-id))
+                             (psftor-str G)))) ⟩
+              idp ◃∎ ∎ₛ
+{-
+      pstrans-whisk-r-coh-data : {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} (T : (psftor-str R₁) ps-≃ R₂) (G : Psfunctor-nc {{ξD}} {{ξB}})
+        → Pst-coh-data (pstrans-whisk-r (pstrans-str (fst T)) G)
+      pstrans-whisk-r-coh-data = psftor-ind uC (λ R₂ T → ∀ G → Pst-coh-data (pstrans-whisk-r (pstrans-str (fst T)) G))
+        λ G → Pstrans-coh-induce (fst (ps-≃-whisk-r uC ps-≃-id G)) (pst-≃ {!!} {!!})
+-}

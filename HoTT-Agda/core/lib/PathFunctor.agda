@@ -48,6 +48,10 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → ap f (! p ∙ q) ◃∎ =ₛ ! (ap f p) ◃∙ ap f q ◃∎
   ap-!∙◃ idp q = =ₛ-in idp
 
+  ap-∙!◃ : {x y z : A} (p : x == y) (q : z == y)
+    → ap f (p ∙ ! q) ◃∎ =ₛ ap f p ◃∙ ! (ap f q) ◃∎
+  ap-∙!◃ idp idp = =ₛ-in idp
+
   !-!-ap : {x y : A} (p : x == y) → ! (ap f (! p)) == ap f p
   !-!-ap idp = idp
 
@@ -230,8 +234,12 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
     → ap g (ap f p ∙ q) ◃∎ =ₛ ap (g ∘ f) p ◃∙ ap g q ◃∎
   ap-∘-∙◃ idp q = =ₛ-in idp
 
-  ap-∘-∙!◃ : {x y : A} (p : x == y) {b : B} (q : f y == b)
+  !-ap-∘-∙◃ : {x y : A} (p : x == y) {b : B} (q : f y == b)
     → ! (ap g (ap f p ∙ q)) ◃∎ =ₛ ! (ap g q) ◃∙ ! (ap (g ∘ f) p) ◃∎
+  !-ap-∘-∙◃ idp idp = =ₛ-in idp
+
+  ap-∘-∙!◃ : {x y : A} (p : x == y) {b : B} (q : b == f y)
+    → ap g (ap f p ∙ ! q) ◃∎ =ₛ ap (g ∘ f) p ◃∙ ! (ap g q) ◃∎
   ap-∘-∙!◃ idp idp = =ₛ-in idp
 
   ap-∘-∙-s : {x y : A} (p : x == y) {b : B} (q : f y == b) {c : C} (s : g b == c)
@@ -241,6 +249,10 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
   ap-!-∙-∘ : {x y : A} (p : x == y) {b : B} (q : f x == b)
     → ap g (! q ∙ ap f p) ◃∎ =ₛ ! (ap g q) ◃∙ ap (g ∘ f) p ◃∎
   ap-!-∙-∘ idp idp = =ₛ-in idp
+
+  ap-!!-∙-∘ : {x y : A} (p : x == y) {b : B} (q : b == f y)
+    → ! (ap g (ap f p ∙ ! q)) ◃∎ =ₛ ap g q ◃∙ ! (ap (g ∘ f) p) ◃∎
+  ap-!!-∙-∘ idp idp = =ₛ-in idp
 
   ap-∘-∘ : ∀ {l} {D : Type l} (h : D → A) {x y : D} (p : x == y)
     → ap (g ∘ f ∘ h) p == ap g (ap f (ap h p))

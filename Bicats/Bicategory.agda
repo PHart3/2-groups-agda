@@ -173,23 +173,40 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
          ==
         α (F₁ h) (F₁ g) (F₁ f)
 
-    F-α-◃ : {a b c d : B₀} (h : hom c d) (g : hom b c) (f : hom a b) →
-      α (F₁ h) (F₁ g) (F₁ f) ◃∎
-        =ₛ
-      ! (ap (λ m → F₁ h ◻ m) (F-◻ f g)) ◃∙
-      ! (F-◻ (⟦ ξB ⟧ g ◻ f) h) ◃∙
-      ap F₁ (α h g f) ◃∙
-      F-◻ f (⟦ ξB ⟧ h ◻ g) ◃∙
-      ap (λ m → m ◻ F₁ f) (F-◻ g h) ◃∎
-    F-α-◃ h g f = !ₛ (=ₛ-in (F-α h g f))      
-        
-    -- hnat properties of F-◻
-    F-◻-nat-l : {a b c : B₀} {m₁ m₂ : hom a b} (m₃ : hom b c) (q : m₁ == m₂)
-      → F-◻ m₁ m₃ == ap (λ m → F₁ (⟦ ξB ⟧ m₃ ◻ m)) q ∙ F-◻ m₂ m₃ ∙' ! (ap (λ m → ⟦ ξC ⟧ F₁ m₃ ◻ F₁ m) q)
-    F-◻-nat-l m₃ q = apCommSq2-∙' (λ m → F-◻ m m₃) q
-    F-◻-nat-r : {a b c : B₀} (m₁ : hom a b) {m₂ m₃ : hom b c} (q : m₂ == m₃)
-      → F-◻ m₁ m₂ == ap (λ m → F₁ (⟦ ξB ⟧ m ◻ m₁)) q ∙ F-◻ m₁ m₃ ∙' ! (ap (λ m → ⟦ ξC ⟧ F₁ m ◻ F₁ m₁) q)
-    F-◻-nat-r m₁ q = apCommSq2-∙' (F-◻ m₁) q
+    abstract
+
+      F-ρ-◃ : {a b : B₀} (f : hom a b) →
+        ap F₁ (ρ f) ◃∙ F-◻ (id₁ a) f ◃∙ ap (λ m → F₁ f ◻ m) (F-id₁ a) ◃∎ =ₛ ρ (F₁ f) ◃∎
+      F-ρ-◃ f = =ₛ-in (F-ρ f)
+
+      F-ρ-rot-!3 : {a b : B₀} (f : hom a b) →
+        [] =ₛ ρ (F₁ f) ◃∙ ! (ap (λ m → F₁ f ◻ m) (F-id₁ a)) ◃∙ ! (F-◻ (id₁ a) f) ◃∙ ! (ap F₁ (ρ f)) ◃∎
+      F-ρ-rot-!3 f = post-rotate-in (post-rotate-in (post-rotate-in (F-ρ-◃ f)))
+
+      F-λ-◃ : {a b : B₀} (f : hom a b) → ap F₁ (lamb f) ◃∙ F-◻ f (id₁ b) ◃∙ ap (λ m → m ◻ F₁ f) (F-id₁ b) ◃∎ =ₛ lamb (F₁ f) ◃∎
+      F-λ-◃ f = =ₛ-in (F-λ f)
+
+      F-λ-rot : {a b : B₀} (f : hom a b) →
+        ! (lamb (F₁ f)) ◃∙ ap F₁ (lamb f) ◃∙ F-◻ f (id₁ b) ◃∙ ap (λ m → m ◻ F₁ f) (F-id₁ b) ◃∎ =ₛ []
+      F-λ-rot f = pre-rotate'-in (F-λ-◃ f)
+
+      F-α-◃ : {a b c d : B₀} (h : hom c d) (g : hom b c) (f : hom a b) →
+        α (F₁ h) (F₁ g) (F₁ f) ◃∎
+          =ₛ
+        ! (ap (λ m → F₁ h ◻ m) (F-◻ f g)) ◃∙
+        ! (F-◻ (⟦ ξB ⟧ g ◻ f) h) ◃∙
+        ap F₁ (α h g f) ◃∙
+        F-◻ f (⟦ ξB ⟧ h ◻ g) ◃∙
+        ap (λ m → m ◻ F₁ f) (F-◻ g h) ◃∎
+      F-α-◃ h g f = !ₛ (=ₛ-in (F-α h g f))      
+
+      -- hnat properties of F-◻
+      F-◻-nat-l : {a b c : B₀} {m₁ m₂ : hom a b} (m₃ : hom b c) (q : m₁ == m₂)
+        → F-◻ m₁ m₃ == ap (λ m → F₁ (⟦ ξB ⟧ m₃ ◻ m)) q ∙ F-◻ m₂ m₃ ∙' ! (ap (λ m → ⟦ ξC ⟧ F₁ m₃ ◻ F₁ m) q)
+      F-◻-nat-l m₃ q = apCommSq2-∙' (λ m → F-◻ m m₃) q
+      F-◻-nat-r : {a b c : B₀} (m₁ : hom a b) {m₂ m₃ : hom b c} (q : m₂ == m₃)
+        → F-◻ m₁ m₂ == ap (λ m → F₁ (⟦ ξB ⟧ m ◻ m₁)) q ∙ F-◻ m₁ m₃ ∙' ! (ap (λ m → ⟦ ξC ⟧ F₁ m ◻ F₁ m₁) q)
+      F-◻-nat-r m₁ q = apCommSq2-∙' (F-◻ m₁) q
 
   record Psfunctor : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
     constructor psfunctor
