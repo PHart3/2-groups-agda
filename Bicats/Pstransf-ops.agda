@@ -641,3 +641,18 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
           pair= (! (InvModc-to-== (pst-≃ (pstrans-whisk-r-cd.aux-comp {R₂ = R₂} G)
             λ f → =ₛ-out (pstrans-whisk-r-cd.aux-sq {R₂ = R₂} G f)))) prop-has-all-paths-↓  ∙
           app= (psftor-ind-β uC (λ R pe → ∀ G' → (R₁ ∘BC-s G') ps-≃ (R ∘BC-s G')) (λ _ → ps-≃-id)) G
+
+  infixr 10 _uvpsnat-≃-∙_
+  _uvpsnat-≃-∙_ : {{is-univ-bc-inst {{ξC}}}} → {R₁ R₂ R₃ : Psfunctor-nc {{ξB}} {{ξC}}}
+    → R₁ ps-≃ R₂ → R₂ ps-≃ R₃ → R₁ ps-≃ R₃
+  _uvpsnat-≃-∙_ {{uC}} {R₁} pe p = psnat-≃-∙ (λ a b → uC {a} {b}) pe p
+
+  module _ {i₃ j₃} {D₀ : Type i₃} {{ξD : BicatStr j₃ D₀}} {R₁ R₂ : Psfunctor-nc {{ξB}} {{ξC}}} where
+
+    uvpsnat-≃-whisk-l : {{is-univ-bc-inst {{ξC}}}} → R₁ ps-≃ R₂ →
+      (G : Psfunctor {{ξC}} {{ξD}}) → ((psftor-str G) ∘BC-s R₁) ps-≃ ((psftor-str G) ∘BC-s R₂)
+    uvpsnat-≃-whisk-l {{uC}} T G = psnat-≃-whisk-l (λ a b → uC {a} {b}) T G
+
+    uvpsnat-≃-whisk-r : {{is-univ-bc-inst {{ξC}}}} → R₁ ps-≃ R₂ →
+      (G : Psfunctor-nc {{ξD}} {{ξB}}) → (R₁ ∘BC-s G) ps-≃ (R₂ ∘BC-s G)
+    uvpsnat-≃-whisk-r {{uC}} T G = psnat-≃-whisk-r (λ a b → uC {a} {b}) T G

@@ -106,6 +106,16 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
   InvModc-to-== : {T₁ T₂ : Pstrans R S} → InvMod (pstrans-str T₁) (pstrans-str T₂) → T₁ == T₂
   InvModc-to-== m = <– InvModc-==-≃ m
 
+  infixr 9 _≃-⇔_
+  _≃-⇔_ : (T₁ T₂ : R ps-≃ S) → Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
+  T₁ ≃-⇔ T₂ = InvMod (pstrans-str (fst T₁)) (pstrans-str (fst T₂))
+
+  open import Univ-bc
+  open import AdjEq
+
+  ps-≃-InvMod-==-≃ : {T₁ T₂ : R ps-≃ S} → (T₁ == T₂) ≃ (T₁ ≃-⇔ T₂)
+  ps-≃-InvMod-==-≃ {T₁} {T₂} = InvModc-==-≃ ∘e (Subtype=-econv (subtypeprop (λ ψ → (b : B₀) → Adjequiv {{ξC}} (η₀ (pstrans-str ψ) b))) _ _)⁻¹ 
+
   open Pstrans
 
   abstract
