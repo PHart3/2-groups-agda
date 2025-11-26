@@ -90,6 +90,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
   InvMod-==-≃ : {T₁ T₂ : Pstrans-nc R S} → (T₁ == T₂) ≃ (InvMod T₁ T₂)
   InvMod-==-≃ {T₁} = equiv InvMod-from-== InvMod-to-== aux1 aux2
     where
+    
       aux1 : ∀ {T₂} (p : InvMod T₁ T₂) → InvMod-from-== (InvMod-to-== p) == p
       aux1 = InvMod-ind (λ _ p → InvMod-from-== (InvMod-to-== p) == p) (ap InvMod-from-== InvMod-to-==-β)
 

@@ -5,6 +5,7 @@ open import Bicategory
 open import Pstransf
 open import Pstransf-SIP
 open import Bicat-coher
+open import Univ-bc
 
 -- basic categorical laws for pseudofunctors
 
@@ -21,12 +22,12 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
   module _ {i₃ i₄ j₃ j₄} {D₀ : Type i₃} {{ξD : BicatStr j₃ D₀}} {E₀ : Type i₄} {{ξE : BicatStr j₄ E₀}}
     (R₁ : Psfunctor-nc {{ξB}} {{ξC}}) (R₂ : Psfunctor-nc {{ξC}} {{ξD}}) (R₃ : Psfunctor-nc {{ξD}} {{ξE}}) where
 
-    assoc-psf : Pstrans ((R₃ ∘BC-s R₂) ∘BC-s R₁) (R₃ ∘BC-s (R₂ ∘BC-s R₁))
-    η₀ assoc-psf a = id₁ (map-pf R₃ (map-pf R₂ (map-pf R₁ a)))
-    η₁ assoc-psf f = 
+    assoc-pst : Pstrans ((R₃ ∘BC-s R₂) ∘BC-s R₁) (R₃ ∘BC-s (R₂ ∘BC-s R₁))
+    η₀ assoc-pst a = id₁ (map-pf R₃ (map-pf R₂ (map-pf R₁ a)))
+    η₁ assoc-pst f = 
       ! (ρ (F₁ (str-pf R₃) (F₁ (str-pf R₂) (F₁ (str-pf R₁) f)))) ∙
       lamb (F₁ (str-pf R₃) (F₁ (str-pf R₂) (F₁ (str-pf R₁) f)))
-    coher-unit assoc-psf {a} = =ₛ-out $
+    coher-unit assoc-pst {a} = =ₛ-out $
       lamb (id₁ (map-pf R₃ (map-pf R₂ (map-pf R₁ a)))) ◃∙
       ap (λ m → ⟦ ξE ⟧ m ◻ id₁ (map-pf R₃ (map-pf R₂ (map-pf R₁ a))))
         (! (ap (F₁ (str-pf R₃))
@@ -126,7 +127,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
       lamb (id₁ (map-pf R₃ (map-pf R₂ (map-pf R₁ a)))) ◃∎
         =ₛ₁⟨ lamb-ρ-id₁-bc ⟩
       ρ (id₁ (map-pf R₃ (map-pf R₂ (map-pf R₁ a)))) ◃∎ ∎ₛ
-    coher-assoc assoc-psf {a} {b} {c} f g = =ₛ-out $
+    coher-assoc assoc-pst {a} {b} {c} f g = =ₛ-out $
       ! (! (ρ (((F₁ (str-pf R₃) ∘ F₁ (str-pf R₂)) ∘ F₁ (str-pf R₁)) (⟦ ξB ⟧ g ◻ f))) ∙
         lamb (((F₁ (str-pf R₃) ∘ F₁ (str-pf R₂)) ∘ F₁ (str-pf R₁)) (⟦ ξB ⟧ g ◻ f))) ◃∙
       ap (λ m → ⟦ ξE ⟧ m ◻ id₁ (map-pf R₃ (map-pf R₂ (map-pf R₁ a))))
@@ -376,7 +377,11 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
       lamb ((F₁ (str-pf R₃) ∘ F₁ (str-pf R₂)) (F₁ (str-pf R₁) (⟦ ξB ⟧ g ◻ f))) ◃∎
         =ₛ₁⟨ !-inv-l (lamb (((F₁ (str-pf R₃) ∘ F₁ (str-pf R₂)) ∘ F₁ (str-pf R₁)) (⟦ ξB ⟧ g ◻ f))) ⟩
       idp ◃∎ ∎ₛ
-    
+
+    assoc-ps-≃ : ((R₃ ∘BC-s R₂) ∘BC-s R₁) ps-≃ (R₃ ∘BC-s (R₂ ∘BC-s R₁))
+    fst assoc-ps-≃ = assoc-pst
+    snd assoc-ps-≃ _ = snd AdjEq-id₁
+
   -- unit pseudotransformations
   module _ (R : Psfunctor-nc {{ξB}} {{ξC}}) where
 
@@ -552,6 +557,10 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
         =ₛ₁⟨ !-inv-l (lamb (F₁ (str-pf R) (⟦ ξB ⟧ g ◻ f))) ⟩
       idp ◃∎ ∎ₛ
 
+    unitl-ps-≃ : (idpfBC ∘BC-s R) ps-≃ R
+    fst unitl-ps-≃ = unitl-pst
+    snd unitl-ps-≃ _ = snd AdjEq-id₁
+
     unitr-pst : Pstrans R (R ∘BC-s idpfBC)
     η₀ unitr-pst a = id₁ (map-pf R a)
     η₁ unitr-pst f = ! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)
@@ -592,3 +601,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
           F-◻ (str-pf idpfBC) (F₁ (str-pf R) f) (F₁ (str-pf R) g))) ◃∎
         =ₛ₁⟨ coher-assoc unitl-pst f g ⟩
       idp ◃∎ ∎ₛ
+
+    unitr-ps-≃ : R ps-≃ (R ∘BC-s idpfBC)
+    fst unitr-ps-≃ = unitr-pst
+    snd unitr-ps-≃ _ = snd AdjEq-id₁

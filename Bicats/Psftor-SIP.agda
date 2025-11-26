@@ -109,3 +109,16 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
 
     ps-≃-to-==-β : ps-≃-to-== ps-≃-id == idp
     ps-≃-to-==-β = psftor-ind-β (λ R₂ _ → R₁ == R₂) idp
+
+    ps-≃-from-== : {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} → R₁ == R₂ → R₁ ps-≃ R₂
+    ps-≃-from-== idp = ps-≃-id
+
+    ps-≃-==-≃ : {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} → (R₁ == R₂) ≃ (R₁ ps-≃ R₂)
+    ps-≃-==-≃ = equiv ps-≃-from-== ps-≃-to-== aux1 aux2
+      where
+
+        aux1 : ∀ {R₂} (p : R₁ ps-≃ R₂) → ps-≃-from-== (ps-≃-to-== p) == p
+        aux1 = psftor-ind (λ _ p → ps-≃-from-== (ps-≃-to-== p) == p) (ap ps-≃-from-== ps-≃-to-==-β)
+
+        aux2 : ∀ {R₂} (p : R₁ == R₂) → ps-≃-to-== (ps-≃-from-== p) == p
+        aux2 idp = ps-≃-to-==-β
