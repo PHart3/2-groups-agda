@@ -99,6 +99,10 @@ abstract
       aux : ∀ {Z} (p : X == Z) → (fst adjeq-to-⊙≃-≃ ∘ ==-to-adjeq) p == (⊙≃-from-== ∘ fst=) p
       aux idp = pair= idp (prop-has-all-paths _ _)
 
+instance
+  univ-Pt02-inst : ∀ {i} → is-univ-bc-inst {{Ptd02-bicat i}}
+  univ-Pt02-inst {_} {X₁} {X₂} = univ-Pt02 X₁ X₂
+
 open CohGrpHom
 
 module _ {i} {G₁ : Type i} {{η₁ : CohGrp G₁}} where
@@ -175,3 +179,7 @@ abstract
     where
       aux : ∀ {H} (p : G₁ == H) → (fst (adjeq-to-2g≃-≃ {{snd H}}) ∘ ==-to-adjeq) p == (fst 2grpphom-==-≃-alt) p
       aux idp = pair= idp (prop-has-all-paths _ _)
+
+instance
+  univ-2G-inst : ∀ {i} → is-univ-bc-inst {{2grp-bicat i}}
+  univ-2G-inst {_} {G₁} {G₂} = univ-2G G₁ G₂

@@ -2,12 +2,15 @@
 
 open import lib.Basics
 open import lib.wild-cats.WildCats
+open import lib.types.Sigma
 open import Bicategory
 open import AdjEq
 open import Bicat-wild
 open import Biadj
 open import Pstransf-SIP
 open import Univ-bc
+open import Bicat-iso
+open import Psftor-inverse
 
 module Biequiv where
 
@@ -18,7 +21,7 @@ open Pstrans
 
 module _ {i₁ i₂ j₁ j₂} {C₀ : Type i₂} {B₀ : Type i₁}  where
 
-  -- biequiv structure between two bicats
+  -- biequivalence structure between two bicats
   
   record BiequivStr-inst {{ξC : BicatStr j₂ C₀}} {{ξB : BicatStr j₁ B₀}} : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
     constructor bequiv
@@ -73,7 +76,7 @@ module _ {i₁ i₂ j₁ j₂} {C@(C₀ , _) : Bicat j₂ i₂} {B@(B₀ , _) : 
   fst (iso₂ (beqv-to-wniso be)) = ptr-to-ntr (τ₂ be)
   snd (iso₂ (beqv-to-wniso be)) x = aeqv-to-weqv (lev-eq₂ be x)
 
-  module _ {{_ : is-univ-bc-inst {{ξB}}}} {{_ : is-univ-bc-inst {{ξC}}}} where
+  module _ {{_ : is-univ-bc-inst {{ξC}}}} {{_ : is-univ-bc-inst {{ξB}}}} where
 
     open Psfunctor
     open PsfunctorStr
@@ -96,28 +99,47 @@ module _ {i₁ i₂ j₁ j₂} {C@(C₀ , _) : Bicat j₂ i₂} {B@(B₀ , _) : 
     baeqv-is-ff-L : ((be , _) : ξC biadj-bieqv ξB) → (x y : B₀) → is-equiv (F₁ (str-pf (Ψ-L be)) {x} {y})
     baeqv-is-ff-L bae _ _ = HAEquiv-wc-ff-L {C = bc-to-wc B} {D = bc-to-wc C} (baeqv-to-wniso bae)
 
-    open import Bicat-iso
-{-
-    is-biadj-bieqv R = ?
+    is-biadj-bieqv : Psfunctor {{ξC}} {{ξB}} → Type {!!}
+    is-biadj-bieqv R = {!!}
 
     -- being a biadjoint biequivalence is a mere proposition
     abstract
-      biadjequiv-is-prop : is-prop (is-biadj-bieqv R)
-      biadjequiv-is-prop = ?
+      biadjequiv-is-prop : {R : Psfunctor {{ξC}} {{ξB}}} → is-prop (is-biadj-bieqv R)
+      biadjequiv-is-prop = {!!}
 
-    is-biadj-bieqv-tot = Σ ? is-biadj-bieqv
+    is-biadj-bieqv-tot : Type {!!}
+    is-biadj-bieqv-tot = Σ (Psfunctor {{ξC}} {{ξB}}) is-biadj-bieqv
 
-    ξC biadj-bieqv ξB ≃ is-biadj-bieqv-tot ξC ξB
+    bae-tot-≃ : ξC biadj-bieqv ξB ≃ is-biadj-bieqv-tot
+    bae-tot-≃ = {!!}
 
-    is-biadj-bieqv-tot ξC ξB ≃ ξC iso-bc ξB
+    bae-tot-iso : is-biadj-bieqv-tot ≃ ξC iso-bc ξB
+    bae-tot-iso = Σ-emap-r (λ R → props-BiImp-≃ {{biadjequiv-is-prop {R}}} {{iso-bc-is-prop {φ = R}}} (forw R) (backw R))
+      where
+      
+        forw : (R : Psfunctor {{ξC}} {{ξB}}) → is-biadj-bieqv R → is-iso-bc R
+        forw R = {!!}
 
-    ξC biadj-bieqv ξB ≃ ξC iso-bc ξB
+        backw : (R : Psfunctor {{ξC}} {{ξB}}) → is-iso-bc R → is-biadj-bieqv R
+        backw R = {!!}
 
-    ξC biadj-bieqv ξB ≃ (C == B)
+    -- biadjoint equivalences are equivalent to isomorphisms, hence identities
 
-  baequiv-to-==-R : is-univ-bc {{ξC}} → is-univ-bc {{ξB}} → ξC biadj-bieqv ξB → C == B
-  baequiv-to-==-R uC uB = ?
+    bae-iso-≃ : ξC biadj-bieqv ξB ≃ ξC iso-bc ξB
+    bae-iso-≃ = bae-tot-iso ∘e bae-tot-≃
 
-  baequiv-to-==-L : is-univ-bc {{ξB}} → is-univ-bc {{ξC}} → ξB biadj-bieqv ξC → B == C
-  baequiv-to-==-L uC uB = ?
--}
+module _ {i₁ j₁} {C@(C₀ , _) : Bicat j₁ i₁} {B@(B₀ , _) : Bicat j₁ i₁} where
+
+  private
+    instance
+      ξC : BicatStr j₁ C₀
+      ξC = snd C
+      ξB : BicatStr j₁ B₀
+      ξB = snd B
+
+  bae-==-≃ : {{_ : is-univ-bc-inst {{ξC}}}} {{_ : is-univ-bc-inst {{ξB}}}} → (ξC biadj-bieqv ξB) ≃ (C == B)
+  bae-==-≃ = iso-bc-==-≃ ∘e bae-tot-iso ∘e bae-tot-≃ 
+
+  -- ψ-R induces an equalities between bicategories
+  baequiv-to-==-R : {{_ : is-univ-bc-inst {{ξC}}}} {{_ : is-univ-bc-inst {{ξB}}}} → ξC biadj-bieqv ξB → C == B
+  baequiv-to-==-R bae = –> bae-==-≃ bae
