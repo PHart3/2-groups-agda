@@ -1,6 +1,8 @@
 {-# OPTIONS --without-K --rewriting --lossy-unification #-}
 
 open import lib.Basics
+open import lib.Equivalence2
+open import lib.types.Sigma
 open import lib.types.Paths
 open import Bicategory
 open import Pstransf
@@ -9,6 +11,7 @@ open import Pstransf-SIP
 open import Psftor-SIP
 open import Psftor-laws
 open import Psnat-equiv-conv
+open import Psftor-inverse
 open import Univ-bc
 
 -- coherence data for a biequivalence between bicategories (which are expected to be univalent)
@@ -44,7 +47,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
      identity along with the two swallowtail identities. -}
 
   
-  module _ (ε : (psftor-str (L ∘BC R)) ps-≃ idpfBC) (η : idpfBC ps-≃ (psftor-str (R ∘BC L))) where
+  module _ (η : idpfBC ps-≃ (psftor-str (R ∘BC L)))  where
 
     private
 
@@ -54,22 +57,23 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
       uC-e : is-univ-bc ξC
       uC-e a b = uC {a} {b}
 
-      ε-i : psftor-str (L ∘BC R) == idpfBC
-      ε-i = ps-≃-to-== uC-e ε
-
       η-i : idpfBC == psftor-str (R ∘BC L)
       η-i = ps-≃-to-== uB-e η
 
     abstract
-      biadj-zz-== : 
+      biadj-zz-== : (ε : (psftor-str (L ∘BC R)) ps-≃ idpfBC) →
         (uvpsnat-≃-whisk-r η R₀ uvpsnat-≃-∙ assoc-ps-≃ R₀ L₀ R₀ uvpsnat-≃-∙ uvpsnat-≃-whisk-l ε R
           ≃-⇔
         unitl-ps-≃ R₀ uvpsnat-≃-∙ unitr-ps-≃ R₀)
           ≃
-        (ap (λ m → m ∘BC-s R₀) η-i ∙ ps-≃-to-== uB-e (assoc-ps-≃ R₀ L₀ R₀) ∙ ap (λ m → R₀ ∘BC-s m) ε-i
+        (ap (λ m → m ∘BC-s R₀) η-i ∙ ps-≃-to-== uB-e (assoc-ps-≃ R₀ L₀ R₀) ∙ ap (λ m → R₀ ∘BC-s m) (ps-≃-to-== uC-e ε)
           ==
         ps-≃-to-== uB-e (unitl-ps-≃ R₀) ∙ ps-≃-to-== uB-e (unitr-ps-≃ R₀))
-      biadj-zz-== = 
+      biadj-zz-== ε =
+        let
+          ε-i : psftor-str (L ∘BC R) == idpfBC
+          ε-i = ps-≃-to-== uC-e ε
+        in
         (uvpsnat-≃-whisk-r η R₀ uvpsnat-≃-∙ assoc-ps-≃ R₀ L₀ R₀ uvpsnat-≃-∙ uvpsnat-≃-whisk-l ε R
           ≃-⇔
         unitl-ps-≃ R₀ uvpsnat-≃-∙ unitr-ps-≃ R₀)
@@ -98,4 +102,18 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
         ap (λ m → m ∘BC-s R₀) η-i ∙ ps-≃-to-== uB-e (assoc-ps-≃ R₀ L₀ R₀) ∙ ap (λ m → R₀ ∘BC-s m) ε-i
           ==
         ps-≃-to-== uB-e (unitl-ps-≃ R₀) ∙ ps-≃-to-== uB-e (unitr-ps-≃ R₀) ≃∎
-        
+
+      abstract
+        bae-rinv-cd-contr : (psftor-str (L ∘BC R)) ps-≃ idpfBC → is-contr (psft-rinv-coh-data (L₀ , η))
+        bae-rinv-cd-contr ε = equiv-preserves-level ((Σ-emap-r (λ eps → biadj-zz-== eps)) ⁻¹)
+          {{∙2-≃-∘-contr ((ps-≃-==-≃ uC-e)⁻¹) (bc-ps-≃-hom-cdom (L₀ , ε , η))
+            (ap (λ m → m ∘BC-s R₀) η-i) (ps-≃-to-==  uB-e (assoc-ps-≃ R₀ L₀ R₀))}}
+          
+{-
+module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}}
+  {L : Psfunctor {{ξB}} {{ξC}}} {{uB : is-univ-bc-inst {{ξB}}}} {{uC : is-univ-bc-inst {{ξC}}}} where
+
+  abstract
+    biadjequiv-is-prop : is-prop (is-biadj-biequiv L)
+    biadjequiv-is-prop = ?
+-}

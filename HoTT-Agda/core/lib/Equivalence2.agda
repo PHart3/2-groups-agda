@@ -527,7 +527,6 @@ replace-inverse {f = f} f-ise {g₁ = g₁} g∼ =
 
 module _ {i} {A : Type i} where
 
-
   pre-rotate-out-≃ : {a a' a'' : A} (q : a' == a'') (p : a == a') {r : a == a''}
     → (p == r ∙ ! q) ≃ (p ∙ q == r)
   pre-rotate-out-≃ idp q {r = idp} = pre∙-equiv (∙-unit-r q)
@@ -562,3 +561,10 @@ module _ {i j} {A : Type i} {B : Type j} {b : B} (e : A ≃ B) where
       is-contr (Σ (a == b) (λ q → p₀ ∙ ap (–> e) q ∙ p₁ ∙ p₂ ∙ p₃ ∙ p₄ ∙ p₅ ∙ p₆ == idp))
     ∙-≃-∙6-contr {p₀ = idp} idp {idp} idp {idp} idp p₆ =
       equiv-preserves-level (Σ-emap-r (λ q → pre-rotate-out-≃ p₆ (ap (–> e) q))) {{≃-==-contr-back (ap-equiv e _ _)}}
+
+module _ {i j k} {A : Type i} {B : Type j} {C : Type k} {a b : B} (e : A ≃ (a == b)) (h : B ≃ C) where
+
+  abstract
+    ∙2-≃-∘-contr : {x y : C} (p₁ : x == y) (p₂ : y == –> h a) {p₃ : x == –> h b}
+      → is-contr (Σ A (λ q → p₁ ∙ p₂ ∙ ap (–> h) (–> e q) == p₃))
+    ∙2-≃-∘-contr idp idp = ≃-==-contr-back (ap-equiv h _ _ ∘e e)
