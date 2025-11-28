@@ -52,6 +52,10 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → ap f (p ∙ ! q) ◃∎ =ₛ ap f p ◃∙ ! (ap f q) ◃∎
   ap-∙!◃ idp idp = =ₛ-in idp
 
+  !-ap-!∙◃ : {x y z : A} (p : y == x) (q : y == z)
+    → ! (ap f (! p ∙ q)) ◃∎ =ₛ ! (ap f q) ◃∙ ap f p ◃∎
+  !-ap-!∙◃ idp idp = =ₛ-in idp
+
   !-!-ap : {x y : A} (p : x == y) → ! (ap f (! p)) == ap f p
   !-!-ap idp = idp
 
@@ -155,10 +159,6 @@ module _ {i j} {A : Type i} {B : Type j} (g : A → B) where
     → ! (ap g p) ∙ ap g r == ap g (! p ∙ r)
   !-ap-∙ idp r = idp
 
-  !-ap-∙◃ : {x y : A} (p : x == y) {z : A} (r : x == z)
-    → ap g (! p ∙ r) ◃∎ =ₛ ! (ap g p) ◃∙ ap g r ◃∎
-  !-ap-∙◃ idp r = =ₛ-in idp
-
   !r-ap-∙ : {x y z : A} (p₁ : x == y) (p₂ : z == y)
     → ap g p₁ ∙ ! (ap g p₂) == ap g (p₁ ∙ ! p₂)
   !r-ap-∙ idp idp = idp
@@ -174,6 +174,10 @@ module _ {i j} {A : Type i} {B : Type j} (g : A → B) where
   !-∙-ap-∙'-! : {x w : B} {y z : A} (p : x == g y) (q : y == z) (r : w == g z)
     → ! (p ∙ ap g q ∙' ! r) == r ∙ ap g (! q) ∙' ! p
   !-∙-ap-∙'-! idp q idp = !-ap g q
+
+  !-ap-idf-!-∙-unit-r : {x y z : A} (p : y == x) (q : y == z)
+    → ! (ap g (ap (λ x → x) (! p ∙ q) ∙ idp)) ◃∎ =ₛ ! (ap g q) ◃∙ ap g p ◃∎
+  !-ap-idf-!-∙-unit-r idp idp = =ₛ-in idp
 
   !-∙-ap-∙'-!-coher : {y : A} {x : B} (p : x == g y) →
     ! (!-inv-r p) ∙ ap (_∙_ p) (! (∙'-unit-l (! p)))
@@ -206,7 +210,11 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
 
   ap-∘ : {x y : A} (p : x == y) → ap (g ∘ f) p == ap g (ap f p)
   ap-∘ idp = idp
-  
+
+  ap-∘-∘ : ∀ {l} {D : Type l} (h : D → A) {x y : D} (p : x == y)
+    → ap (g ∘ f ∘ h) p == ap g (ap f (ap h p))
+  ap-∘-∘ h idp = idp
+
   !-ap-∘ : {x y : A} (p : x == y) → ! (ap (g ∘ f) p) == ap g (! (ap f p))
   !-ap-∘ idp = idp
 
@@ -234,6 +242,10 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
     → ap g (ap f p ∙ q) ◃∎ =ₛ ap (g ∘ f) p ◃∙ ap g q ◃∎
   ap-∘-∙◃ idp q = =ₛ-in idp
 
+  ap-∙-∘◃ : {x y : A} {b : B} (p : b == f x) (q : x == y)
+    → ap g (p ∙ ap f q) ◃∎ =ₛ ap g p ◃∙ ap (g ∘ f) q ◃∎
+  ap-∙-∘◃ idp idp = =ₛ-in idp
+
   !-ap-∘-∙◃ : {x y : A} (p : x == y) {b : B} (q : f y == b)
     → ! (ap g (ap f p ∙ q)) ◃∎ =ₛ ! (ap g q) ◃∙ ! (ap (g ∘ f) p) ◃∎
   !-ap-∘-∙◃ idp idp = =ₛ-in idp
@@ -253,10 +265,6 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
   ap-!!-∙-∘ : {x y : A} (p : x == y) {b : B} (q : b == f y)
     → ! (ap g (ap f p ∙ ! q)) ◃∎ =ₛ ap g q ◃∙ ! (ap (g ∘ f) p) ◃∎
   ap-!!-∙-∘ idp idp = =ₛ-in idp
-
-  ap-∘-∘ : ∀ {l} {D : Type l} (h : D → A) {x y : D} (p : x == y)
-    → ap (g ∘ f ∘ h) p == ap g (ap f (ap h p))
-  ap-∘-∘ h idp = idp
 
   !ap-∘=∘-ap : {x y : A} (p : x == y) → ! (ap-∘ p) == ∘-ap p
   !ap-∘=∘-ap idp = idp
@@ -1056,8 +1064,6 @@ module _ {i} {A : Type i} {x y : A} where
     → ap (λ p → p ∙ idp) (r ∙ ∙-unit-r q) == ∙-unit-r s ∙ r
   ap-∙-id-unit-r {q = idp} idp = idp
 
-module _ {i j} {A : Type i} {x y : A} where
-
-  ∙-id-ind : {p₁ p₂ : x == y} (P : p₁ ∙ idp == p₂ ∙ idp → Type j)
+  ∙-id-ind : ∀ {j} {p₁ p₂ : x == y} (P : p₁ ∙ idp == p₂ ∙ idp → Type j)
     → Π (p₁ == p₂) (λ r → P (ap (λ p → p ∙ idp) r)) → (r : _) → P r 
   ∙-id-ind {p₁ = idp} {p₂} P f ρ = transport P (ap-∙-id-unit-r ρ) (f (ρ ∙ ∙-unit-r p₂))

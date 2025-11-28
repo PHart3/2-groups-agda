@@ -34,6 +34,20 @@ module _ (j : ULevel) where
         ap (λ m → m ◻ f) (ρ g) ◃∎
       tri-bc◃ f g = =ₛ-in (tri-bc f g)
 
+      tri-bc◃! : {a b c : B₀} (f : hom a b) (g : hom b c) →
+        ! (α g (id₁ b) f) ◃∎
+          =ₛ
+        ! (ap (λ m → m ◻ f) (ρ g)) ◃∙
+        ap (λ m → g ◻ m) (lamb f) ◃∎
+      tri-bc◃! {a} {b} f g =
+        ! (α g (id₁ b) f) ◃∎
+          =ₛ⟨ !-=ₛ (tri-bc◃ f g) ⟩
+        ! (ap (λ m → m ◻ f) (ρ g)) ◃∙
+        ! (! (ap (λ m → g ◻ m) (lamb f))) ◃∎
+          =ₛ₁⟨ 1 & 1 & !-! (ap (λ m → g ◻ m) (lamb f)) ⟩
+        ! (ap (λ m → m ◻ f) (ρ g)) ◃∙
+        ap (λ m → g ◻ m) (lamb f) ◃∎ ∎ₛ
+
       tri-bc◃-rot : {a b c : B₀} (f : hom a b) (g : hom b c) →
         ap (λ m → g ◻ m) (lamb f) ◃∙
         α g (id₁ b) f ◃∎
@@ -90,6 +104,13 @@ module _ (j : ULevel) where
         ap (λ m → m ◻ f) (ρ g) ◃∙
         ! (α g (id₁ b) f) ◃∙
         ap (λ m → g ◻ m) (! (lamb f)) ◃∎ ∎ₛ
+
+      tri-bc◃-rot4 : {a b c : B₀} (f : hom a b) (g : hom b c) →
+        ! (ap (λ m → m ◻ f) (ρ g)) ◃∎
+          =ₛ
+        ! (α g (id₁ b) f) ◃∙
+        ! (ap (λ m → g ◻ m) (lamb f)) ◃∎
+      tri-bc◃-rot4 {b = b} f g = pre-rotate'-in (tri-bc◃-rot3-pre f g)
 
       pent-bc◃ : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e) →
         α i h (g ◻ f) ◃∙

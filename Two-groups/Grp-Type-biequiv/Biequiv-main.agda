@@ -7,6 +7,7 @@ open import 2Grp
 open import 2GrpMap
 open import Bicategory
 open import Biequiv
+open import Biadj
 open import 2Grp-bc
 open import Ptd-bc
 open import Hmtpy2Grp

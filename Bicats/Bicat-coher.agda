@@ -133,6 +133,14 @@ module _ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} where
           =ₛ⟨ trig-ρ-bc-rot-pre ⟩
         [] ∎ₛ
 
+      trig-ρ-bc-rot2 :
+        ap (λ m → ⟦ ξC ⟧ g ◻ m) (ρ f) ◃∙
+        α g f (id₁ a) ◃∙
+        ! (ρ (⟦ ξC ⟧ g ◻ f)) ◃∎
+          =ₛ
+        []
+      trig-ρ-bc-rot2 = post-rotate'-in trig-ρ-bc
+
   abstract
 
     lamb-ρ-id₁-bc : {a : C₀} → lamb (id₁ a) == ρ (id₁ a)
@@ -140,3 +148,85 @@ module _ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} where
 
     lamb-ρ-canc : {a : C₀} → lamb (id₁ a) ◃∙ ! (ρ (id₁ a)) ◃∎ =ₛ []
     lamb-ρ-canc {a} = =ₛ-in (ap (λ p → p ∙ ! (ρ (id₁ a))) lamb-ρ-id₁-bc ∙ !-inv-r (ρ (id₁ a)))
+
+    ρ-lamb-id₁2-bc : {a b : C₀} (f : hom a b) → 
+      ! (ap (λ m → ⟦ ξC ⟧ m ◻ f) (ρ (⟦ ξC ⟧ id₁ b ◻ id₁ b))) ◃∙
+      ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ id₁ b ◻ f) (lamb (id₁ b)) ◃∎
+        =ₛ
+      []
+    ρ-lamb-id₁2-bc {a} {b} f = 
+      ! (ap (λ m → ⟦ ξC ⟧ m ◻ f) (ρ (⟦ ξC ⟧ id₁ b ◻ id₁ b))) ◃∙
+      ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ id₁ b ◻ f) (lamb (id₁ b)) ◃∎
+        =ₛ⟨ 0 & 1 & apCommSq2◃! (λ v → ap (λ m → ⟦ ξC ⟧ m ◻ f) (ρ v)) (lamb (id₁ b)) ⟩
+      ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ id₁ b ◻ f) (lamb (id₁ b))) ◃∙
+      ! (ap (λ m → ⟦ ξC ⟧ m ◻ f) (ρ (id₁ b))) ◃∙
+      ap (λ m → ⟦ ξC ⟧ m ◻ f) (lamb (id₁ b)) ◃∙
+      ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ id₁ b ◻ f) (lamb (id₁ b)) ◃∎
+        =ₛ₁⟨ 2 & 1 & ap (ap (λ m → ⟦ ξC ⟧ m ◻ f)) lamb-ρ-id₁-bc ⟩
+      ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ id₁ b ◻ f) (lamb (id₁ b))) ◃∙
+      ! (ap (λ m → ⟦ ξC ⟧ m ◻ f) (ρ (id₁ b))) ◃∙
+      ap (λ m → ⟦ ξC ⟧ m ◻ f) (ρ (id₁ b)) ◃∙
+      ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ id₁ b ◻ f) (lamb (id₁ b)) ◃∎
+        =ₛ⟨ 1 & 2 & !-inv-l◃ (ap (λ m → ⟦ ξC ⟧ m ◻ f) (ρ (id₁ b))) ⟩
+      ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ id₁ b ◻ f) (lamb (id₁ b))) ◃∙
+      ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ id₁ b ◻ f) (lamb (id₁ b)) ◃∎
+        =ₛ⟨ !-inv-l◃ (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ id₁ b ◻ f) (lamb (id₁ b))) ⟩
+      [] ∎ₛ
+
+    trig-bc-ρ-λ : {a b : C₀} (f : hom a b) → 
+      ! (α f (id₁ a) (id₁ a)) ◃∙
+      ρ (⟦ ξC ⟧ f ◻ ⟦ ξC ⟧ id₁ a ◻ id₁ a) ◃∙
+      ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ f ◻ m ◻ id₁ a) (lamb (id₁ a))) ◃∎
+        =ₛ
+      []
+    trig-bc-ρ-λ {a} f =
+      ! (α f (id₁ a) (id₁ a)) ◃∙
+      ρ (⟦ ξC ⟧ f ◻ ⟦ ξC ⟧ id₁ a ◻ id₁ a) ◃∙
+      ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ f ◻ m ◻ id₁ a) (lamb (id₁ a))) ◃∎
+        =ₛ⟨ 0 & 1 & tri-bc◃! (id₁ a) f ⟩
+      ! (ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (ρ f)) ◃∙
+      ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a)) ◃∙
+      ρ (⟦ ξC ⟧ f ◻ ⟦ ξC ⟧ id₁ a ◻ id₁ a) ◃∙
+      ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ f ◻ m ◻ id₁ a) (lamb (id₁ a))) ◃∎
+        =ₛ⟨ 2 & 1 & apCommSq2◃ ρ (ρ f ∙ ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a))) ⟩
+      ! (ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (ρ f)) ◃∙
+      ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a)) ◃∙
+      ! (ap (λ m → m) (ρ f ∙ ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a)))) ◃∙
+      ρ f ◃∙
+      ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (ρ f ∙ ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a))) ◃∙
+      ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ f ◻ m ◻ id₁ a) (lamb (id₁ a))) ◃∎
+        =ₛ₁⟨ 2 & 1 & ap ! (ap-idf (ρ f ∙ ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a)))) ⟩
+      ! (ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (ρ f)) ◃∙
+      ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a)) ◃∙
+      ! (ρ f ∙ ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a))) ◃∙
+      ρ f ◃∙
+      ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (ρ f ∙ ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a))) ◃∙
+      ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ f ◻ m ◻ id₁ a) (lamb (id₁ a))) ◃∎
+        =ₛ⟨ 2 & 1 & !-∙◃ (ρ f) (ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a))) ⟩
+      ! (ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (ρ f)) ◃∙
+      ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a)) ◃∙
+      ! (ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a))) ◃∙
+      ! (ρ f) ◃∙
+      ρ f ◃∙
+      ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (ρ f ∙ ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a))) ◃∙
+      ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ f ◻ m ◻ id₁ a) (lamb (id₁ a))) ◃∎
+        =ₛ⟨ 3 & 2 & !-inv-l◃ (ρ f) ⟩
+      ! (ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (ρ f)) ◃∙
+      ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a)) ◃∙
+      ! (ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a))) ◃∙
+      ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (ρ f ∙ ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a))) ◃∙
+      ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ f ◻ m ◻ id₁ a) (lamb (id₁ a))) ◃∎
+        =ₛ⟨ 1 & 2 & !-inv-r◃ (ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a))) ⟩
+      ! (ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (ρ f)) ◃∙
+      ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (ρ f ∙ ap (λ m → ⟦ ξC ⟧ f ◻ m) (lamb (id₁ a))) ◃∙
+      ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ f ◻ m ◻ id₁ a) (lamb (id₁ a))) ◃∎
+        =ₛ⟨ 1 & 1 & ap-∙-∘◃ (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (λ m → ⟦ ξC ⟧ f ◻ m) (ρ f) (lamb (id₁ a)) ⟩
+      ! (ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (ρ f)) ◃∙
+      ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (ρ f) ◃∙
+      ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ f ◻ m ◻ id₁ a) (lamb (id₁ a)) ◃∙
+      ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ f ◻ m ◻ id₁ a) (lamb (id₁ a))) ◃∎
+        =ₛ⟨ 0 & 2 & !-inv-l◃ (ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (ρ f)) ⟩
+      ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ f ◻ m ◻ id₁ a) (lamb (id₁ a)) ◃∙
+      ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ f ◻ m ◻ id₁ a) (lamb (id₁ a))) ◃∎
+        =ₛ⟨ !-inv-r◃ (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ f ◻ m ◻ id₁ a) (lamb (id₁ a))) ⟩
+      [] ∎ₛ
