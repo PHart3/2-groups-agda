@@ -19,8 +19,8 @@ open import Type-equiv-main public
 -}
 
 
--- explicit biequivalence between 2-groups and pointed connected 2-types
+-- explicit biadjoint biequivalence between 2-groups and pointed connected 2-types
 open import Biequiv-main public
 
--- equalities between the same two (2,1)-categories obtained from the biequivalence
+-- equalities between the same two (2,1)-categories obtained from the biadjoint biequivalence
 open import Equality-main public

@@ -66,10 +66,9 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y) where
   fst ⊙∘-runit x = idp
   snd ⊙∘-runit = idp
 
--- inverse of homotopy of pointed maps
-
 module _ {i j} {X : Ptd i} {Y : Ptd j} where
 
+  -- inverse of homotopy of pointed maps
   !-⊙∼ : {f₁ f₂ : X ⊙→ Y} (H : f₁ ⊙-crd∼ f₂) → f₂ ⊙-crd∼ f₁
   fst (!-⊙∼ (H₀ , H₁)) x = ! (H₀ x)
   snd (!-⊙∼ {f₁} {f₂} (H₀ , H₁)) =
@@ -79,24 +78,19 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
     ap (λ p → p ∙ snd f₁) (!-inv-r (H₀ (pt X)))
 
 -- identity homotopy of pointed maps
-
   ⊙∼-id : (f : X ⊙→ Y) → f ⊙-crd∼ f
   fst (⊙∼-id (f , fₚ)) x = idp
   snd (⊙∼-id (f , fₚ)) = idp
 
 module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where 
 
-  ⊙∘-assoc-crd : ∀ {l} {W : Ptd l} (h : Z ⊙→ W) (g : Y ⊙→ Z) (f : X ⊙→ Y)
-    → ((h ⊙∘ g) ⊙∘ f) ⊙-crd∼ (h ⊙∘ (g ⊙∘ f))
-  fst (⊙∘-assoc-crd (h , hpt) (g , gpt) (f , fpt)) = λ x → idp
-  snd (⊙∘-assoc-crd (h , hpt) (g , gpt) (f , fpt)) =
-    ! (∙-assoc (ap (h ∘ g) fpt) (ap h gpt) hpt) ∙
-    ap (λ p → p ∙ hpt) (ap (λ p → p ∙ ap h gpt) (ap-∘ h g fpt)) ∙
-    ap (λ p → p ∙ hpt) (∙-ap h (ap g fpt) gpt)
-
+  -- associativity of pointed maps
   ⊙∘-α-comp : ∀ {l} {W : Ptd l} (h : Z ⊙→ W) (g : Y ⊙→ Z) (f : X ⊙→ Y)
     → h ⊙∘ g ⊙∘ f ⊙-crd∼ (h ⊙∘ g) ⊙∘ f
-  ⊙∘-α-comp h g f = !-⊙∼ (⊙∘-assoc-crd h g f)
+  fst (⊙∘-α-comp h g f) _ = idp
+  snd (⊙∘-α-comp h g f) =
+    ap (λ p → p ∙ snd h) (ap-∘-∙ (fst h) (fst g) (snd f) (snd g)) ∙
+    ∙-assoc (ap (fst h ∘ fst g) (snd f)) (ap (fst h) (snd g)) (snd h)
 
 -- pre- and post-comp on (unfolded) homotopies of pointed maps
 

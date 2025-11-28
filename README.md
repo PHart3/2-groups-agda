@@ -1,6 +1,6 @@
 ## Overview
 
-- We construct a fully verified biequivalence between
+- We construct a fully verified biadjoint biequivalence between
     1. the (2,1)-category of coherent 2-groups
     2. the (2,1)-category of 2-truncated connected pointed types.
     
@@ -22,7 +22,7 @@ collecting the main theorems.
 
   A stripped down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
   with many changes and additions motivated by our construction
-  of the biequivalence and by Milner's equivalence.
+  of the biadjoint biequivalence and by Milner's equivalence.
 
   See `HoTT-Agda/README.md` for details and for the license of the work inside this directory.
 
@@ -34,7 +34,7 @@ collecting the main theorems.
 
 - `Two-groups/`
 
-  Our formalization of the biequivalence and the induced equality.
+  Our formalization of the biadjoint biequivalence and the induced equality.
 
   See `Two-groups/README.md` for details and for the license of the work inside this directory.
 
@@ -46,7 +46,8 @@ collecting the main theorems.
 
 - `Final/`
 
-  A single file containing the final biequivalence and equality, Milner's equivalence along with a description of the group action produced by the equivalence,
+  A single file containing the final biadjoint biequivalence and equality, 
+  Milner's equivalence along with a description of the group action produced by the equivalence,
   and the composite type equivalence between pointed connected 2-types and Sính triples.
 
   See `Final/README.md` for details and for the license of the work inside this directory.
@@ -81,7 +82,7 @@ We have found that type-checking directly on a MacOS with an M1 chip is much
 faster (but still intensive). See `Final/README.md` for relevant details.
 
 **Important:** Comment out the final two imports in `Final/Final-thms` to reduce the type-checking by over an hour. Doing so will check
-all relevant type equivalences but not the biequivalence.
+all relevant type equivalences but not the biadjoint biequivalence.
 
 ## Acknowledgement
 

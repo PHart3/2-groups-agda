@@ -26,22 +26,8 @@ module _ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} where
     ap (λ m → ⟦ ξC ⟧ g ◻ m) (lamb f) ◃∎ ∎ₛ 
 
   bc-wc-pent : pentagon-wc (bc-to-wc (_ , ξC))
-  bc-wc-pent k g h f = =ₛ-out $
-    ap (λ m → ⟦ ξC ⟧ m ◻ f) (! (α k g h)) ◃∙
-    ! (α k (⟦ ξC ⟧ g ◻ h) f) ◃∙
-    ap (λ m → ⟦ ξC ⟧ k ◻ m) (! (α g h f)) ◃∎
-      =ₛ₁⟨ 2 & 1 & ap-! (λ m → ⟦ ξC ⟧ k ◻ m) (α g h f) ⟩
-    ap (λ m → ⟦ ξC ⟧ m ◻ f) (! (α k g h)) ◃∙
-    ! (α k (⟦ ξC ⟧ g ◻ h) f) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ k ◻ m) (α g h f)) ◃∎
-      =ₛ₁⟨ 0 & 1 & ap-! (λ m → ⟦ ξC ⟧ m ◻ f) (α k g h) ⟩
-    ! (ap (λ m → ⟦ ξC ⟧ m ◻ f) (α k g h)) ◃∙
-    ! (α k (⟦ ξC ⟧ g ◻ h) f) ◃∙
-    ! (ap (λ m → ⟦ ξC ⟧ k ◻ m) (α g h f)) ◃∎
-      =ₛ⟨ !ₛ (!-=ₛ (pent-bc◃ f h g k)) ⟩
-    ! (α (⟦ ξC ⟧ k ◻ g) h f) ◃∙
-    ! (α k g (⟦ ξC ⟧ h ◻ f)) ◃∎ ∎ₛ
-
+  bc-wc-pent k g h f = =ₛ-out (!ₛ (pent-bc◃ f h g k))
+  
   module _ {a b c : C₀} (g : hom b c) (f : hom a b) where
 
     abstract
@@ -99,14 +85,7 @@ module _ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} where
         α g f (id₁ a) ◃∎
           =ₛ
         ρ (⟦ ξC ⟧ g ◻ f) ◃∎
-      trig-ρ-bc =
-        ap (λ m → ⟦ ξC ⟧ g ◻ m) (ρ f) ◃∙
-        α g f (id₁ a) ◃∎
-          =ₛ₁⟨ 1 & 1 & ! (!-! (α g f (id₁ a))) ⟩
-        ap (λ m → ⟦ ξC ⟧ g ◻ m) (ρ f) ◃∙
-        ! (! (α g f (id₁ a))) ◃∎
-          =ₛ⟨ trig-ρ {C = bc-to-wc (_ , ξC)} bc-wc-tri bc-wc-pent g f ⟩
-        ρ (⟦ ξC ⟧ g ◻ f) ◃∎ ∎ₛ
+      trig-ρ-bc = trig-ρ {C = bc-to-wc (_ , ξC)} bc-wc-tri bc-wc-pent g f
 
       trig-ρ-bc-rot-pre :
         ρ (⟦ ξC ⟧ g ◻ f) ◃∙

@@ -18,4 +18,4 @@ id₁W (bc-to-wc (_ , ξB)) = id₁ ξB
 _▢_ (bc-to-wc (_ , ξB)) = _◻_ ξB
 ρW (bc-to-wc (_ , ξB)) = ρ ξB
 lambW (bc-to-wc (_ , ξB)) = lamb ξB
-αW (bc-to-wc (_ , ξB)) h g f = ! (α ξB h g f)
+αW (bc-to-wc (_ , ξB)) h g f = α ξB h g f
