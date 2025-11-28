@@ -26,7 +26,7 @@ open Pstrans
 open InvMod
 
 module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}  {{ξC : BicatStr j₂ C₀}} {{ξB : BicatStr j₁ B₀}}
-  {L : Psfunctor {{ξB}} {{ξC}}} {R : Psfunctor {{ξC}} {{ξB}}} 
+  {R : Psfunctor {{ξC}} {{ξB}}} {L : Psfunctor {{ξB}} {{ξC}}}
   {{uC : is-univ-bc-inst {{ξC}}}} {{uB : is-univ-bc-inst {{ξB}}}} where
 
   private
@@ -47,17 +47,17 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}  {{ξC : Bi
      a contractible choice of the remaining data of a biadjunction, i.e., the other zig-zag
      identity along with the two swallowtail identities. -}
 
+  private
+
+    uB-e : is-univ-bc ξB
+    uB-e a b = uB {a} {b}
+
+    uC-e : is-univ-bc ξC
+    uC-e a b = uC {a} {b}
   
   module _ (η : idpfBC ps-≃ (psftor-str (R ∘BC L)))  where
 
     private
-
-      uB-e : is-univ-bc ξB
-      uB-e a b = uB {a} {b}
-
-      uC-e : is-univ-bc ξC
-      uC-e a b = uC {a} {b}
-
       η-i : idpfBC == psftor-str (R ∘BC L)
       η-i = ps-≃-to-== uB-e η
 
@@ -103,8 +103,9 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}  {{ξC : Bi
         ==
       ps-≃-to-== uB-e (unitl-ps-≃ R₀) ∙ ps-≃-to-== uB-e (unitr-ps-≃ R₀) ≃∎
 
-    abstract
-      bae-rinv-cd-contr : (psftor-str (L ∘BC R)) ps-≃ idpfBC → is-contr (psft-rinv-coh-data (L₀ , η))
-      bae-rinv-cd-contr ε = equiv-preserves-level ((Σ-emap-r (λ eps → biadj-zz-== eps)) ⁻¹)
-        {{∙2-≃-∘-contr ((ps-≃-==-≃ uC-e)⁻¹) (bc-ps-≃-hom-cdom (L₀ , ε , η))
-          (ap (λ m → m ∘BC-s R₀) η-i) (ps-≃-to-==  uB-e (assoc-ps-≃ R₀ L₀ R₀))}}
+  abstract
+    bae-rinv-cd-contr : (psftor-str (L ∘BC R)) ps-≃ idpfBC →
+      (η : idpfBC ps-≃ (psftor-str (R ∘BC L))) → is-contr (psft-rinv-coh-data (L , η))
+    bae-rinv-cd-contr ε η = equiv-preserves-level ((Σ-emap-r (λ eps → biadj-zz-== η eps)) ⁻¹)
+      {{∙2-≃-∘-contr ((ps-≃-==-≃ uC-e)⁻¹) (nc-ps-≃-hom-cdom (L , ε , η))
+        (ap (λ m → m ∘BC-s R₀) (ps-≃-to-== uB-e η)) (ps-≃-to-== uB-e (assoc-ps-≃ R₀ L₀ R₀))}}

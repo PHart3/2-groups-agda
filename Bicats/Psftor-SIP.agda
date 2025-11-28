@@ -2,6 +2,7 @@
 
 open import lib.Basics
 open import lib.Equivalence2
+open import lib.NType2
 open import lib.FTID
 open import lib.types.Paths
 open import lib.types.Sigma
@@ -127,3 +128,21 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
 
         aux2 : ∀ {R₂} (p : R₁ == R₂) → ps-≃-to-== (ps-≃-from-== p) == p
         aux2 idp = ps-≃-to-==-β
+
+module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}} (uC : is-univ-bc ξC) where
+
+  psf-≃-==-≃ : {R₁ R₂ : Psfunctor {{ξB}} {{ξC}}} → (R₁ == R₂) ≃ (psftor-str R₁ ps-≃ psftor-str R₂)
+  psf-≃-==-≃ =
+    ps-≃-==-≃ uC ∘e
+    (Subtype=-econv (subtypeprop Psf-coh-data {{λ {ψ} → Psf-coh-data-is-prop {ψ = ψ}}}) _ _)⁻¹ ∘e
+    ap-equiv Psftor-Σ-≃  _ _
+
+  psf-≃-to-== : {R₁ R₂ : Psfunctor {{ξB}} {{ξC}}} → psftor-str R₁ ps-≃ psftor-str R₂ → R₁ == R₂
+  psf-≃-to-== = <– psf-≃-==-≃
+
+  Psf-coh-induce : (R₁ : Psfunctor {{ξB}} {{ξC}}) {R₂ : Psfunctor-nc {{ξB}} {{ξC}}}
+    → psftor-str R₁ ps-≃ R₂ → Psf-coh-data R₂
+  Psf-coh-induce R₁ = psftor-ind uC (λ R₂ _ → Psf-coh-data R₂) (F-ρ (str-pf R₁) , (F-λ (str-pf R₁) , F-α (str-pf R₁)))
+    where
+      open Psfunctor
+      open PsfunctorStr

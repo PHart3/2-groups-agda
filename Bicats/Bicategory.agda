@@ -1,6 +1,8 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
+open import lib.types.Sigma
+open import lib.types.Pi
 
 module Bicategory where
 
@@ -240,6 +242,33 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
   map-pf (psftor-str R) = map-pf R
   str-pf (psftor-str R) = psfunctorncstr (F₁ (str-pf R)) (F-id₁ (str-pf R)) (F-◻ (str-pf R))
 
+  open PsfunctorNcStr
+  Psf-coh-data : Psfunctor-nc → Type (lmax (lmax i₁ j₁) j₂)
+  Psf-coh-data (psfunctornc _ {{sR}}) =
+    ({a b : B₀} (f : hom a b) → ap (F₁ sR) (ρ f) ∙ F-◻ sR (id₁ a) f ∙ ap (λ m → F₁ sR f ◻ m) (F-id₁ sR a) == ρ (F₁ sR f)) ×
+    ({a b : B₀} (f : hom a b) → ap (F₁ sR) (lamb f) ∙ F-◻ sR f (id₁ b) ∙ ap (λ m → m ◻ F₁ sR f) (F-id₁ sR b) == lamb (F₁ sR f)) ×
+    ({a b c d : B₀} (h : hom c d) (g : hom b c) (f : hom a b) →
+       ! (ap (λ m → F₁ sR h ◻ m) (F-◻ sR f g)) ∙
+       ! (F-◻ sR (⟦ ξB ⟧ g ◻ f) h) ∙
+       ap (F₁ sR) (α h g f) ∙
+       F-◻ sR f (⟦ ξB ⟧ h ◻ g) ∙
+       ap (λ m → m ◻ F₁ sR f) (F-◻ sR g h)
+        ==
+       α (F₁ sR h) (F₁ sR g) (F₁ sR f))
+
+  instance
+    Psf-coh-data-is-prop : ∀ {ψ} → is-prop (Psf-coh-data ψ)
+    Psf-coh-data-is-prop = ×-level ⟨⟩ (×-level ⟨⟩ ⟨⟩)
+
+  -- reforming Psfunctor as a Σ-type
+  Psftor-Σ-≃ : Psfunctor {{ξB}} {{ξC}} ≃ Σ Psfunctor-nc Psf-coh-data
+  Psftor-Σ-≃ = equiv
+    (λ (psfunctor m {{σ}}) → (psfunctornc m {{psfunctorncstr (F₁ σ) (F-id₁ σ) (F-◻ σ)}} , (F-ρ σ) , ((F-λ σ) , (F-α σ))))
+    (λ (psfunctornc m {{psfunctorncstr F1 Fid Fcmp}} , F-r , F-l , F-assoc) → psfunctor m
+      {{psfunctorstr F1 Fid Fcmp F-r F-l F-assoc}})
+    (λ _ → idp)
+    λ _ → idp
+
 -- identity pseudofunctor
 module _ {i j} {B₀ : Type i} {{ξ : BicatStr j B₀}} where
   
@@ -257,7 +286,6 @@ module _ {i j} {B₀ : Type i} {{ξ : BicatStr j B₀}} where
 
   idpfBC : Psfunctor-nc
   idpfBC = psftor-str idfBC
-
 
 -- composition of pseudofunctors  
 module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {D₀ : Type i₃}

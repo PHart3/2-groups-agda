@@ -1,8 +1,8 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
-open import lib.wild-cats.WildCats
 open import lib.types.Sigma
+open import lib.wild-cats.WildCats
 open import Bicategory
 open import AdjEq
 open import Bicat-wild
@@ -52,8 +52,8 @@ module _ {i₁ i₂ j₁ j₂} {C₀ : Type i₂} {B₀ : Type i₁}  where
   _biadj-bieqv_ : (ξC : BicatStr j₂ C₀) (ξB : BicatStr j₁ B₀) → {{is-univ-bc-inst {{ξC}}}} → {{is-univ-bc-inst {{ξB}}}}
     → Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
   ξC biadj-bieqv ξB = Σ (BiequivStr ξC ξB) (λ be →
-    Biequiv-coh {{ξC}} {{ξB}} {L = Ψ-L {{ξC}} {{ξB}} be} {R = Ψ-R {{ξC}} {{ξB}} be} (ε {{ξC}} {{ξB}} be) (η {{ξC}} {{ξB}} be))
-      where open BiequivStr-inst
+    Biequiv-coh {{ξC}} {{ξB}} {R = Ψ-R {{ξC}} {{ξB}} be} {L = Ψ-L {{ξC}} {{ξB}} be}
+      (ε {{ξC}} {{ξB}} be) (η {{ξC}} {{ξB}} be)) where open BiequivStr-inst
 
 module _ {i₁ i₂ j₁ j₂} {C@(C₀ , _) : Bicat j₂ i₂} {B@(B₀ , _) : Bicat j₁ i₁} where
 
@@ -99,19 +99,26 @@ module _ {i₁ i₂ j₁ j₂} {C@(C₀ , _) : Bicat j₂ i₂} {B@(B₀ , _) : 
     baeqv-is-ff-L : ((be , _) : ξC biadj-bieqv ξB) → (x y : B₀) → is-equiv (F₁ (str-pf (Ψ-L be)) {x} {y})
     baeqv-is-ff-L bae _ _ = HAEquiv-wc-ff-L {C = bc-to-wc B} {D = bc-to-wc C} (baeqv-to-wniso bae)
 
-    is-biadj-bieqv : Psfunctor {{ξC}} {{ξB}} → Type {!!}
-    is-biadj-bieqv R = {!!}
+    is-biadj-bieqv : Psfunctor {{ξC}} {{ξB}} → Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
+    is-biadj-bieqv R = Σ (has-rinv-psf R) (psft-rinv-coh-data {R = R})
 
     -- being a biadjoint biequivalence is a mere proposition
     abstract
       biadjequiv-is-prop : {R : Psfunctor {{ξC}} {{ξB}}} → is-prop (is-biadj-bieqv R)
-      biadjequiv-is-prop = {!!}
+      biadjequiv-is-prop {R} = inhab-to-contr-is-prop λ ((L , η) , (ε , _))
+        → Σ-level (psf-hi-rinv-contr {R = R} (L , (ε , η))) λ η' →
+          bae-rinv-cd-contr {R = R} {fst η'} (transport (λ m → psftor-str (m ∘BC R) ps-≃ idpfBC)
+            (psf-has-rinv-unique {R = R} (L , (ε , η)) {R₁ = L} {R₂ = fst η'} η (snd η')) ε) (snd η')
 
-    is-biadj-bieqv-tot : Type {!!}
+    is-biadj-bieqv-tot : Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
     is-biadj-bieqv-tot = Σ (Psfunctor {{ξC}} {{ξB}}) is-biadj-bieqv
 
     bae-tot-≃ : ξC biadj-bieqv ξB ≃ is-biadj-bieqv-tot
-    bae-tot-≃ = {!!}
+    bae-tot-≃ = equiv
+      (λ (bes , c) → (Ψ-R bes) , (((Ψ-L bes) , (η bes)) , (ε bes , ζζ c)))
+      (λ (ψR , ((ψL , eta) , (eps , zz))) → (bequiv ψL ψR eps eta) , bieqvcoh zz)
+      (λ _ → idp)
+      λ _ → idp
 
     bae-tot-iso : is-biadj-bieqv-tot ≃ ξC iso-bc ξB
     bae-tot-iso = Σ-emap-r (λ R → props-BiImp-≃ {{biadjequiv-is-prop {R}}} {{iso-bc-is-prop {φ = R}}} (forw R) (backw R))
