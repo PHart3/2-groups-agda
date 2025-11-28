@@ -7,7 +7,6 @@ open import 2Grp
 open import 2GrpMap
 open import Bicategory
 open import Biequiv
-open import Biadj
 open import 2Grp-bc
 open import Ptd-bc
 open import Hmtpy2Grp
@@ -83,6 +82,11 @@ module Biequiv-main where
   snd (η (2Grp-Ptd02-bieq _)) (_ , η) = Loop-adjeq-str {{η}}
 
 {-
+  -- the triangulator (or zig-zag identity)
+  
+  open import Biadj
+  open import AdjEq-exmps
+
   2Grp-Ptd02-baeq : ∀ i →  (Ptd02-bicat i) biadj-bieqv (2grp-bicat i)
   fst (2Grp-Ptd02-baeq i) = 2Grp-Ptd02-bieq i
   snd (2Grp-Ptd02-baeq i) = ?
