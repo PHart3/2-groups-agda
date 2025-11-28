@@ -68,6 +68,10 @@ is-univ-bc-≃ : ∀ {i j} {B₀ : Type i} {{ξB : BicatStr j B₀}} → is-univ
   → {a b : B₀} → (a == b) ≃ (AdjEquiv ξB a b)
 is-univ-bc-≃ {{ξB}} uB {a} {b} = ==-to-adjeq , uB a b
 
+ubc-ae-to-== : ∀ {i j} {B₀ : Type i} {{ξB : BicatStr j B₀}} {{uB : is-univ-bc-inst {{ξB}}}}
+  → {a b : B₀} → AdjEquiv ξB a b → a == b
+ubc-ae-to-== {{uB = uB}} f = <– (is-univ-bc-≃ (λ _ _ → uB)) f
+
 module _ {i j} {B₀ : Type i} {{ξB : BicatStr j B₀}} (uB : is-univ-bc ξB) {a : B₀} where
 
   abstract

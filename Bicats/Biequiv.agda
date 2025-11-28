@@ -11,6 +11,7 @@ open import Pstransf-SIP
 open import Univ-bc
 open import Bicat-iso
 open import Psftor-inverse
+open import Psftor-laws
 
 module Biequiv where
 
@@ -61,6 +62,36 @@ module _ {i₁ i₂ j₁ j₂} {C₀ : Type i₂} {B₀ : Type i₁}  where
   is-biadj-bieqv R = Σ (has-rinv-psf R) (psft-rinv-coh-data {R = R})
 
 open BiequivStr-inst
+open Biequiv-coh
+open InvMod
+
+-- the identity biadjoint biequivalence
+biadj-bieuqiv-id : ∀ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} {{uC : is-univ-bc-inst {{ξC}}}} → ξC biadj-bieqv ξC
+Ψ-L (fst biadj-bieuqiv-id) = idfBC
+Ψ-R (fst biadj-bieuqiv-id) = idfBC
+ε (fst biadj-bieuqiv-id) = unitl-ps-≃ idpfBC
+η (fst biadj-bieuqiv-id) = unitr-ps-≃ idpfBC
+η₀-∼ (ζζ (snd (biadj-bieuqiv-id {{ξC}}))) a = ! (ap (λ m → ⟦ ξC ⟧ m ◻ id₁ ξC a) (lamb ξC (id₁ ξC a)))
+η₁-∼ (ζζ (snd (biadj-bieuqiv-id {{ξC}}))) {a} {b} f = {!=ₛ-out $
+  ! (α ξC f ((ξC ◻ id₁ ξC a) (id₁ ξC a)) (id₁ ξC a) ∙
+  ap (λ m → (ξC ◻ m) (id₁ ξC a))
+    (α ξC f (id₁ ξC a) (id₁ ξC a) ∙
+    ap (λ m → (ξC ◻ m) (id₁ ξC a)) (ap (λ m → m) (! (ρ ξC f) ∙ lamb ξC f) ∙ idp) ∙
+    ! (α ξC (id₁ ξC b) f (id₁ ξC a)) ∙
+    ap (λ m → (ξC ◻ id₁ ξC b) m) (! (ρ ξC f) ∙ lamb ξC f) ∙
+    α ξC (id₁ ξC b) (id₁ ξC b) f) ∙
+  ! (α ξC ((ξC ◻ id₁ ξC b) (id₁ ξC b)) f (id₁ ξC a)) ∙
+  ap (λ m → (ξC ◻ (ξC ◻ id₁ ξC b) (id₁ ξC b)) m) (! (ρ ξC f) ∙ lamb ξC f) ∙
+  α ξC ((ξC ◻ id₁ ξC b) (id₁ ξC b)) (id₁ ξC b) f) ◃∙
+  ap (ξC ◻ f) (! (ap (λ m → (ξC ◻ m) (id₁ ξC a)) (lamb ξC (id₁ ξC a)))) ◃∙
+  (α ξC f (id₁ ξC a) (id₁ ξC a) ∙
+  ap (λ m → (ξC ◻ m) (id₁ ξC a)) (! (ρ ξC f) ∙ lamb ξC f) ∙
+  ! (α ξC (id₁ ξC b) f (id₁ ξC a)) ∙
+  ap (λ m → (ξC ◻ id₁ ξC b) m) (! (ρ ξC f) ∙ lamb ξC f) ∙
+  α ξC (id₁ ξC b) (id₁ ξC b) f) ◃∙
+  ! (ap (λ m → (ξC ◻ m) f) (! (ap (λ m → (ξC ◻ m) (id₁ ξC b)) (lamb ξC (id₁ ξC b))))) ◃∎
+    =ₛ⟨ ? ⟩
+  ?!}
   
 module _ {i₁ i₂ j₁ j₂} {C@(C₀ , _) : Bicat j₂ i₂} {B@(B₀ , _) : Bicat j₁ i₁} where
 
@@ -87,8 +118,6 @@ module _ {i₁ i₂ j₁ j₂} {C@(C₀ , _) : Bicat j₂ i₂} {B@(B₀ , _) : 
     open Psfunctor
     open PsfunctorStr
     open HAdjEquiv-wc
-    open Biequiv-coh
-    open InvMod
 
     baeqv-to-wniso : ξC biadj-bieqv ξB → HAdjEquiv-wc (bc-to-wc B) (bc-to-wc C)
     𝔼 (baeqv-to-wniso (be , _)) = beqv-to-wniso be
@@ -123,30 +152,34 @@ module _ {i₁ i₂ j₁ j₂} {C@(C₀ , _) : Bicat j₂ i₂} {B@(B₀ , _) : 
       (λ _ → idp)
       λ _ → idp
 
-module _ {i₁ j₁} {C₀ B₀ : Type i₁} {{ξC : BicatStr j₁ C₀}} {{ξB : BicatStr j₁ B₀}}
-  {{_ : is-univ-bc-inst {{ξC}}}} {{_ : is-univ-bc-inst {{ξB}}}} where
+module _ {i j} {C₀ B₀ : Type i} {{ξC : BicatStr j C₀}} {{ξB : BicatStr j B₀}}
+  {{uC : is-univ-bc-inst {{ξC}}}} {{uB : is-univ-bc-inst {{ξB}}}} where
 
   private
   
-    C : Bicat j₁ i₁
+    C : Bicat j i
     C = (C₀ , ξC)
 
-    B : Bicat j₁ i₁
-    B = (B₀ , ξB )
+    B : Bicat j i
+    B = (B₀ , ξB)
 
   bae-tot-iso : is-biadj-bieqv-tot ≃ ξC iso-bc ξB
   bae-tot-iso = Σ-emap-r (λ R → props-BiImp-≃ {{biadjequiv-is-prop {R = R}}} {{iso-bc-is-prop {φ = R}}}
     (forw R) λ iso → backw (R , iso))
     where
-
+    
+      open Psfunctor
       forw : (R : Psfunctor {{ξC}} {{ξB}}) → is-biadj-bieqv R → is-iso-bc R
-      forw R bae = {!!}
+      fst (forw R ((L , ri) , li , _)) = is-eq (map-pf R) (map-pf L)
+        (λ b → ! (ubc-ae-to-== ((η₀ (fst ri) b) , (snd ri b))))
+        λ c → ubc-ae-to-== ((η₀ (fst li) c) , (snd li c))
+      snd (forw R is-bae) = baeqv-is-ff-R (<– bae-tot-≃ (R , is-bae))
 
-      backw : {(_ , ξE) : Bicat j₁ i₁} (iso : ξC iso-bc ξE) →
+      backw : {(_ , ξE) : Bicat j i} (iso : ξC iso-bc ξE) →
         {{_ : is-univ-bc-inst {{ξE}}}} → is-biadj-bieqv {{ξB = ξE}} (fst iso)
       backw = bc-ind ξC (λ E iso → ∀ {{uE : is-univ-bc-inst {{snd E}}}} →
         is-biadj-bieqv {{ξB = snd E}} {{uB = uE}} (fst iso)) λ {{_}} →
-          {!!}
+          snd (–> bae-tot-≃  (biadj-bieuqiv-id {{uC = uC}}))
 
   -- biadjoint equivalences are equivalent to isomorphisms, hence identities
 
