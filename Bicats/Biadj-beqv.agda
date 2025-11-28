@@ -15,6 +15,8 @@ open import Psftor-laws
 open import Biequiv
 open import Badjbeqv-id
 
+-- The notion of biadjoint biequivalence is fully coherent.
+
 module Biadj-beqv where
 
 open BicatStr {{...}}
