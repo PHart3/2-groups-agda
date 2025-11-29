@@ -27,7 +27,9 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
     field
       η₀-∼ : (a : B₀) → η₀ T₁ a == η₀ T₂ a
       η₁-∼ : {a b : B₀} (f : hom a b) →
-        ! (η₁ T₁ f) ∙ ap (λ m → F₁ (str-pf S) f ◻ m) (η₀-∼ a) ∙ η₁ T₂ f ∙ ! (ap (λ m → m ◻ F₁ (str-pf R) f) (η₀-∼ b)) == idp
+        ap (λ m → m ◻ F₁ (str-pf R) f) (η₀-∼ b) ∙ ! (η₁ T₂ f) ∙ ! (ap (λ m → F₁ (str-pf S) f ◻ m) (η₀-∼ a)) ∙ η₁ T₁ f
+          ==
+        idp
 
   infix 8 InvMod
   syntax InvMod T₁ T₂ = T₁ ⇔ T₂
@@ -36,7 +38,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
 
   InvMod-id : {T : Pstrans-nc R S} → InvMod T T
   η₀-∼ (InvMod-id {T}) _ = idp
-  η₁-∼ (InvMod-id {T}) f = !-inv-l-unit-r (η₁ T f)
+  η₁-∼ (InvMod-id {T}) f = !-inv-l (η₁ T f) 
 
   module _ {T₁ : Pstrans-nc R S} where
 
@@ -45,7 +47,12 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
         [ η₀2 ∈ ((a : B₀) → Σ (hom (map-pf R a) (map-pf S a)) (λ η₀2 → η₀ T₁ a == η₀2)) ] ×
           ((((a , b) , f) : Σ (B₀ × B₀) (λ (a , b) → hom a b)) →
             Σ (F₁ (str-pf S) f ◻ fst (η₀2 a) == ⟦ ξC ⟧ fst (η₀2 b) ◻ F₁ (str-pf R) f) (λ η₁2cmp →
-              ! (η₁ T₁ f) ∙ ap (λ m → F₁ (str-pf S) f ◻ m) (snd (η₀2 a)) ∙ η₁2cmp ∙ ! (ap (λ m → m ◻ F₁ (str-pf R) f) (snd (η₀2 b))) == idp))
+              ap (λ m → m ◻ F₁ (str-pf R) f) (snd (η₀2 b)) ∙
+              ! η₁2cmp ∙
+              ! (ap (λ m → F₁ (str-pf S) f ◻ m) (snd (η₀2 a))) ∙
+              η₁ T₁ f
+                ==
+              idp))
 
     InvMod-contr-aux :
       is-contr tot-sp
@@ -53,8 +60,8 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
       equiv-preserves-level
         ((Σ-contr-red
           {A = (a : B₀) → Σ (hom (map-pf R a) (map-pf S a)) (λ η₀2 → η₀ T₁ a == η₀2)} Π-level-instance)⁻¹)
-        {{Π-level-instance {{λ {(_ , f)} → equiv-preserves-level (Σ-emap-r (λ η₁2cmp → !-∙-idp-idp-≃ (η₁ T₁ f) η₁2cmp))}}}}
-        
+        {{Π-level-instance {{λ {(_ , f)} → equiv-preserves-level (Σ-emap-r (λ η₁2cmp → !-∙-idp-≃ η₁2cmp _))}}}}
+
     abstract
       InvMod-contr : is-contr (Σ (Pstrans-nc R S) (λ T₂ → InvMod T₁ T₂))
       InvMod-contr = equiv-preserves-level lemma {{InvMod-contr-aux}}
@@ -114,7 +121,8 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
   open import AdjEq
 
   ps-≃-InvMod-==-≃ : {T₁ T₂ : R ps-≃ S} → (T₁ == T₂) ≃ (T₁ ≃-⇔ T₂)
-  ps-≃-InvMod-==-≃ {T₁} {T₂} = InvModc-==-≃ ∘e (Subtype=-econv (subtypeprop (λ ψ → (b : B₀) → Adjequiv {{ξC}} (η₀ (pstrans-str ψ) b))) _ _)⁻¹ 
+  ps-≃-InvMod-==-≃ {T₁} {T₂} = InvModc-==-≃ ∘e
+    (Subtype=-econv (subtypeprop (λ ψ → (b : B₀) → Adjequiv {{ξC}} (η₀ (pstrans-str ψ) b))) _ _)⁻¹ 
 
   open Pstrans
 
@@ -129,4 +137,10 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
     Pstrans-coh-induce-ii {k} {T₁} = InvMod-ind
       (λ T₂ M → (P : Pstrans R S → Type k) →
         P T₁ → P (pstrans (η₀ T₂) (η₁ T₂) (fst (Pstrans-coh-induce T₁ M)) (snd (Pstrans-coh-induce T₁ M))))
-      λ P p → coe (ap P (InvModc-to-== (pst-≃ (λ _ → idp) (λ f → !-inv-l-unit-r (η₁ T₁ f))))) p
+      λ P p → coe (ap P (InvModc-to-== (pst-≃ (λ _ → idp) (λ f → !-inv-l (η₁ T₁ f))))) p
+
+-- an ad-hoc lemma for supplying the coherence field of InvMod
+abstract
+  η₁-∼-flip : ∀ {i} {X : Type i} {a b x y : X} {p₁ : x == y} {p₂ : a == b} {q₁ : x == a} {q₂ : y == b} →
+      (! q₁ ◃∙ p₁ ◃∙ q₂ ◃∙ ! p₂ ◃∎ =ₛ idp ◃∎) → (p₂ ∙ ! q₂ ∙ ! p₁ ∙ q₁ == idp)
+  η₁-∼-flip {p₁ = p₁} {p₂} {q₁} {q₂} q = ∙3-!2-flip p₂ q₂ p₁ q₁ (=ₛ-out q)

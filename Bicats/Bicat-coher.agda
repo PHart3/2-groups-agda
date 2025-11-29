@@ -132,7 +132,7 @@ module _ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} where
       ! (ap (λ m → ⟦ ξC ⟧ m ◻ f) (ρ (⟦ ξC ⟧ id₁ b ◻ id₁ b))) ◃∙
       ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ id₁ b ◻ f) (lamb (id₁ b)) ◃∎
         =ₛ
-      []
+      idp ◃∎
     ρ-lamb-id₁2-bc {a} {b} f = 
       ! (ap (λ m → ⟦ ξC ⟧ m ◻ f) (ρ (⟦ ξC ⟧ id₁ b ◻ id₁ b))) ◃∙
       ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ id₁ b ◻ f) (lamb (id₁ b)) ◃∎
@@ -149,8 +149,8 @@ module _ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} where
         =ₛ⟨ 1 & 2 & !-inv-l◃ (ap (λ m → ⟦ ξC ⟧ m ◻ f) (ρ (id₁ b))) ⟩
       ! (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ id₁ b ◻ f) (lamb (id₁ b))) ◃∙
       ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ id₁ b ◻ f) (lamb (id₁ b)) ◃∎
-        =ₛ⟨ !-inv-l◃ (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ id₁ b ◻ f) (lamb (id₁ b))) ⟩
-      [] ∎ₛ
+        =ₛ₁⟨ !-inv-l (ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ id₁ b ◻ f) (lamb (id₁ b))) ⟩
+      idp ◃∎ ∎ₛ
 
     trig-bc-ρ-λ : {a b : C₀} (f : hom a b) → 
       ! (α f (id₁ a) (id₁ a)) ◃∙

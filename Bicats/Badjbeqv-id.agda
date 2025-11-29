@@ -26,7 +26,7 @@ biadj-bieuqiv-id : ∀ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} {{uC : is
 ε (fst biadj-bieuqiv-id) = unitl-ps-≃ idpfBC
 η (fst biadj-bieuqiv-id) = unitr-ps-≃ idpfBC
 η₀-∼ (ζζ (snd (biadj-bieuqiv-id {{ξC}}))) a = ! (ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (lamb (id₁ a)))
-η₁-∼ (ζζ (snd (biadj-bieuqiv-id {{ξC}}))) {a} {b} f = =ₛ-out $
+η₁-∼ (ζζ (snd (biadj-bieuqiv-id {{ξC}}))) {a} {b} f = η₁-∼-flip $
   ! (α f (⟦ ξC ⟧ id₁ a ◻ id₁ a) (id₁ a) ∙
   ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a)
     (α f (id₁ a) (id₁ a) ∙
@@ -480,4 +480,4 @@ biadj-bieuqiv-id : ∀ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} {{uC : is
   ! (ap (λ m → ⟦ ξC ⟧ m ◻ f) (ρ (⟦ ξC ⟧ id₁ b ◻ id₁ b))) ◃∙
   ap (λ m → ⟦ ξC ⟧ ⟦ ξC ⟧ m ◻ id₁ b ◻ f) (lamb (id₁ b)) ◃∎
     =ₛ⟨ ρ-lamb-id₁2-bc f ⟩
-  [] ∎ₛ
+  idp ◃∎ ∎ₛ

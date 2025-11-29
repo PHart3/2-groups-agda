@@ -255,6 +255,10 @@ module _ {i} {A : Type i} where
     → (p₁ ∙' ! p₂) ∙ p₂ ∙ p₃ == p₁ ∙ p₃
   ∙'-!-∙-∙ p₁ idp p₃ = idp
 
+  ∙3-!2-flip : {x y z w : A} (p₁ : x == y) (p₂ : z == y) (p₃ : w == z) (p₄ : w == x)
+    → ! p₄ ∙ p₃ ∙ p₂ ∙ ! p₁ == idp → p₁ ∙ ! p₂ ∙ ! p₃ ∙ p₄ == idp
+  ∙3-!2-flip p₁ idp idp idp q = ∙-unit-r p₁ ∙ ! (!-! p₁) ∙ ap ! q
+
   !-inv-l-r-unit-assoc : {x y : A} (p : x == y) →
     ! (ap (λ c → p ∙ c) (!-inv-l p) ∙ ∙-unit-r p) ∙
     ! (∙-assoc p (! p) p) ∙ ap (λ c → c ∙ p) (!-inv-r p)
