@@ -45,7 +45,7 @@ module _ {i₁ i₂ j₁ j₂} {C@(C₀ , _) : Bicat j₂ i₂} {B@(B₀ , _) : 
   fst (iso₂ (beqv-to-wniso be)) = ptr-to-ntr (τ₂ be)
   snd (iso₂ (beqv-to-wniso be)) x = aeqv-to-weqv (lev-eq₂ be x)
 
-  module _ {{_ : is-univ-bc-inst {{ξC}}}} {{_ : is-univ-bc-inst {{ξB}}}} where
+  module _ {{uC : is-univ-bc-inst {{ξC}}}} {{uB : is-univ-bc-inst {{ξB}}}} where
 
     open Psfunctor
     open PsfunctorStr
@@ -110,9 +110,9 @@ module _ {i j} {C₀ B₀ : Type i} {{ξC : BicatStr j C₀}} {{ξB : BicatStr j
       backw : {(_ , ξE) : Bicat j i} (iso : ξC iso-bc ξE) →
         {{_ : is-univ-bc-inst {{ξE}}}} → is-biadj-bieqv {{ξB = ξE}} (fst iso)
       backw = bc-ind ξC (λ E iso → ∀ {{uE : is-univ-bc-inst {{snd E}}}} →
-        is-biadj-bieqv {{ξB = snd E}} {{uB = uE}} (fst iso)) λ {{_}} →
-          snd (–> bae-tot-≃  (biadj-bieuqiv-id {{uC = uC}}))
-
+        is-biadj-bieqv {{ξB = snd E}} {{uC = uC}} {{uE}} (fst iso)) λ {{uE}} →
+          snd (–> (bae-tot-≃ {{uC = uC}} {{uC}}) (biadj-bieuqiv-id {{uC = uC}}))
+          
   -- biadjoint equivalences are equivalent to isomorphisms, hence identities
 
   bae-iso-≃ : ξC biadj-bieqv ξB ≃ ξC iso-bc ξB

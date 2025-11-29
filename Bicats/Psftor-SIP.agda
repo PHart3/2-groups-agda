@@ -27,7 +27,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
 
     private
       tot-sp =
-        [ (M , Ar) ∈ Σ (Π B₀ (λ x → Σ C₀ (λ b → Σ (hom (map-pf R₁ x) b) Adjequiv)))
+        [ (M , Ar) ∈ Σ (Π B₀ (λ x → Σ C₀ (λ b → Σ (hom (map-pf R₁ x) b) (Adjequiv {{ξC}}))))
           (λ M → (((x , y) , f) : Σ (B₀ × B₀) (λ (x , y) → hom x y)) →
             Σ (hom (fst (M x)) (fst (M y))) (λ k →
                 ⟦ ξC ⟧ k ◻ fst (snd (M x)) == ⟦ ξC ⟧ fst (snd (M y)) ◻ F₁ (str-pf R₁) f)) ] ×
@@ -69,21 +69,27 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
               (Σ-emap-r (λ k → pre∙'-equiv (! (ρ k))))}}
 
     psftor-contr-aux : is-contr tot-sp
-    psftor-contr-aux = let cc = snd (contr-center psftor-contr-aux2) in
+    psftor-contr-aux =
+      let
+        cc₁ x = fst (fst (contr-center psftor-contr-aux2) x)
+        cc₂ = snd (contr-center psftor-contr-aux2)
+      in
       equiv-preserves-level
         ((Σ-contr-red psftor-contr-aux2)⁻¹)
         {{×-level
           (Π-level (λ x →
-            ∙-≃-∙2-contr {b = id₁ _} id₁-bc-rght-≃ (lamb (id₁ _)) (ap (λ m → ⟦ ξC ⟧ id₁ _ ◻ m) (F-id₁ (str-pf R₁) x))))
+            ∙-≃-∙2-contr {b = id₁ (cc₁ x)} id₁-bc-rght-≃
+              (lamb (id₁ (cc₁ x)))
+              (ap (λ m → ⟦ ξC ⟧ id₁ (fst (fst (contr-center psftor-contr-aux2) x)) ◻ m) (F-id₁ (str-pf R₁) x))))
           (Π-level (λ ((x , y , z) , f , g) → 
-            ∙-≃-∙6-contr {b = ⟦ ξC ⟧ fst (cc (_ , g)) ◻ fst (cc (_ , f))} id₁-bc-rght-≃
-              {p₀ = ! (snd (cc (_ ,  ⟦ ξB ⟧ g ◻ f)))}
-              (! (α _ _ (id₁ _)))
-              {p₂ = ap (λ m → ⟦ ξC ⟧ fst (cc (_ ,  g)) ◻ m) (snd (cc (_ ,  f)))}
-              (α _ (id₁ _) (F₁ (str-pf R₁) f))
-              {p₄ = ap (λ m → ⟦ ξC ⟧ m ◻ (F₁ (str-pf R₁) f)) (snd (cc (_ ,  g)))}
-              (! (α (id₁ _) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)))
-              (! (ap (λ m → ⟦ ξC ⟧ id₁ _ ◻ m) (F-◻ (str-pf R₁) f g)))))}}
+            ∙-≃-∙6-contr {b = ⟦ ξC ⟧ fst (cc₂ (_ , g)) ◻ fst (cc₂ (_ , f))} id₁-bc-rght-≃
+              {p₀ = ! (snd (cc₂ (_ ,  ⟦ ξB ⟧ g ◻ f)))}
+              (! (α _ _ (id₁ (cc₁ x))))
+              {p₂ = ap (λ m → ⟦ ξC ⟧ fst (cc₂ (_ ,  g)) ◻ m) (snd (cc₂ (_ ,  f)))}
+              (α _ (id₁ (cc₁ y)) (F₁ (str-pf R₁) f))
+              {p₄ = ap (λ m → ⟦ ξC ⟧ m ◻ (F₁ (str-pf R₁) f)) (snd (cc₂ (_ ,  g)))}
+              (! (α (id₁ (cc₁ z)) (F₁ (str-pf R₁) g) (F₁ (str-pf R₁) f)))
+              (! (ap (λ m → ⟦ ξC ⟧ id₁ (cc₁ z) ◻ m) (F-◻ (str-pf R₁) f g)))))}}
 
     abstract
       psftor-contr : is-contr (Σ (Psfunctor-nc {{ξB}} {{ξC}}) (λ R₂ → R₁ ps-≃ R₂))
@@ -92,10 +98,10 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
           lemma : tot-sp ≃ Σ (Psfunctor-nc {{ξB}} {{ξC}}) (λ R₂ → R₁ ps-≃ R₂)
           lemma = 
             equiv
-              (λ ((M , Ar) , R-ids , R-∘s) → psfunctornc (fst ∘ M)
+              (λ ((M , Ar) , R-ids , R-∘s) → psfunctornc {{ξB}} {{ξC}} (fst ∘ M)
                 {{psfunctorncstr (λ f → fst (Ar (_ , f))) (fst ∘ R-ids) λ f g → fst (R-∘s (_ , f , g))}} ,
                 (pstrans (fst ∘ snd ∘ M) (λ f → snd (Ar (_ , f))) (λ {a} → snd (R-ids a))
-                λ f g → snd (R-∘s (_ , f , g))) , snd ∘ snd ∘ M)
+                λ f g → snd (R-∘s (_ , f , g))) , λ x → (snd (snd (M x))))
               (λ (psfunctornc M {{psfunctorncstr Ar R-id R-∘}} , (pstrans cs sqs cu ca , es)) →
                 ((λ x → (M x) , ((cs x) , (es x))) ,
                   (λ (_ , f) → (Ar f) , (sqs f))) , ((λ x → (R-id x) , cu {x}) , (λ (_ , f , g) → R-∘ f g , ca f g)))

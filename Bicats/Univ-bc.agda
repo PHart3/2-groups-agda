@@ -91,7 +91,7 @@ module _ {i₁ j₁} {B₀ : Type i₁} {{ξB : BicatStr j₁ B₀}} (uB : is-un
 
     -- pseudofunctors preserve adjoint equivalences
     univ-pf-ae : ∀ {i₂ j₂} {C₀ : Type i₂} {{ξC : BicatStr j₂ C₀}}
-      {R : Psfunctor-nc {{ξB}} {{ξC}}} {a b : B₀} ((f , _) : AdjEquiv ξB a b) → Adjequiv (F₁ (str-pf R) f)
+      {R : Psfunctor-nc {{ξB}} {{ξC}}} {a b : B₀} ((f , _) : AdjEquiv ξB a b) → Adjequiv {{ξC}} (F₁ (str-pf R) f)
     univ-pf-ae {R = R} {a} = AdjEq-ind uB (λ _ (f , _) →  Adjequiv (F₁ (str-pf R) f))
       (transport Adjequiv (! (F-id₁ (str-pf R) a)) (snd AdjEq-id₁))
 

@@ -626,7 +626,8 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
                     (psftor-ind-β uC (λ R₂ _ → ∀ G' → (R₁ ∘BC-s G') ps-≃ (R₂ ∘BC-s G'))
                       (λ G' → ps-≃-id {R = R₁ ∘BC-s G'})) G))) ◃∎
                 =ₛ⟨ 2 & 2 & !-inv-r◃
-                  {x = F₁ (str-pf R₁) (F₁ (str-pf G) f)} {y = ⟦ ξC ⟧ F₁ (str-pf R₁) (F₁ (str-pf G) f) ◻ id₁ _}
+                  {x = F₁ (str-pf R₁) (F₁ (str-pf G) f)}
+                  {y = ⟦ ξC ⟧ F₁ (str-pf R₁) (F₁ (str-pf G) f) ◻ id₁ (map-pf R₁ (map-pf G a))}
                     (ρ (F₁ (str-pf R₁) (F₁ (str-pf G) f))) ⟩
               ap (λ t → ⟦ ξC ⟧ η₀ t b ◻ (F₁ (str-pf R₁) ∘ F₁ (str-pf G)) f)
                 (ap fst (app=

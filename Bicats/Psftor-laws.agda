@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
 open import Bicategory
@@ -581,10 +581,10 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
       ρ (id₁ (map-pf R a)) ◃∎ ∎ₛ
     coher-assoc unitr-pst {a} {b} {c} f g = =ₛ-out $
       ! (! (ρ (F₁ (str-pf R) (⟦ ξB ⟧ g ◻ f))) ∙ lamb (F₁ (str-pf R) (⟦ ξB ⟧ g ◻ f))) ◃∙
-      ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R a)) (F-◻ (str-pf R) (F₁ (str-pf idpfBC) f) (F₁ (str-pf idpfBC) g)) ◃∙
-      ! (α ((F₁ (str-pf R) ∘ F₁ (str-pf idpfBC)) g) ((F₁ (str-pf R) ∘ F₁ (str-pf idpfBC)) f) (id₁ (map-pf R a))) ◃∙
-      ap (λ m → ⟦ ξC ⟧ (F₁ (str-pf R) ∘ F₁ (str-pf idpfBC)) g ◻ m) (! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)) ◃∙
-      α ((F₁ (str-pf R) ∘ F₁ (str-pf idpfBC)) g) (id₁ (map-pf R b)) (F₁ (str-pf R) f) ◃∙
+      ap (λ m → ⟦ ξC ⟧ m ◻ id₁ (map-pf R a)) (F-◻ (str-pf R) (F₁ (str-pf (idpfBC {{ξB}})) f) (F₁ (str-pf (idpfBC {{ξB}})) g)) ◃∙
+      ! (α ((F₁ (str-pf R) ∘ F₁ (str-pf (idpfBC {{ξB}}))) g) ((F₁ (str-pf R) ∘ F₁ (str-pf (idpfBC {{ξB}}))) f) (id₁ (map-pf R a))) ◃∙
+      ap (λ m → ⟦ ξC ⟧ (F₁ (str-pf R) ∘ F₁ (str-pf (idpfBC {{ξB}}))) g ◻ m) (! (ρ (F₁ (str-pf R) f)) ∙ lamb (F₁ (str-pf R) f)) ◃∙
+      α ((F₁ (str-pf R) ∘ F₁ (str-pf (idpfBC {{ξB}}))) g) (id₁ (map-pf R b)) (F₁ (str-pf R) f) ◃∙
       ap (λ m → ⟦ ξC ⟧ m ◻ F₁ (str-pf R) f) (! (ρ (F₁ (str-pf R) g)) ∙ lamb (F₁ (str-pf R) g)) ◃∙
       ! (α (id₁ (map-pf R c)) (F₁ (str-pf R) g) (F₁ (str-pf R) f)) ◃∙
       ! (ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R c) ◻ m) (F-◻ (str-pf R) f g)) ◃∎
