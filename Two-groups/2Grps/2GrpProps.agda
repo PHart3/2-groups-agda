@@ -184,7 +184,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
     ap (λ x → x) (! (al id id id) ∙ ap (mu id) (lam id)) ◃∙
     ap (λ x → x) (! (! (rho id))) ◃∙
     idp ◃∎
-      =ₛ⟨ 1 & 1 & !-ap-∙◃ (λ x → x) (al id id id) _ ⟩
+      =ₛ⟨ 1 & 1 & ap-!∙◃ (λ x → x) (al id id id) _ ⟩
     ! (ap (λ x → x) (! (! (rho (mu id id)))) ∙ idp) ◃∙
     ! (ap (λ x → x) (al id id id)) ◃∙
     ap (λ x → x) (ap (mu id) (lam id)) ◃∙
