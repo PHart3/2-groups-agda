@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=6 --lossy-unification #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=6 #-}
 
 open import lib.Basics
 open import lib.types.LoopSpace
@@ -18,7 +18,8 @@ open WkSGrpNatIso
 open WkSGrpHomStr
 
 module Biadj-data.Loop-zig-zag where
-
+{-
+-- first component of triangulator
 module _ {i} {X : Type i} {{ηX : has-level 2 X}} (x₀ : X) where
 
   open Delooping (Ω ⊙[ X , x₀ ])
@@ -66,25 +67,25 @@ module _ {i} {X : Type i} {{ηX : has-level 2 X}} (x₀ : X) where
   Loop-zz₀ :
     Loop2Grp-map (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}})) ∘2G cohgrphom _ {{idf2G {{Loop2Grp base}}}} ∘2G K₂-loopmap
       ==
-    cohgrphom _ {{idf2G {{Loop2Grp x₀}}}}
+    cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}}
   Loop-zz₀ = natiso2G-to-== Loop-zz₀-iso
-
+-}
+-- second component of triangulator
 module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-level 2 Y}} (x₀ : X) (y₀ : Y)
   (f* : ⊙[ X , x₀ ] ⊙→ ⊙[ Y , y₀ ]) where
 
   open import SqKLoop
   
-  open Delooping (Ω ⊙[ Y , y₀ ])
-{-
+  open Delooping 
+
   Loop-zz₁-∼ : (p : x₀ == x₀) → 
     K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (Ω-fmap f* p) ∙
-    ! (K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (Ω-fmap f* p)) ∙
-    ! (Ω-fmap-∙ _ _ _) ∙
-    Ω-fmap-ap (sq-KΩ x₀ y₀ f*) (loop (Ω-fmap f* p)) ∙
-    Ω-fmap-∙ _ _ _ ∙
-    ap (Ω-fmap (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}}))) (K₂-map-β-pts (Ω-fmap f*) p) ∙
+    ! (ap (Ω-fmap f*) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) p)) ∙
+    {!!} ∙ -- ! (∙-Ω-fmap (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) _ _) ∙
+    Ω-fmap-ap (sq-KΩ x₀ y₀ f*) (loop (Ω ⊙[ X , x₀ ]) p) ∙
+    ∙-Ω-fmap (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) (Ω-fmap {!K₂-map⊙ ?!} (loop (Ω ⊙[ X , x₀ ]) p)) {!!} ∙
+    ap (Ω-fmap (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}}))) (K₂-map-β-pts (str (Loop2Grp-map f*)) p) ∙
     idp
       ==
     idp
-  Loop-zz₁-∼ p = ?
--}
+  Loop-zz₁-∼ p = {!!}
