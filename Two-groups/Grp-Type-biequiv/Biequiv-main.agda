@@ -39,9 +39,9 @@ module Biequiv-main where
   2Grp-Ptd02-bieq : (i : ULevel) → BiequivStr (Ptd02-bicat i) (2grp-bicat i)
 
   -- pseudofunctor from 2-groups to pointed connected 2-types
-  map-pf (Ψ-L (2Grp-Ptd02-bieq _)) = λ (G , η) → ⊙[ K₂ G η , base G {{η}} ] , ((K₂-is-conn G {{η}}) , (K₂-is-2type G {{η}}))
+  map-pf (Ψ-L (2Grp-Ptd02-bieq _)) (G , η) = ⊙[ K₂ G η , base G {{η}} ] , ((K₂-is-conn G {{η}}) , (K₂-is-2type G {{η}}))
   F₁ (str-pf (Ψ-L (2Grp-Ptd02-bieq _))) {_ , η₁} {_ , η₂} = K₂-action-hom {{η₁}} {{η₂}}
-  F-id₁ (str-pf (Ψ-L (2Grp-Ptd02-bieq _))) = λ (_ , η) → ⊙-crd∼-to-== (K₂-map-idf {{η}})
+  F-id₁ (str-pf (Ψ-L (2Grp-Ptd02-bieq _))) (_ , η) = ⊙-crd∼-to-== (K₂-map-idf {{η}})
   F-◻ (str-pf (Ψ-L (2Grp-Ptd02-bieq _))) {_ , η₁} {_ , η₂} {_ , η₃} =
     λ (cohgrphom _ {{σ₁}}) (cohgrphom _ {{σ₂}}) → ⊙-crd∼-to-== (K₂-map-∘ {{η₁}} {{η₂}} {{η₃}} σ₁ σ₂)
   F-ρ (str-pf (Ψ-L (2Grp-Ptd02-bieq _))) {_ , η₁} {_ , η₂} = K₂-ρ {{η₁}} {{η₂}}
@@ -49,12 +49,12 @@ module Biequiv-main where
   F-α (str-pf (Ψ-L (2Grp-Ptd02-bieq _))) {_ , η₁} {_ , η₂} {_ , η₃} {_ , η₄} = K₂-α {{η₁}} {{η₂}} {{η₃}} {{η₄}}
 
   -- pseudofunctor from pointed connected 2-types to 2-groups
-  map-pf (Ψ-R (2Grp-Ptd02-bieq _)) = λ (X , _ , tr) → (Ω X) , (Loop2Grp (pt X) {{has-level-apply tr (pt X) (pt X)}})
+  map-pf (Ψ-R (2Grp-Ptd02-bieq _)) (X , _ , tr) = (Ω X) , (Loop2Grp (pt X) {{has-level-apply tr (pt X) (pt X)}})
   F₁ (str-pf (Ψ-R (2Grp-Ptd02-bieq _))) {_ , _ , tr₁} {_ , _ , tr₂} = Loop2Grp-map {{tr₁}} {{tr₂}}
-  F-id₁ (str-pf (Ψ-R (2Grp-Ptd02-bieq _))) = λ (X , _ , tr) →
+  F-id₁ (str-pf (Ψ-R (2Grp-Ptd02-bieq _))) (X , _ , tr) =
     natiso2G-to-== {{Loop2Grp (pt X) {{has-level-apply tr (pt X) (pt X)}}}} {{Loop2Grp (pt X) {{has-level-apply tr (pt X) (pt X)}}}}
       (Loop2Grp-map-idf X {{tr}})
-  F-◻ (str-pf (Ψ-R (2Grp-Ptd02-bieq _))) {X₁ , _ , tr₁} {_ , _ , tr₂} {X₃ , _ , tr₃} = λ f g →
+  F-◻ (str-pf (Ψ-R (2Grp-Ptd02-bieq _))) {X₁ , _ , tr₁} {_ , _ , tr₂} {X₃ , _ , tr₃} f g =
     natiso2G-to-== {{Loop2Grp (pt X₁) {{has-level-apply tr₁ (pt X₁) (pt X₁)}}}} {{Loop2Grp (pt X₃) {{has-level-apply tr₃ (pt X₃) (pt X₃)}}}}
       (Loop2Grp-map-∘ {{tr₁}} {{tr₂}} {{tr₃}} g f)
   F-ρ (str-pf (Ψ-R (2Grp-Ptd02-bieq _))) {_ , _ , tr₁} {_ , _ , tr₂} = Ω-ρ {{tr₁}} {{tr₂}}
@@ -65,13 +65,13 @@ module Biequiv-main where
   η₀ (fst (ε (2Grp-Ptd02-bieq _))) (X , _ , tr) =
     K₂-rec-hom {{Loop2Grp (pt X) {{has-level-apply tr (pt X) (pt X)}}}} {{tr}} (pt X)
       (idf2G {{Loop2Grp (pt X) {{has-level-apply tr (pt X) (pt X)}}}})
-  η₁ (fst (ε (2Grp-Ptd02-bieq _))) {X₁ , _ , tr₁} {X₂ , _ , tr₂} = λ f → ⊙-crd∼-to-== (sq-KΩ {{tr₁}} {{tr₂}} (pt X₁) (pt X₂) f)
+  η₁ (fst (ε (2Grp-Ptd02-bieq _))) {X₁ , _ , tr₁} {X₂ , _ , tr₂} f = ⊙-crd∼-to-== (sq-KΩ {{tr₁}} {{tr₂}} (pt X₁) (pt X₂) f)
   coher-unit (fst (ε (2Grp-Ptd02-bieq _))) {_ , _ , tr} = KLoop-coher-unit {{tr}}
   coher-assoc (fst (ε (2Grp-Ptd02-bieq _))) {_ , _ , tr₁} {_ , _ , tr₂} {_ , _ , tr₃} = KLoop-coher-assoc {{tr₁}} {{tr₂}} {{tr₃}}
 
   -- pseudotransformation from identity to Ω ∘ K₂
   η₀ (fst (η (2Grp-Ptd02-bieq _))) (G , η) = K₂-loopmap G {{η}}
-  η₁ (fst (η (2Grp-Ptd02-bieq _))) {_ , η₁} {G₂ , η₂} = λ f →
+  η₁ (fst (η (2Grp-Ptd02-bieq _))) {_ , η₁} {G₂ , η₂} f =
     natiso2G-to-== {{η₁}} {{Loop2Grp (base G₂ {{η₂}}) {{has-level-apply (K₂-is-2type G₂ {{η₂}}) (base G₂ {{η₂}}) (base G₂ {{η₂}})}}}}
       (sq-ΩK {{η₁}} {{η₂}} (CohGrpHom.str {{η₁}} {{η₂}} f))
   coher-unit (fst (η (2Grp-Ptd02-bieq _))) {_ , η} = LoopK-coher-unit {{η}}
@@ -84,7 +84,47 @@ module Biequiv-main where
   -- the triangulator (or zig-zag identity)
   
   open import AdjEq-exmps
+  import Biadj
+  open Biadj.Biequiv-coh
+  import Pstransf-SIP
+  open Pstransf-SIP.InvMod
 
   2Grp-Ptd02-baeq : ∀ i → (Ptd02-bicat i) biadj-bieqv (2grp-bicat i)
   fst (2Grp-Ptd02-baeq i) = 2Grp-Ptd02-bieq i
-  snd (2Grp-Ptd02-baeq i) = do-later where postulate do-later : _
+  η₀-∼ (ζζ (snd (2Grp-Ptd02-baeq i))) (X , _ , tr) = fstcomp where postulate fstcomp : _
+  η₁-∼ (ζζ (snd (2Grp-Ptd02-baeq i))) {X₁ , _ , tr₁} {X₂ , _ , tr₂} f = {!!}
+
+{-
+ap
+(λ m →
+   m ∘2G
+   (PsfunctorNcStr.F₁ (Psfunctor-nc.str-pf idpfBC) ∘
+    PsfunctorNcStr.F₁ (Psfunctor-nc.str-pf Biadj.R₀))
+   f)
+(Biequiv-main.fstcomp i X₂ fst₁ tr₂)
+∙
+!
+(η₁
+ (fst
+  (Psftor-laws.unitl-ps-≃ Biadj.R₀ Pstransf-ops._.uvpsnat-≃-∙
+   Psftor-laws.unitr-ps-≃ Biadj.R₀))
+ f)
+∙
+!
+(ap
+ (λ f₁ →
+    (Loop2Grp-map ∘ PsfunctorNcStr.F₁ (Psfunctor-nc.str-pf idpfBC)) f
+    ∘2G f₁)
+ (Biequiv-main.fstcomp i X₁ fst₂ tr₁))
+∙
+η₁
+(fst
+ (Pstransf-ops.uvpsnat-≃-whisk-r (η (2Grp-Ptd02-bieq i)) Biadj.R₀
+  Pstransf-ops._.uvpsnat-≃-∙
+  (Psftor-laws.assoc-ps-≃ Biadj.R₀ Biadj.L₀ Biadj.R₀
+   Pstransf-ops._.uvpsnat-≃-∙
+   Pstransf-ops.uvpsnat-≃-whisk-l (ε (2Grp-Ptd02-bieq i))
+   (Ψ-R (2Grp-Ptd02-bieq i)))))
+f
+== idp
+-}
