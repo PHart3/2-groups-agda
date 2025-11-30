@@ -64,7 +64,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
 
     pstrans-whisk-r : {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} →
       Pstrans-nc R₁ R₂ → (G : Psfunctor-nc {{ξD}} {{ξB}}) → Pstrans-nc (R₁ ∘BC-s G) (R₂ ∘BC-s G)
-    η₀(pstrans-whisk-r τ G) x = η₀ τ (map-pf G x)
+    η₀ (pstrans-whisk-r τ G) x = η₀ τ (map-pf G x)
     η₁ (pstrans-whisk-r τ G) f = η₁ τ (F₁ (str-pf G) f)
 
     ps-≃-whisk-l : is-univ-bc ξC → {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} →
