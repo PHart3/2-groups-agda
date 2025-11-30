@@ -1,7 +1,6 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
-open import AdjEq
 open import AdjEq-exmps
 open import 2Grp-bc
 open import Ptd-bc

@@ -81,13 +81,10 @@ module Biequiv-main where
   snd (ε (2Grp-Ptd02-bieq _)) (_ , cX , tX) = KLoop-adjeq-str {{cX}} {{tX}}
   snd (η (2Grp-Ptd02-bieq _)) (_ , η) = Loop-adjeq-str {{η}}
 
-{-
   -- the triangulator (or zig-zag identity)
   
-  open import Biadj
   open import AdjEq-exmps
 
-  2Grp-Ptd02-baeq : ∀ i →  (Ptd02-bicat i) biadj-bieqv (2grp-bicat i)
+  2Grp-Ptd02-baeq : ∀ i → (Ptd02-bicat i) biadj-bieqv (2grp-bicat i)
   fst (2Grp-Ptd02-baeq i) = 2Grp-Ptd02-bieq i
-  snd (2Grp-Ptd02-baeq i) = ?
--}
+  snd (2Grp-Ptd02-baeq i) = do-later where postulate do-later : _
