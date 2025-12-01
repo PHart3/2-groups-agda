@@ -138,6 +138,6 @@ module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-lev
       ! (K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f p)) ◃∙
       idp ◃∙
       idp ◃∎
-        =ₛ₁⟨ 1 & 3 & ∙-unit-r (! (K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f p))) ⟩
+        =ₛ⟨ 2 & 2 & !-inv-l◃ idp ⟩
       ap (ap f) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) p) ◃∙
       ! (K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f p)) ◃∎ ∎ₛ
