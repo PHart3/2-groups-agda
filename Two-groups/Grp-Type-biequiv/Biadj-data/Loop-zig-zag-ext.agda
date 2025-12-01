@@ -75,26 +75,21 @@ module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-lev
 
   abstract
     Loop-zz₁-∼ : (f* : ⊙[ X , x₀ ] ⊙→ ⊙[ Y , y₀ ]) (p : x₀ == x₀) → 
-      K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (Ω-fmap f* p) ∙
-      ! (ap (Ω-fmap f*) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) p)) ∙
       ! (θ (Loop2Grp-map-∘ f* (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}}))) (loop p)) ∙
       Ω-fmap-ap (sq-KΩ x₀ y₀ f*) (loop p) ∙
       θ (Loop2Grp-map-∘ (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) (K₂-map⊙ (Loop2Grp-map-str f*))) (loop p) ∙
       ap (Ω-fmap (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}}))) (K₂-map-β-pts (str (Loop2Grp-map f*)) p) ∙
       idp
         ==
-      idp
+      ap (Ω-fmap f*) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) p) ∙
+      ! (K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (Ω-fmap f* p))
     Loop-zz₁-∼ f*@(f , idp) p = =ₛ-out $
-      K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f p) ◃∙
-      ! (ap (ap f) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) p)) ◃∙
       ! (ap-∘ f (fst (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}}))) (loop p)) ◃∙
       Ω-fmap-ap (sq-KΩ x₀ y₀ f*) (loop p) ◃∙
       ap-∘ (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}}))) (K₂-map (Loop2Grp-map-str f*)) (loop p) ◃∙
       ap (ap (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})))) (K₂-map-β-pts (str (Loop2Grp-map f*)) p) ◃∙
       idp ◃∎
-        =ₛ⟨ 3 & 1 & Ω-fmap-ap-hnat (sq-KΩ x₀ y₀ f*) (loop p) ⟩
-      K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f p) ◃∙
-      ! (ap (ap f) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) p)) ◃∙
+        =ₛ⟨ 1 & 1 & Ω-fmap-ap-hnat (sq-KΩ x₀ y₀ f*) (loop p) ⟩
       ! (ap-∘ f (fst (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}}))) (loop p)) ◃∙
       idp ◃∙
       ap (λ q → q) (hmtpy-nat-∙' (fst (sq-KΩ x₀ y₀ f*)) (loop p)) ◃∙
@@ -102,18 +97,14 @@ module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-lev
       ap-∘ (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}}))) (K₂-map (Loop2Grp-map-str f*)) (loop p) ◃∙
       ap (ap (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})))) (K₂-map-β-pts (str (Loop2Grp-map f*)) p) ◃∙
       idp ◃∎
-        =ₛ₁⟨ 3 & 2 & ap-idf (hmtpy-nat-∙' (fst (sq-KΩ x₀ y₀ f*)) (loop p)) ⟩
-      K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f p) ◃∙
-      ! (ap (ap f) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) p)) ◃∙
+        =ₛ₁⟨ 1 & 2 & ap-idf (hmtpy-nat-∙' (fst (sq-KΩ x₀ y₀ f*)) (loop p)) ⟩
       ! (ap-∘ f (fst (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}}))) (loop p)) ◃∙
       hmtpy-nat-∙' (fst (sq-KΩ x₀ y₀ f*)) (loop p) ◃∙
       idp ◃∙
       ap-∘ (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}}))) (K₂-map (Loop2Grp-map-str f*)) (loop p) ◃∙
       ap (ap (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})))) (K₂-map-β-pts (str (Loop2Grp-map f*)) p) ◃∙
       idp ◃∎
-        =ₛ⟨ 3 & 1 & sq-KΩ-K₂-β p f ⟩
-      K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f p) ◃∙
-      ! (ap (ap f) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) p)) ◃∙
+        =ₛ⟨ 1 & 1 & sq-KΩ-K₂-β p f ⟩
       ! (ap-∘ f (fst (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}}))) (loop p)) ◃∙
       ap-∘ f (fst (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}}))) (loop p) ◃∙
       ap (ap f) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) p) ◃∙
@@ -124,9 +115,7 @@ module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-lev
       ap-∘ (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}}))) (K₂-map (Loop2Grp-map-str f*)) (loop p) ◃∙
       ap (ap (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})))) (K₂-map-β-pts (str (Loop2Grp-map f*)) p) ◃∙
       idp ◃∎
-        =ₛ⟨ 2 & 2 & !-inv-l◃ (ap-∘ f (fst (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}}))) (loop p)) ⟩
-      K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f p) ◃∙
-      ! (ap (ap f) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) p)) ◃∙
+        =ₛ⟨ 0 & 2 & !-inv-l◃ (ap-∘ f (fst (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}}))) (loop p)) ⟩
       ap (ap f) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) p) ◃∙
       ! (K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f p)) ◃∙
       ! (ap (ap (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})))) (K₂-map-β-pts (Loop2Grp-map-str f*) p)) ◃∙
@@ -135,28 +124,20 @@ module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-lev
       ap-∘ (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}}))) (K₂-map (Loop2Grp-map-str f*)) (loop p) ◃∙
       ap (ap (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})))) (K₂-map-β-pts (str (Loop2Grp-map f*)) p) ◃∙
       idp ◃∎
-        =ₛ⟨ 1 & 2 & !-inv-l◃ (ap (ap f) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) p)) ⟩
-      K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f p) ◃∙
+        =ₛ₁⟨ 3 & 3 &
+          !-inv-l (ap-∘ (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}}))) (K₂-map (Loop2Grp-map-str f*)) (loop p)) ⟩
+      ap (ap f) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) p) ◃∙
       ! (K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f p)) ◃∙
       ! (ap (ap (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})))) (K₂-map-β-pts (Loop2Grp-map-str f*) p)) ◃∙
-      ! (ap-∘ (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}}))) (K₂-map (Loop2Grp-map-str f*)) (loop p)) ◃∙
-      idp ◃∙
-      ap-∘ (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}}))) (K₂-map (Loop2Grp-map-str f*)) (loop p) ◃∙
-      ap (ap (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})))) (K₂-map-β-pts (str (Loop2Grp-map f*)) p) ◃∙
-      idp ◃∎
-        =ₛ⟨ 0 & 2 & !-inv-r◃ (K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f p)) ⟩
-      ! (ap (ap (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})))) (K₂-map-β-pts (Loop2Grp-map-str f*) p)) ◃∙
-      ! (ap-∘ (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}}))) (K₂-map (Loop2Grp-map-str f*)) (loop p)) ◃∙
-      idp ◃∙
-      ap-∘ (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}}))) (K₂-map (Loop2Grp-map-str f*)) (loop p) ◃∙
-      ap (ap (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})))) (K₂-map-β-pts (str (Loop2Grp-map f*)) p) ◃∙
-      idp ◃∎
-        =ₛ₁⟨ 1 & 3 & !-inv-l (ap-∘ (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}}))) (K₂-map (Loop2Grp-map-str f*)) (loop p)) ⟩
-      ! (ap (ap (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})))) (K₂-map-β-pts (Loop2Grp-map-str f*) p)) ◃∙
       idp ◃∙
       ap (ap (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})))) (K₂-map-β-pts (str (Loop2Grp-map f*)) p) ◃∙
       idp ◃∎
-        =ₛ₁⟨ 0 & 3 & !-inv-l (ap (ap (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})))) (K₂-map-β-pts (Loop2Grp-map-str f*) p)) ⟩
-      idp ◃∙ idp ◃∎
-        =ₛ₁⟨ idp ⟩
-      idp ◃∎ ∎ₛ
+        =ₛ₁⟨ 2 & 3 &
+          !-inv-l (ap (ap (fst (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})))) (K₂-map-β-pts (Loop2Grp-map-str f*) p)) ⟩
+      ap (ap f) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) p) ◃∙
+      ! (K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f p)) ◃∙
+      idp ◃∙
+      idp ◃∎
+        =ₛ₁⟨ 1 & 3 & ∙-unit-r (! (K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f p))) ⟩
+      ap (ap f) (K₂-rec-hom-β-pts x₀ (idf2G {{Loop2Grp x₀}}) p) ◃∙
+      ! (K₂-rec-hom-β-pts y₀ (idf2G {{Loop2Grp y₀}}) (ap f p)) ◃∎ ∎ₛ

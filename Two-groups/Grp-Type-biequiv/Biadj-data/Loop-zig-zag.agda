@@ -42,27 +42,6 @@ module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-lev
 
   abstract
     Loop-zz₁ :
-      ap (λ m →  m ∘2G Loop2Grp-map f) (Loop-zz₀ y₀) ◃∙
-      ! (
-      natiso2G-to-== (assoc-wksgrphom
-        (grphom-forg (Loop2Grp-map f))
-        (idf2Mw {{sgrp (Loop2Grp x₀)}})
-        (idf2Mw {{sgrp (Loop2Grp x₀)}})) ∙
-      ap (λ m → m ∘2G idf2Mw {{Loop2Grp x₀}})
-        (! (natiso2G-to-== (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f)))) ∙
-        natiso2G-to-== (unit-wksgrphom-l (grphom-forg (Loop2Grp-map f)))) ∙
-      ! (natiso2G-to-== (assoc-wksgrphom
-          (idf2Mw {{sgrp (Loop2Grp y₀)}})
-          (grphom-forg (Loop2Grp-map f))
-          (idf2Mw {{sgrp (Loop2Grp x₀)}}))) ∙
-      ap (λ m → cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp x₀}}}} ∘2G m)
-        (! (natiso2G-to-== (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f)))) ∙
-        natiso2G-to-== (unit-wksgrphom-l (grphom-forg (Loop2Grp-map f)))) ∙
-      natiso2G-to-== (assoc-wksgrphom
-        (idf2Mw {{sgrp (Loop2Grp y₀)}})
-        (idf2Mw {{sgrp (Loop2Grp y₀)}})
-        (grphom-forg (Loop2Grp-map f)))) ◃∙
-      ! (ap (λ m → Loop2Grp-map f ∘2G m) (Loop-zz₀ y₀)) ◃∙
       natiso2G-to-== (assoc-wksgrphom
         (grphom-forg (Loop2Grp-map f))
         (grphom-forg
@@ -107,5 +86,24 @@ module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-lev
         (grphom-forg (K₂-loopmap (Ω ⊙[ Y , y₀ ])))
         (grphom-forg (Loop2Grp-map f))) ◃∎
         =ₛ
-      idp ◃∎
+      ap (λ m → Loop2Grp-map f ∘2G m) (Loop-zz₀ y₀) ◃∙
+      natiso2G-to-== (assoc-wksgrphom
+        (grphom-forg (Loop2Grp-map f))
+        (idf2Mw {{sgrp (Loop2Grp x₀)}})
+        (idf2Mw {{sgrp (Loop2Grp x₀)}})) ◃∙
+      ap (λ m → m ∘2G idf2Mw {{Loop2Grp x₀}})
+        (! (natiso2G-to-== (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f)))) ∙
+        natiso2G-to-== (unit-wksgrphom-l (grphom-forg (Loop2Grp-map f)))) ◃∙
+      ! (natiso2G-to-== (assoc-wksgrphom
+          (idf2Mw {{sgrp (Loop2Grp y₀)}})
+          (grphom-forg (Loop2Grp-map f))
+          (idf2Mw {{sgrp (Loop2Grp x₀)}}))) ◃∙
+      ap (λ m → cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp x₀}}}} ∘2G m)
+        (! (natiso2G-to-== (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f)))) ∙
+        natiso2G-to-== (unit-wksgrphom-l (grphom-forg (Loop2Grp-map f)))) ◃∙
+      natiso2G-to-== (assoc-wksgrphom
+        (idf2Mw {{sgrp (Loop2Grp y₀)}})
+        (idf2Mw {{sgrp (Loop2Grp y₀)}})
+        (grphom-forg (Loop2Grp-map f))) ◃∙
+      ! (ap (λ m →  m ∘2G Loop2Grp-map f) (Loop-zz₀ y₀)) ◃∎
     Loop-zz₁ = =ₛ-out $
