@@ -10,7 +10,7 @@ open import SqKLoop
 open import K-hom-ind
 import Delooping
 
-module Biadj-data.Loop-zig-zag-aux where
+module Biadj-data.Loop-zig-zag-ext-aux where
 
 module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-level 2 Y}} {x₀ : X}
   (p : x₀ == x₀) (f : X → Y) where

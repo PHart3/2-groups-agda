@@ -89,42 +89,9 @@ module Biequiv-main where
   import Pstransf-SIP
   open Pstransf-SIP.InvMod
 
+  open import Biadj-data.Loop-zig-zag
+
   2Grp-Ptd02-baeq : ∀ i → (Ptd02-bicat i) biadj-bieqv (2grp-bicat i)
   fst (2Grp-Ptd02-baeq i) = 2Grp-Ptd02-bieq i
-  η₀-∼ (ζζ (snd (2Grp-Ptd02-baeq i))) (X , _ , tr) = fstcomp where postulate fstcomp : _
-  η₁-∼ (ζζ (snd (2Grp-Ptd02-baeq i))) {X₁ , _ , tr₁} {X₂ , _ , tr₂} f = {!!}
-
-{-
-ap
-(λ m →
-   m ∘2G
-   (PsfunctorNcStr.F₁ (Psfunctor-nc.str-pf idpfBC) ∘
-    PsfunctorNcStr.F₁ (Psfunctor-nc.str-pf Biadj.R₀))
-   f)
-(Biequiv-main.fstcomp i X₂ fst₁ tr₂)
-∙
-!
-(η₁
- (fst
-  (Psftor-laws.unitl-ps-≃ Biadj.R₀ Pstransf-ops._.uvpsnat-≃-∙
-   Psftor-laws.unitr-ps-≃ Biadj.R₀))
- f)
-∙
-!
-(ap
- (λ f₁ →
-    (Loop2Grp-map ∘ PsfunctorNcStr.F₁ (Psfunctor-nc.str-pf idpfBC)) f
-    ∘2G f₁)
- (Biequiv-main.fstcomp i X₁ fst₂ tr₁))
-∙
-η₁
-(fst
- (Pstransf-ops.uvpsnat-≃-whisk-r (η (2Grp-Ptd02-bieq i)) Biadj.R₀
-  Pstransf-ops._.uvpsnat-≃-∙
-  (Psftor-laws.assoc-ps-≃ Biadj.R₀ Biadj.L₀ Biadj.R₀
-   Pstransf-ops._.uvpsnat-≃-∙
-   Pstransf-ops.uvpsnat-≃-whisk-l (ε (2Grp-Ptd02-bieq i))
-   (Ψ-R (2Grp-Ptd02-bieq i)))))
-f
-== idp
--}
+  η₀-∼ (ζζ (snd (2Grp-Ptd02-baeq i))) (X , _ , tr) = Loop-zz₀ {{tr}} (pt X)
+  η₁-∼ (ζζ (snd (2Grp-Ptd02-baeq i))) {X₁ , _ , tr₁} {X₂ , _ , tr₂} f = =ₛ-out (Loop-zz₁ {{tr₁}} {{tr₂}} f)

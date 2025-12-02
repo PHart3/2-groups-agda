@@ -11,22 +11,15 @@ open import Hmtpy2Grp
 open import KFunctor
 open import LoopK-hom
 import Delooping
-open import Biadj-data.Loop-zig-zag-ext
+open import Biadj-data.Loop-zig-zag-defs
 
--- the invertible modification making up the triangulator for our biadjoint biequivalence
-
-module Biadj-data.Loop-zig-zag where
+module Biadj-data.Loop-zig-zag-aux1 where
 
 open CohGrp {{...}}
 open CohGrpHom
 open WkSGrpNatIso
 open WkSGrpHomStr
 
-open import Biadj-data.Loop-zig-zag-defs public
-
--- Recall the first component: Loop-zz₀ = natiso2G-to-== (Loop-zz₀-iso x₀)
-
--- second component of triangulator
 module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-level 2 Y}} {x₀ : X} {y₀ : Y}
   (f : ⊙[ X , x₀ ] ⊙→ ⊙[ Y , y₀ ]) where
 
@@ -35,8 +28,9 @@ module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-lev
   
   open Delooping
   open Loop-zz-defs f
-  
-  abstract
-    Loop-zz₁ : ρ₁ =ₛ ρ₂      
-    Loop-zz₁ = hold where postulate hold : _
 
+  ρ₁-translate :
+    ρ₁
+      =ₛ
+    {!!}
+  ρ₁-translate = {!!}
