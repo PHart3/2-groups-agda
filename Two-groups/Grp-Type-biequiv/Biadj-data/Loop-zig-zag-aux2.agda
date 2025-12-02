@@ -20,8 +20,8 @@ open CohGrpHom
 open WkSGrpNatIso
 open WkSGrpHomStr
 
-module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-level 2 Y}} {x₀ : X} {y₀ : Y}
-  (f : ⊙[ X , x₀ ] ⊙→ ⊙[ Y , y₀ ]) where
+module Loop-zz-aux2 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-level 2 Y}} {x₀ : X} {y₀ : Y}
+  {f : ⊙[ X , x₀ ] ⊙→ ⊙[ Y , y₀ ]} where
 
   open import SqKLoop
   open import SqLoopK
@@ -29,8 +29,9 @@ module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-lev
   open Delooping
   open Loop-zz-defs f
 
-  ρ₂-translate :
-    ρ₂
-      =ₛ
-    {!!}
-  ρ₂-translate = {!!}
+  abstract
+    ρ₂-translate :
+      ρ₂
+        =ₛ
+      {!!}
+    ρ₂-translate = {!!}

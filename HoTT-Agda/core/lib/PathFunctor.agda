@@ -91,6 +91,10 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → ap f (! p ∙ q ∙ r) == ! (ap f p) ∙ ap f q ∙ ap f r
   ap-!∙∙ idp idp r = idp
 
+  ap-!∙∙◃ : {x y z w : A} (p : y == x) (q : y == z) (r : z == w)
+    → ap f (! p ∙ q ∙ r) ◃∎ =ₛ ! (ap f p) ◃∙ ap f q ◃∙ ap f r ◃∎
+  ap-!∙∙◃ idp idp r = =ₛ-in idp
+
   ap-∙∙!! : {x y z w v : A} (p : x == y) (q : y == z) (r : w == z) (s : v == w)
     → ap f (p ∙ q ∙ ! r ∙ ! s) ◃∎ =ₛ ap f p ◃∙ ap f q ◃∙ ! (ap f r) ◃∙ ! (ap f s) ◃∎ 
   ap-∙∙!! idp idp idp idp = =ₛ-in idp
