@@ -12,6 +12,7 @@ open import KFunctor
 open import LoopK-hom
 import Delooping
 open import Biadj-data.Loop-zig-zag-defs
+open import Biadj-data.Loop-zig-zag-aux0
 
 module Biadj-data.Loop-zig-zag-aux1 where
 
@@ -28,6 +29,7 @@ module Loop-zz-aux1 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{η
   
   open Delooping
   open Loop-zz-defs f
+  open Loop-zz-aux0 public
 
   abstract
     ρ₁-translate :
