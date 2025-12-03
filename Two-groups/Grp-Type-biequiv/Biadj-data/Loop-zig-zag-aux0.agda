@@ -14,6 +14,7 @@ open import LoopK-hom
 open import LoopFunctor-ap
 open import SqKLoop
 import Delooping
+open import Biadj-data.Loop-zig-zag-defs
 open import Biadj-data.Loop-zig-zag-aux0-defs
 
 module Biadj-data.Loop-zig-zag-aux0 where
@@ -22,6 +23,7 @@ module Loop-zz-aux0 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{η
   (f : ⊙[ X , x₀ ] ⊙→ ⊙[ Y , y₀ ]) where
 
   open Delooping
+  open Loop-zz-defs f
   open Loop-zz-aux0-defs f
 
   σ-trans :
@@ -55,18 +57,13 @@ module Loop-zz-aux0 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{η
     σ-translate0 =
       τ₀
         =ₛ⟨ 3 & 1 & ap-!∙◃ (λ m → Loop2Grp-map (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) ∘2G m)
-            (natiso2G-to-== υ₂0)
-            (natiso2G-to-== υ₂1) ⟩
+            (natiso2G-to-== υ₂0) (natiso2G-to-== υ₂1) ⟩
       τ₁
         =ₛ₁⟨ 3 & 1 & ! (!-whisk2G-conv-l υ₂0) ⟩
       τ₂
         =ₛ₁⟨ 4 & 1 & ! (whisk2G-conv-l υ₂1) ⟩
       τ₃
-        =ₛ₁⟨ 2 & 1 & ! (natiso2G-! $
-          assoc-wksgrphom
-            (grphom-forg (Loop2Grp-map (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}}))))
-            (grphom-forg (Loop2Grp-map (K₂-action-hom (Loop2Grp-map f))))
-            (idf2Mw {{sgrp (Loop2Grp (base (Ω ⊙[ X , x₀ ])))}})) ⟩
+        =ₛ₁⟨ 2 & 1 & ! (natiso2G-! α₂) ⟩
       τ₄ ∎ₛ
       
     σ-translate1 : τ₄ =ₛ τ₇
@@ -103,5 +100,9 @@ module Loop-zz-aux0 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{η
       natiso2G-to-== σ-trans ◃∎ ∎ₛ
 
   abstract
-    σ-translate : τ₀ =ₛ natiso2G-to-== σ-trans ◃∎
-    σ-translate = σ-translate0 ∙ₛ σ-translate1 ∙ₛ σ-translate2
+    σ-translate-ₛ : τ₀ =ₛ natiso2G-to-== σ-trans ◃∎
+    σ-translate-ₛ = σ-translate0 ∙ₛ σ-translate1 ∙ₛ σ-translate2
+
+  abstract
+    σ-translate : σ == natiso2G-to-== σ-trans
+    σ-translate = =ₛ-out σ-translate-ₛ

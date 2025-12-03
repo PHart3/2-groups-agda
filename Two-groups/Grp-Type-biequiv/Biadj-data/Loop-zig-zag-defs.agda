@@ -11,9 +11,10 @@ open import Hmtpy2Grp
 open import KFunctor
 open import LoopK-hom
 import Delooping
-open import Biadj-data.Loop-zig-zag-ext
 
 module Biadj-data.Loop-zig-zag-defs where
+
+open import Biadj-data.Loop-zig-zag-ext public
 
 open CohGrp {{...}}
 open CohGrpHom

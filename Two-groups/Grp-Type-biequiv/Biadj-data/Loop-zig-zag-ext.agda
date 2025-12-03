@@ -63,7 +63,7 @@ module _ {i} {X : Type i} {{ηX : has-level 2 X}} (x₀ : X) where
         idp ◃∎ ∎ₛ
 
 -- second component (in an extensional form) of triangulator
-module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-level 2 Y}} (x₀ : X) (y₀ : Y)  where
+module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-level 2 Y}} {x₀ : X} {y₀ : Y} where
 
   open import SqKLoop
   open import K-hom-ind
