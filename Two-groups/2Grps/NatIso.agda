@@ -90,7 +90,8 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkSGrp G₁}} {{η₂ :
   natiso∼-to-==-∙ : {ι ρ κ : WkSGrpNatIso μ₁ μ₂} (H₂ : θ ρ ∼ θ κ) (H₁ : θ ι ∼ θ ρ)
     → natiso∼-to-== {ρ = ρ} H₁ ∙ natiso∼-to-== H₂ == natiso∼-to-== {ι = ι} {ρ = κ} (λ x → H₁ x ∙ H₂ x)
   natiso∼-to-==-∙ {ι} {ρ} = 
-    natiso∼-ind {ρ} (λ κ H₂ → (H₁ : θ ι ∼ θ ρ) → natiso∼-to-== {ρ = ρ} H₁ ∙ natiso∼-to-== H₂ == natiso∼-to-== {ι = ι} {ρ = κ} (λ x → H₁ x ∙ H₂ x))
+    natiso∼-ind {ρ} (λ κ H₂ → (H₁ : θ ι ∼ θ ρ) →
+      natiso∼-to-== {ρ = ρ} H₁ ∙ natiso∼-to-== H₂ == natiso∼-to-== {ι = ι} {ρ = κ} (λ x → H₁ x ∙ H₂ x))
       λ H₁ → ap (λ e → natiso∼-to-== H₁ ∙ e) natiso∼-to-==-β ∙ ∙-unit-r _ ∙ ! (ap natiso∼-to-== (λ= (λ x → ∙-unit-r (H₁ x))))
 
 module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkSGrp G₁}} {{η₂ : WkSGrp G₂}} where
@@ -109,3 +110,10 @@ module _ {i j k} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkSGrp G₁}} {{η₂
 
   natiso-whisk-l-id : (ν : WkSGrpWkHom {{η₁}} {{η₂}}) → natiso-whisk-l {μ = μ} (natiso-id ν) == natiso-id (μ ∘2Mw ν)
   natiso-whisk-l-id ν = natiso∼-to-== λ x → idp
+
+module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkSGrp G₁}} {{η₂ : WkSGrp G₂}}
+  {μ₁ μ₂ μ₃ : WkSGrpWkHom {{η₁}} {{η₂}}} where
+
+  abstract
+    natiso-∘=∘' : {n₁ : WkSGrpNatIso μ₂ μ₃} (n₂ : WkSGrpNatIso μ₁ μ₂) → n₁ natiso-∘ n₂ == n₁ natiso-∘' n₂
+    natiso-∘=∘' {n₁} n₂ = natiso∼-to-== λ x → ∙=∙' (θ n₂ x) (θ n₁ x)

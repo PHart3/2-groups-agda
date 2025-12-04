@@ -1,10 +1,10 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=4 --lossy-unification #-}
+{-# OPTIONS --without-K --rewriting --overlapping-instances --instance-search-depth=4 #-}
 
 open import lib.Basics
 open import 2Grp
 open import 2GrpMap
-open import 2Semigroup
 open import 2SGrpMap
+open import NatIso
 open import Hmtpy2Grp
 open import Biadj-data.Loop-zig-zag-aux1
 open import Biadj-data.Loop-zig-zag-aux2c
@@ -23,17 +23,15 @@ module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-lev
   
   open Loop-zz-defs f
   open Loop-zz-aux1 f
-  open Loop-zz-aux2a f
   open Loop-zz-aux2c f
-  
+
   abstract
     Loop-zz₁ : ρ₁ =ₛ ρ₂      
     Loop-zz₁ =
       ρ₁
-        =ₛ⟨ ρ₁-translate ⟩
-      natiso-to-== ρ₁-trans ◃∎
-        =ₛ₁⟨ ap natiso-to-== (natiso∼-to-== (Loop-zz₁-∼ f)) ⟩
-      natiso-to-== ρ₂-trans ◃∎
-        =ₛ⟨ !ₛ ρ₂-translate ⟩
+        =ₛ⟨ ρ₁-translate' ⟩
+      natiso2G-to-== ρ₁-trans' ◃∎
+        =ₛ₁⟨ ap natiso2G-to-== (natiso∼-to-== (Loop-zz₁-∼ f)) ⟩
+      natiso2G-to-== ρ₂-trans' ◃∎
+        =ₛ⟨ !ₛ ρ₂-translate' ⟩
       ρ₂ ∎ₛ
-

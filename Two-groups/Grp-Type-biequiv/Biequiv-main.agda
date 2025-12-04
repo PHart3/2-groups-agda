@@ -55,7 +55,8 @@ module Biequiv-main where
     natiso2G-to-== {{Loop2Grp (pt X) {{has-level-apply tr (pt X) (pt X)}}}} {{Loop2Grp (pt X) {{has-level-apply tr (pt X) (pt X)}}}}
       (Loop2Grp-map-idf X {{tr}})
   F-◻ (str-pf (Ψ-R (2Grp-Ptd02-bieq _))) {X₁ , _ , tr₁} {_ , _ , tr₂} {X₃ , _ , tr₃} f g =
-    natiso2G-to-== {{Loop2Grp (pt X₁) {{has-level-apply tr₁ (pt X₁) (pt X₁)}}}} {{Loop2Grp (pt X₃) {{has-level-apply tr₃ (pt X₃) (pt X₃)}}}}
+    natiso2G-to-== {{Loop2Grp (pt X₁) {{has-level-apply tr₁ (pt X₁) (pt X₁)}}}}
+      {{Loop2Grp (pt X₃) {{has-level-apply tr₃ (pt X₃) (pt X₃)}}}}
       (Loop2Grp-map-∘ {{tr₁}} {{tr₂}} {{tr₃}} g f)
   F-ρ (str-pf (Ψ-R (2Grp-Ptd02-bieq _))) {_ , _ , tr₁} {_ , _ , tr₂} = Ω-ρ {{tr₁}} {{tr₂}}
   F-λ (str-pf (Ψ-R (2Grp-Ptd02-bieq _))) {_ , _ , tr₁} {_ , _ , tr₂} = Ω-λ {{tr₁}} {{tr₂}}

@@ -8,6 +8,7 @@ open import 2GrpMap
 open import 2GrpMap-conv
 open import 2Semigroup
 open import 2SGrpMap
+open import NatIso
 open import Hmtpy2Grp
 open import KFunctor
 open import LoopK-hom
@@ -106,3 +107,85 @@ module Loop-zz-aux0 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{η
   abstract
     σ-translate : σ == natiso2G-to-== σ-trans
     σ-translate = =ₛ-out σ-translate-ₛ
+
+  σ-trans' :
+    CohGrpNatIso
+      (Loop2Grp-map f ∘2G
+      Loop2Grp-map (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}})) ∘2G
+      cohgrphom (idf _) {{idf2G {{Loop2Grp (base (Ω ⊙[ X , x₀ ]))}}}})
+      ((Loop2Grp-map (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) ∘2G
+      cohgrphom (idf _) {{idf2G {{Loop2Grp (base (Ω ⊙[ Y , y₀ ]))}}}}) ∘2G
+      Loop2Grp-map (K₂-action-hom (Loop2Grp-map f)))
+  σ-trans' =
+    α₃
+      natiso-∘'
+    (natiso-whisk-l υ₂1)
+      natiso-∘'
+    (!ʷ (natiso-whisk-l υ₂0))
+      natiso-∘'
+    (!ʷ α₂)
+      natiso-∘'
+    (natiso-whisk-r (Loop2Grp-map-∘ (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) (K₂-map⊙ (Loop2Grp-map-str f))))
+      natiso-∘
+    (natiso-whisk-r (Loop2Grp-map-ap (sq-KΩ x₀ y₀ f)))
+      natiso-∘
+    (!ʷ (natiso-whisk-r (Loop2Grp-map-∘ f (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}})))))
+      natiso-∘
+    α₁
+    
+  abstract
+    σ-translate-suff : σ-trans == σ-trans'
+    σ-translate-suff =
+      natiso-∘=∘'
+        {n₁ = α₃} 
+        ((natiso-whisk-l υ₂1)
+          natiso-∘
+        (!ʷ (natiso-whisk-l υ₂0))
+          natiso-∘
+        (!ʷ α₂)
+          natiso-∘
+        (natiso-whisk-r (Loop2Grp-map-∘ (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) (K₂-map⊙ (Loop2Grp-map-str f))))
+          natiso-∘
+        (natiso-whisk-r (Loop2Grp-map-ap (sq-KΩ x₀ y₀ f)))
+          natiso-∘
+        (!ʷ (natiso-whisk-r (Loop2Grp-map-∘ f (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}})))))
+          natiso-∘
+        α₁) ∙
+      ap (λ n → α₃ natiso-∘' n)
+        (natiso-∘=∘'
+          ((!ʷ (natiso-whisk-l υ₂0))
+            natiso-∘
+          (!ʷ α₂)
+            natiso-∘
+          (natiso-whisk-r (Loop2Grp-map-∘ (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) (K₂-map⊙ (Loop2Grp-map-str f))))
+            natiso-∘
+          (natiso-whisk-r (Loop2Grp-map-ap (sq-KΩ x₀ y₀ f)))
+            natiso-∘
+          (!ʷ (natiso-whisk-r (Loop2Grp-map-∘ f (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}})))))
+            natiso-∘
+          α₁)) ∙
+      ap (λ n → α₃ natiso-∘' natiso-whisk-l υ₂1 natiso-∘' n)
+        (natiso-∘=∘'
+          ((!ʷ α₂)
+            natiso-∘
+          (natiso-whisk-r (Loop2Grp-map-∘ (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) (K₂-map⊙ (Loop2Grp-map-str f))))
+            natiso-∘
+          (natiso-whisk-r (Loop2Grp-map-ap (sq-KΩ x₀ y₀ f)))
+            natiso-∘
+          (!ʷ (natiso-whisk-r (Loop2Grp-map-∘ f (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}})))))
+            natiso-∘
+          α₁)) ∙
+      ap (λ n → α₃ natiso-∘' natiso-whisk-l υ₂1 natiso-∘' !ʷ (natiso-whisk-l υ₂0) natiso-∘' n)
+        (natiso-∘=∘'
+          {n₁ = !ʷ α₂}
+          ((natiso-whisk-r (Loop2Grp-map-∘ (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) (K₂-map⊙ (Loop2Grp-map-str f))))
+            natiso-∘
+          (natiso-whisk-r (Loop2Grp-map-ap (sq-KΩ x₀ y₀ f)))
+            natiso-∘
+          (!ʷ (natiso-whisk-r (Loop2Grp-map-∘ f (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}})))))
+            natiso-∘
+          α₁))
+
+  abstract
+    σ-translate' : σ == natiso2G-to-== σ-trans'
+    σ-translate' = σ-translate ∙ ap natiso2G-to-== σ-translate-suff

@@ -4,7 +4,6 @@ open import lib.Basics
 open import lib.types.LoopSpace
 open import 2Grp
 open import 2GrpMap
-open import 2Semigroup
 open import 2SGrpMap
 open import Hmtpy2Grp
 open import KFunctor
@@ -69,7 +68,7 @@ module Loop-zz-aux1-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
         cohgrphom (idf _) {{idf2G {{Loop2Grp (base (Ω ⊙[ X , x₀ ]))}}}})) ∘2G
         K₂-loopmap (Ω ⊙[ X , x₀ ])}
       α₁ ◃∙
-    natiso2G-to-== (natiso-whisk-r {μ = grphom-forg (K₂-loopmap (Ω ⊙[ X , x₀ ]))} σ-trans) ◃∙
+    natiso2G-to-== (natiso-whisk-r {μ = grphom-forg (K₂-loopmap (Ω ⊙[ X , x₀ ]))} σ-trans') ◃∙
     natiso2G-to-==
       {μ =
         ((Loop2Grp-map (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) ∘2G
@@ -191,7 +190,7 @@ module Loop-zz-aux1-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
     K₂-loopmap (Ω ⊙[ Y , y₀ ]) ∘2G
     Loop2Grp-map f
   τ₄ =
-    ap (λ m → m ∘2G K₂-loopmap (Ω ⊙[ X , x₀ ])) (natiso2G-to-== σ-trans) ◃∙
+    ap (λ m → m ∘2G K₂-loopmap (Ω ⊙[ X , x₀ ])) (natiso2G-to-== σ-trans') ◃∙
     natiso2G-to-==
       {μ =
         ((Loop2Grp-map (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) ∘2G
@@ -221,7 +220,7 @@ module Loop-zz-aux1-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
     K₂-loopmap (Ω ⊙[ Y , y₀ ]) ∘2G
     Loop2Grp-map f
   τ₅ = 
-    natiso2G-to-== (natiso-whisk-r {μ = grphom-forg (K₂-loopmap (Ω ⊙[ X , x₀ ]))} σ-trans) ◃∙
+    natiso2G-to-== (natiso-whisk-r {μ = grphom-forg (K₂-loopmap (Ω ⊙[ X , x₀ ]))} σ-trans') ◃∙
     natiso2G-to-==
       {μ =
         ((Loop2Grp-map (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) ∘2G

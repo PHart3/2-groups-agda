@@ -7,6 +7,7 @@ open import 2GrpMap
 open import 2GrpMap-conv
 open import 2Semigroup
 open import 2SGrpMap
+open import NatIso
 open import Hmtpy2Grp
 open import KFunctor
 open import LoopK-hom
@@ -47,7 +48,7 @@ module Loop-zz-aux1 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{η
       natiso-∘
     (!ʷ α₂)
       natiso-∘
-    (natiso-whisk-r {μ = grphom-forg (K₂-loopmap (Ω ⊙[ X , x₀ ]))} σ-trans)
+    (natiso-whisk-r {μ = grphom-forg (K₂-loopmap (Ω ⊙[ X , x₀ ]))} σ-trans')
       natiso-∘
     α₁
 
@@ -55,13 +56,17 @@ module Loop-zz-aux1 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{η
     ρ₁-translate-mid : τ₁ =ₛ τ₅
     ρ₁-translate-mid =
       τ₁
-        =ₛ₁⟨ 2 & 1 & ! (whisk2G-conv-l (sq-ΩK (Loop2Grp-map-str f))) ⟩
+        =ₛ₁⟨ 2 & 1 & ! (whisk2G-conv-l
+          {f₂ =
+            (Loop2Grp-map (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) ∘2G
+            cohgrphom (idf _) {{idf2G {{Loop2Grp (base (Ω ⊙[ Y , y₀ ]))}}}})}
+          (sq-ΩK (Loop2Grp-map-str f))) ⟩
       τ₂
         =ₛ₁⟨ 1 & 1 & ! (natiso2G-! α₂) ⟩
       τ₃
-        =ₛ₁⟨ 0 & 1 & ap (ap (λ m → m ∘2G K₂-loopmap (Ω ⊙[ X , x₀ ]))) σ-translate ⟩
+        =ₛ₁⟨ 0 & 1 & ap (ap (λ m → m ∘2G K₂-loopmap (Ω ⊙[ X , x₀ ]))) σ-translate' ⟩
       τ₄
-        =ₛ₁⟨ 0 & 1 & ! (whisk2G-conv-r σ-trans) ⟩
+        =ₛ₁⟨ 0 & 1 & ! (whisk2G-conv-r {f₁ = K₂-loopmap (Ω ⊙[ X , x₀ ])} σ-trans') ⟩
       τ₅ ∎ₛ
 
   abstract
@@ -72,7 +77,7 @@ module Loop-zz-aux1 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{η
       ρ₁-mid
         =ₛ⟨ ∘2G-conv-quint
               α₁
-              (natiso-whisk-r {μ = grphom-forg (K₂-loopmap (Ω ⊙[ X , x₀ ]))} σ-trans)
+              (natiso-whisk-r {μ = grphom-forg (K₂-loopmap (Ω ⊙[ X , x₀ ]))} σ-trans')
               (!ʷ α₂)
               (natiso-whisk-l
                 {μ = grphom-forg $
@@ -81,3 +86,87 @@ module Loop-zz-aux1 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{η
                 (sq-ΩK (Loop2Grp-map-str f)))
               α₃ ⟩
       natiso2G-to-== ρ₁-trans ◃∎ ∎ₛ
+
+  ρ₁-trans' : CohGrpNatIso
+    (Loop2Grp-map f ∘2G
+    (Loop2Grp-map (K₂-rec-hom x₀ (idf2G {{Loop2Grp x₀}})) ∘2G
+    cohgrphom (idf _) {{idf2G {{Loop2Grp (base (Ω ⊙[ X , x₀ ]))}}}}) ∘2G
+    K₂-loopmap (Ω ⊙[ X , x₀ ]))
+    (((Loop2Grp-map (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) ∘2G
+    cohgrphom (idf _) {{idf2G {{Loop2Grp (base (Ω ⊙[ Y , y₀ ]))}}}}) ∘2G
+    K₂-loopmap (Ω ⊙[ Y , y₀ ])) ∘2G
+    Loop2Grp-map f)
+  ρ₁-trans' =
+    α₃
+      natiso-∘'
+    ((natiso-whisk-l
+      {μ = grphom-forg $
+        (Loop2Grp-map (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) ∘2G
+        cohgrphom (idf _) {{idf2G {{Loop2Grp (base (Ω ⊙[ Y , y₀ ]))}}}})}
+      (sq-ΩK (Loop2Grp-map-str f)))
+      natiso-∘
+    ((!ʷ α₂)
+      natiso-∘'
+    (natiso-whisk-r {μ = grphom-forg (K₂-loopmap (Ω ⊙[ X , x₀ ]))} σ-trans')
+      natiso-∘
+    α₁))
+
+  abstract
+    ρ₁-translate-suff-aux :
+      α₃
+        natiso-∘'
+      ((natiso-whisk-l
+        {μ = grphom-forg $
+          (Loop2Grp-map (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) ∘2G
+          cohgrphom (idf _) {{idf2G {{Loop2Grp (base (Ω ⊙[ Y , y₀ ]))}}}})}
+        (sq-ΩK (Loop2Grp-map-str f)))
+        natiso-∘
+      (!ʷ α₂)
+        natiso-∘
+      (natiso-whisk-r {μ = grphom-forg (K₂-loopmap (Ω ⊙[ X , x₀ ]))} σ-trans')
+        natiso-∘
+      α₁)
+        ==
+      α₃
+        natiso-∘'
+      ((natiso-whisk-l
+        {μ = grphom-forg $
+          (Loop2Grp-map (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) ∘2G
+          cohgrphom (idf _) {{idf2G {{Loop2Grp (base (Ω ⊙[ Y , y₀ ]))}}}})}
+        (sq-ΩK (Loop2Grp-map-str f)))
+        natiso-∘
+      ((!ʷ α₂)
+        natiso-∘'
+      (natiso-whisk-r {μ = grphom-forg (K₂-loopmap (Ω ⊙[ X , x₀ ]))} σ-trans')
+        natiso-∘
+      α₁))
+    ρ₁-translate-suff-aux =
+      ap (λ n → α₃ natiso-∘' n) $
+        ap (λ n →
+             natiso-whisk-l
+               {μ = grphom-forg $
+                 (Loop2Grp-map (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) ∘2G
+                 cohgrphom (idf _) {{idf2G {{Loop2Grp (base (Ω ⊙[ Y , y₀ ]))}}}})}
+               (sq-ΩK (Loop2Grp-map-str f)) natiso-∘ n)
+        (natiso-∘=∘' ((natiso-whisk-r {μ = grphom-forg (K₂-loopmap (Ω ⊙[ X , x₀ ]))} σ-trans') natiso-∘ α₁))
+
+  abstract
+    ρ₁-translate-suff : ρ₁-trans == ρ₁-trans'
+    ρ₁-translate-suff =
+      natiso-∘=∘'
+        {n₁ = α₃} 
+        ((natiso-whisk-l
+           {μ = grphom-forg $
+             (Loop2Grp-map (K₂-rec-hom y₀ (idf2G {{Loop2Grp y₀}})) ∘2G
+             cohgrphom (idf _) {{idf2G {{Loop2Grp (base (Ω ⊙[ Y , y₀ ]))}}}})}
+           (sq-ΩK (Loop2Grp-map-str f)))
+           natiso-∘
+         (!ʷ α₂)
+           natiso-∘
+         (natiso-whisk-r {μ = grphom-forg (K₂-loopmap (Ω ⊙[ X , x₀ ]))} σ-trans')
+           natiso-∘
+         α₁) ∙ ρ₁-translate-suff-aux
+      
+  abstract
+    ρ₁-translate' : ρ₁ =ₛ natiso2G-to-== ρ₁-trans' ◃∎
+    ρ₁-translate' = ρ₁-translate ∙ₛ =ₛ-in (ap natiso2G-to-== ρ₁-translate-suff)
