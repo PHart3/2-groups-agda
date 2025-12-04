@@ -11,10 +11,11 @@ open import KFunctor
 open import LoopK-hom
 import Delooping
 open import Biadj-data.Loop-zig-zag-defs
-open import Biadj-data.Loop-zig-zag-aux2a
 open import Biadj-data.Loop-zig-zag-aux2b
 
 module Biadj-data.Loop-zig-zag-aux2c where
+
+open import Biadj-data.Loop-zig-zag-aux2a public
 
 module Loop-zz-aux2c {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-level 2 Y}} {x₀ : X} {y₀ : Y}
   (f : ⊙[ X , x₀ ] ⊙→ ⊙[ Y , y₀ ]) where
