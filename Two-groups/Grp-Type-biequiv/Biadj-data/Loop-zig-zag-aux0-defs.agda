@@ -5,7 +5,6 @@ open import lib.types.Pointed
 open import lib.types.LoopSpace
 open import 2Grp
 open import 2GrpMap
-open import 2GrpMap-conv
 open import 2Semigroup
 open import 2SGrpMap
 open import Hmtpy2Grp

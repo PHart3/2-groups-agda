@@ -12,7 +12,7 @@ open import LoopK-hom
 import Delooping
 open import Biadj-data.Loop-zig-zag-defs
 
-module Biadj-data.Loop-zig-zag-aux0-defs where
+module Biadj-data.Loop-zig-zag-aux2-defs where
 
 module Loop-zz-aux2-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-level 2 Y}} {x₀ : X} {y₀ : Y}
   (f : ⊙[ X , x₀ ] ⊙→ ⊙[ Y , y₀ ]) where
@@ -88,6 +88,14 @@ module Loop-zz-aux2-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
         Loop2Grp-map f}
       α₃ ◃∎
 
+  τ₂ :
+    Loop2Grp-map f ∘2G
+    cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}} ∘2G
+    cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}}
+      =-=
+    (cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+    cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}}) ∘2G
+    Loop2Grp-map f
   τ₂ =
     natiso2G-to-==
       {ν =
@@ -123,6 +131,14 @@ module Loop-zz-aux2-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
         Loop2Grp-map f}
       α₃ ◃∎
 
+  τ₃ :
+    Loop2Grp-map f ∘2G
+    cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}} ∘2G
+    cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}}
+      =-=
+    (cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+    cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}}) ∘2G
+    Loop2Grp-map f
   τ₃ =
     natiso2G-to-==
       {ν =
@@ -145,7 +161,15 @@ module Loop-zz-aux2-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
         α₂) ◃∙
     ! (ap (λ m → cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G m)
         (natiso2G-to-== (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f))))) ◃∙
-    natiso-whisk-l (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f))) ◃∙
+    natiso2G-to-==
+      {μ =
+        cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G        
+        Loop2Grp-map f}
+      {ν =
+        cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+        (cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+        Loop2Grp-map f)}
+      (natiso-whisk-l {μ = idf2Mw {{sgrp (Loop2Grp y₀)}}} (unit-wksgrphom-l (grphom-forg (Loop2Grp-map f)))) ◃∙
     natiso2G-to-==
       {μ =
         cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
@@ -157,7 +181,15 @@ module Loop-zz-aux2-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
         Loop2Grp-map f}
       α₃ ◃∎
 
-  τ₄
+  τ₄ :
+    Loop2Grp-map f ∘2G
+    cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}} ∘2G
+    cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}}
+      =-=
+    (cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+    cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}}) ∘2G
+    Loop2Grp-map f
+  τ₄ =
     natiso2G-to-==
       {ν =
          (Loop2Grp-map f ∘2G
@@ -177,8 +209,17 @@ module Loop-zz-aux2-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
           Loop2Grp-map f) ∘2G
           cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}}}
         α₂) ◃∙
-    natiso2G-to-== (!ʷ (natiso-whisk-l (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f))))) ◃∙
-    natiso2G-to-== (natiso-whisk-l (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f)))) ◃∙
+    natiso2G-to-== (!ʷ
+      (natiso-whisk-l {μ = idf2Mw {{sgrp (Loop2Grp y₀)}}} (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f))))) ◃∙
+    natiso2G-to-==
+      {μ =
+        cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G        
+        Loop2Grp-map f}
+      {ν =
+        cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+        (cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+        Loop2Grp-map f)}
+      (natiso-whisk-l {μ = idf2Mw {{sgrp (Loop2Grp y₀)}}} (unit-wksgrphom-l (grphom-forg (Loop2Grp-map f)))) ◃∙
     natiso2G-to-==
       {μ =
         cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
@@ -190,6 +231,14 @@ module Loop-zz-aux2-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
         Loop2Grp-map f}
       α₃ ◃∎
 
+  τ₅ :
+    Loop2Grp-map f ∘2G
+    cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}} ∘2G
+    cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}}
+      =-=
+    (cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+    cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}}) ∘2G
+    Loop2Grp-map f
   τ₅ = 
     natiso2G-to-==
       {ν =
@@ -210,8 +259,17 @@ module Loop-zz-aux2-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
         (Loop2Grp-map f ∘2G
         cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}})}
       (!ʷ α₂) ◃∙
-    natiso2G-to-== (!ʷ (natiso-whisk-l (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f))))) ◃∙
-    natiso2G-to-== (natiso-whisk-l (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f)))) ◃∙
+    natiso2G-to-== (!ʷ
+      (natiso-whisk-l {μ = idf2Mw {{sgrp (Loop2Grp y₀)}}} (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f))))) ◃∙
+    natiso2G-to-==
+      {μ =
+        cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G        
+        Loop2Grp-map f}
+      {ν =
+        cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+        (cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+        Loop2Grp-map f)}
+      (natiso-whisk-l {μ = idf2Mw {{sgrp (Loop2Grp y₀)}}} (unit-wksgrphom-l (grphom-forg (Loop2Grp-map f)))) ◃∙
     natiso2G-to-==
       {μ =
         cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
@@ -223,6 +281,14 @@ module Loop-zz-aux2-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
         Loop2Grp-map f}
       α₃ ◃∎
 
+  τ₆ :
+    Loop2Grp-map f ∘2G
+    cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}} ∘2G
+    cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}}
+      =-=
+    (cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+    cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}}) ∘2G
+    Loop2Grp-map f
   τ₆ =
     natiso2G-to-==
       {ν =
@@ -244,8 +310,17 @@ module Loop-zz-aux2-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
         (Loop2Grp-map f ∘2G
         cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}})}
       (!ʷ α₂) ◃∙
-    natiso2G-to-== (!ʷ (natiso-whisk-l (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f))))) ◃∙
-    natiso2G-to-== (natiso-whisk-l (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f)))) ◃∙
+    natiso2G-to-== (!ʷ
+      (natiso-whisk-l {μ = idf2Mw {{sgrp (Loop2Grp y₀)}}} (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f))))) ◃∙
+    natiso2G-to-==
+      {μ =
+        cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G        
+        Loop2Grp-map f}
+      {ν =
+        cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+        (cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+        Loop2Grp-map f)}
+      (natiso-whisk-l {μ = idf2Mw {{sgrp (Loop2Grp y₀)}}} (unit-wksgrphom-l (grphom-forg (Loop2Grp-map f)))) ◃∙
     natiso2G-to-==
       {μ =
         cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
@@ -257,6 +332,14 @@ module Loop-zz-aux2-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
         Loop2Grp-map f}
       α₃ ◃∎
 
+  τ₇ :
+    Loop2Grp-map f ∘2G
+    cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}} ∘2G
+    cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}}
+      =-=
+    (cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+    cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}}) ∘2G
+    Loop2Grp-map f
   τ₇ = 
     natiso2G-to-==
       {ν =
@@ -277,8 +360,17 @@ module Loop-zz-aux2-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
         (Loop2Grp-map f ∘2G
         cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}})}
       (!ʷ α₂) ◃∙
-    natiso2G-to-== (!ʷ (natiso-whisk-l (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f))))) ◃∙
-    natiso2G-to-== (natiso-whisk-l (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f)))) ◃∙
+    natiso2G-to-== (!ʷ
+      (natiso-whisk-l {μ = idf2Mw {{sgrp (Loop2Grp y₀)}}} (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f))))) ◃∙
+    natiso2G-to-==
+      {μ =
+        cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G        
+        Loop2Grp-map f}
+      {ν =
+        cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+        (cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+        Loop2Grp-map f)}
+      (natiso-whisk-l {μ = idf2Mw {{sgrp (Loop2Grp y₀)}}} (unit-wksgrphom-l (grphom-forg (Loop2Grp-map f)))) ◃∙
     natiso2G-to-==
       {μ =
         cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
@@ -290,6 +382,14 @@ module Loop-zz-aux2-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
         Loop2Grp-map f}
       α₃ ◃∎
 
+  τ₈ :
+    Loop2Grp-map f ∘2G
+    cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}} ∘2G
+    cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}}
+      =-=
+    (cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+    cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}}) ∘2G
+    Loop2Grp-map f
   τ₈ = 
     natiso2G-to-==
       {ν =
@@ -297,7 +397,8 @@ module Loop-zz-aux2-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
         cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}}) ∘2G
         cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}}}
       α₁ ◃∙
-    natiso2G-to-== (!ʷ (natiso-whisk-r (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f))))) ◃∙        
+    natiso2G-to-== {ν = Loop2Grp-map f ∘2G cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}}}
+      (!ʷ (natiso-whisk-r (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f))))) ◃∙        
     natiso2G-to-== (natiso-whisk-r (unit-wksgrphom-l (grphom-forg (Loop2Grp-map f)))) ◃∙
     natiso2G-to-==
       {μ =
@@ -309,8 +410,17 @@ module Loop-zz-aux2-defs {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}}
         (Loop2Grp-map f ∘2G
         cohgrphom (idf (Ω ⊙[ X , x₀ ])) {{idf2G {{Loop2Grp x₀}}}})}
       (!ʷ α₂) ◃∙
-    natiso2G-to-== (!ʷ (natiso-whisk-l (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f))))) ◃∙
-    natiso2G-to-== (natiso-whisk-l (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f)))) ◃∙
+    natiso2G-to-== (!ʷ
+      (natiso-whisk-l {μ = idf2Mw {{sgrp (Loop2Grp y₀)}}} (unit-wksgrphom-r (grphom-forg (Loop2Grp-map f))))) ◃∙
+    natiso2G-to-==
+      {μ =
+        cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G        
+        Loop2Grp-map f}
+      {ν =
+        cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+        (cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G
+        Loop2Grp-map f)}
+      (natiso-whisk-l {μ = idf2Mw {{sgrp (Loop2Grp y₀)}}} (unit-wksgrphom-l (grphom-forg (Loop2Grp-map f)))) ◃∙
     natiso2G-to-==
       {μ =
         cohgrphom (idf (Ω ⊙[ Y , y₀ ])) {{idf2G {{Loop2Grp y₀}}}} ∘2G

@@ -16,10 +16,7 @@ module Biadj-data.Loop-zig-zag-defs where
 
 open import Biadj-data.Loop-zig-zag-ext public
 
-open CohGrp {{...}}
 open CohGrpHom
-open WkSGrpNatIso
-open WkSGrpHomStr
 
 -- first component of the triangulator
 module _ {i} {X : Type i} {{ηX : has-level 2 X}} (x₀ : X) where

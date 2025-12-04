@@ -63,7 +63,7 @@ We have successfully tested the following Docker container on Linux with 16 GB o
    docker build . -t 2group
    ```
 
-   Our machine uses as much as 28.7 GB of physical memory and takes about 8 hours to build the image. 
+   Our machine uses as much as 28.7 GB of physical memory and takes over 8 hours to build the image. 
 
 2. Generate HTML files:
 
