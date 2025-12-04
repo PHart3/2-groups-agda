@@ -9,7 +9,7 @@ open import lib.types.Paths
 open import 2Semigroup
 open import 2SGrpMap
 
-module NatIso where
+module NatIso2G where
 
 -- properties of natural isos between semigroup morphisms
 

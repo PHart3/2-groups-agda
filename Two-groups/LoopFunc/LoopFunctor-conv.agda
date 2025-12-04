@@ -9,7 +9,7 @@ open import 2SGrpMap
 open import 2GrpMap
 open import 2GrpMap-conv
 open import Hmtpy2Grp
-open import NatIso
+open import NatIso2G
 open import 2GrpMap-conv
 open import LoopFunctor-coher
 open import LoopFunctor-ap

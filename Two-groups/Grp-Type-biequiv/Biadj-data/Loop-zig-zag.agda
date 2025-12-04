@@ -4,7 +4,7 @@ open import lib.Basics
 open import 2Grp
 open import 2GrpMap
 open import 2SGrpMap
-open import NatIso
+open import NatIso2G
 open import Hmtpy2Grp
 open import Biadj-data.Loop-zig-zag-aux1
 open import Biadj-data.Loop-zig-zag-aux2c

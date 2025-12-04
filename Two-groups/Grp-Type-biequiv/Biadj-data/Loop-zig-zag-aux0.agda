@@ -8,7 +8,7 @@ open import 2GrpMap
 open import 2GrpMap-conv
 open import 2Semigroup
 open import 2SGrpMap
-open import NatIso
+open import NatIso2G
 open import Hmtpy2Grp
 open import KFunctor
 open import LoopK-hom

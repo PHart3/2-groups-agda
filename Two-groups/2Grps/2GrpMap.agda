@@ -8,7 +8,7 @@ open import lib.types.Paths
 open import 2Semigroup
 open import 2SGrpMap
 open import 2Grp
-open import NatIso
+open import NatIso2G
 
 module 2GrpMap where
 

@@ -5,7 +5,7 @@ open import 2Semigroup
 open import 2SGrpMap
 open import 2Grp
 open import 2GrpMap
-open import NatIso
+open import NatIso2G
 
 -- preservation of groupoid structure by natiso2G-to-==
 
