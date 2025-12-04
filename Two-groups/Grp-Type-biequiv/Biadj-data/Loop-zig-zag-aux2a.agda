@@ -14,9 +14,9 @@ import Delooping
 open import Biadj-data.Loop-zig-zag-defs
 open import Biadj-data.Loop-zig-zag-aux2-defs
 
-module Biadj-data.Loop-zig-zag-aux2 where
+module Biadj-data.Loop-zig-zag-aux2a where
 
-module Loop-zz-aux2 {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-level 2 Y}} {x₀ : X} {y₀ : Y}
+module Loop-zz-aux2a {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-level 2 Y}} {x₀ : X} {y₀ : Y}
   (f : ⊙[ X , x₀ ] ⊙→ ⊙[ Y , y₀ ]) where
   
   open Delooping

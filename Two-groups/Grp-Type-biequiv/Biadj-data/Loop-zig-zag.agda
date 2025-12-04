@@ -8,7 +8,7 @@ open import 2SGrpMap
 open import Hmtpy2Grp
 import Delooping
 open import Biadj-data.Loop-zig-zag-aux1
-open import Biadj-data.Loop-zig-zag-aux3
+open import Biadj-data.Loop-zig-zag-aux2c
 
 -- the invertible modification making up the triangulator for our biadjoint biequivalence
 
@@ -25,7 +25,7 @@ module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-lev
   open Delooping
   open Loop-zz-defs f
   open Loop-zz-aux1 f
-  open Loop-zz-aux3 f
+  open Loop-zz-aux2c f
   
   abstract
     Loop-zz₁ : ρ₁ =ₛ ρ₂      
