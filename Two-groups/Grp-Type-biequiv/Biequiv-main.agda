@@ -27,7 +27,7 @@ open import KLoop-PT-unit
 open import KLoop-adjeq
 open import LoopK-adjeq
 
--- Final theorem: biadjoint biequivalence between 2-groups and pointed connected 2-types
+-- Final theorem: biequivalence between 2-groups and pointed connected 2-types
 
 module Biequiv-main where
 
@@ -80,18 +80,3 @@ module Biequiv-main where
   -- levelwise adjoint equivalence
   snd (ε (2Grp-Ptd02-bieq _)) (_ , cX , tX) = KLoop-adjeq-str {{cX}} {{tX}}
   snd (η (2Grp-Ptd02-bieq _)) (_ , η) = Loop-adjeq-str {{η}}
-
-  -- the triangulator (or zig-zag identity)
-  
-  open import AdjEq-exmps
-  import Biadj
-  open Biadj.Biequiv-coh
-  import Pstransf-SIP
-  open Pstransf-SIP.InvMod
-
-  open import Biadj-data.Loop-zig-zag
-
-  2Grp-Ptd02-baeq : ∀ i → (Ptd02-bicat i) biadj-bieqv (2grp-bicat i)
-  fst (2Grp-Ptd02-baeq i) = 2Grp-Ptd02-bieq i
-  η₀-∼ (ζζ (snd (2Grp-Ptd02-baeq i))) (X , _ , tr) = Loop-zz₀ {{tr}} (pt X)
-  η₁-∼ (ζζ (snd (2Grp-Ptd02-baeq i))) {X₁ , _ , tr₁} {X₂ , _ , tr₂} f = =ₛ-out (Loop-zz₁ {{tr₁}} {{tr₂}} f)

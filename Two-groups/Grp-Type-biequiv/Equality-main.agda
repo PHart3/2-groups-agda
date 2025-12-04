@@ -5,7 +5,7 @@ open import AdjEq-exmps
 open import 2Grp-bc
 open import Ptd-bc
 open import Biadj-beqv
-open import Biequiv-main
+open import Biadj-biequiv-main
 
 -- Final theorem: Ω produces an equality between 2-groups and pointed connected 2-types.
 

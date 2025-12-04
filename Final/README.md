@@ -15,7 +15,7 @@ space as the process runs. This is crucial because the type-checking uses
 as much as 28 GB of physical memory. Therefore, you will need to increase
 your machine's swap space if you have under 28 GB of available RAM.
 
-**Important:** Comment out the final two imports in `Final-thms` to reduce the type-checking by over an hour. Doing so will check
+**Important:** Comment out the final three imports in `Final-thms` to reduce the amount of type-checking by over half. Doing so will check
 all relevant type equivalences but not the biequivalence.
 
 ## License

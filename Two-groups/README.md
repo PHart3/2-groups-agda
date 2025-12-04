@@ -44,9 +44,10 @@ pointed connected 2-types.
   adjoint equivalences (`LoopK-adjeq.agda` and `KLoop-adjeq.agda`), thereby forming
   a biequivalence. Finally, we construct the triangulator (i.e., zig-zag identity) for 
   these two pseudonatural equivalences, thereby making them into a biadjoint biequivalence 
-  (`Biadj-data/`). The full  biadjoint biequivalence is defined in `Biequiv-main.agda`. We 
-  also get an equality between the two (2,1)-categories in question by way of univalence 
-  (`Equality-main.agda`). This equality follows from the fact that every biadjoint biequivalence 
+  (`Biadj-data/`). The biequivalence data is defined in `Biequiv-main.agda`, and the full 
+  biadjoint biequivalence (which includes the triangulator) is defined in `Biadj-biequiv-main`. 
+  We also get an equality between the two (2,1)-categories in question by way of univalence 
+  (`Equality-main.agda`). This equality follows from the fact that every biadjoint biequivalence  
   induces an isomorphism of bicategories, which is proved in`../Bicats/`.
   
   Finally, we have extracted from this biequivalence the underlying type equivalence between coherent 
