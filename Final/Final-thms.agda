@@ -1,5 +1,7 @@
 {-# OPTIONS --without-K --rewriting #-}
 
+-- the collection of the main final results of the repo
+
 module Final-thms where
 
 -- Owen Milner's equivalence between pointed connected n-types and Sính triples (with n ≥ 2)
