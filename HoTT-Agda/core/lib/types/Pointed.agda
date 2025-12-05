@@ -84,11 +84,11 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
 
 module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where 
 
-  -- associativity of pointed maps
-  ⊙∘-α-comp : ∀ {l} {W : Ptd l} (h : Z ⊙→ W) (g : Y ⊙→ Z) (f : X ⊙→ Y)
+  -- associativity of pointed maps (in the other direction than before)
+  ⊙∘-α-crd : ∀ {l} {W : Ptd l} (h : Z ⊙→ W) (g : Y ⊙→ Z) (f : X ⊙→ Y)
     → h ⊙∘ g ⊙∘ f ⊙-crd∼ (h ⊙∘ g) ⊙∘ f
-  fst (⊙∘-α-comp h g f) _ = idp
-  snd (⊙∘-α-comp h g f) =
+  fst (⊙∘-α-crd h g f) _ = idp
+  snd (⊙∘-α-crd h g f) =
     ap (λ p → p ∙ snd h) (ap-∘-∙ (fst h) (fst g) (snd f) (snd g)) ∙
     ∙-assoc (ap (fst h ∘ fst g) (snd f)) (ap (fst h) (snd g)) (snd h)
 

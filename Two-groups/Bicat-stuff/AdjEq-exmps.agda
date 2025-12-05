@@ -33,16 +33,16 @@ module _ {i} {X : Ptd02 i} where
   is-equiv.g-f (snd (adjeq-to-⊙≃ (φ , ae))) a = ! (fst (==-to-⊙-crd∼  (eta ae)) a)
   is-equiv.adj (snd (adjeq-to-⊙≃ (φ , ae))) a = ap-! (fst φ) (fst (==-to-⊙-crd∼ (eta ae)) a) ∙ ! (!-∙ _ idp) ∙ ap ! (app= (ap fst lemma) a)
     module ae-⊙≃ where abstract
-      lemma : (⊙∘-runit φ ∙⊙∼ ⊙∘-post φ (==-to-⊙-crd∼ (eta ae)) ∙⊙∼ ⊙∘-α-comp φ (inv ae) φ) == (⊙∘-lunit φ ∙⊙∼ ⊙∘-pre φ (==-to-⊙-crd∼ (eps ae)))
+      lemma : (⊙∘-runit φ ∙⊙∼ ⊙∘-post φ (==-to-⊙-crd∼ (eta ae)) ∙⊙∼ ⊙∘-α-crd φ (inv ae) φ) == (⊙∘-lunit φ ∙⊙∼ ⊙∘-pre φ (==-to-⊙-crd∼ (eps ae)))
       lemma =
-        ⊙∘-runit φ ∙⊙∼ ⊙∘-post φ (==-to-⊙-crd∼ (eta ae)) ∙⊙∼ ⊙∘-α-comp φ (inv ae) φ
+        ⊙∘-runit φ ∙⊙∼ ⊙∘-post φ (==-to-⊙-crd∼ (eta ae)) ∙⊙∼ ⊙∘-α-crd φ (inv ae) φ
           =⟨ ap3 (λ h₁ h₂ h₃ → h₁ ∙⊙∼ h₂ ∙⊙∼ h₃)
-               (! (<–-inv-r ⊙-crd∼-==-≃ (⊙∘-runit φ))) (! (==-to-⊙-crd∼-whisk-l (eta ae))) (! (<–-inv-r ⊙-crd∼-==-≃ (⊙∘-α-comp φ (inv ae) φ))) ⟩
+               (! (<–-inv-r ⊙-crd∼-==-≃ (⊙∘-runit φ))) (! (==-to-⊙-crd∼-whisk-l (eta ae))) (! (<–-inv-r ⊙-crd∼-==-≃ (⊙∘-α-crd φ (inv ae) φ))) ⟩
         ==-to-⊙-crd∼ (⊙-crd∼-to-== (⊙∘-runit φ)) ∙⊙∼
         ==-to-⊙-crd∼  (ap (λ f → φ ⊙∘ f) (eta ae)) ∙⊙∼
-        ==-to-⊙-crd∼  (⊙-crd∼-to-== (⊙∘-α-comp φ (inv ae) φ))
-          =⟨ ! (==-to-⊙-crd∼-∙2 (⊙-crd∼-to-== (⊙∘-runit φ)) (ap (λ f → φ ⊙∘ f) (eta ae)) (⊙-crd∼-to-== (⊙∘-α-comp φ (inv ae) φ))) ⟩
-        ==-to-⊙-crd∼ (⊙-crd∼-to-== (⊙∘-runit φ) ∙ ap (λ f → φ ⊙∘ f) (eta ae) ∙ ⊙-crd∼-to-== (⊙∘-α-comp φ (inv ae) φ))
+        ==-to-⊙-crd∼  (⊙-crd∼-to-== (⊙∘-α-crd φ (inv ae) φ))
+          =⟨ ! (==-to-⊙-crd∼-∙2 (⊙-crd∼-to-== (⊙∘-runit φ)) (ap (λ f → φ ⊙∘ f) (eta ae)) (⊙-crd∼-to-== (⊙∘-α-crd φ (inv ae) φ))) ⟩
+        ==-to-⊙-crd∼ (⊙-crd∼-to-== (⊙∘-runit φ) ∙ ap (λ f → φ ⊙∘ f) (eta ae) ∙ ⊙-crd∼-to-== (⊙∘-α-crd φ (inv ae) φ))
           =⟨ ap ==-to-⊙-crd∼ (coher-map ae) ⟩
         ==-to-⊙-crd∼ (⊙-crd∼-to-== (⊙∘-lunit φ) ∙ ap (λ m → m ⊙∘ φ) (eps ae))
           =⟨ ==-to-⊙-crd∼-∙ (⊙-crd∼-to-== (⊙∘-lunit φ)) (ap (λ m → m ⊙∘ φ) (eps ae)) ⟩
@@ -70,18 +70,18 @@ module _ {i} {X : Ptd02 i} where
           eps adj-str = idp
           coher-map adj-str = =ₛ-out $
             ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X))) ◃∙
-            ⊙-crd∼-to-== (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
-              =ₛ⟨ !ₛ (⊙∘-conv (⊙∘-runit (⊙idf (fst X))) (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X)))) ⟩
-            ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X)) ∙⊙∼ ⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
+            ⊙-crd∼-to-== (⊙∘-α-crd (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
+              =ₛ⟨ !ₛ (⊙∘-conv (⊙∘-runit (⊙idf (fst X))) (⊙∘-α-crd (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X)))) ⟩
+            ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X)) ∙⊙∼ ⊙∘-α-crd (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
               =ₛ₁⟨ ap ⊙-crd∼-to-== (⊙→∼-to-== ((λ _ → idp) , idp)) ⟩
             ⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ◃∎
               =ₛ₁⟨ ! (∙-unit-r (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))))) ⟩
             (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ∙ idp) ◃∎ ∎ₛ
           coher-inv adj-str = =ₛ-out $              
             ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X))) ◃∙
-            ⊙-crd∼-to-== (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
-              =ₛ⟨ !ₛ (⊙∘-conv (⊙∘-runit (⊙idf (fst X))) (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X)))) ⟩
-            ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X)) ∙⊙∼ ⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
+            ⊙-crd∼-to-== (⊙∘-α-crd (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
+              =ₛ⟨ !ₛ (⊙∘-conv (⊙∘-runit (⊙idf (fst X))) (⊙∘-α-crd (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X)))) ⟩
+            ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X)) ∙⊙∼ ⊙∘-α-crd (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
               =ₛ₁⟨ ! (ap ⊙-crd∼-to-== (⊙→∼-to-== ((λ _ → idp) , idp))) ⟩
             ⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ◃∎
               =ₛ₁⟨ ! (∙-unit-r (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))))) ⟩

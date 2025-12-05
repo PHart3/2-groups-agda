@@ -87,7 +87,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {X₁ : Ptd ℓ₁} {X₂ : Ptd ℓ₂} {
     Ω-α : (f₃* : X₃ ⊙→ X₄) (f₂* : X₂ ⊙→ X₃) (f₁* : X₁ ⊙→ X₂) →
       ! (ap (λ m → Loop2Grp-map {{η₃}} {{η₄}} f₃* ∘2G m) (natiso2G-to-== (Loop2Grp-map-∘ f₂* f₁*))) ∙
       ! (natiso2G-to-== (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*))) ∙
-      ap Loop2Grp-map (⊙-crd∼-to-== (⊙∘-α-comp f₃* f₂* f₁*)) ∙
+      ap Loop2Grp-map (⊙-crd∼-to-== (⊙∘-α-crd f₃* f₂* f₁*)) ∙
       natiso2G-to-== (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) ∙
       ap (λ m → m ∘2G Loop2Grp-map f₁*) (natiso2G-to-== (Loop2Grp-map-∘ f₃* f₂*))
         ==
@@ -96,49 +96,49 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {X₁ : Ptd ℓ₁} {X₂ : Ptd ℓ₂} {
     Ω-α f₃* f₂* f₁* = =ₛ-out $
       ! (ap (λ m → Loop2Grp-map f₃* ∘2G m) (natiso2G-to-== (Loop2Grp-map-∘ f₂* f₁*))) ◃∙
       ! (natiso2G-to-== (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*))) ◃∙
-      ap Loop2Grp-map (⊙-crd∼-to-== (⊙∘-α-comp f₃* f₂* f₁*)) ◃∙
+      ap Loop2Grp-map (⊙-crd∼-to-== (⊙∘-α-crd f₃* f₂* f₁*)) ◃∙
       natiso2G-to-== (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) ◃∙
       ap (λ m → m ∘2G Loop2Grp-map f₁*) (natiso2G-to-== (Loop2Grp-map-∘ f₃* f₂*)) ◃∎
         =ₛ₁⟨ 0 & 1 & ap ! (! (whisk2G-conv-l (Loop2Grp-map-∘ f₂* f₁*))) ⟩
       ! (natiso2G-to-== (natiso-whisk-l (Loop2Grp-map-∘ f₂* f₁*))) ◃∙
       ! (natiso2G-to-== (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*))) ◃∙
-      ap Loop2Grp-map (⊙-crd∼-to-== (⊙∘-α-comp f₃* f₂* f₁*)) ◃∙
+      ap Loop2Grp-map (⊙-crd∼-to-== (⊙∘-α-crd f₃* f₂* f₁*)) ◃∙
       natiso2G-to-== (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) ◃∙
       ap (λ m → m ∘2G Loop2Grp-map f₁*) (natiso2G-to-== (Loop2Grp-map-∘ f₃* f₂*)) ◃∎
         =ₛ₁⟨ 0 & 1 & ! (natiso2G-! (natiso-whisk-l (Loop2Grp-map-∘ f₂* f₁*))) ⟩
       natiso2G-to-== (!ʷ (natiso-whisk-l (Loop2Grp-map-∘ f₂* f₁*))) ◃∙
       ! (natiso2G-to-== (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*))) ◃∙
-      ap Loop2Grp-map (⊙-crd∼-to-== (⊙∘-α-comp f₃* f₂* f₁*)) ◃∙
+      ap Loop2Grp-map (⊙-crd∼-to-== (⊙∘-α-crd f₃* f₂* f₁*)) ◃∙
       natiso2G-to-== (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) ◃∙
       ap (λ m → m ∘2G Loop2Grp-map f₁*) (natiso2G-to-== (Loop2Grp-map-∘ f₃* f₂*)) ◃∎
         =ₛ₁⟨ 1 & 1 & ! (natiso2G-! (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*))) ⟩
       natiso2G-to-== (!ʷ (natiso-whisk-l (Loop2Grp-map-∘ f₂* f₁*))) ◃∙
       natiso2G-to-== (!ʷ (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*))) ◃∙
-      ap Loop2Grp-map (⊙-crd∼-to-== (⊙∘-α-comp f₃* f₂* f₁*)) ◃∙
+      ap Loop2Grp-map (⊙-crd∼-to-== (⊙∘-α-crd f₃* f₂* f₁*)) ◃∙
       natiso2G-to-== (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) ◃∙
       ap (λ m → m ∘2G Loop2Grp-map f₁*) (natiso2G-to-== (Loop2Grp-map-∘ f₃* f₂*)) ◃∎
-        =ₛ₁⟨ 2 & 1 & Ω-fmap-ap-pres (⊙∘-α-comp f₃* f₂* f₁*) ⟩
+        =ₛ₁⟨ 2 & 1 & Ω-fmap-ap-pres (⊙∘-α-crd f₃* f₂* f₁*) ⟩
       natiso2G-to-== (!ʷ (natiso-whisk-l (Loop2Grp-map-∘ f₂* f₁*))) ◃∙
       natiso2G-to-== (!ʷ (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*))) ◃∙
-      natiso2G-to-== (Loop2Grp-map-ap (⊙∘-α-comp f₃* f₂* f₁*)) ◃∙
+      natiso2G-to-== (Loop2Grp-map-ap (⊙∘-α-crd f₃* f₂* f₁*)) ◃∙
       natiso2G-to-== (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) ◃∙
       ap (λ m → m ∘2G Loop2Grp-map f₁*) (natiso2G-to-== (Loop2Grp-map-∘ f₃* f₂*)) ◃∎
         =ₛ₁⟨ 4 & 1 & ! (whisk2G-conv-r (Loop2Grp-map-∘ f₃* f₂*)) ⟩
       natiso2G-to-== (!ʷ (natiso-whisk-l (Loop2Grp-map-∘ f₂* f₁*))) ◃∙
       natiso2G-to-== (!ʷ (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*))) ◃∙
-      natiso2G-to-== (Loop2Grp-map-ap (⊙∘-α-comp f₃* f₂* f₁*)) ◃∙
+      natiso2G-to-== (Loop2Grp-map-ap (⊙∘-α-crd f₃* f₂* f₁*)) ◃∙
       natiso2G-to-== (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) ◃∙
       natiso2G-to-== (natiso-whisk-r (Loop2Grp-map-∘ f₃* f₂*)) ◃∎
         =ₛ⟨ ∘2G-conv-quint
               (!ʷ (natiso-whisk-l (Loop2Grp-map-∘ f₂* f₁*)))
               (!ʷ (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*)))
-              (Loop2Grp-map-ap (⊙∘-α-comp f₃* f₂* f₁*))
+              (Loop2Grp-map-ap (⊙∘-α-crd f₃* f₂* f₁*))
               (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*)
               (natiso-whisk-r (Loop2Grp-map-∘ f₃* f₂*)) ⟩
       natiso2G-to-==
         (natiso-whisk-r (Loop2Grp-map-∘ f₃* f₂*) natiso-∘
         Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁* natiso-∘
-        Loop2Grp-map-ap (⊙∘-α-comp f₃* f₂* f₁*) natiso-∘
+        Loop2Grp-map-ap (⊙∘-α-crd f₃* f₂* f₁*) natiso-∘
         !ʷ (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*)) natiso-∘
         !ʷ (natiso-whisk-l (Loop2Grp-map-∘ f₂* f₁*))) ◃∎
         =ₛ₁⟨ ap natiso2G-to-== (
@@ -149,36 +149,36 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {X₁ : Ptd ℓ₁} {X₂ : Ptd ℓ₂} {
           re-associate : (p : _) →
             ! (ap (Ω-fmap f₃*) (θ (Loop2Grp-map-∘ f₂* f₁*) p)) ◃∙
             ! (θ (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*)) p) ◃∙
-            θ (Loop2Grp-map-ap (⊙∘-α-comp f₃* f₂* f₁*)) p ◃∙
+            θ (Loop2Grp-map-ap (⊙∘-α-crd f₃* f₂* f₁*)) p ◃∙
             θ (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) p ◃∙
             θ (Loop2Grp-map-∘ f₃* f₂*) (Ω-fmap f₁* p) ◃∎
               =ₛ
             (((! (ap (Ω-fmap f₃*) (θ (Loop2Grp-map-∘ f₂* f₁*) p)) ∙
                  ! (θ (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*)) p)) ∙
-               θ (Loop2Grp-map-ap (⊙∘-α-comp f₃* f₂* f₁*)) p) ∙
+               θ (Loop2Grp-map-ap (⊙∘-α-crd f₃* f₂* f₁*)) p) ∙
               θ (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) p) ◃∙
              θ (Loop2Grp-map-∘ f₃* f₂*) (Ω-fmap f₁* p) ◃∎
           re-associate p =
             ! (ap (Ω-fmap f₃*) (θ (Loop2Grp-map-∘ f₂* f₁*) p)) ◃∙
             ! (θ (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*)) p) ◃∙
-            θ (Loop2Grp-map-ap (⊙∘-α-comp f₃* f₂* f₁*)) p ◃∙
+            θ (Loop2Grp-map-ap (⊙∘-α-crd f₃* f₂* f₁*)) p ◃∙
             θ (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) p ◃∙
             θ (Loop2Grp-map-∘ f₃* f₂*) (Ω-fmap f₁* p) ◃∎
               =ₛ₁⟨ 0 & 2 & idp ⟩
             (! (ap (Ω-fmap f₃*) (θ (Loop2Grp-map-∘ f₂* f₁*) p)) ∙
             ! (θ (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*)) p)) ◃∙
-            θ (Loop2Grp-map-ap (⊙∘-α-comp f₃* f₂* f₁*)) p ◃∙
+            θ (Loop2Grp-map-ap (⊙∘-α-crd f₃* f₂* f₁*)) p ◃∙
             θ (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) p ◃∙
             θ (Loop2Grp-map-∘ f₃* f₂*) (Ω-fmap f₁* p) ◃∎
               =ₛ₁⟨ 0 & 2 & idp ⟩
             ((! (ap (Ω-fmap f₃*) (θ (Loop2Grp-map-∘ f₂* f₁*) p)) ∙
             ! (θ (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*)) p)) ∙
-            θ (Loop2Grp-map-ap (⊙∘-α-comp f₃* f₂* f₁*)) p) ◃∙
+            θ (Loop2Grp-map-ap (⊙∘-α-crd f₃* f₂* f₁*)) p) ◃∙
             θ (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) p ◃∙
             θ (Loop2Grp-map-∘ f₃* f₂*) (Ω-fmap f₁* p) ◃∎
               =ₛ₁⟨ 0 & 2 & idp ⟩
             (((! (ap (Ω-fmap f₃*) (θ (Loop2Grp-map-∘ f₂* f₁*) p)) ∙
                  ! (θ (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*)) p)) ∙
-               θ (Loop2Grp-map-ap (⊙∘-α-comp f₃* f₂* f₁*)) p) ∙
+               θ (Loop2Grp-map-ap (⊙∘-α-crd f₃* f₂* f₁*)) p) ∙
               θ (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) p) ◃∙
              θ (Loop2Grp-map-∘ f₃* f₂*) (Ω-fmap f₁* p) ◃∎ ∎ₛ
