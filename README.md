@@ -70,7 +70,7 @@ We have successfully tested the following Docker container on Linux with 16 GB o
 
    ```bash
    mkdir -p ./html
-   docker run --mount type=bind,source=./html,target=/Two-groups/html 2group
+   docker run --mount type=bind,source=./html,target=/Final/html 2group
    ```
 
    This may take a few minutes. The HTML files will be under `html/`, and
