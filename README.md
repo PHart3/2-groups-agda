@@ -12,7 +12,15 @@
 - We mechanize the equivalence between the type of *n*-groups (i.e., pointed connected *n*-types) and
   that of Sính triples (where *n* > 1).
 
-The code has been checked with Agda 2.6.4.3. 
+The code has been checked with Agda 2.6.4.3.
+
+We have included all of the `.agdai` files (in the various `_build` directories) in case you do
+not want to perform the intensive type-checking on your machine. (Pass the flag `--ignore-interfaces`
+to `agda` if you want to type check a file from scratch.)
+
+Also, we have included in root a zip file of the generated html files for all of the Agda code,
+which should let you navigate the codebase without having to run the type checker. You should
+consider `Final-thms.html` the entry point.
 
 ## Organization
 
