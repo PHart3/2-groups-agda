@@ -17,12 +17,15 @@ open import Type-equiv-main public
 
 -- explicit biadjoint biequivalence between 2-groups and pointed connected 2-types:
 
--- The following file checks the biequivalence data and takes over an hour and up to 29 GB of memory.
+{-
+  The following file checks the biequivalence data and takes over two hours and up to 28 GB of memory.
+  Comment out the following line to avoid checking it.
+-}
 open import Biequiv-main public
 
 {-
-  The following file checks the triangulator for the above biequivalence, which takes signigicant
-  extra time. Comment out the folloiwng line if you want to avoid checking it.
+  The following file checks the triangulator for the above biequivalence, which takes an extra 20 minutes.
+  Comment out the folloiwng line to avoid checking it.
 -}
 open import Biadj-biequiv-main public
 
