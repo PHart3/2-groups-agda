@@ -6,9 +6,6 @@
     
   We also derive a verified equality between them by way of univalence.
 
-  A preprint outlining our mechanization (except for the biadjunction data)
-  is located [here](https://phart3.github.io/2Grp-biequiv-preprint.pdf).
-
 - We mechanize the equivalence between the type of *n*-groups (i.e., pointed connected *n*-types) and
   that of Sính triples (where *n* > 1).
 
