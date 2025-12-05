@@ -9,14 +9,14 @@ finishes successfully on the following machine:
 
 *macOS Sequoia 15.4.1, Apple M1 chip, 16 GB of RAM*
 
-The type-checking takes about 167 minutes in total (see [stats.md](stats.md)).
+The type-checking takes about 255 minutes in total (see [stats.md](stats.md)).
 Note that macOS, unlike Linux, dynamically alters the size of the swap
 space as the process runs. This is crucial because the type-checking uses
 as much as 28 GB of physical memory. Therefore, you will need to increase
 your machine's swap space if you have under 28 GB of available RAM.
 
 **Important:** Comment out the final three imports in `Final-thms` to reduce the amount of type-checking by over half. Doing so will check
-all relevant type equivalences but not the biequivalence.
+all relevant type equivalences but not the biequivalence (which takes up most of the total time).
 
 ## License
 
