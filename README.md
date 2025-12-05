@@ -14,14 +14,6 @@
 
 The code has been checked with Agda 2.6.4.3.
 
-We have included all of the `.agdai` files (in the various `_build` directories) in case you do
-not want to perform the intensive type-checking on your machine. (Pass the flag `--ignore-interfaces`
-to `agda` if you want to type check a file from scratch.)
-
-Also, we have included in root a zip file of the generated html files for all of the Agda code,
-which should let you navigate the codebase without having to run the type checker. You should
-consider `Final-thms.html` the entry point.
-
 ## Organization
 
 The library has three main components, each component depending on the previous ones. It also has a fourth component
@@ -88,8 +80,18 @@ We have successfully tested the following Docker container on Linux with 16 GB o
 If you can avoid the overhead of Docker, we suggest that you do so even if you
 have lots of available RAM.
 
-We have found that type-checking directly on a MacOS with an M1 chip is much
+We have found that type-checking directly on a macOS with an M1 chip is much
 faster (but still intensive). See `Final/README.md` for relevant details.
 
-**Important:** Comment out the final two imports in `Final/Final-thms` to reduce the type-checking by over an hour. Doing so will check
-all relevant type equivalences but not the biadjoint biequivalence.
+**Important:** Comment out the final two imports in `Final/Final-thms` to reduce the type-checking by over an hour.
+Doing so will check all relevant type equivalences but not the biadjoint biequivalence.
+
+**Notes:**
+
+- We have included all of the `.agdai` files (in the various `_build` directories) in case you do
+  not want to perform the intensive type-checking on your machine from scratch. Pass the flag
+  `--ignore-interfaces` to `agda` if you want to type check a file from scratch.
+
+- Also, we have included in this repo's root a zip file of the generated html files for all of the Agda code,
+  which should let you navigate the codebase without having to run the type checker. You should consider
+  `Final-thms.html` the entry point.
