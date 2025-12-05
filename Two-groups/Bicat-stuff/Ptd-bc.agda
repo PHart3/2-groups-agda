@@ -25,9 +25,9 @@ module _ (i : ULevel) where
   _◻_ Ptd02-bicat g f = g ⊙∘ f
   ρ Ptd02-bicat f = ⊙-crd∼-to-== (⊙∘-runit f)
   lamb Ptd02-bicat f = ⊙-crd∼-to-== (⊙∘-lunit f)
-  α Ptd02-bicat h g f = ⊙-crd∼-to-== (⊙∘-α-comp h g f)
+  α Ptd02-bicat h g f = ⊙-crd∼-to-== (⊙∘-α-crd h g f)
   tri-bc Ptd02-bicat {b = (Y , _)} f@(_ , idp) g@(_ , idp) = =ₛ-out $
-    ⊙-crd∼-to-== (⊙∘-α-comp g (⊙idf Y) f) ◃∎
+    ⊙-crd∼-to-== (⊙∘-α-crd g (⊙idf Y) f) ◃∎
       =ₛ₁⟨ ap ⊙-crd∼-to-== (⊙→∼-to-== ((λ _ → idp) , idp)) ⟩
     ⊙-crd∼-to-== (!-⊙∼ (⊙∘-post g (⊙∘-lunit f)) ∙⊙∼ ⊙∘-pre f (⊙∘-runit g)) ◃∎
       =ₛ⟨ ⊙∘-conv (!-⊙∼ (⊙∘-post g (⊙∘-lunit f))) (⊙∘-pre f (⊙∘-runit g)) ⟩
@@ -43,24 +43,24 @@ module _ (i : ULevel) where
     ! (ap (λ m → g ⊙∘ m) (⊙-crd∼-to-== (⊙∘-lunit f))) ◃∙
     ap (λ m → m ⊙∘ f) (⊙-crd∼-to-== (⊙∘-runit g)) ◃∎ ∎ₛ
   pent-bc Ptd02-bicat f@(_ , idp) g@(_ , idp) h@(_ , idp) k@(_ , idp) = =ₛ-out $
-    ⊙-crd∼-to-== (⊙∘-α-comp k h (g ⊙∘ f)) ◃∙
-    ⊙-crd∼-to-== (⊙∘-α-comp (k ⊙∘ h) g f) ◃∎
-      =ₛ⟨ !ₛ (⊙∘-conv (⊙∘-α-comp k h (g ⊙∘ f)) (⊙∘-α-comp (k ⊙∘ h) g f)) ⟩
-    ⊙-crd∼-to-== (⊙∘-α-comp k h (g ⊙∘ f) ∙⊙∼ ⊙∘-α-comp (k ⊙∘ h) g f) ◃∎
+    ⊙-crd∼-to-== (⊙∘-α-crd k h (g ⊙∘ f)) ◃∙
+    ⊙-crd∼-to-== (⊙∘-α-crd (k ⊙∘ h) g f) ◃∎
+      =ₛ⟨ !ₛ (⊙∘-conv (⊙∘-α-crd k h (g ⊙∘ f)) (⊙∘-α-crd (k ⊙∘ h) g f)) ⟩
+    ⊙-crd∼-to-== (⊙∘-α-crd k h (g ⊙∘ f) ∙⊙∼ ⊙∘-α-crd (k ⊙∘ h) g f) ◃∎
       =ₛ₁⟨ ap ⊙-crd∼-to-== (⊙→∼-to-== ((λ _ → idp) , idp)) ⟩
-    ⊙-crd∼-to-== (⊙∘-post k (⊙∘-α-comp h g f) ∙⊙∼ ⊙∘-α-comp k (h ⊙∘ g) f ∙⊙∼ ⊙∘-pre f (⊙∘-α-comp k h g)) ◃∎
-      =ₛ⟨ ⊙∘-conv-tri (⊙∘-post k (⊙∘-α-comp h g f)) (⊙∘-α-comp k (h ⊙∘ g) f) (⊙∘-pre f (⊙∘-α-comp k h g)) ⟩
-    ⊙-crd∼-to-== (⊙∘-post k (⊙∘-α-comp h g f)) ◃∙
-    ⊙-crd∼-to-== (⊙∘-α-comp k (h ⊙∘ g) f) ◃∙
-    ⊙-crd∼-to-== (⊙∘-pre f (⊙∘-α-comp k h g)) ◃∎
-      =ₛ₁⟨ 0 & 1 & whisk⊙-conv-l (⊙∘-α-comp h g f) ⟩
-    ap (λ m → k ⊙∘ m) (⊙-crd∼-to-== (⊙∘-α-comp h g f)) ◃∙
-    ⊙-crd∼-to-== (⊙∘-α-comp k (h ⊙∘ g) f) ◃∙
-    ⊙-crd∼-to-== (⊙∘-pre f (⊙∘-α-comp k h g)) ◃∎
-      =ₛ₁⟨ 2 & 1 & whisk⊙-conv-r (⊙∘-α-comp k h g) ⟩
-    ap (λ m → k ⊙∘ m) (⊙-crd∼-to-== (⊙∘-α-comp h g f)) ◃∙
-    ⊙-crd∼-to-== (⊙∘-α-comp k (h ⊙∘ g) f) ◃∙
-    ap (λ m → m ⊙∘ f) (⊙-crd∼-to-== (⊙∘-α-comp k h g)) ◃∎ ∎ₛ
+    ⊙-crd∼-to-== (⊙∘-post k (⊙∘-α-crd h g f) ∙⊙∼ ⊙∘-α-crd k (h ⊙∘ g) f ∙⊙∼ ⊙∘-pre f (⊙∘-α-crd k h g)) ◃∎
+      =ₛ⟨ ⊙∘-conv-tri (⊙∘-post k (⊙∘-α-crd h g f)) (⊙∘-α-crd k (h ⊙∘ g) f) (⊙∘-pre f (⊙∘-α-crd k h g)) ⟩
+    ⊙-crd∼-to-== (⊙∘-post k (⊙∘-α-crd h g f)) ◃∙
+    ⊙-crd∼-to-== (⊙∘-α-crd k (h ⊙∘ g) f) ◃∙
+    ⊙-crd∼-to-== (⊙∘-pre f (⊙∘-α-crd k h g)) ◃∎
+      =ₛ₁⟨ 0 & 1 & whisk⊙-conv-l (⊙∘-α-crd h g f) ⟩
+    ap (λ m → k ⊙∘ m) (⊙-crd∼-to-== (⊙∘-α-crd h g f)) ◃∙
+    ⊙-crd∼-to-== (⊙∘-α-crd k (h ⊙∘ g) f) ◃∙
+    ⊙-crd∼-to-== (⊙∘-pre f (⊙∘-α-crd k h g)) ◃∎
+      =ₛ₁⟨ 2 & 1 & whisk⊙-conv-r (⊙∘-α-crd k h g) ⟩
+    ap (λ m → k ⊙∘ m) (⊙-crd∼-to-== (⊙∘-α-crd h g f)) ◃∙
+    ⊙-crd∼-to-== (⊙∘-α-crd k (h ⊙∘ g) f) ◃∙
+    ap (λ m → m ⊙∘ f) (⊙-crd∼-to-== (⊙∘-α-crd k h g)) ◃∎ ∎ₛ
   hom-trunc Ptd02-bicat {X₁ , c₁ , _} {X₂ , _ , t₂} = ptd-conn-tr-hom-tr X₁ X₂ c₁ t₂
 
 instance

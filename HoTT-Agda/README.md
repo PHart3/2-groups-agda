@@ -31,7 +31,7 @@ The main library is more or less divided into four parts.
 - The second part is found in `lib.groups` and develops basic group theory.
 - The third part is found in `lib.types` and develops type formers.
 - The fourth part is found in `lib.wild-cats` and develops wild category theory.
-  In particular, it shows that every equivalence of wild categories is fully faithful.
+  In particular, it shows that every half-adjoint equivalence of wild categories (and its inverse) is fully faithful.
 
 ### Theorems (directory `theorems/`)
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# modified script orginally due to Guillaume Brunerie
+# modified script originally due to Guillaume Brunerie
 
 if [[ $1 = "-h" ]] || [[ $1 = "--help" ]]
 then

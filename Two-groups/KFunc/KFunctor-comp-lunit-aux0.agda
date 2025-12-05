@@ -69,7 +69,7 @@ module KFCLU0 {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η
       ! (ap (ap (idf (K₂ G₂ η₂))) (K₂-map-β-pts σ x)) ◃∎
     K₂-β-3 =
       hmtpy-nat-∙' (fst (K₂-map-idf {{η₂}})) (ap (K₂-map σ) (loop G₁ x)) ◃∎
-        =ₛ⟨ apCommSq2◃' (λ (p : base G₂ == base G₂) → hmtpy-nat-∙' (fst (K₂-map-idf {{η₂}})) p) (K₂-map-β-pts σ x) ⟩
+        =ₛ⟨ apCommSq2◃-rev (λ (p : base G₂ == base G₂) → hmtpy-nat-∙' (fst (K₂-map-idf {{η₂}})) p) (K₂-map-β-pts σ x) ⟩
       ap (ap (K₂-map idf2G)) (K₂-map-β-pts σ x) ◃∙
       hmtpy-nat-∙' (fst (K₂-map-idf {{η₂}})) (loop G₂ (f x)) ◃∙
       ! (ap (ap (idf (K₂ G₂ η₂))) (K₂-map-β-pts σ x)) ◃∎

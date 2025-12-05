@@ -1,27 +1,60 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.NType2
+open import lib.Equivalence2
 open import lib.NConnected
+open import lib.types.Sigma
 open import lib.types.Pointed
 open import lib.types.PtdMap-conv
 open import AdjEq
-open import 2Grp
-open import 2Semigroup
 open import 2SGrpMap
-open import NatIso
+open import 2Semigroup
+open import 2Grp
 open import 2GrpMap
-open import 2GrpMap-conv
 open import 2GrpSIP
 open import 2Grp-bc
 open import Ptd-bc
+open import Univ-bc
+
+-- adjoint equivalences in our two specific settings of interest
 
 module AdjEq-exmps where
 
 open Adjequiv
 
--- an equivalence of pointed types is an adjoint equivalence
 module _ {i} {X : Ptd02 i} where
 
+  -- an adjoint equivalence in Ptd02 is an equivalence of underlying pointed types
+  adjeq-to-⊙≃ : {Y : Ptd02 i} → AdjEquiv (Ptd02-bicat i) X Y →  fst X ⊙≃ fst Y
+  fst (adjeq-to-⊙≃ φ) = fst φ
+  is-equiv.g (snd (adjeq-to-⊙≃ (φ , ae))) = fst (inv ae)
+  is-equiv.f-g (snd (adjeq-to-⊙≃ (φ , ae))) b = ! (fst (==-to-⊙-crd∼  (eps ae)) b)
+  is-equiv.g-f (snd (adjeq-to-⊙≃ (φ , ae))) a = ! (fst (==-to-⊙-crd∼  (eta ae)) a)
+  is-equiv.adj (snd (adjeq-to-⊙≃ (φ , ae))) a = ap-! (fst φ) (fst (==-to-⊙-crd∼ (eta ae)) a) ∙ ! (!-∙ _ idp) ∙ ap ! (app= (ap fst lemma) a)
+    module ae-⊙≃ where abstract
+      lemma : (⊙∘-runit φ ∙⊙∼ ⊙∘-post φ (==-to-⊙-crd∼ (eta ae)) ∙⊙∼ ⊙∘-α-crd φ (inv ae) φ) == (⊙∘-lunit φ ∙⊙∼ ⊙∘-pre φ (==-to-⊙-crd∼ (eps ae)))
+      lemma =
+        ⊙∘-runit φ ∙⊙∼ ⊙∘-post φ (==-to-⊙-crd∼ (eta ae)) ∙⊙∼ ⊙∘-α-crd φ (inv ae) φ
+          =⟨ ap3 (λ h₁ h₂ h₃ → h₁ ∙⊙∼ h₂ ∙⊙∼ h₃)
+               (! (<–-inv-r ⊙-crd∼-==-≃ (⊙∘-runit φ))) (! (==-to-⊙-crd∼-whisk-l (eta ae))) (! (<–-inv-r ⊙-crd∼-==-≃ (⊙∘-α-crd φ (inv ae) φ))) ⟩
+        ==-to-⊙-crd∼ (⊙-crd∼-to-== (⊙∘-runit φ)) ∙⊙∼
+        ==-to-⊙-crd∼  (ap (λ f → φ ⊙∘ f) (eta ae)) ∙⊙∼
+        ==-to-⊙-crd∼  (⊙-crd∼-to-== (⊙∘-α-crd φ (inv ae) φ))
+          =⟨ ! (==-to-⊙-crd∼-∙2 (⊙-crd∼-to-== (⊙∘-runit φ)) (ap (λ f → φ ⊙∘ f) (eta ae)) (⊙-crd∼-to-== (⊙∘-α-crd φ (inv ae) φ))) ⟩
+        ==-to-⊙-crd∼ (⊙-crd∼-to-== (⊙∘-runit φ) ∙ ap (λ f → φ ⊙∘ f) (eta ae) ∙ ⊙-crd∼-to-== (⊙∘-α-crd φ (inv ae) φ))
+          =⟨ ap ==-to-⊙-crd∼ (coher-map ae) ⟩
+        ==-to-⊙-crd∼ (⊙-crd∼-to-== (⊙∘-lunit φ) ∙ ap (λ m → m ⊙∘ φ) (eps ae))
+          =⟨ ==-to-⊙-crd∼-∙ (⊙-crd∼-to-== (⊙∘-lunit φ)) (ap (λ m → m ⊙∘ φ) (eps ae)) ⟩
+        ==-to-⊙-crd∼ (⊙-crd∼-to-== (⊙∘-lunit φ)) ∙⊙∼ ==-to-⊙-crd∼ (ap (λ m → m ⊙∘ φ) (eps ae))
+          =⟨ ap2 _∙⊙∼_ (<–-inv-r ⊙-crd∼-==-≃ (⊙∘-lunit φ)) (==-to-⊙-crd∼-whisk-r (eps ae)) ⟩
+        (⊙∘-lunit φ ∙⊙∼ ⊙∘-pre φ (==-to-⊙-crd∼ (eps ae))) =∎
+
+  abstract
+    adjeq-to-⊙≃-β : adjeq-to-⊙≃ AdjEq-id₁ == ⊙ide (fst X)
+    adjeq-to-⊙≃-β = Subtype=-out (subtypeprop (is-equiv ∘ fst)) idp
+
+  -- an equivalence of pointed types is an adjoint equivalence
   abstract
     ⊙≃-to-adjeq : {Y : Ptd i} ((φ , _) : fst X ⊙≃ Y) {c : is-connected 0 (de⊙ Y)} {t : has-level 2 (de⊙ Y)}
       → Adjequiv {a = X} {b = (Y , c , t)} φ
@@ -37,27 +70,93 @@ module _ {i} {X : Ptd02 i} where
           eps adj-str = idp
           coher-map adj-str = =ₛ-out $
             ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X))) ◃∙
-            ⊙-crd∼-to-== (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
-              =ₛ⟨ !ₛ (⊙∘-conv (⊙∘-runit (⊙idf (fst X))) (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X)))) ⟩
-            ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X)) ∙⊙∼ ⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
+            ⊙-crd∼-to-== (⊙∘-α-crd (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
+              =ₛ⟨ !ₛ (⊙∘-conv (⊙∘-runit (⊙idf (fst X))) (⊙∘-α-crd (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X)))) ⟩
+            ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X)) ∙⊙∼ ⊙∘-α-crd (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
               =ₛ₁⟨ ap ⊙-crd∼-to-== (⊙→∼-to-== ((λ _ → idp) , idp)) ⟩
             ⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ◃∎
               =ₛ₁⟨ ! (∙-unit-r (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))))) ⟩
             (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ∙ idp) ◃∎ ∎ₛ
           coher-inv adj-str = =ₛ-out $              
             ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X))) ◃∙
-            ⊙-crd∼-to-== (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
-              =ₛ⟨ !ₛ (⊙∘-conv (⊙∘-runit (⊙idf (fst X))) (⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X)))) ⟩
-            ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X)) ∙⊙∼ ⊙∘-α-comp (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
+            ⊙-crd∼-to-== (⊙∘-α-crd (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
+              =ₛ⟨ !ₛ (⊙∘-conv (⊙∘-runit (⊙idf (fst X))) (⊙∘-α-crd (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X)))) ⟩
+            ⊙-crd∼-to-== (⊙∘-runit (⊙idf (fst X)) ∙⊙∼ ⊙∘-α-crd (⊙idf (fst X)) (⊙idf (fst X)) (⊙idf (fst X))) ◃∎
               =ₛ₁⟨ ! (ap ⊙-crd∼-to-== (⊙→∼-to-== ((λ _ → idp) , idp))) ⟩
             ⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ◃∎
               =ₛ₁⟨ ! (∙-unit-r (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))))) ⟩
             (⊙-crd∼-to-== (⊙∘-lunit (⊙idf (fst X))) ∙ idp) ◃∎ ∎ₛ
-            
+
+  adjeq-to-⊙≃-≃ : {Y : Ptd02 i} → (AdjEquiv (Ptd02-bicat i) X Y) ≃  (fst X ⊙≃ fst Y)
+  adjeq-to-⊙≃-≃ = Σ-emap-r λ f → props-BiImp-≃ (λ ae → snd (adjeq-to-⊙≃ (_ , ae))) λ ise → ⊙≃-to-adjeq (f , ise)
+
+-- the pointed connected 2-types are globally univalent
+abstract
+  univ-Pt02 : ∀ {i} → is-univ-bc (Ptd02-bicat i)
+  univ-Pt02 X _ = 3-for-2-e-sw (⊙≃-from-== ∘ fst=) aux
+    (snd adjeq-to-⊙≃-≃) (snd ⊙≃-ua ∘ise Subtype=-equiv (subtypeprop (λ Z → is-connected 0 (de⊙ Z) × has-level 2 (de⊙ Z))))
+    where
+      aux : ∀ {Z} (p : X == Z) → (fst adjeq-to-⊙≃-≃ ∘ ==-to-adjeq) p == (⊙≃-from-== ∘ fst=) p
+      aux idp = pair= idp (prop-has-all-paths _ _)
+
+instance
+  univ-Pt02-inst : ∀ {i} → is-univ-bc-inst {{Ptd02-bicat i}}
+  univ-Pt02-inst {_} {X₁} {X₂} = univ-Pt02 X₁ X₂
+
+open CohGrpHom
+
+module _ {i} {G₁ : Type i} {{η₁ : CohGrp G₁}} where
+
+  open WkSGrpNatIso
+
+  -- an adjoint equivalence in 2grp-bicat is an equivalence of 2-groups
+  adjeq-to-2g≃ : {G₂ : Type i} {{η₂ : CohGrp G₂}} → AdjEquiv (2grp-bicat i) (_ , η₁) (_ , η₂) → Σ (CohGrpHom {{η₁}} {{η₂}}) (λ φ → is-equiv (map φ))
+  fst (adjeq-to-2g≃ ⦃ η₂ = η₂ ⦄ (f , ae)) = f
+  is-equiv.g (snd (adjeq-to-2g≃ ⦃ η₂ = η₂ ⦄ (f , ae))) = map (inv ae)
+  is-equiv.f-g (snd (adjeq-to-2g≃ ⦃ η₂ = η₂ ⦄ (f , ae))) b = ! (θ (natiso2G-from-== (eps ae)) b)
+  is-equiv.g-f (snd (adjeq-to-2g≃ ⦃ η₂ = η₂ ⦄ (f , ae))) a = ! (θ (natiso2G-from-== (eta ae)) a)
+  is-equiv.adj (snd (adjeq-to-2g≃ ⦃ η₂ = η₂ ⦄ (f , ae))) a = ap-! (map f) (θ (natiso2G-from-== (eta ae)) a) ∙ ! (!-∙ _ idp) ∙ ap ! (app= (ap θ lemma) a)
+    module ae-2g≃ where abstract
+      lemma :
+        assoc-wksgrphom (grphom-forg f) (grphom-forg (inv ae)) (grphom-forg f) natiso-∘
+        natiso-whisk-l {μ = grphom-forg f} (natiso2G-from-== (eta ae)) natiso-∘
+        unit-wksgrphom-r (grphom-forg f)
+          ==
+        natiso-whisk-r (natiso2G-from-== (eps ae)) natiso-∘ unit-wksgrphom-l (grphom-forg f)
+      lemma =
+        assoc-wksgrphom (grphom-forg f) (grphom-forg (inv ae)) (grphom-forg f) natiso-∘
+        natiso-whisk-l {μ = grphom-forg f} (natiso2G-from-== (eta ae)) natiso-∘
+        unit-wksgrphom-r (grphom-forg f)
+          =⟨ ap3 (λ h₁ h₂ h₃ → h₁ natiso-∘ h₂ natiso-∘ h₃)
+               (! (<–-inv-r natiso2G-==-≃ (assoc-wksgrphom (grphom-forg f) (grphom-forg (inv ae)) (grphom-forg f))))
+               (! (natiso2G-from-==-whisk-l {{η₁ = η₁}} {{η₂ = η₁}} {{η₃ = η₂}} {h = f} (eta ae)))
+               (! (<–-inv-r natiso2G-==-≃ (unit-wksgrphom-r (grphom-forg f)))) ⟩
+        natiso2G-from-== (natiso2G-to-== (assoc-wksgrphom (grphom-forg f) (grphom-forg (inv ae)) (grphom-forg f))) natiso-∘
+        natiso2G-from-== (ap (λ m → f ∘2G m) (eta ae)) natiso-∘
+        natiso2G-from-== (natiso2G-to-== (unit-wksgrphom-r (grphom-forg f)))
+          =⟨ ! (natiso2G-from-==-∙2
+                 (natiso2G-to-== (unit-wksgrphom-r (grphom-forg f)))
+                 (ap (λ m → f ∘2G m) (eta ae))
+                 (natiso2G-to-== (assoc-wksgrphom (grphom-forg f) (grphom-forg (inv ae)) (grphom-forg f)))) ⟩
+        natiso2G-from-== (
+          natiso2G-to-== (unit-wksgrphom-r (grphom-forg f)) ∙
+          ap (λ m → f ∘2G m) (eta ae) ∙
+          natiso2G-to-== (assoc-wksgrphom (grphom-forg f) (grphom-forg (inv ae)) (grphom-forg f)))
+          =⟨ ap natiso2G-from-== (coher-map ae) ⟩
+        natiso2G-from-== (natiso2G-to-== (unit-wksgrphom-l (grphom-forg f)) ∙ ap (λ m → m ∘2G f) (eps ae))
+          =⟨ natiso2G-from-==-∙ (natiso2G-to-== (unit-wksgrphom-l (grphom-forg f))) (ap (λ m → m ∘2G f) (eps ae)) ⟩
+        natiso2G-from-== (ap (λ m → m ∘2G f) (eps ae)) natiso-∘ natiso2G-from-== (natiso2G-to-== (unit-wksgrphom-l (grphom-forg f)))
+          =⟨ ap2 _natiso-∘_
+               (natiso2G-from-==-whisk-r {{η₁ = η₂}} {{η₂ = η₁}} {{η₃ = η₁}} {h = f} (eps ae))
+               (<–-inv-r natiso2G-==-≃ (unit-wksgrphom-l (grphom-forg f))) ⟩
+        (natiso-whisk-r (natiso2G-from-== (eps ae)) natiso-∘ unit-wksgrphom-l (grphom-forg f)) =∎
+
+  abstract
+    adjeq-to-2g≃-β : adjeq-to-2g≃  AdjEq-id₁ == (cohgrphom (idf G₁) {{idf2G}} , idf-is-equiv G₁)
+    adjeq-to-2g≃-β = Subtype=-out (subtypeprop (is-equiv ∘ map)) idp
+
 -- an equivalence of 2-groups is an adjoint equivalence
 module _ {i} {G₁ : Type i} {η₁ : CohGrp G₁} where
-
-  open CohGrpHom
 
   abstract
     2g≃-to-adjeq : {(_ , η₂) : 2Grp-tot i} →
@@ -66,72 +165,21 @@ module _ {i} {G₁ : Type i} {η₁ : CohGrp G₁} where
       2grphom-ind
         (λ ((_ , η₂) : 2Grp-tot i) (((map , _) , σ) : η₁ 2g≃ η₂)
           → Adjequiv (cohgrphom {{η₁}} {{η₂}} map {{σ}}))
-        (adj-str {{η₁}})
-        where
-          adj-str : {{η : CohGrp G₁}} → Adjequiv {{2grp-bicat-instance}} (cohgrphom {{η}} {{η}} (idf G₁) {{idf2G {{η}}}})
-          map (inv adj-str) = idf G₁
-          str (inv adj-str) = idf2G
-          eta adj-str = natiso2G-to-== (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))
-          eps adj-str = natiso2G-to-== (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))
-          coher-map (adj-str {{η}}) = let idfη = cohgrphom (idf G₁) {{idf2G}} in
-            =ₛ-out $
-              natiso2G-to-== (unit-wksgrphom-r (grphom-forg idfη)) ◃∙
-              ap (λ m → idfη ∘2G m)
-                (natiso2G-to-== (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∙
-              natiso2G-to-== (assoc-wksgrphom (grphom-forg idfη) (grphom-forg (inv adj-str)) (grphom-forg idfη)) ◃∎
-                =ₛ₁⟨ 1 & 1 & ! (whisk2G-conv-l (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ⟩
-              natiso2G-to-== (unit-wksgrphom-r (grphom-forg idfη)) ◃∙
-              natiso2G-to-== (natiso-whisk-l {{η₂ = sgrp η}} {ν₁ = grphom-forg idfη} (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∙
-              natiso2G-to-== (assoc-wksgrphom (grphom-forg idfη) (grphom-forg (inv adj-str)) (grphom-forg idfη)) ◃∎
-                =ₛ⟨ !ₛ (
-                      ∘2G-conv-tri
-                        (unit-wksgrphom-r (grphom-forg idfη))
-                        (natiso-whisk-l {{η₂ = sgrp η}} {ν₁ = grphom-forg idfη} (cohgrpnatiso (λ _ → idp) (λ _ _ → idp)))
-                        (assoc-wksgrphom (grphom-forg idfη) (grphom-forg (inv adj-str)) (grphom-forg idfη))) ⟩
-              natiso2G-to-==
-                (assoc-wksgrphom (grphom-forg idfη) (wksgrphom (idf G₁) (λ x y → idp)) (grphom-forg idfη)
-                  natiso-∘
-                natiso-whisk-l {{η₂ = sgrp η}} {ν₁ = grphom-forg idfη} (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))
-                  natiso-∘
-                unit-wksgrphom-r (grphom-forg idfη)) ◃∎
-                =ₛ₁⟨ ap natiso2G-to-== (natiso∼-to-== (λ _ → idp)) ⟩
-              natiso2G-to-==
-                (natiso-whisk-r (cohgrpnatiso (λ _ → idp) (λ _ _ → idp)) natiso-∘ unit-wksgrphom-l (grphom-forg idfη)) ◃∎
-                =ₛ⟨ ∘2G-conv
-                      (unit-wksgrphom-l (grphom-forg idfη))
-                      (natiso-whisk-r {{η₂ = sgrp η}} {μ = grphom-forg idfη} (cohgrpnatiso (λ _ → idp) (λ _ _ → idp)))  ⟩
-              natiso2G-to-== (unit-wksgrphom-l (grphom-forg idfη)) ◃∙
-              natiso2G-to-== (natiso-whisk-r {{η₂ = sgrp η}} {μ = grphom-forg idfη} (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∎
-                =ₛ₁⟨ 1 & 1 & whisk2G-conv-r (cohgrpnatiso (λ _ → idp) (λ _ _ → idp)) ⟩
-              natiso2G-to-== (unit-wksgrphom-l (grphom-forg idfη)) ◃∙
-              ap (λ m → m ∘2G idfη)
-                (natiso2G-to-== (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∎ ∎ₛ            
-          coher-inv (adj-str {{η}}) = let idfη = cohgrphom (idf G₁) {{idf2G}} in
-            =ₛ-out $                
-              natiso2G-to-== (unit-wksgrphom-r (grphom-forg idfη)) ◃∙
-              ap (λ m → idfη ∘2G m) (natiso2G-to-== (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∙
-              natiso2G-to-== (assoc-wksgrphom (grphom-forg idfη) (grphom-forg idfη) (grphom-forg idfη)) ◃∎
-                =ₛ₁⟨ 1 & 1 & ! (whisk2G-conv-l (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ⟩
-              natiso2G-to-== (unit-wksgrphom-r (grphom-forg idfη)) ◃∙
-              natiso2G-to-== (natiso-whisk-l {{η₂ = sgrp η}} {ν₁ = grphom-forg idfη} (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∙
-              natiso2G-to-== (assoc-wksgrphom (grphom-forg idfη) (grphom-forg idfη) (grphom-forg idfη)) ◃∎
-                =ₛ⟨ !ₛ $
-                    ∘2G-conv-tri
-                      (unit-wksgrphom-r (grphom-forg idfη))
-                      (natiso-whisk-l {{η₂ = sgrp η}} {ν₁ = grphom-forg idfη} (cohgrpnatiso (λ _ → idp) (λ _ _ → idp)))
-                      (assoc-wksgrphom (grphom-forg idfη) (grphom-forg idfη) (grphom-forg idfη)) ⟩
-              natiso2G-to-== (
-                assoc-wksgrphom (grphom-forg idfη) (grphom-forg idfη) (grphom-forg idfη)
-                  natiso-∘
-                natiso-whisk-l {{η₂ = sgrp η}} {ν₁ = grphom-forg idfη} (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))
-                  natiso-∘
-                unit-wksgrphom-r (grphom-forg idfη)) ◃∎
-                =ₛ₁⟨ ! (ap natiso2G-to-== (natiso∼-to-== (λ _ → idp))) ⟩
-              natiso2G-to-== (natiso-whisk-r (cohgrpnatiso (λ _ → idp) (λ _ _ → idp)) natiso-∘ unit-wksgrphom-l (grphom-forg idfη)) ◃∎
-                =ₛ⟨ ∘2G-conv (unit-wksgrphom-l (grphom-forg idfη)) (natiso-whisk-r {{η₂ = sgrp η}} {μ = grphom-forg idfη}
-                      (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ⟩
-              natiso2G-to-== (unit-wksgrphom-l (grphom-forg idfη)) ◃∙
-              natiso2G-to-== (natiso-whisk-r {{η₂ = sgrp η}} {μ = grphom-forg idfη} (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∎
-                =ₛ₁⟨ 1 & 1 & whisk2G-conv-r (cohgrpnatiso (λ _ → idp) (λ _ _ → idp)) ⟩
-              natiso2G-to-== (unit-wksgrphom-l (grphom-forg idfη)) ◃∙
-              ap (λ m → m ∘2G idfη) (natiso2G-to-== (cohgrpnatiso (λ _ → idp) (λ _ _ → idp))) ◃∎ ∎ₛ
+        (snd (AdjEq-id₁ {{2grp-bicat-instance}}))
+
+  adjeq-to-2g≃-≃ : {G₂ : Type i} {{η₂ : CohGrp G₂}} →
+    (AdjEquiv (2grp-bicat i) (_ , η₁) (_ , η₂)) ≃ (Σ (CohGrpHom {{η₁}} {{η₂}}) (λ φ → is-equiv (map {{η₁}} φ)))
+  adjeq-to-2g≃-≃ = Σ-emap-r
+    (λ f → props-BiImp-≃ (λ ae → snd (adjeq-to-2g≃  {{η₁}} (_ , ae))) λ ise → 2g≃-to-adjeq (((map {{η₁}} f) , ise) , (str {{η₁}} f)))
+
+-- the 2-groups are globally univalent
+abstract
+  univ-2G : ∀ {i} → is-univ-bc (2grp-bicat i)
+  univ-2G G₁ G₂@(_ , η₂) = 3-for-2-e-sw (fst 2grpphom-==-≃-alt) aux (snd (adjeq-to-2g≃-≃ {{η₂ = η₂}})) (snd 2grpphom-==-≃-alt)
+    where
+      aux : ∀ {H} (p : G₁ == H) → (fst (adjeq-to-2g≃-≃ {{snd H}}) ∘ ==-to-adjeq) p == (fst 2grpphom-==-≃-alt) p
+      aux idp = pair= idp (prop-has-all-paths _ _)
+
+instance
+  univ-2G-inst : ∀ {i} → is-univ-bc-inst {{2grp-bicat i}}
+  univ-2G-inst {_} {G₁} {G₂} = univ-2G G₁ G₂

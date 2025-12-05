@@ -1,12 +1,13 @@
 ## Overview
 
-- We construct a fully verified biequivalence between
+- We construct a fully verified biadjoint biequivalence between
     1. the (2,1)-category of coherent 2-groups
     2. the (2,1)-category of 2-truncated connected pointed types.
     
   We also derive a verified equality between them by way of univalence.
 
-  A preprint outlining our mechanization is located [here](https://phart3.github.io/2Grp-biequiv-preprint.pdf).
+  A preprint outlining our mechanization (except for the biadjunction data)
+  is located [here](https://phart3.github.io/2Grp-biequiv-preprint.pdf).
 
 - We mechanize Owen Milner's equivalence between the type of *n*-groups (i.e., pointed connected *n*-types) and
   that of Sính triples (where *n* > 1).
@@ -22,7 +23,7 @@ collecting the main theorems.
 
   A stripped down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
   with many changes and additions motivated by our construction
-  of the biequivalence and by Milner's equivalence.
+  of the biadjoint biequivalence and by Milner's equivalence.
 
   See `HoTT-Agda/README.md` for details and for the license of the work inside this directory.
 
@@ -34,7 +35,7 @@ collecting the main theorems.
 
 - `Two-groups/`
 
-  Our formalization of the biequivalence and the induced equality.
+  Our formalization of the biadjoint biequivalence and the induced equality.
 
   See `Two-groups/README.md` for details and for the license of the work inside this directory.
 
@@ -46,7 +47,8 @@ collecting the main theorems.
 
 - `Final/`
 
-  A single file containing the final biequivalence and equality, Milner's equivalence along with a description of the group action produced by the equivalence,
+  A single file containing the final biadjoint biequivalence and equality, 
+  Milner's equivalence along with a description of the group action produced by the equivalence,
   and the composite type equivalence between pointed connected 2-types and Sính triples.
 
   See `Final/README.md` for details and for the license of the work inside this directory.
@@ -62,13 +64,13 @@ We have successfully tested the following Docker container on Linux with 16 GB o
    docker build . -t 2group
    ```
 
-   Our machine uses as much as 28.7 GB of physical memory and takes about 8 hours to build the image. 
+   Our machine uses as much as 28.7 GB of physical memory and takes over 8 hours to build the image. 
 
 2. Generate HTML files:
 
    ```bash
    mkdir -p ./html
-   docker run --mount type=bind,source=./html,target=/Two-groups/html 2group
+   docker run --mount type=bind,source=./html,target=/Final/html 2group
    ```
 
    This may take a few minutes. The HTML files will be under `html/`, and
@@ -78,10 +80,10 @@ If you can avoid the overhead of Docker, we suggest that you do so even if you
 have lots of available RAM.
 
 We have found that type-checking directly on a MacOS with an M1 chip is much
-faster (see `Final/README.md`).
+faster (but still intensive). See `Final/README.md` for relevant details.
 
 **Important:** Comment out the final two imports in `Final/Final-thms` to reduce the type-checking by over an hour. Doing so will check
-all relevant type equivalences but not the biequivalence.
+all relevant type equivalences but not the biadjoint biequivalence.
 
 ## Acknowledgement
 

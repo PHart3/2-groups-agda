@@ -153,11 +153,18 @@ is-equiv-prop = subtypeprop is-equiv {{λ {f} → is-equiv-is-prop}}
 ∘e-unit-r e = pair= idp (prop-has-all-paths _ _)
 
 -- 3-for-2
+
 3-for-2-e : ∀ {i j k} {A : Type i} {B : Type j} {C : Type k} {f₀ : A → B} {f₁ : B → C}
   (f₂ : A → C) → f₁ ∘ f₀ ∼ f₂ → is-equiv f₀ → is-equiv f₂ → is-equiv f₁
 3-for-2-e {f₀ = f₀} {f₁ = f₁} =
   ∼-ind (λ f₂ _ → is-equiv f₀ → is-equiv f₂ → is-equiv f₁)
     λ e₀ e₁ → ∼-preserves-equiv {f₀ = f₁ ∘ f₀ ∘ is-equiv.g e₀} (λ x → ap f₁ (is-equiv.f-g e₀ x)) (e₁ ∘ise is-equiv-inverse e₀) 
+
+3-for-2-e-sw : ∀ {i j k} {A : Type i} {B : Type j} {C : Type k} {f₀ : A → B} {f₁ : B → C}
+  (f₂ : A → C) → f₁ ∘ f₀ ∼ f₂ → is-equiv f₁ → is-equiv f₂ → is-equiv f₀
+3-for-2-e-sw {f₀ = f₀} {f₁ = f₁} =
+  ∼-ind (λ f₂ _ → is-equiv f₁ → is-equiv f₂ → is-equiv f₀)
+    λ e₀ e₁ → ∼-preserves-equiv {f₀ = is-equiv.g e₀ ∘ f₁ ∘ f₀} (λ x → is-equiv.g-f e₀ (f₀ x)) (is-equiv-inverse e₀ ∘ise e₁ ) 
 
 equiv-induction-bi : ∀ {i j}
   (P : {A B C : Type i} (f₁ : A ≃ B) (f₂ : B ≃ C) → Type j)
@@ -201,8 +208,7 @@ ua-∘e-β : ∀ {i} {A C : Type i} (e : A ≃ C)
 ua-∘e-β {C = C} e =
   app= (equiv-induction-β {P = λ {B} e₁ → ∀ (e₂ : B ≃ C) → ua (e₂ ∘e e₁) == ua e₁ ∙ ua e₂} _) e 
 
-ua-∘e-coh : ∀ {i} {C A B : Type i} (e₂ : B ≃ C) {e₁ e₁' : A ≃ B} (p : e₁ == e₁')
-  →
+ua-∘e-coh : ∀ {i} {C A B : Type i} (e₂ : B ≃ C) {e₁ e₁' : A ≃ B} (p : e₁ == e₁') →
   ua-∘e e₁ e₂ ◃∎
     =ₛ
   ap ua (ap (λ e → e₂ ∘e e) p) ◃∙
@@ -290,7 +296,7 @@ coe-β-∘ h₁ h₂ idp =
       ap (λ z → coe (ua z) x) (∘e-unit-r (ide A)) ◃∙
       coe-β (ide A) x ◃∙
       ! (ap (λ z → –> z x) (∘e-unit-r (ide A))) ◃∎
-        =ₛ⟨ !ₛ (apCommSq2◃' (λ z → coe-β z x) (∘e-unit-r (ide A)) ) ⟩
+        =ₛ⟨ !ₛ (apCommSq2◃-rev (λ z → coe-β z x) (∘e-unit-r (ide A)) ) ⟩
       coe-β (ide A ∘e ide A) x ◃∎ ∎ₛ
       where
         aux-path : {a : A} {e : A ≃ A} (p₁ : e == ide A) (p₂ : _ == a) → 
@@ -312,8 +318,7 @@ coe-β-∘ h₁ h₂ idp =
               idp
             aux-path-aux idp = idp
           
-ap-ua-∘e : ∀ {i} {C A B : Type i} (e₁ : A ≃ B) (e₂ : B ≃ C)
-  →
+ap-ua-∘e : ∀ {i} {C A B : Type i} (e₁ : A ≃ B) (e₂ : B ≃ C) →
   ap coe-equiv (ua-∘e e₁ e₂) ◃∎
     =ₛ
   coe-equiv-β (e₂ ∘e e₁) ◃∙
@@ -361,7 +366,7 @@ ap-ua-∘e {C = C} {A} =
       ap (λ u → u ∘e ide A) (! (coe-equiv-β e₂)) ◃∙
       idp ◃∙
       ∘e-unit-r (coe-equiv (ua e₂)) ◃∎
-        =ₛ⟨ 2 & 1 & apCommSq2◃' ∘e-unit-r (coe-equiv-β e₂) ⟩
+        =ₛ⟨ 2 & 1 & apCommSq2◃-rev ∘e-unit-r (coe-equiv-β e₂) ⟩
       ap (λ z → z ∘e ide A) (! (coe-equiv-β e₂)) ◃∙
       idp ◃∙
       ap (λ z → z ∘e ide A) (coe-equiv-β e₂) ◃∙
@@ -414,7 +419,7 @@ ap-ua-∘e {C = C} {A} =
       ap (λ z → coe-equiv (ua e₂) ∘e coe-equiv z) (ua-η idp) ◃∙
       ∘e-unit-r (coe-equiv (ua e₂)) ◃∙
       ! (ap (λ z → coe-equiv (z ∙ ua e₂)) (ua-η idp)) ◃∎
-        =ₛ⟨ 2 & 3 & !ₛ (apCommSq2◃' (λ z → ∙-coe-equiv z (ua e₂)) (ua-η idp)) ⟩
+        =ₛ⟨ 2 & 3 & !ₛ (apCommSq2◃-rev (λ z → ∙-coe-equiv z (ua e₂)) (ua-η idp)) ⟩
       coe-equiv-β (e₂ ∘e ide A) ◃∙
       ap2 _∘e_ (! (coe-equiv-β e₂)) (! (coe-equiv-β (ide A))) ◃∙
       ∙-coe-equiv (ua (ide A)) (ua e₂) ◃∎ ∎ₛ
@@ -510,9 +515,21 @@ replace-inverse {f = f} f-ise {g₁ = g₁} g∼ =
   is-eq f g₁ (λ b → ap f (! (g∼ b)) ∙ f-g b) (λ a → ! (g∼ (f a)) ∙ g-f a)
   where open is-equiv f-ise
 
+≃-==-contr : ∀ {i j} {A : Type i} {B : Type j} {b : B} (e : A ≃ B)
+  → is-contr (Σ A (λ a → b == –> e a))
+≃-==-contr e@(f , ise) = equiv-preserves-level (Σ-emap-r (λ a → equiv-adj-≃ (e ⁻¹)))
+
+≃-==-contr-back : ∀ {i j} {A : Type i} {B : Type j} {b : B} (e : A ≃ B)
+  → is-contr (Σ A (λ a → –> e a == b))
+≃-==-contr-back e@(f , ise) = equiv-preserves-level (Σ-emap-r (λ _ → !-equiv)) {{≃-==-contr e}}
+
 -- some lemmas for rearranging identity types
 
 module _ {i} {A : Type i} where
+
+  pre-rotate-out-≃ : {a a' a'' : A} (q : a' == a'') (p : a == a') {r : a == a''}
+    → (p == r ∙ ! q) ≃ (p ∙ q == r)
+  pre-rotate-out-≃ idp q {r = idp} = pre∙-equiv (∙-unit-r q)
 
   pre-rotate-in-≃ : {a a' a'' : A} (q : a' == a'') (p : a == a') {r : a == a''}
     → (r == p ∙ q) ≃ (! p ∙' r == q)
@@ -529,3 +546,25 @@ module _ {i} {A : Type i} where
   pre-rotate-in-!≃-back : {a a' a'' : A} (q : a' == a'') (p : a' == a) {r : a == a''}
     → (p ∙' r == q) ≃ (r == ! p ∙ q)
   pre-rotate-in-!≃-back q p = (pre-rotate-in-!≃ q p)⁻¹
+
+module _ {i j} {A : Type i} {B : Type j} {b : B} (e : A ≃ B) where
+
+  abstract
+
+    ∙-≃-∙2-contr : ∀ {x y z : B} {a b : A} (p₁ : x == –> e b) {p₂ : –> e a == y} (p₃ : y == z) {p₄ : x == z} →
+      is-contr (Σ (a == b) (λ q → p₁ ∙ ap (–> e) (! q) ∙ p₂ ∙ p₃ == p₄))
+    ∙-≃-∙2-contr idp {idp} idp =
+      equiv-preserves-level (Σ-emap-r (λ q → pre∙'-equiv (∙-unit-r (ap (–> e) (! q))))) {{≃-==-contr-back (ap-equiv e _ _ ∘e !-equiv)}}
+
+    ∙-≃-∙6-contr : ∀ {u x y z w v : B} {a b : A}
+      {p₀ : u == –> e a} (p₁ : –> e b == x) {p₂ : x == y} (p₃ : y == z) {p₄ : z == w} (p₅ : w == v) (p₆ : v == u) →
+      is-contr (Σ (a == b) (λ q → p₀ ∙ ap (–> e) q ∙ p₁ ∙ p₂ ∙ p₃ ∙ p₄ ∙ p₅ ∙ p₆ == idp))
+    ∙-≃-∙6-contr {p₀ = idp} idp {idp} idp {idp} idp p₆ =
+      equiv-preserves-level (Σ-emap-r (λ q → pre-rotate-out-≃ p₆ (ap (–> e) q))) {{≃-==-contr-back (ap-equiv e _ _)}}
+
+module _ {i j k} {A : Type i} {B : Type j} {C : Type k} {a b : B} (e : A ≃ (a == b)) (h : B ≃ C) where
+
+  abstract
+    ∙2-≃-∘-contr : {x y : C} (p₁ : x == y) (p₂ : y == –> h a) {p₃ : x == –> h b}
+      → is-contr (Σ A (λ q → p₁ ∙ p₂ ∙ ap (–> h) (–> e q) == p₃))
+    ∙2-≃-∘-contr idp idp = ≃-==-contr-back (ap-equiv h _ _ ∘e e)

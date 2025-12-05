@@ -36,14 +36,12 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       ! (ap map (lam id)) ◃∙
       ! (map-comp id id) ◃∙
       ! (ap (λ z → mu z (map id)) map-id) ◃∎
-    map-lam-id =
-      !ₛ (map-id-map-lam map map-comp map-id id
-        (!ₛ (rho-to-lam map map-comp map-al 
-          map-id map-rho-id id)))
+    map-lam-id = !ₛ (rho-to-lam map map-comp map-al map-id map-rho-id id)
 
-  -- This lets us eliminate the unit iso from the definition of 2-group morphism.
+  -- The following lets us eliminate the unit iso from the definition of 2-group morphism.
+  
   abstract
-    rhoid-to-rho : (x : G₁) → 
+    rhoid-to-rho-aux : (x : G₁) → 
       ! (al (inv (map x)) (map x) id ∙
         ap2 mu (linv (map x)) idp ∙
         lam id) ◃∙
@@ -56,7 +54,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
       lam (map id) ◃∎
         =ₛ
       map-id ◃∎
-    rhoid-to-rho x =
+    rhoid-to-rho-aux x =
       lam-to-rho map map-comp map-al
         (λ v → 
           ! (! (al (inv (map v)) (map v) (inv (map v))) ∙
@@ -81,3 +79,12 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
           u (=ₛ-in idp)))
         map-lam-id
         x
+
+  abstract
+    rhoid-to-rho : (x : G₁) →
+      ! (map-comp x id) ◃∎
+        =ₛ
+      ap map (rho x) ◃∙
+      ! (rho (map x)) ◃∙
+      ap (mu (map x)) map-id ◃∎
+    rhoid-to-rho x = map-id-map-rho map map-comp map-id x (!ₛ (rhoid-to-rho-aux x)) 

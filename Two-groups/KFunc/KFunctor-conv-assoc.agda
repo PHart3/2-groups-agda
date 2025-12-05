@@ -27,7 +27,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {G₁ : Type ℓ₁} {G₂ : Type ℓ₂}
       ⊙-crd∼-to-== (K₂-map-∘ σ₁ (φ₃ ∘2Gσ φ₂)) ∙
       ap (λ m → m ⊙∘ K₂-action-hom φ₁) (⊙-crd∼-to-== (K₂-map-∘ σ₂ σ₃))
         ==
-      ⊙-crd∼-to-== (⊙∘-α-comp (K₂-action-hom φ₃) (K₂-action-hom φ₂) (K₂-action-hom φ₁))
+      ⊙-crd∼-to-== (⊙∘-α-crd (K₂-action-hom φ₃) (K₂-action-hom φ₂) (K₂-action-hom φ₁))
     K₂-α =  =ₛ-out $
       ! (ap (λ m → K₂-action-hom φ₃ ⊙∘ m) (⊙-crd∼-to-== (K₂-map-∘ σ₁ σ₂))) ◃∙
       ! (⊙-crd∼-to-== (K₂-map-∘ (φ₂ ∘2Gσ φ₁) σ₃)) ◃∙
@@ -77,4 +77,4 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {G₁ : Type ℓ₁} {G₂ : Type ℓ₂}
         K₂-map-∘ σ₁ (φ₃ ∘2Gσ φ₂) ∙⊙∼
         ⊙∘-pre (K₂-action-hom φ₁) (K₂-map-∘ σ₂ σ₃)) ◃∎
         =ₛ₁⟨ ap ⊙-crd∼-to-== (⊙→∼-to-== (KFunc-assoc σ₁ σ₂ σ₃)) ⟩
-      ⊙-crd∼-to-== (⊙∘-α-comp (K₂-action-hom φ₃) (K₂-action-hom φ₂) (K₂-action-hom φ₁)) ◃∎ ∎ₛ
+      ⊙-crd∼-to-== (⊙∘-α-crd (K₂-action-hom φ₃) (K₂-action-hom φ₂) (K₂-action-hom φ₁)) ◃∎ ∎ₛ

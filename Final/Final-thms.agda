@@ -1,5 +1,7 @@
 {-# OPTIONS --without-K --rewriting #-}
 
+-- the collection of the main final results of the repo
+
 module Final-thms where
 
 -- Owen Milner's equivalence between pointed connected n-types and Sính triples (with n ≥ 2)
@@ -13,14 +15,19 @@ open import Sinh-action public
 open import Type-equiv-main public
 
 
+-- explicit biadjoint biequivalence between 2-groups and pointed connected 2-types:
+
 {-
-  The remaining two files take over an hour and up to 29 GB of memory to check.
-  Comment out the following two imports to avoid checking them.
+  The following file checks the biequivalence data and takes over two hours and up to 28 GB of memory.
+  Comment out the following line to avoid checking it.
 -}
-
-
--- explicit biequivalence between 2-groups and pointed connected 2-types
 open import Biequiv-main public
 
--- equalities between the same two (2,1)-categories obtained from the biequivalence
+{-
+  The following file checks the triangulator for the above biequivalence, which takes an extra 20 minutes.
+  Comment out the folloiwng line to avoid checking it.
+-}
+open import Biadj-biequiv-main public
+
+-- an equality between the same two (2,1)-categories obtained from the biadjoint biequivalence
 open import Equality-main public

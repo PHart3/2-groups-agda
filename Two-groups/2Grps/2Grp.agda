@@ -187,7 +187,6 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
   map-comp-wk (grphom-forg f) = map-comp (str f) where open WkSGrpHomStr
 
   -- natural isomorphisms between 2-group morphisms
-
   CohGrpNatIso : CohGrpHom → CohGrpHom → Type (lmax i j)
   CohGrpNatIso μ₁ μ₂ = WkSGrpNatIso (grphom-forg μ₁) (grphom-forg μ₂)
 

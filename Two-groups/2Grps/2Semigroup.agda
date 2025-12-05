@@ -138,6 +138,41 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : WkSGrp G₁}} {{η₂ :
     θ F₁ (mu x y) ◃∙
     θ F₂ (mu x y) ◃∎ ∎ₛ
 
+  infixr 40 _natiso-∘'_
+  _natiso-∘'_ : {μ₁ μ₂ μ₃ : WkSGrpWkHom {{η₁}} {{η₂}}} → WkSGrpNatIso μ₂ μ₃ → WkSGrpNatIso μ₁ μ₂ → WkSGrpNatIso μ₁ μ₃
+  θ (F₂ natiso-∘' F₁) x = θ F₁ x ∙' θ F₂ x
+  θ-comp (_natiso-∘'_ {μ₁} {μ₂} {μ₃} F₂ F₁) x y = =ₛ-out $
+    map-comp-wk μ₃ x y ◃∎
+      =ₛ⟨ =ₛ-in (θ-comp F₂ x y) ⟩
+    ! (ap2 mu (θ F₂ x) (θ F₂ y)) ◃∙
+    map-comp-wk μ₂ x y ◃∙
+    θ F₂(mu x y) ◃∎
+      =ₑ⟨ 1 & 1 & (! (ap2 mu (θ F₁ x) (θ F₁ y)) ◃∙ map-comp-wk μ₁ x y ◃∙ θ F₁ (mu x y) ◃∎) % =ₛ-in (θ-comp F₁ x y) ⟩
+    ! (ap2 mu (θ F₂ x) (θ F₂ y)) ◃∙
+    ! (ap2 mu (θ F₁ x) (θ F₁ y)) ◃∙
+    map-comp-wk μ₁ x y ◃∙
+    θ F₁ (mu x y) ◃∙
+    θ F₂ (mu x y) ◃∎
+      =ₛ₁⟨ 0 & 2 & ∙-! (ap2 mu (θ F₂ x) (θ F₂ y)) (ap2 mu (θ F₁ x) (θ F₁ y)) ⟩
+    ! (ap2 mu (θ F₁ x) (θ F₁ y) ∙ ap2 mu (θ F₂ x) (θ F₂ y)) ◃∙
+    map-comp-wk μ₁ x y ◃∙
+    θ F₁ (mu x y) ◃∙
+    θ F₂ (mu x y) ◃∎
+      =ₛ₁⟨ 0 & 1 & ap ! (∙-ap2 mu (θ F₁ x) (θ F₂ x) (θ F₁ y) (θ F₂ y)) ⟩
+    ! (ap2 mu (θ F₁ x ∙ θ F₂ x) (θ F₁ y ∙ θ F₂ y)) ◃∙
+    map-comp-wk μ₁ x y ◃∙
+    θ F₁ (mu x y) ◃∙
+    θ F₂ (mu x y) ◃∎
+      =ₛ₁⟨ 0 & 1 & ap ! (ap2 (ap2 mu) (∙=∙' (θ F₁ x) (θ F₂ x)) (∙=∙' (θ F₁ y) (θ F₂ y))) ⟩
+    ! (ap2 mu (θ F₁ x ∙' θ F₂ x) (θ F₁ y ∙' θ F₂ y)) ◃∙
+    map-comp-wk μ₁ x y ◃∙
+    θ F₁ (mu x y) ◃∙
+    θ F₂ (mu x y) ◃∎
+      =ₛ⟨ 2 & 2 & =ₛ-in (∙=∙' (θ F₁ (mu x y)) (θ F₂ (mu x y))) ⟩
+    ! (ap2 mu (θ F₁ x ∙' θ F₂ x) (θ F₁ y ∙' θ F₂ y)) ◃∙
+    map-comp-wk μ₁ x y ◃∙
+    (θ F₁ (mu x y) ∙' θ F₂ (mu x y)) ◃∎ ∎ₛ
+
 -- some ad-hoc lemmas for algebraic reasoning below
 
 private

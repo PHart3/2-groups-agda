@@ -2,7 +2,9 @@
 
 open import lib.Basics
 open import lib.FTID
+open import lib.Equivalence2
 open import lib.types.Sigma
+open import lib.types.Pi
 open import Bicategory
 open import Bicat-iso-aux
 
@@ -19,6 +21,9 @@ module _ {i₁ i₂ j₁ j₂ : ULevel} {B₀ : Type i₁} where
   is-iso-bc :  {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}}
     → Psfunctor {{ξB}} {{ξC}} → Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
   is-iso-bc φ = is-equiv (map-pf φ) × ((a b : B₀) → is-equiv (F₁ {a = a} {b}))
+
+  iso-bc-is-prop :  {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}} {φ : Psfunctor {{ξB}} {{ξC}}} → is-prop (is-iso-bc φ)
+  iso-bc-is-prop = ×-level ⟨⟩ Π-level-instance
 
   infixr 70 _iso-bc_
   _iso-bc_ : {C₀ : Type i₂}
@@ -73,3 +78,19 @@ module _ {i j : ULevel} where
 
   iso-bc-to-== : {B@(_ , ξB) C@(_ , ξC) : Bicat j i} → ξB iso-bc ξC → B == C
   iso-bc-to-== {B@(_ , ξB)} = bc-ind ξB (λ C _ → B == C) idp
+
+  iso-bc-to-==-β : {(_ , ξB) : Bicat j i} → iso-bc-to-== (iso-bc-id ξB) == idp
+  iso-bc-to-==-β {B@(_ , ξB)} = bc-ind-β ξB (λ C _ → B == C) idp
+
+  iso-bc-from-== : {B@(_ , ξB) C : Bicat j i} → B == C → ξB iso-bc (snd C)
+  iso-bc-from-== {(_ , ξB)} idp = iso-bc-id ξB
+
+  iso-bc-==-≃ : {B@(_ , ξB) C@(_ , ξC) : Bicat j i} → (ξB iso-bc ξC) ≃ (B == C)
+  iso-bc-==-≃ {B@(_ , ξB)} {C@(_ , ξC)} = equiv iso-bc-to-== iso-bc-from-== aux1 aux2
+    where
+
+      aux1 : ∀ {D} (p : B == D) → iso-bc-to-== (iso-bc-from-== p) == p
+      aux1 idp = iso-bc-to-==-β
+
+      aux2 : ∀ {D@(_ , ξD) : Bicat j i} (p : ξB iso-bc ξD) → iso-bc-from-== (iso-bc-to-== p) == p
+      aux2 = bc-ind ξB (λ _ p → iso-bc-from-== (iso-bc-to-== p) == p) (ap iso-bc-from-== iso-bc-to-==-β)

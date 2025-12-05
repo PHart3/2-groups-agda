@@ -7,7 +7,8 @@ module 2GrpProps where
 
 open CohGrp {{...}}
 
--- properties of all monoidal cats
+-- general properties of monoidal cats
+
 module _ {i} {G : Type i} {{η : CohGrp G}} where
 
   module Rotations where
@@ -183,7 +184,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
     ap (λ x → x) (! (al id id id) ∙ ap (mu id) (lam id)) ◃∙
     ap (λ x → x) (! (! (rho id))) ◃∙
     idp ◃∎
-      =ₛ⟨ 1 & 1 & !-ap-∙◃ (λ x → x) (al id id id) _ ⟩
+      =ₛ⟨ 1 & 1 & ap-!∙◃ (λ x → x) (al id id id) _ ⟩
     ! (ap (λ x → x) (! (! (rho (mu id id)))) ∙ idp) ◃∙
     ! (ap (λ x → x) (al id id id)) ◃∙
     ap (λ x → x) (ap (mu id) (lam id)) ◃∙
@@ -392,15 +393,32 @@ module _ {i} {G : Type i} {{η : CohGrp G}} (x : G) where
       zz₁-rinv =
         rinv x ◃∎
           =ₛ⟨ zz₁-rinv-aux ⟩
-        _
+        ! (! (al id x (inv x)) ∙ ! (ap (mu id) (rinv x)) ∙ rho id) ◃∙
+        ap (λ z → mu z (inv x))
+          (lam x ∙ ! (rho x) ∙ ! (ap (mu x) (linv x)) ∙ al x (inv x) x) ◃∙
+        ! (al (mu x (inv x)) x (inv x)) ◃∙
+        ! (ap (mu (mu x (inv x))) (rinv x)) ◃∙
+        rho (mu x (inv x)) ◃∎
           =ₛ⟨ 1 & 1 & ap-∙◃ (λ z → mu z (inv x)) (lam x) (! (rho x) ∙ ! (ap (mu x) (linv x)) ∙ al x (inv x) x) ⟩
-        _
+        ! (! (al id x (inv x)) ∙ ! (ap (mu id) (rinv x)) ∙ rho id) ◃∙
+        ap (λ z → mu z (inv x)) (lam x) ◃∙
+        ap (λ z → mu z (inv x)) (! (rho x) ∙ ! (ap (mu x) (linv x)) ∙ al x (inv x) x) ◃∙
+        ! (al (mu x (inv x)) x (inv x)) ◃∙
+        ! (ap (mu (mu x (inv x))) (rinv x)) ◃∙
+        rho (mu x (inv x)) ◃∎
           =ₑ⟨ 3 & 3 &
               (! (al (mu x (inv x)) x (inv x)) ∙ ! (ap (mu (mu x (inv x))) (rinv x)) ∙ rho (mu x (inv x))) ◃∎
             % =ₛ-in idp ⟩
-        _
+        ! (! (al id x (inv x)) ∙ ! (ap (mu id) (rinv x)) ∙ rho id) ◃∙
+        ap (λ z → mu z (inv x)) (lam x) ◃∙
+        ap (λ z → mu z (inv x)) (! (rho x) ∙ ! (ap (mu x) (linv x)) ∙ al x (inv x) x) ◃∙
+        (! (al (mu x (inv x)) x (inv x)) ∙
+        ! (ap (mu (mu x (inv x))) (rinv x)) ∙
+        rho (mu x (inv x))) ◃∎
           =ₛ⟨ 2 & 2 & zz₁-rinv-suff ⟩
-        _
+        ! (! (al id x (inv x)) ∙ ! (ap (mu id) (rinv x)) ∙ rho id) ◃∙
+        ap (λ z → mu z (inv x)) (lam x) ◃∙
+        idp ◃∎
           =ₛ₁⟨ 1 & 2 & ∙-unit-r (ap (λ z → mu z (inv x)) (lam x)) ⟩
         ! (! (al id x (inv x)) ∙ ! (ap (mu id) (rinv x)) ∙ rho id) ◃∙
         ap (λ z → mu z (inv x)) (lam x) ◃∎ ∎ₛ

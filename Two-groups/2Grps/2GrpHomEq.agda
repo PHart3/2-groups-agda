@@ -40,13 +40,12 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
     ap2 mu (linv (map id)) idp ∙
     lam (map id) 
   CohGrpHomStrFull.map-rho (FreeMap ⦃ ρ ⦄) x =
-    =ₛ-out (map-id-map-rho map map-comp (map-id {{r = FreeMap ⦃ ρ ⦄}}) x (!ₛ
+    =ₛ-out
       (rhoid-to-rho map map-comp (λ x y z → =ₛ-in (map-al x y z)) (map-id {{r = FreeMap ⦃ ρ ⦄}})
-        (map-id-map-rho map map-comp (map-id {{r = FreeMap ⦃ ρ ⦄}}) id (=ₛ-in idp)) x)))
+        (map-id-map-rho map map-comp (map-id {{r = FreeMap ⦃ ρ ⦄}}) id (=ₛ-in idp)) x)
   CohGrpHomStrFull.map-lam (FreeMap ⦃ ρ ⦄) x =
-    ! (=ₛ-out (map-id-map-lam map map-comp (map-id {{r = FreeMap ⦃ ρ ⦄}}) x (
-      !ₛ (rho-to-lam map map-comp (λ x y z → =ₛ-in (map-al x y z)) (map-id {{r = FreeMap ⦃ ρ ⦄}})
-        (=ₛ-in (map-rho {{r = FreeMap ⦃ ρ ⦄}} id)) x))))
+    ! (=ₛ-out (rho-to-lam map map-comp (λ x y z → =ₛ-in (map-al x y z)) (map-id {{r = FreeMap ⦃ ρ ⦄}})
+        (=ₛ-in (map-rho {{r = FreeMap ⦃ ρ ⦄}} id)) x))
   CohGrpHomStrFull.map-inv (FreeMap ⦃ ρ ⦄) x = 
     ! (al (inv (map x)) (map x) (inv (map x)) ∙
       ap2 mu (linv (map x)) idp ∙
@@ -62,15 +61,13 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
   CohGrpHomStrFull.map-rinv (FreeMap ⦃ ρ ⦄) x = 
     =ₛ-out (!ₛ (map-inv-map-rinv map map-comp (map-id {{r = FreeMap ⦃ ρ ⦄}}) (map-inv {{r = FreeMap ⦃ ρ ⦄}}) x (=ₛ-in idp)))
   CohGrpHomStrFull.map-linv (FreeMap ⦃ ρ ⦄) x =
-    ! ( =ₛ-out (
-      map-inv-map-linv map map-comp (map-id {{r = FreeMap ⦃ ρ ⦄}}) (map-inv {{r = FreeMap ⦃ ρ ⦄}}) x
-        (!ₛ (
-          rinv-to-linv map map-comp (map-id {{r = FreeMap ⦃ ρ ⦄}})
-            map-al-rot2
-            (map-inv {{r = FreeMap ⦃ ρ ⦄}})
-            (λ x → =ₛ-in (map-rho {{r = FreeMap ⦃ ρ ⦄}} x))
-            (λ x → =ₛ-in (map-lam {{r = FreeMap ⦃ ρ ⦄}} x))
-            x (=ₛ-in (map-rinv {{r = FreeMap ⦃ ρ ⦄}} x))))))
+    ! (=ₛ-out (
+        rinv-to-linv map map-comp (map-id {{r = FreeMap ⦃ ρ ⦄}})
+          map-al-rot2
+          (map-inv {{r = FreeMap ⦃ ρ ⦄}})
+          (λ x → =ₛ-in (map-rho {{r = FreeMap ⦃ ρ ⦄}} x))
+          (λ x → =ₛ-in (map-lam {{r = FreeMap ⦃ ρ ⦄}} x))
+          x (=ₛ-in (map-rinv {{r = FreeMap ⦃ ρ ⦄}} x))))
 
   abstract
     Forg-equiv : is-equiv ForgMap

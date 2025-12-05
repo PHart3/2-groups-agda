@@ -73,7 +73,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {X₁ : Ptd ℓ₁} {X₂ : Ptd ℓ₂} {
     Loop2Grp-map-assoc : (f₁* : X₁ ⊙→ X₂) (f₂* : X₂ ⊙→ X₃) (f₃* : X₃ ⊙→ X₄) (p : Ω X₁) →
       ! (ap (Ω-fmap f₃*) (θ (Loop2Grp-map-∘ f₂* f₁*) p)) ◃∙
       ! (θ (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*)) p) ◃∙
-      θ (Loop2Grp-map-ap (⊙∘-α-comp f₃* f₂* f₁*)) p ◃∙
+      θ (Loop2Grp-map-ap (⊙∘-α-crd f₃* f₂* f₁*)) p ◃∙
       θ (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) p ◃∙
       θ (Loop2Grp-map-∘ f₃* f₂*) (Ω-fmap f₁* p) ◃∎
         =ₛ
@@ -81,13 +81,13 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {X₁ : Ptd ℓ₁} {X₂ : Ptd ℓ₂} {
     Loop2Grp-map-assoc f₁*@(f₁ , idp) f₂*@(f₂ , idp) f₃*@(f₃ , idp) p =
       ! (ap (Ω-fmap f₃*) (θ (Loop2Grp-map-∘ f₂* f₁*) p)) ◃∙
       ! (θ (Loop2Grp-map-∘ f₃* (f₂* ⊙∘ f₁*)) p) ◃∙
-      θ (Loop2Grp-map-ap (⊙∘-α-comp f₃* f₂* f₁*)) p ◃∙
+      θ (Loop2Grp-map-ap (⊙∘-α-crd f₃* f₂* f₁*)) p ◃∙
       θ (Loop2Grp-map-∘ (f₃* ⊙∘ f₂*) f₁*) p ◃∙
       θ (Loop2Grp-map-∘ f₃* f₂*) (Ω-fmap f₁* p) ◃∎
-        =ₛ₁⟨ 2 & 1 & Loop2Grp-map-ap-fst (⊙∘-α-comp f₃* f₂* f₁*) p ⟩
+        =ₛ₁⟨ 2 & 1 & Loop2Grp-map-ap-fst (⊙∘-α-crd f₃* f₂* f₁*) p ⟩
       ! (ap (ap f₃) (ap-∘ f₂ f₁ p)) ◃∙
       ! (ap-∘ f₃ (f₂ ∘ f₁) p) ◃∙
-      Ω-fmap-ap (⊙∘-α-comp (f₃ , idp) (f₂ , idp) (f₁ , idp)) p ◃∙
+      Ω-fmap-ap (⊙∘-α-crd (f₃ , idp) (f₂ , idp) (f₁ , idp)) p ◃∙
       ap-∘ (f₃ ∘ f₂) f₁ p ◃∙
       ap-∘ f₃ f₂ (ap f₁ p) ◃∎
         =ₛ₁⟨ 2 & 1 & Ω-fmap-ap-β (f₃ ∘ f₂ ∘ f₁ , idp) p ⟩

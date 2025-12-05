@@ -59,30 +59,73 @@ module _ {i j} {B₀ : Type i} (ξB : BicatStr j B₀) where
                            ap (λ m → ◻-C (_ , (m , f))) (αC (_ , (i , h , g)))) ] ×
                        ({a b : C₀} → has-level 1 (homC (a , b)))
 
+  private
+    tot-iso-bc-suff =
+      [ (ρC , _) ∈ Σ ((((a , b) , f) : Σ (B₀ × B₀) (λ (a , b) → hom ξB a b)) → f == ⟦ ξB ⟧ f ◻ id₁ ξB a)
+        (λ ρC → (((a , b) , f) : Σ (B₀ × B₀) (λ (a , b) → hom ξB a b)) →
+          ap (λ f → f) (ρ ξB f) ∙ idp == ρC (_ , f)) ] ×
+        [ (lambC , _) ∈  Σ ((((a , b) , f) : Σ (B₀ × B₀) (λ (a , b) → hom ξB a b)) → f == ⟦ ξB ⟧ id₁ ξB b ◻ f)
+          (λ lambC → (((a , b) , f) : Σ (B₀ × B₀) (λ (a , b) → hom ξB a b)) →
+            ap (λ f → f) (lamb ξB f) ∙ idp
+              ==
+            lambC (_ , f)) ] ×
+           [ (αC , _) ∈ Σ ((((a , b , c , d) , (h , g , f)) : Σ (B₀ × B₀ × B₀ × B₀)
+             (λ (a , b , c , d) → hom ξB c d × hom ξB b c × hom ξB a b))
+               → ⟦ ξB ⟧ h ◻ (⟦ ξB ⟧ g ◻ f) == ⟦ ξB ⟧ (⟦ ξB ⟧ h ◻ g) ◻ f)
+                 (λ αC → ((_ , (h , g , f)) : Σ (B₀ × B₀ × B₀ × B₀)
+                   (λ (a , b , c , d) → hom ξB c d × hom ξB b c × hom ξB a b)) →
+                     ap (λ v → v) (α ξB h g f) ∙ idp
+                       ==
+                     αC (_ , (h , g , f))) ] ×
+             [ triC ∈
+               ((((a , b , c) , (f , g)) : Σ (B₀ × B₀ × B₀)
+                 (λ (a , b , c) → hom ξB a b × hom ξB b c)) →
+                   αC (_ , (g , (id₁ ξB b) , f))
+                     ==
+                   ! (ap (λ m → ⟦ ξB ⟧ g ◻ m) (lambC ((a , b) , f))) ∙ ap (λ m → ⟦ ξB ⟧ m ◻ f) (ρC (_ , g))) ] ×
+               [ pentC ∈
+                 ((((a , b , c , d , e) , (f , g , h , i)) : Σ (B₀ × B₀ × B₀ × B₀ × B₀)
+                   (λ (a , b , c , d , e) → hom ξB a b × hom ξB b c × hom ξB c d × hom ξB d e)) →
+                     αC (_ , (i , h , ⟦ ξB ⟧ g ◻ f)) ∙ αC (_ , (⟦ ξB ⟧ i ◻ h , g , f))
+                       ==
+                     ap (λ m → ⟦ ξB ⟧ i ◻ m) (αC (_ , (h , g , f))) ∙
+                     αC (_ , (i , ⟦ ξB ⟧ h ◻ g , f)) ∙
+                     ap (λ m → ⟦ ξB ⟧ m ◻ f) (αC (_ , (i , h , g)))) ] ×
+                 ({a b : B₀} → has-level 1 (hom ξB a b))
+
+  abstract
+    bc-contr-aux2 : is-contr tot-iso-bc-suff
+    bc-contr-aux2 = equiv-preserves-level
+      ((Σ-contr-red (funhom-contr-∼ {f = λ (_ , f) → ap (λ v → v) (ρ ξB f) ∙ idp}
+        (λ (_ , f) → ap-idf-idp (ρ ξB f))))⁻¹)
+        {{equiv-preserves-level ((Σ-contr-red {A =
+          Σ ((((a , b) , f) : Σ (B₀ × B₀) (λ (a , b) → hom ξB a b)) → f == ⟦ ξB ⟧ id₁ ξB b ◻ f)
+            (λ lambC → (((a , b) , f) : Σ (B₀ × B₀) (λ (a , b) → hom ξB a b)) →
+              ap (λ f → f) (lamb ξB f) ∙ idp == lambC (_ , f))}
+          (funhom-contr-∼ {f = λ (_ , f) → ap (λ v → v) (lamb ξB f) ∙ idp}
+          (λ (_ , f) → ap-idf-idp (lamb ξB f))))⁻¹)
+          {{equiv-preserves-level ((Σ-contr-red {A =
+            Σ ((((a , b , c , d) , (h , g , f)) : Σ (B₀ × B₀ × B₀ × B₀)
+             (λ (a , b , c , d) → hom ξB c d × hom ξB b c × hom ξB a b))
+               → ⟦ ξB ⟧ h ◻ (⟦ ξB ⟧ g ◻ f) == ⟦ ξB ⟧ (⟦ ξB ⟧ h ◻ g) ◻ f)
+               (λ αC → ((_ , (h , g , f)) : Σ (B₀ × B₀ × B₀ × B₀)
+                 (λ (a , b , c , d) → hom ξB c d × hom ξB b c × hom ξB a b)) →
+                   ap (λ v → v) (α ξB h g f) ∙ idp
+                     ==
+                   αC (_ , (h , g , f)))}
+            (funhom-contr-∼ {f = λ (_ , (h , g , f)) → ap (λ v → v) (α ξB h g f) ∙ idp}
+              (λ (_ , (h , g , f)) → ap-idf-idp (α ξB h g f))))⁻¹)
+            {{inhab-prop-is-contr
+              ((λ (_ , (f , g)) → tri-bc ξB f g) ,
+              (λ (_ , (f , g , h , i)) → pent-bc ξB f g h i) ,
+              (λ {a} {b} → hom-trunc ξB {a} {b}))
+              {{Σ-level-instance {{Π-level-instance}}
+              {{Σ-level-instance {{Π-level-instance}}}}}}}}}}}}
+
   abstract
     bc-contr-aux : is-contr tot-iso-bc
     bc-contr-aux = equiv-preserves-level ((Σ-contr-red ≃-tot-contr)⁻¹)
       {{equiv-preserves-level ((Σ-contr-red ≃-∼-tot-contr)⁻¹)
         {{equiv-preserves-level ((Σ-contr-red (funhom-contr {f = id₁ ξB}))⁻¹)
           {{equiv-preserves-level ((Σ-contr-red (funhom-contr {f = λ (_ , (g , f)) → ⟦ ξB ⟧ g ◻ f}))⁻¹)
-            {{equiv-preserves-level ((Σ-contr-red (funhom-contr-∼ {f = λ (_ , f) → ap (λ v → v) (ρ ξB f) ∙ idp}
-              (λ (_ , f) → ap-idf-idp (ρ ξB f))))⁻¹)
-              {{equiv-preserves-level ((Σ-contr-red (funhom-contr-∼ {f = λ (_ , f) → ap (λ v → v) (lamb ξB f) ∙ idp}
-                (λ (_ , f) → ap-idf-idp (lamb ξB f))))⁻¹)
-                {{equiv-preserves-level ((Σ-contr-red {A =
-                  Σ ((((a , b , c , d) , (h , g , f)) : Σ (B₀ × B₀ × B₀ × B₀)
-                   (λ (a , b , c , d) → hom ξB c d × hom ξB b c × hom ξB a b))
-                     → ⟦ ξB ⟧ h ◻ (⟦ ξB ⟧ g ◻ f) == ⟦ ξB ⟧ (⟦ ξB ⟧ h ◻ g) ◻ f)
-                     (λ αC → ((_ , (h , g , f)) : Σ (B₀ × B₀ × B₀ × B₀)
-                       (λ (a , b , c , d) → hom ξB c d × hom ξB b c × hom ξB a b)) →
-                         ap (λ v → v) (α ξB h g f) ∙ idp
-                           ==
-                         αC (_ , (h , g , f)))}
-                  (funhom-contr-∼ {f = λ (_ , (h , g , f)) → ap (λ v → v) (α ξB h g f) ∙ idp}
-                    (λ (_ , (h , g , f)) → ap-idf-idp (α ξB h g f))))⁻¹)
-                  {{inhab-prop-is-contr
-                    ((λ (_ , (f , g)) → tri-bc ξB f g) ,
-                    (λ (_ , (f , g , h , i)) → pent-bc ξB f g h i) ,
-                    (λ {a} {b} → hom-trunc ξB {a} {b}))
-                    {{Σ-level-instance {{Π-level-instance}}
-                    {{Σ-level-instance {{Π-level-instance}}}}}}}}}}}}}}}}}}}}
+            {{bc-contr-aux2}}}}}}}}

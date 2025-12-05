@@ -57,7 +57,7 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
     open MapUnit1 map map-comp map-inv map-id map-rinv map-rho-id x
 
     abstract
-      rho-to-lam :
+      rho-to-lam-aux :
         ! (! (al id (map x) (inv (map x))) ∙
           ! (ap (mu id) (rinv (map x))) ∙
           rho id) ◃∙
@@ -70,5 +70,14 @@ module _ {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}} {{η₂ :
         rho (map id) ◃∎
           =ₛ
         map-id ◃∎
-      rho-to-lam =
+      rho-to-lam-aux =
         rho-to-lam0 ∙ₛ rho-to-lam1 ∙ₛ rho-to-lam2 ∙ₛ rho-to-lam3 ∙ₛ rho-to-lam4 ∙ₛ rho-to-lam5
+
+    abstract
+      rho-to-lam :
+        ! (ap map (lam x)) ◃∙
+        ! (map-comp id x) ◃∙
+        ! (ap (λ z → mu z (map x)) map-id) ◃∎
+          =ₛ
+        ! (lam (map x)) ◃∎
+      rho-to-lam = map-id-map-lam map map-comp map-id x (!ₛ rho-to-lam-aux)

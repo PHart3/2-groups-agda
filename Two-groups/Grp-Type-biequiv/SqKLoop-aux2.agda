@@ -54,7 +54,7 @@ module _ {i j} {X : Type i} {Y : Type j} {{ηX : has-level 2 X}} {{ηY : has-lev
         (! (ap (ap (K₂-map (Loop2Grp-map-str (f , idp)))) (loop-comp (x₀ == x₀) x y)))) ◃∙
     ! (ap-∘ (K₂-rec (y₀ == y₀) y₀ (loop' Λy₀) (loop-comp' Λy₀) (loop-assoc' Λy₀)) (K₂-map (Loop2Grp-map-str (f , idp)))
         (loop (x₀ == x₀) (x ∙ y))) ◃∎
-      =ₛ⟨ 6 & 1 & !-=ₛ (apCommSq2◃' (K₂-rec-hom-β-pts y₀ idf2G) (ap-∙ f x y)) ⟩
+      =ₛ⟨ 6 & 1 & !-=ₛ (apCommSq2◃-rev (K₂-rec-hom-β-pts y₀ idf2G) (ap-∙ f x y)) ⟩
     δ₁
       =ₛ⟨ 7 & 1 & !-=ₛ (K₂-rec-hom-β-comp y₀ idf2G (ap f x) (ap f y)) ⟩
     δ₂ ∎ₛ

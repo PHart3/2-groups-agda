@@ -129,6 +129,9 @@ module _ {i j} {A : Type i} (P : SubtypeProp {A = A} {j}) where
   Subtype=-econv : (x y : Subtype P) → (Subtype= x y) ≃ (x == y)
   Subtype=-econv x y = equiv Subtype=-out fst= Subtype=-η Subtype=-β
 
+  Subtype=-equiv : {x y : Subtype P} → is-equiv (fst= {ab = x} {a'b' = y})
+  Subtype=-equiv {x} {y} = snd ((Subtype=-econv x y) ⁻¹)
+
   Subtype==-out : ∀ {x y : Subtype P} {p q : x == y} → Subtype== p q → p == q
   Subtype==-out {p = idp} {q} (=ₛ-in e) = ! (equiv-is-inj (snd ((Subtype=-econv _ _ ) ⁻¹)) q idp (! e) ) 
 

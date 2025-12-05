@@ -1,6 +1,6 @@
 ## Summary
 
-This directory contains a formalized biequivalence between the
+This directory contains a formalized biadjoint biequivalence between the
 (2,1)-category of (coherent) 2-groups and the (2,1)-category of
 pointed connected 2-types.
 
@@ -22,7 +22,10 @@ pointed connected 2-types.
   We derive the recursion principle from the elimination principle.
 
 - The `Bicat-stuff/` folder collects the data defining the two (2,1)-categories
-  of interest. It also shows how to construct adjoint equivalences inside them.
+  of interest. It also shows how to construct adjoint equivalences inside them
+  and that both are globally univalent, in the sense that the canonical map
+  from the identity type between objects to the adjoint equivalence type between
+  them is an equivalence.
 
 - The `KFunc/` folder contains constructions making the delooping into
   a pseudofunctor from 2-groups to pointed connected 2-types along with
@@ -33,16 +36,22 @@ pointed connected 2-types.
   associated proofs of coherence of these constructions. The object function
   of the LoopSpace pseudofunctor is defined in `Hmtpy2Grp.agda`.
 
-- The `Grp-Type-biequiv/` folder contains the proof of our desired biequivalence.
+- The `Grp-Type-biequiv/` folder contains the proof of our desired biadjoint biequivalence.
   The two arrows of the biequivalence are defined by the delooping and LoopSpace
   functors, and the bulk of this folder provides proofs of the associated
   pseudotransformations between their composites and the identity pseudofunctors.
   It also provides proofs exhibiting these pseudotransformations as levelwise
   adjoint equivalences (`LoopK-adjeq.agda` and `KLoop-adjeq.agda`), thereby forming
-  a biequivalence. The full biequivalence is defined in `Biequiv-main.agda`. We also
-  obtain an equality between the two (2,1)-categories in question by way of univalence
-  (`Equality-main.agda`). This equality relies on the fact that every biequivalence
-  between quasi-univalent bicategories is fully-faithful, which we prove in `../Bicats/`.
+  a biequivalence. Finally, we construct the triangulator (i.e., zig-zag identity) for 
+  these two pseudonatural equivalences, thereby making them into a biadjoint biequivalence 
+  (`Biadj-data/`). The biequivalence data is defined in `Biequiv-main.agda`, and the full 
+  biadjoint biequivalence (which includes the triangulator) is defined in `Biadj-biequiv-main`. 
+  We also get an equality between the two (2,1)-categories in question by way of univalence 
+  (`Equality-main.agda`). This equality follows from the fact that every biadjoint biequivalence  
+  induces an isomorphism of bicategories, which is proved in`../Bicats/`.
+  
+  Finally, we have extracted from this biequivalence the underlying type equivalence between coherent 
+  2-groups and Sính triples (`Type-equiv-main`).
 
 ## License
 

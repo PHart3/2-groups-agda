@@ -39,7 +39,8 @@ _ = Pi2HSusp.⊙eq-inv-rew {{EM₁-level₁ grp}} H-⊙EM₁
 -}
 
 abstract
-  ⊙<–-spectrumS : (n : ℕ) → ⊙<– (spectrum (S n)) ⊙◃∎ ⊙=ₛ ⊙Ω-UnTrunc-[_] (⊙Susp (⊙Susp^ n (⊙EM₁ grp))) ⊙◃∙ ⊙Trunc-fmap (η (⊙Susp^ n (⊙EM₁ grp))) ⊙◃∎
+  ⊙<–-spectrumS : (n : ℕ) →
+    ⊙<– (spectrum (S n)) ⊙◃∎ ⊙=ₛ ⊙Ω-UnTrunc-[_] (⊙Susp (⊙Susp^ n (⊙EM₁ grp))) ⊙◃∙ ⊙Trunc-fmap (η (⊙Susp^ n (⊙EM₁ grp))) ⊙◃∎
   ⊙<–-spectrumS O =
     ⊙<– (Pi2HSusp.⊙eq {{EM₁-level₁ grp}} H-⊙EM₁ ⊙∘e ⊙Ω-Trunc-[_]-≃ (⊙Susp (⊙EM₁ grp))) ⊙◃∎
       ⊙=ₛ⟨ ⊙=ₛ-in (⊙<–-∘ (⊙Ω-Trunc-[_]-≃  (⊙Susp (⊙EM₁ grp))) (Pi2HSusp.⊙eq {{EM₁-level₁ grp}} H-⊙EM₁)) ⟩
@@ -72,7 +73,8 @@ module ⊙EM-β (n : ℕ) {X : Ptd i} {{X-level : has-level ⟨ S (S n) ⟩ (de�
       ⊙Ω-Trunc-[_] (⊙Susp (⊙Susp^ n (⊙EM₁ grp))) ⊙◃∙
       ⊙Ω-UnTrunc-[_] (⊙Susp (⊙Susp^ n (⊙EM₁ grp))) ⊙◃∙
       ⊙Trunc-fmap (η (⊙Susp^ n (⊙EM₁ grp))) ⊙◃∎
-        ⊙=ₑ⟨ 1 & 1 & (⊙Trunc-fmap (⊙Ω-fmap (ε X)) ⊙◃∙ ⊙Trunc-fmap (⊙Ω-fmap (⊙Susp-fmap {X = ⊙Susp^ n (⊙EM₁ grp)} (⊙EM-elimₙ n φ ⊙∘ [_]-⊙))) ⊙◃∎)
+        ⊙=ₑ⟨ 1 & 1 &
+          (⊙Trunc-fmap (⊙Ω-fmap (ε X)) ⊙◃∙ ⊙Trunc-fmap (⊙Ω-fmap (⊙Susp-fmap {X = ⊙Susp^ n (⊙EM₁ grp)} (⊙EM-elimₙ n φ ⊙∘ [_]-⊙))) ⊙◃∎)
           % ⊙=ₛ-in $
              ap ⊙Trunc-fmap (⊙Ω-fmap-∘ (ε X) (⊙Susp-fmap {X = ⊙Susp^ n (⊙EM₁ grp)} (⊙EM-elimₙ n φ ⊙∘ [_]-⊙))) ∙
              ! (⊙Trunc-fmap-∘ (⊙Ω-fmap (ε X)) (⊙Ω-fmap (⊙Susp-fmap (⊙EM-elimₙ n φ ⊙∘ [_]-⊙)))) ⟩
@@ -93,7 +95,7 @@ module ⊙EM-β (n : ℕ) {X : Ptd i} {{X-level : has-level ⟨ S (S n) ⟩ (de�
       ⊙Trunc-fmap (⊙Ω-fmap (ε X)) ⊙◃∙
       ⊙Trunc-fmap (⊙Ω-fmap (⊙Susp-fmap {X = ⊙Susp^ n (⊙EM₁ grp)} (⊙EM-elimₙ n φ ⊙∘ [_]-⊙))) ⊙◃∙
       ⊙Trunc-fmap (η (⊙Susp^ n (⊙EM₁ grp))) ⊙◃∎
-        ⊙=ₛ⟨ 2 & 2 & ⊙=ₛ-in (Nat-trans.sq (nat-trans-whisk-r Nat-trans-η ⊙Trunc-wf) (⊙EM-elimₙ n φ ⊙∘ [_]-⊙)) ⟩
+        ⊙=ₛ⟨ 2 & 2 & ⊙=ₛ-in (Nat-trans.sq (nat-trans-whisk-l Nat-trans-η ⊙Trunc-wf) (⊙EM-elimₙ n φ ⊙∘ [_]-⊙)) ⟩
       ⊙–> (⊙unTrunc-equiv (⊙Ω X)) ⊙◃∙
       ⊙Trunc-fmap (⊙Ω-fmap (ε X)) ⊙◃∙
       ⊙Trunc-fmap (η (⊙Ω X))⊙◃∙

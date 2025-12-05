@@ -5,7 +5,7 @@ open import 2Semigroup
 open import 2SGrpMap
 open import 2Grp
 open import 2GrpMap
-open import NatIso
+open import NatIso2G
 
 -- preservation of groupoid structure by natiso2G-to-==
 
@@ -85,6 +85,37 @@ module 2G-comp-conv {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}
         =ₛ⟨ !ₛ (∘2G-conv (iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) iso₅) ⟩
       natiso2G-to-== (iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∎ ∎ₛ
 
+    ∘2G-conv-sept : {f₁ f₂ f₃ f₄ f₅ f₆ f₇ f₈ : CohGrpHom {{η₁}} {{η₂}}}
+      (iso₁ : CohGrpNatIso f₁ f₂) (iso₂ : CohGrpNatIso f₂ f₃)
+      (iso₃ : CohGrpNatIso f₃ f₄) (iso₄ : CohGrpNatIso f₄ f₅)
+      (iso₅ : CohGrpNatIso f₅ f₆) (iso₆ : CohGrpNatIso f₆ f₇)
+      (iso₇ : CohGrpNatIso f₇ f₈) →
+      natiso2G-to-== {μ = f₁} {ν = f₂} iso₁ ◃∙
+      natiso2G-to-== {μ = f₂} {ν = f₃} iso₂ ◃∙
+      natiso2G-to-== {μ = f₃} {ν = f₄} iso₃ ◃∙
+      natiso2G-to-== {μ = f₄} {ν = f₅} iso₄ ◃∙
+      natiso2G-to-== {μ = f₅} {ν = f₆} iso₅ ◃∙
+      natiso2G-to-== {μ = f₆} {ν = f₇} iso₆ ◃∙
+      natiso2G-to-== {μ = f₇} {ν = f₈} iso₇ ◃∎
+        =ₛ
+      natiso2G-to-==
+        (iso₇ natiso-∘ iso₆ natiso-∘ iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∎
+    ∘2G-conv-sept iso₁ iso₂ iso₃ iso₄ iso₅ iso₆ iso₇ = 
+      natiso2G-to-== iso₁ ◃∙
+      natiso2G-to-== iso₂ ◃∙
+      natiso2G-to-== iso₃ ◃∙
+      natiso2G-to-== iso₄ ◃∙
+      natiso2G-to-== iso₅ ◃∙
+      natiso2G-to-== iso₆ ◃∙
+      natiso2G-to-== iso₇ ◃∎
+        =ₛ⟨ 0 & 5 & ∘2G-conv-quint iso₁ iso₂ iso₃ iso₄ iso₅ ⟩
+      natiso2G-to-== (iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∙
+      natiso2G-to-== iso₆ ◃∙
+      natiso2G-to-== iso₇ ◃∎
+        =ₛ⟨ !ₛ (∘2G-conv-tri (iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) iso₆ iso₇) ⟩
+      natiso2G-to-==
+        (iso₇ natiso-∘ iso₆ natiso-∘ iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∎ ∎ₛ
+ 
     ∘2G-conv-oct : {f₁ f₂ f₃ f₄ f₅ f₆ f₇ f₈ f₉ : CohGrpHom {{η₁}} {{η₂}}}
       (iso₁ : CohGrpNatIso f₁ f₂) (iso₂ : CohGrpNatIso f₂ f₃)
       (iso₃ : CohGrpNatIso f₃ f₄) (iso₄ : CohGrpNatIso f₄ f₅)
@@ -110,12 +141,10 @@ module 2G-comp-conv {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}
       natiso2G-to-== iso₆ ◃∙
       natiso2G-to-== iso₇ ◃∙
       natiso2G-to-== iso₈ ◃∎
-        =ₛ⟨ 0 & 5 & ∘2G-conv-quint iso₁ iso₂ iso₃ iso₄ iso₅ ⟩
-      natiso2G-to-== (iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∙
-      natiso2G-to-== iso₆ ◃∙
-      natiso2G-to-== iso₇ ◃∙
+        =ₛ⟨ 0 & 7 & ∘2G-conv-sept iso₁ iso₂ iso₃ iso₄ iso₅ iso₆ iso₇ ⟩
+      natiso2G-to-== (iso₇ natiso-∘ iso₆ natiso-∘ iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∙
       natiso2G-to-== iso₈ ◃∎
-        =ₛ⟨ ∘2G-conv-quart (iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) iso₆ iso₇ iso₈ ⟩
+        =ₛ⟨ !ₛ (∘2G-conv (iso₇ natiso-∘ iso₆ natiso-∘ iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) iso₈) ⟩
       natiso2G-to-==
         (iso₈ natiso-∘ iso₇ natiso-∘ iso₆ natiso-∘ iso₅ natiso-∘ iso₄ natiso-∘ iso₃ natiso-∘ iso₂ natiso-∘ iso₁) ◃∎ ∎ₛ
 
@@ -130,11 +159,21 @@ module 2G-comp-conv {i j} {G₁ : Type i} {G₂ : Type j} {{η₁ : CohGrp G₁}
         natiso2G-to-==-whisk-r {f₁ = f₁} {f₂ = f₂} {f₂' = f₂'} iso
           (natiso-whisk-r {μ = grphom-forg f₁} {ν₁ = grphom-forg f₂} {ν₂ = grphom-forg f₂'} iso) (λ _ → idp)
 
+      !-whisk2G-conv-r : {f₁ : CohGrpHom {{η₁}} {{η₂}}} {f₂ f₂' : CohGrpHom {{η₂}} {{η₃}}}
+        (iso : CohGrpNatIso f₂ f₂') →
+        natiso2G-to-== (!ʷ (natiso-whisk-r iso)) == ! (ap (λ m → m ∘2G f₁) (natiso2G-to-== {μ = f₂} {ν = f₂'} iso))
+      !-whisk2G-conv-r iso = natiso2G-! (natiso-whisk-r iso) ∙ ap ! (whisk2G-conv-r iso) 
+
       whisk2G-conv-l : {f₂ : CohGrpHom {{η₂}} {{η₃}}} {f₁ f₁' : CohGrpHom {{η₁}} {{η₂}}}
         (iso : CohGrpNatIso f₁ f₁') →
         natiso2G-to-== (natiso-whisk-l {μ = grphom-forg f₂} iso) == ap (λ m → f₂ ∘2G m) (natiso2G-to-== {μ = f₁} {ν = f₁'} iso)
       whisk2G-conv-l {f₂} iso =
         natiso2G-to-==-whisk-l {f₂ = f₂} iso (natiso-whisk-l {μ = grphom-forg f₂} iso) (λ _ → idp)
+
+      !-whisk2G-conv-l : {f₂ : CohGrpHom {{η₂}} {{η₃}}} {f₁ f₁' : CohGrpHom {{η₁}} {{η₂}}}
+        (iso : CohGrpNatIso f₁ f₁') →
+        natiso2G-to-== (!ʷ (natiso-whisk-l {μ = grphom-forg f₂} iso)) == ! (ap (λ m → f₂ ∘2G m) (natiso2G-to-== {μ = f₁} {ν = f₁'} iso))
+      !-whisk2G-conv-l {f₂} iso = natiso2G-! (natiso-whisk-l {μ = grphom-forg f₂} iso) ∙ ap ! (whisk2G-conv-l {f₂} iso)
 
   open Whisk-conv public
 

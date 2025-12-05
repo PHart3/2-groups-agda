@@ -66,10 +66,9 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y) where
   fst ⊙∘-runit x = idp
   snd ⊙∘-runit = idp
 
--- inverse of homotopy of pointed maps
-
 module _ {i j} {X : Ptd i} {Y : Ptd j} where
 
+  -- inverse of homotopy of pointed maps
   !-⊙∼ : {f₁ f₂ : X ⊙→ Y} (H : f₁ ⊙-crd∼ f₂) → f₂ ⊙-crd∼ f₁
   fst (!-⊙∼ (H₀ , H₁)) x = ! (H₀ x)
   snd (!-⊙∼ {f₁} {f₂} (H₀ , H₁)) =
@@ -79,24 +78,19 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
     ap (λ p → p ∙ snd f₁) (!-inv-r (H₀ (pt X)))
 
 -- identity homotopy of pointed maps
-
   ⊙∼-id : (f : X ⊙→ Y) → f ⊙-crd∼ f
   fst (⊙∼-id (f , fₚ)) x = idp
   snd (⊙∼-id (f , fₚ)) = idp
 
 module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where 
 
-  ⊙∘-assoc-crd : ∀ {l} {W : Ptd l} (h : Z ⊙→ W) (g : Y ⊙→ Z) (f : X ⊙→ Y)
-    → ((h ⊙∘ g) ⊙∘ f) ⊙-crd∼ (h ⊙∘ (g ⊙∘ f))
-  fst (⊙∘-assoc-crd (h , hpt) (g , gpt) (f , fpt)) = λ x → idp
-  snd (⊙∘-assoc-crd (h , hpt) (g , gpt) (f , fpt)) =
-    ! (∙-assoc (ap (h ∘ g) fpt) (ap h gpt) hpt) ∙
-    ap (λ p → p ∙ hpt) (ap (λ p → p ∙ ap h gpt) (ap-∘ h g fpt)) ∙
-    ap (λ p → p ∙ hpt) (∙-ap h (ap g fpt) gpt)
-
-  ⊙∘-α-comp : ∀ {l} {W : Ptd l} (h : Z ⊙→ W) (g : Y ⊙→ Z) (f : X ⊙→ Y)
+  -- associativity of pointed maps (in the other direction than before)
+  ⊙∘-α-crd : ∀ {l} {W : Ptd l} (h : Z ⊙→ W) (g : Y ⊙→ Z) (f : X ⊙→ Y)
     → h ⊙∘ g ⊙∘ f ⊙-crd∼ (h ⊙∘ g) ⊙∘ f
-  ⊙∘-α-comp h g f = !-⊙∼ (⊙∘-assoc-crd h g f)
+  fst (⊙∘-α-crd h g f) _ = idp
+  snd (⊙∘-α-crd h g f) =
+    ap (λ p → p ∙ snd h) (ap-∘-∙ (fst h) (fst g) (snd f) (snd g)) ∙
+    ∙-assoc (ap (fst h ∘ fst g) (snd f)) (ap (fst h) (snd g)) (snd h)
 
 -- pre- and post-comp on (unfolded) homotopies of pointed maps
 
@@ -189,16 +183,16 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} (f : X ⊙→ Y) where
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} where
 
-  ⊙-crd∼-to-== : {f : X ⊙→ Y} {g : X ⊙→ Y} → f ⊙-crd∼ g → f == g
+  ⊙-crd∼-to-== : {f g : X ⊙→ Y} → f ⊙-crd∼ g → f == g
   ⊙-crd∼-to-== {f} = ⊙hom-ind f (λ g _ → f == g) idp
 
   ⊙-crd∼-to-==-β : (f : X ⊙→ Y) → ⊙-crd∼-to-== (⊙∼-id f) == idp
   ⊙-crd∼-to-==-β f = ⊙hom-ind-β f (λ g _ → f == g) idp
 
-  ==-to-⊙-crd∼ : {f : X ⊙→ Y} {g : X ⊙→ Y} → f == g → f ⊙-crd∼ g
+  ==-to-⊙-crd∼ : {f g : X ⊙→ Y} → f == g → f ⊙-crd∼ g
   ==-to-⊙-crd∼ idp = ⊙∼-id _
 
-  ⊙-crd∼-==-≃ : {f : X ⊙→ Y} {g : X ⊙→ Y} → (f == g) ≃ (f ⊙-crd∼ g)
+  ⊙-crd∼-==-≃ : {f g : X ⊙→ Y} → (f == g) ≃ (f ⊙-crd∼ g)
   ⊙-crd∼-==-≃ {f} {g} = equiv ==-to-⊙-crd∼ ⊙-crd∼-to-== aux1 aux2
     where
       aux1 : {k : X ⊙→ Y} (H : f ⊙-crd∼ k) → ==-to-⊙-crd∼ (⊙-crd∼-to-== H) == H
@@ -208,6 +202,25 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} where
 
       aux2 : {k : X ⊙→ Y} (p : f == k) → ⊙-crd∼-to-== (==-to-⊙-crd∼ p) == p
       aux2 idp = ⊙-crd∼-to-==-β f 
+
+-- some groupoid laws obeyed by ==-to-⊙-crd∼
+
+  ==-to-⊙-crd∼-∙ : {f g h : X ⊙→ Y} (p : f == g) (q : g == h) → ==-to-⊙-crd∼ (p ∙ q) == (==-to-⊙-crd∼ p ∙⊙∼ ==-to-⊙-crd∼ q)
+  ==-to-⊙-crd∼-∙ {(_ , idp)} idp idp = idp
+
+  ==-to-⊙-crd∼-∙2 : {f g h k : X ⊙→ Y} (p : f == g) (q : g == h) (r : h == k) →
+    ==-to-⊙-crd∼ (p ∙ q ∙ r) == (==-to-⊙-crd∼ p ∙⊙∼ ==-to-⊙-crd∼ q ∙⊙∼ ==-to-⊙-crd∼ r)
+  ==-to-⊙-crd∼-∙2 {(_ , idp)} idp idp idp = idp
+
+module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
+
+  ==-to-⊙-crd∼-whisk-r : {h : Z ⊙→ X} {f g : X ⊙→ Y} (p : f == g) →
+    ==-to-⊙-crd∼ (ap (λ m → m ⊙∘ h) p) == (⊙∘-pre h (==-to-⊙-crd∼ p))
+  ==-to-⊙-crd∼-whisk-r {(_ , idp)} idp = idp 
+
+  ==-to-⊙-crd∼-whisk-l : {h : Y ⊙→ Z} {f g : X ⊙→ Y} (p : f == g) →
+    ==-to-⊙-crd∼ (ap (λ m → h ⊙∘ m) p) == (⊙∘-post h (==-to-⊙-crd∼ p))
+  ==-to-⊙-crd∼-whisk-l {(_ , idp)} idp = idp 
 
 -- induction principle for ⊙∼→
 
@@ -253,24 +266,24 @@ module _ {i j} {X : Ptd i} {Y : Ptd j} {f g : X ⊙→ Y} {H₁ H₂ : f ⊙-crd
 
 module _ {i j} {X : Ptd i} {Y : Ptd j} where
 
- ∙⊙∼-! : (f : X ⊙→ Y) → !-⊙∼ (⊙∼-id f) == ⊙∼-id f
- ∙⊙∼-! (f₀ , idp) = ⊙→∼-to-== ((λ _ → idp) , idp)
+  ∙⊙∼-! : (f : X ⊙→ Y) → !-⊙∼ (⊙∼-id f) == ⊙∼-id f
+  ∙⊙∼-! (f₀ , idp) = ⊙→∼-to-== ((λ _ → idp) , idp)
 
- ∙⊙∼-unit-l : {f g : X ⊙→ Y} (H : f ⊙-crd∼ g) → (⊙∼-id f ∙⊙∼ H) == H
- ∙⊙∼-unit-l {f = (f₀ , idp)} H = ⊙→∼-to-== ((λ _ → idp) , aux (snd H))
-   where
-     aux : ∀ {k} {A : Type k} {x y : A} {r : y == x} {q₂ : x == y} (q₁ : ! r ∙ idp == q₂) →
-       q₁ == ap (λ p → ! p ∙ idp) (tri-exch q₁) ∙ ∙-unit-r (! (! q₂)) ∙ !-! q₂
-     aux {r = idp} idp = idp
+  ∙⊙∼-unit-l : {f g : X ⊙→ Y} (H : f ⊙-crd∼ g) → (⊙∼-id f ∙⊙∼ H) == H
+  ∙⊙∼-unit-l {f = (f₀ , idp)} H = ⊙→∼-to-== ((λ _ → idp) , aux (snd H))
+    where
+      aux : ∀ {k} {A : Type k} {x y : A} {r : y == x} {q₂ : x == y} (q₁ : ! r ∙ idp == q₂) →
+        q₁ == ap (λ p → ! p ∙ idp) (tri-exch q₁) ∙ ∙-unit-r (! (! q₂)) ∙ !-! q₂
+      aux {r = idp} idp = idp
 
- ∙⊙∼-unit-r : {f g : X ⊙→ Y} (H : f ⊙-crd∼ g)→ (H ∙⊙∼ ⊙∼-id g) == H
- ∙⊙∼-unit-r {g = (g₀ , idp)} H = ⊙→∼-to-== ((λ x → ∙-unit-r (fst H x)) , aux {r = fst H (pt X)} (snd H))
-   where
-     aux : ∀ {k} {A : Type k} {x y : A} {r q₂ : x == y} (q₁ : ! r ∙ q₂ == idp) →
-       ap (λ p → ! p ∙ q₂) (∙-unit-r r) ∙ q₁
-         ==
-       ap (λ p → ! (p ∙ idp) ∙ q₂) (tri-exch q₁) ∙ !3-∙3 q₂ idp idp
-     aux {r = idp} idp = idp
+  ∙⊙∼-unit-r : {f g : X ⊙→ Y} (H : f ⊙-crd∼ g)→ (H ∙⊙∼ ⊙∼-id g) == H
+  ∙⊙∼-unit-r {g = (g₀ , idp)} H = ⊙→∼-to-== ((λ x → ∙-unit-r (fst H x)) , aux {r = fst H (pt X)} (snd H))
+    where
+      aux : ∀ {k} {A : Type k} {x y : A} {r q₂ : x == y} (q₁ : ! r ∙ q₂ == idp) →
+        ap (λ p → ! p ∙ q₂) (∙-unit-r r) ∙ q₁
+          ==
+        ap (λ p → ! (p ∙ idp) ∙ q₂) (tri-exch q₁) ∙ !3-∙3 q₂ idp idp
+      aux {r = idp} idp = idp
 
 module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
 
@@ -281,6 +294,11 @@ module _ {i j k} {X : Ptd i} {Y : Ptd j} {Z : Ptd k} where
   ∙⊙-pre {g = (g₀ , idp)} = ⊙→∼-to-== ((λ _ → idp) , idp)
 
 {- Pointed equivalences -}
+
+-- equality of pointed equivalences
+⊙≃-== : ∀ {i j} {X : Ptd i} {Y : Ptd j} {τ₁ τ₂ : X ⊙≃ Y} → (fst τ₁ == fst τ₂) ≃ (τ₁ == τ₂)
+⊙≃-== {τ₁ = τ₁} {τ₂} = =Σ-econv τ₁ τ₂ ∘e equiv (λ e → e , prop-has-all-paths-↓) fst
+  (λ _ → pair= idp (prop-has-all-paths {{↓-level}} _ _)) λ _ → idp
 
 -- Extracting data from an pointed equivalence
 module _ {i j} {X : Ptd i} {Y : Ptd j} (⊙e : X ⊙≃ Y) where

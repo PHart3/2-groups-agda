@@ -3,55 +3,54 @@
 open import lib.Basics
 open import Bicategory
 open import AdjEq
+open import Biadj
+open import Univ-bc
+open import Psftor-inverse
 
 module Biequiv where
 
 open BicatStr {{...}}
-open Psfunctor
-open PsfunctorStr
 
-module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}}  where
+open import Pstransf public
+open Pstrans
 
-  -- pseudotransformations
-  record Pstrans (R S : Psfunctor {{ξB}} {{ξC}}) : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
-    field
-      η₀ : (a : B₀) → hom (map-pf R a) (map-pf S a)
-      η₁ : {a b : B₀} (f : hom a b) → F₁ (str-pf S) f ◻ η₀ a == ⟦ ξC ⟧ η₀ b ◻ F₁ (str-pf R) f
-      coher-unit : {a : B₀} →
-        lamb (η₀ a) ∙
-        ap (λ m → m ◻ η₀ a) (! (F-id₁ (str-pf S) a)) ∙
-        η₁ (id₁ a) ∙
-        ap (λ m → η₀ a ◻ m) (F-id₁ (str-pf R) a)
-          ==
-        ρ (η₀ a)
-      coher-assoc : {a b c : B₀} (f : hom a b) (g : hom b c) →
-        ! (η₁ (⟦ ξB ⟧ g ◻ f)) ∙
-        ap (λ m → m ◻ η₀ a) (F-◻ (str-pf S) f g) ∙
-        ! (α (F₁ (str-pf S) g) (F₁ (str-pf S) f) (η₀ a)) ∙
-        ap (λ m → F₁ (str-pf S) g ◻ m) (η₁ f) ∙
-        α (F₁ (str-pf S) g) (η₀ b) (F₁ (str-pf R) f) ∙
-        ap (λ m → m ◻ (F₁ (str-pf R) f)) (η₁ g) ∙
-        ! (α (η₀ c) (F₁ (str-pf R) g) (F₁ (str-pf R) f)) ∙
-        ! (ap (λ m → η₀ c ◻ m) (F-◻ (str-pf R) f g))
-          ==
-        idp
-        
-module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}  where
+module _ {i₁ i₂ j₁ j₂} {C₀ : Type i₂} {B₀ : Type i₁}  where
 
-  open Pstrans
-
-  -- biequiv structure between two bicats
+  -- biequivalence structure between two bicats
   
-  record BiequivStr-inst {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}} : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
+  record BiequivStr-inst {{ξC : BicatStr j₂ C₀}} {{ξB : BicatStr j₁ B₀}} : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
     constructor bequiv
     field
-      Ψ₁ : Psfunctor {{ξB}} {{ξC}} 
-      Ψ₂ : Psfunctor {{ξC}} {{ξB}}
-      τ₁ : Pstrans (Ψ₁ ∘BC Ψ₂) idfBC
-      τ₂ : Pstrans idfBC (Ψ₂ ∘BC Ψ₁)
-      lev-eq₁ : (a : C₀) → Adjequiv {{ξC}} (η₀ τ₁ a)
-      lev-eq₂ : (a : B₀) → Adjequiv {{ξB}} (η₀ τ₂ a)
+      Ψ-L : Psfunctor {{ξB}} {{ξC}}
+      Ψ-R : Psfunctor {{ξC}} {{ξB}}
+      ε : (psftor-str (Ψ-L ∘BC Ψ-R)) ps-≃ idpfBC
+      η : idpfBC ps-≃ (psftor-str (Ψ-R ∘BC Ψ-L))
+
+    τ₁ : Pstrans (psftor-str (Ψ-L ∘BC Ψ-R)) idpfBC
+    τ₁ = fst ε
+
+    τ₂ : Pstrans idpfBC (psftor-str (Ψ-R ∘BC Ψ-L))
+    τ₂ = fst η
+
+    lev-eq₁ : (a : C₀) → Adjequiv {{ξC}} (η₀ τ₁ a)
+    lev-eq₁ a = snd ε a
+
+    lev-eq₂ : (a : B₀) → Adjequiv {{ξB}} (η₀ τ₂ a)
+    lev-eq₂ a = snd η a
 
   -- for clarity of final theorem statement
-  BiequivStr : (ξB : BicatStr j₁ B₀) (ξC : BicatStr j₂ C₀) → Type (lmax (lmax i₁ j₁) (lmax i₂ j₂))
-  BiequivStr ξB ξC = BiequivStr-inst {{ξB}} {{ξC}}
+  BiequivStr : (ξC : BicatStr j₂ C₀) (ξB : BicatStr j₁ B₀) → Type (lmax (lmax i₁ j₁) (lmax i₂ j₂))
+  BiequivStr ξC ξB = BiequivStr-inst {{ξC}} {{ξB}}
+
+  -- biadjoint biequivalences (between univalent bicategories)
+  infixr 70 _biadj-bieqv_
+  _biadj-bieqv_ : (ξC : BicatStr j₂ C₀) (ξB : BicatStr j₁ B₀) → {{is-univ-bc-inst {{ξC}}}} → {{is-univ-bc-inst {{ξB}}}}
+    → Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
+  ξC biadj-bieqv ξB = Σ (BiequivStr ξC ξB) (λ be →
+    Biequiv-coh {{ξC}} {{ξB}} {R = Ψ-R {{ξC}} {{ξB}} be} {L = Ψ-L {{ξC}} {{ξB}} be}
+      (ε {{ξC}} {{ξB}} be) (η {{ξC}} {{ξB}} be)) where open BiequivStr-inst
+
+  is-biadj-bieqv : {{ξC : BicatStr j₂ C₀}} {{ξB : BicatStr j₁ B₀}}
+    {{uC : is-univ-bc-inst {{ξC}}}} {{uB : is-univ-bc-inst {{ξB}}}}
+    → Psfunctor {{ξC}} {{ξB}} → Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
+  is-biadj-bieqv R = Σ (has-rinv-psf R) (psft-rinv-coh-data {R = R})

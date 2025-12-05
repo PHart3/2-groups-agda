@@ -73,7 +73,15 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
       ! (al y x id) ◃∙
       al y x id ◃∎
         =ₛ₁⟨ 3 & 1 & ap-! (mu y) (al x id id) ⟩
-      _
+      ! (ap (λ z → mu z id) (rho (mu y x))) ◃∙
+      ! (ap (λ z → mu z id) (al y x id)) ◃∙
+      ! (al y (mu x id) id) ◃∙
+      ! (ap (mu y) (al x id id)) ◃∙
+      al y x (mu id id) ◃∙
+      al (mu y x) id id ◃∙
+      ap (λ z → mu z id) (rho (mu y x)) ◃∙
+      ! (al y x id) ◃∙
+      al y x id ◃∎
         =ₑ⟨ 4 & 2 & (ap (mu y) (al x id id) ◃∙ al y (mu x id) id ◃∙ ap (λ v → mu v id) (al y x id) ◃∎)
           % =ₛ-in (pent y x id id) ⟩
       ! (ap (λ z → mu z id) (rho (mu y x))) ◃∙
@@ -87,13 +95,33 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
       ! (al y x id) ◃∙
       al y x id ◃∎
         =ₛ₁⟨ 3 & 2 & !-inv-l (ap (mu y) (al x id id)) ⟩
-      _
+      ! (ap (λ z → mu z id) (rho (mu y x))) ◃∙
+      ! (ap (λ z → mu z id) (al y x id)) ◃∙
+      ! (al y (mu x id) id) ◃∙
+      idp ◃∙
+      al y (mu x id) id ◃∙
+      ap (λ v → mu v id) (al y x id) ◃∙
+      ap (λ z → mu z id) (rho (mu y x)) ◃∙
+      ! (al y x id) ◃∙
+      al y x id ◃∎
         =ₛ₁⟨ 2 & 3 & !-inv-l (al y (mu x id) id) ⟩
-      _
+      ! (ap (λ z → mu z id) (rho (mu y x))) ◃∙
+      ! (ap (λ z → mu z id) (al y x id)) ◃∙
+      idp ◃∙
+      ap (λ v → mu v id) (al y x id) ◃∙
+      ap (λ z → mu z id) (rho (mu y x)) ◃∙
+      ! (al y x id) ◃∙
+      al y x id ◃∎
         =ₛ₁⟨ 1 & 3 & !-inv-l (ap (λ z → mu z id) (al y x id)) ⟩
-      _
+      ! (ap (λ z → mu z id) (rho (mu y x))) ◃∙
+      idp ◃∙
+      ap (λ z → mu z id) (rho (mu y x)) ◃∙
+      ! (al y x id) ◃∙
+      al y x id ◃∎
         =ₛ₁⟨ 0 & 3 & !-inv-l (ap (λ z → mu z id) (rho (mu y x))) ⟩
-      _
+      idp ◃∙
+      ! (al y x id) ◃∙
+      al y x id ◃∎
         =ₛ₁⟨ !-inv-l (al y x id) ⟩
       idp ◃∎ ∎ₛ
 
@@ -189,7 +217,7 @@ module _ {i} {G : Type i} {{η : CohGrp G}} where
           ap2 mu (linv x) idp ∙
           lam (mu (inv x) x)) ◃∙
         ap (mu (inv x)) (ap (mu x) (linv x) ∙ rho x) ◃∎
-          =ₛ⟨ 0 & 1 & apCommSq2◃' (λ z → ! (al (inv x) x z ∙ ap2 mu (linv x) idp ∙ lam z)) (linv x) ⟩
+          =ₛ⟨ 0 & 1 & apCommSq2◃-rev (λ z → ! (al (inv x) x z ∙ ap2 mu (linv x) idp ∙ lam z)) (linv x) ⟩
         ap (λ z → z) (linv x) ◃∙
         ! (al (inv x) x id ∙ ap2 mu (linv x) idp ∙ lam id) ◃∙
         ! (ap (λ z → mu (inv x) (mu x z)) (linv x)) ◃∙

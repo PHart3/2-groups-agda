@@ -29,7 +29,7 @@ module _ {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {G₁ : Type ℓ₁} {G₂ : Type ℓ₂}
       K₂-map-∘ σ₁ (m₃ ∘2Mσ m₂) ∙⊙∼
       ⊙∘-pre (K₂-map⊙ σ₁) (K₂-map-∘ σ₂ σ₃)
         ⊙→∼
-      ⊙∘-α-comp (K₂-map⊙ σ₃) (K₂-map⊙ σ₂) (K₂-map⊙ σ₁)
+      ⊙∘-α-crd (K₂-map⊙ σ₃) (K₂-map⊙ σ₂) (K₂-map⊙ σ₁)
     fst KFunc-assoc = K₂-∼∼-ind (idp {a = idp {a = base G₄}}) KFunc-assoc-coher-out
       where
         open KFCA3 σ₁ σ₂ σ₃

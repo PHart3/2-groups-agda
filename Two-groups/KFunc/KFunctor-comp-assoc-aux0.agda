@@ -36,7 +36,7 @@ module KFCA0 {ℓ₁ ℓ₂ ℓ₃ ℓ₄} {G₁ : Type ℓ₁} {G₂ : Type ℓ
     K₂-β-5 : hmtpy-nat-∙' (fst (K₂-map-∘ σ₂ σ₃)) (ap (K₂-map σ₁) (loop G₁ x)) ◃∎ =ₛ δ₅ x
     K₂-β-5 =
       hmtpy-nat-∙' (fst (K₂-map-∘ σ₂ σ₃)) (ap (K₂-map σ₁) (loop G₁ x)) ◃∎
-        =ₛ⟨ apCommSq2◃' (λ (p : base G₂ == base G₂) → hmtpy-nat-∙' (fst (K₂-map-∘ σ₂ σ₃)) p) (K₂-map-β-pts σ₁ x) ⟩
+        =ₛ⟨ apCommSq2◃-rev (λ (p : base G₂ == base G₂) → hmtpy-nat-∙' (fst (K₂-map-∘ σ₂ σ₃)) p) (K₂-map-β-pts σ₁ x) ⟩
       ap (ap (K₂-map (m₃ ∘2Mσ m₂))) (K₂-map-β-pts σ₁ x) ◃∙
       hmtpy-nat-∙' (fst (K₂-map-∘ σ₂ σ₃)) (loop G₂ (f₁ x)) ◃∙
       ! (ap (ap (K₂-map σ₃ ∘ K₂-map σ₂)) (K₂-map-β-pts σ₁ x)) ◃∎

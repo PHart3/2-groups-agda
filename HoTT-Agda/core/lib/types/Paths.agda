@@ -65,6 +65,12 @@ module _ {i} {A : Type i} {x y z : A} where
 
 module _ {i} {A : Type i} where
 
+  !-∙-idp-≃ : {x y : A} (p : x == y) (q : x == y) → (q == p) ≃ (! p ∙ q == idp)
+  !-∙-idp-≃ idp q = ide (q == idp)
+
+  !-∙-idp-idp-≃ : {x y : A} (p : x == y) (q : x == y) → (q == p) ≃ (! p ∙ q ∙ idp == idp)
+  !-∙-idp-idp-≃ idp q = pre∙'-equiv (∙-unit-r q)
+
   pathfrom-is-contr-! : {x y : A} (p : x == y) → is-contr (Σ (y == x) (λ t → p == ! t))
   pathfrom-is-contr-! {x} {y} p = has-level-in ((! p , ! (!-! p)) , pathfrom-unique-path)
     where
