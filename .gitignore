@@ -11,3 +11,6 @@ html/
 
 # Ignore build output
 _build/
+
+# Ignore macOS stuff
+.DS_Store

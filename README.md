@@ -41,7 +41,7 @@ collecting the main theorems.
 
 - `Sinh/`
 
-  Our formalization of Owen Milner's proof of equivalence between pointed connected *n*-types (*n* > 1) and Sính triples.
+  Our formalization of Owen Milner's type equivalence between pointed connected *n*-types (*n* > 1) and Sính triples.
 
   See `Sinh/README.md` for details and for the license of the work inside this directory.
 
