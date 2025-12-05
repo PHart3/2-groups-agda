@@ -1,6 +1,6 @@
 ## Summary
 
-This directory contains a mechanization of Owen Milner's type equivalence between (*n*+2)-groups
+This directory contains a mechanization of the type equivalence between (*n*+2)-groups
 (i.e., pointed connected (*n*+2)-types) and Sính triples at level *n + 1*, with *n* non-negative.
 
 For *n* non-negative, a *Sính triple (at level *n*)* consists of an *n*-group BG, a G-module H : BG -> Ab, 

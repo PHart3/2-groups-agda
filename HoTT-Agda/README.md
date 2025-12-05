@@ -47,8 +47,6 @@ This directory contains the theory of Eilenberg-MacLane spaces, including their 
 Citation
 --------
 
-The extension and modification of HoTT-Agda presented here is due to Perry Hart.
-
 We copy here the citation for the original HoTT-Agda library.
 
 ```
@@ -70,8 +68,6 @@ We copy here the citation for the original HoTT-Agda library.
 
 Names are roughly sorted by the amount of contributed code, with the founder Guillaume always staying on the
 top.
-
-**If using the version of HoTT-Agda presented in this repo, please cite both the original authors and Perry Hart.**
 
 License
 -------

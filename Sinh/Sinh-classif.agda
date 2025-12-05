@@ -8,7 +8,7 @@ open import homotopy.EilenbergMacLane
 open import homotopy.EM-unique
 open import torsors.Delooping
 
--- classification (due to Owen Milner) of n-groups by Sính triples when n ≥ 2
+-- classification of n-groups by Sính triples when n ≥ 2
 
 module Sinh-classif where
 
