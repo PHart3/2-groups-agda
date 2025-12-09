@@ -5,7 +5,7 @@ open import lib.wild-cats.WildCat
 open import lib.wild-cats.WildFunctor
 open import lib.wild-cats.WildNatTr
 
--- Every equivalence of wild categories is a fully faithful functor.
+-- Every half-adjoint equivalence of wild categories is a fully faithful functor.
 
 module lib.wild-cats.EquivWC-props where
 
