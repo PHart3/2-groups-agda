@@ -15,12 +15,14 @@ space as the process runs. This is crucial because the type-checking uses
 as much as 28 GB of physical memory. Therefore, you will need to increase
 your machine's swap space if you have under 28 GB of available RAM.
 
-**Important:** Comment out the final three imports in `Final-thms` to reduce the amount of type-checking by over half.
-Doing so will check all relevant type equivalences but not the biequivalence (which takes up most of the total time).
+**Notes:**
 
-**Note:** We have included all of the `.agdai` files (in the various `_build` directories) in case you do
-not want to perform the intensive type-checking on your machine from scratch. Pass the flag `--ignore-interfaces`
-to `agda` if you want to type check `Final-thms.agda` from scratch.
+- We have included all of the `.agdai` files (in the various `_build` directories) in case you
+  do not want to perform the intensive type-checking on your machine from scratch. Pass the flag
+  `--ignore-interfaces` to `agda` if you want to type check `Final-thms.agda` from scratch.
+- Comment out the final three imports in `Final-thms` to reduce the amount of type-checking by
+  over half. Doing so will check all relevant type equivalences but not the biequivalence (which
+  takes up most of the total time).
 
 ## License
 

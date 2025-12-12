@@ -28,5 +28,7 @@ RUN echo "/Sinh/sinh.agda-lib" >> /root/.agda/libraries
 
 WORKDIR /Final
 
-RUN agda --library-file=/root/.agda/libraries ./Final-thms.agda
+# Delete --ignore-interfaces from the following command to check everything from scratch.
+RUN agda --library-file=/root/.agda/libraries --ignore-interfaces ./Final-thms.agda
+
 CMD ["agda", "--html", "--library-file=/root/.agda/libraries", "./Final-thms.agda"]

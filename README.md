@@ -53,16 +53,11 @@ collecting the main theorems.
 
 ## Type-checking
 
-We have successfully tested the following Docker container on Linux with 16 GB of RAM and
-100 GB of swap space.
-
 1. Build Docker image:
 
    ```bash
    docker build . -t 2group
    ```
-
-   Our machine uses as much as 28.7 GB of physical memory and takes over 8 hours to build the image. 
 
 2. Generate HTML files:
 
@@ -71,24 +66,27 @@ We have successfully tested the following Docker container on Linux with 16 GB o
    docker run --mount type=bind,source=./html,target=/Final/html 2group
    ```
 
-   This may take a few minutes. The HTML files will be under `html/`, and
+   This will take several minutes. The HTML files will be under `html/`, and
    `html/Final-thms.agda.html` will be the entry point.
 
-If you can avoid the overhead of Docker, we suggest that you do so even if you
-have lots of available RAM.
+**Important:**
 
-We have found that type-checking directly on a macOS with an M1 chip is much
-faster (but still intensive). See `Final/README.md` for relevant details.
-
-**Important:** Comment out the final two imports in `Final/Final-thms` to reduce the type-checking by over an hour.
-Doing so will check all relevant type equivalences but not the biadjoint biequivalence.
-
-**Notes:**
+- Comment out the final two imports in `Final/Final-thms` to reduce the type-checking by over an hour.
+  Doing so will check all relevant type equivalences but not the biadjoint biequivalence.
 
 - We have included all of the `.agdai` files (in the various `_build` directories) in case you do
   not want to perform the intensive type-checking on your machine from scratch. Pass the flag
-  `--ignore-interfaces` to `agda` if you want to type check a file from scratch.
+  `--ignore-interfaces` to `agda` on the command line if you want to type check a file from scratch.
+  
+- Moreover, the Dockerfile sees the build artifacts, so pass the same flag to the CMD in the Dockerfile
+  to build everything from scratch. Beware that, in this situation, our machine uses as much as 28.7 GB
+  of physical memory and takes over 8 hours to build the image. (Our machine is a Linux with 16 GB of RAM
+  and 100 GB of swap space.)
 
-- Also, we have included in this repo's root a zip file of the generated html files for all of the Agda code,
-  which should let you navigate the codebase without having to run the type checker. You should consider
+  If you do choose to check everything from scratch, we suggest you avoid the overhead of Docker even if
+  you have lots of available RAM. We have found that type-checking directly on a macOS with an M1 chip is
+  much faster (but still intensive). See `Final/README.md` for relevant details.
+
+- Finally, we have included in this repo's root a zip file of the generated html files for all of the Agda code,
+  which should let you navigate the codebase immediately without having to use Docker at all. You should consider
   `Final-thms.html` the entry point.
