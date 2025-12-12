@@ -4,7 +4,7 @@
 
 module Final-thms where
 
--- The equivalence between pointed connected n-types and Sính triples (with n ≥ 2)
+-- the equivalence between pointed connected n-types and Sính triples (with n ≥ 2)
 open import Sinh-classif public
 -- a description of the group action from the Sính triple of a given higher group
 open import Sinh-action public

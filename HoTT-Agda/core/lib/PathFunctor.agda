@@ -297,15 +297,6 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
     ap-∙ g (ap f v) idp ∙ idp
   ap-∘2-ap-∙ idp = idp
 
-  ap-cp-rev : {w : C} {z : B} {x y : A} (p : x == y) (q : f x == z) (r : g (f y) == w) →
-    ! (ap g q) ∙ ap (g ∘ f) p ∙ r == ! (ap g (! (ap f p) ∙ q)) ∙  r
-  ap-cp-rev idp q r = idp
-
-  ap-cp-revR : {x y : A} (q : x == y) {w : B} {z : C} {r : f y == w}
-    {s : g w == z} {b : B} (p : f x == b) 
-    → ! (ap g p) ∙ (ap (g ∘ f) q) ∙ (ap g r) ∙ s == ap g (! p ∙ ap f q ∙ r) ∙ s
-  ap-cp-revR idp {r = r} {s = s} p = !-ap-∙-s g p {r = r} {s = s}
-
   inv-canc-cmp : {a b : A} (p : a == b) {z : B} (T : f a == z) {w : C} (gₚ : g z == w)
     → ! (ap (g ∘ f) p) ∙ (ap g T ∙ gₚ) ∙ ! (ap g (! (ap f p) ∙ T ∙ idp) ∙ gₚ) == idp
   inv-canc-cmp idp idp idp = idp
