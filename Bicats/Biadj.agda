@@ -14,8 +14,7 @@ open import Psnat-equiv-conv
 open import Psftor-inverse
 open import Univ-bc
 
-{- coherence data for a biequivalence between univalent bicategories,
-   namely one of the triangulators of a biadjunction -}
+-- coherence data for a biequivalence, namely one of the triangulators of a biadjunction
 
 module Biadj where
 
@@ -53,7 +52,10 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}  {{ξC : Bi
       (uvpsnat-≃-whisk-r η R₀ uvpsnat-≃-∙ assoc-psf-≃ R₀ L₀ R₀ uvpsnat-≃-∙ uvpsnat-≃-whisk-l ε R
         ≃-⇔
       unitl-psf-≃ R₀ uvpsnat-≃-∙ unitr-psf-≃ R₀)
-    uvbiequiv-coh ε η = ide _
+    uvbiequiv-coh ε η = ide $
+      uvpsnat-≃-whisk-r η R₀ uvpsnat-≃-∙ assoc-psf-≃ R₀ L₀ R₀ uvpsnat-≃-∙ uvpsnat-≃-whisk-l ε R
+        ≃-⇔
+      unitl-psf-≃ R₀ uvpsnat-≃-∙ unitr-psf-≃ R₀
 
     {- For a biequivalence between univalent bicategoires, as soon as we have ζζ, we have
        a contractible choice of the remaining data of a biadjunction, i.e., the other zig-zag
