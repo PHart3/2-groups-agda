@@ -1,3 +1,4 @@
+
 {-# OPTIONS --without-K --rewriting --overlapping-instances #-}
 
 open import lib.Basics
@@ -378,9 +379,12 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
         =ₛ₁⟨ !-inv-l (lamb (((F₁ (str-pf R₃) ∘ F₁ (str-pf R₂)) ∘ F₁ (str-pf R₁)) (⟦ ξB ⟧ g ◻ f))) ⟩
       idp ◃∎ ∎ₛ
 
-    assoc-ps-≃ : ((R₃ ∘BC-s R₂) ∘BC-s R₁) ps-≃ (R₃ ∘BC-s (R₂ ∘BC-s R₁))
-    fst assoc-ps-≃ = assoc-pst
-    snd assoc-ps-≃ _ = snd AdjEq-id₁
+    assoc-psf-≃ : ((R₃ ∘BC-s R₂) ∘BC-s R₁) psf-≃ (R₃ ∘BC-s (R₂ ∘BC-s R₁))
+    fst assoc-psf-≃ = assoc-pst
+    snd assoc-psf-≃ _ = snd AdjEq-id₁
+
+    assoc-pst-nc : Pstrans-nc ((R₃ ∘BC-s R₂) ∘BC-s R₁) (R₃ ∘BC-s (R₂ ∘BC-s R₁))
+    assoc-pst-nc = pstrans-str assoc-pst
 
   -- unit pseudotransformations
   module _ (R : Psfunctor-nc {{ξB}} {{ξC}}) where
@@ -557,9 +561,12 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
         =ₛ₁⟨ !-inv-l (lamb (F₁ (str-pf R) (⟦ ξB ⟧ g ◻ f))) ⟩
       idp ◃∎ ∎ₛ
 
-    unitl-ps-≃ : (idpfBC ∘BC-s R) ps-≃ R
-    fst unitl-ps-≃ = unitl-pst
-    snd unitl-ps-≃ _ = snd AdjEq-id₁
+    unitl-psf-≃ : (idpfBC ∘BC-s R) psf-≃ R
+    fst unitl-psf-≃ = unitl-pst
+    snd unitl-psf-≃ _ = snd AdjEq-id₁
+
+    unitl-pst-nc : Pstrans-nc (idpfBC ∘BC-s R) R
+    unitl-pst-nc = pstrans-str unitl-pst
 
     unitr-pst : Pstrans R (R ∘BC-s idpfBC)
     η₀ unitr-pst a = id₁ (map-pf R a)
@@ -602,6 +609,9 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
         =ₛ₁⟨ coher-assoc unitl-pst f g ⟩
       idp ◃∎ ∎ₛ
 
-    unitr-ps-≃ : R ps-≃ (R ∘BC-s idpfBC)
-    fst unitr-ps-≃ = unitr-pst
-    snd unitr-ps-≃ _ = snd AdjEq-id₁
+    unitr-psf-≃ : R psf-≃ (R ∘BC-s idpfBC)
+    fst unitr-psf-≃ = unitr-pst
+    snd unitr-psf-≃ _ = snd AdjEq-id₁
+
+    unitr-pst-nc : Pstrans-nc R (R ∘BC-s idpfBC)
+    unitr-pst-nc = pstrans-str unitr-pst

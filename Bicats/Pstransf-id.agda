@@ -147,6 +147,6 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}
         =ₛ₁⟨ !-inv-r (ap (λ m → ⟦ ξC ⟧ id₁ (map-pf R z) ◻ m) (F-◻ (str-pf R) f g)) ⟩
       idp ◃∎ ∎ₛ
 
-    ps-≃-id : {R : Psfunctor-nc {{ξB}} {{ξC}}} → R ps-≃ R
+    ps-≃-id : {R : Psfunctor-nc {{ξB}} {{ξC}}} → R psf-≃ R
     fst (ps-≃-id {R}) = Pstrans-id {R}
     snd ps-≃-id _ = snd AdjEq-id₁

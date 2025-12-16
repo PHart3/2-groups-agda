@@ -100,9 +100,9 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
       coher-assoc◃-rot f g = pre-rotate'-out (coher-assoc◃ f g)
 
   -- pseudonatural equivalence
-  infixr 70 _ps-≃_
-  _ps-≃_ : Psfunctor-nc {{ξB}} {{ξC}} → Psfunctor-nc {{ξB}} {{ξC}} → Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
-  F ps-≃ G = Σ (Pstrans F G) (λ φ → (b : B₀) → Adjequiv {{ξC}} (Pstrans.η₀ φ b))
+  infixr 70 _psf-≃_
+  _psf-≃_ : Psfunctor-nc {{ξB}} {{ξC}} → Psfunctor-nc {{ξB}} {{ξC}} → Type (lmax (lmax (lmax i₁ i₂) j₁) j₂)
+  F psf-≃ G = Σ (Pstrans F G) (λ φ → (b : B₀) → Adjequiv {{ξC}} (Pstrans.η₀ φ b))
 
 -- induced wild natural transformation
 module _ {i₁ i₂ j₁ j₂} {B@(B₀ , _) : Bicat j₁ i₁} {C@(C₀ , _) : Bicat j₂ i₂} where
