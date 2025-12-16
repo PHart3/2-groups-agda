@@ -1,8 +1,8 @@
 .*.agda.vim
-
 *~
 *\#*
 
+*/_build/2.6.3/
 html/
 
 .DS_Store
