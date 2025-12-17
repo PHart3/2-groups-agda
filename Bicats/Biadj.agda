@@ -20,7 +20,7 @@ module Biadj where
 
 open BicatStr {{...}}
 open Psfunctor
-open PsfunctorStr
+open PsftorStr
 open Pstrans
 open InvMod
 

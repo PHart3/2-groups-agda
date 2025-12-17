@@ -178,7 +178,7 @@ module _ {i j} {B₀ : Type i} where
 module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}} where
 
   -- pseudofunctors
-  record PsfunctorStr (F₀ : B₀ → C₀) : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
+  record PsftorStr (F₀ : B₀ → C₀) : Type (lmax (lmax i₁ j₁) (lmax i₂ j₂)) where
     constructor psfunctorstr
     field
       F₁ : {a b : B₀} → hom a b → hom (F₀ a) (F₀ b)
@@ -235,9 +235,9 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
     constructor psfunctor
     field
       map-pf : B₀ → C₀
-      {{str-pf}} : PsfunctorStr map-pf
+      {{str-pf}} : PsftorStr map-pf
 
-open PsfunctorStr
+open PsftorStr
 open Psfunctor
 
 -- pseudofunctors with the proposition-valued fields omitted
@@ -293,7 +293,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
 -- identity pseudofunctor
 module _ {i j} {B₀ : Type i} {{ξ : BicatStr j B₀}} where
   
-  idfBCσ : PsfunctorStr (idf B₀)
+  idfBCσ : PsftorStr (idf B₀)
   F₁ idfBCσ = λ f → f
   F-id₁ idfBCσ = λ a → idp
   F-◻ idfBCσ = λ f g → idp
@@ -324,7 +324,7 @@ module _ {i₁ i₂ i₃ j₁ j₂ j₃} {B₀ : Type i₁} {C₀ : Type i₂} {
   F-◻ (str-pf (φ₂ ∘BC-s φ₁)) f g = ap (F₁ (str-pf φ₂)) (F-◻ (str-pf φ₁) f g) ∙ F-◻ (str-pf φ₂) (F₁ (str-pf φ₁) f) (F₁ (str-pf φ₁) g)
 
   infixr 60 _∘BCσ_
-  _∘BCσ_ : (φ₂ : Psfunctor {{ξC}} {{ξD}}) (φ₁ : Psfunctor {{ξB}} {{ξC}}) → PsfunctorStr (map-pf φ₂ ∘ map-pf φ₁)
+  _∘BCσ_ : (φ₂ : Psfunctor {{ξC}} {{ξD}}) (φ₁ : Psfunctor {{ξB}} {{ξC}}) → PsftorStr (map-pf φ₂ ∘ map-pf φ₁)
   F₁ (φ₂ ∘BCσ φ₁) = F₁ (str-pf (psftor-str φ₂ ∘BC-s psftor-str φ₁))
   F-id₁ (φ₂ ∘BCσ φ₁) = F-id₁ (str-pf (psftor-str φ₂ ∘BC-s psftor-str φ₁)) 
   F-◻ (φ₂ ∘BCσ φ₁) =  F-◻ (str-pf (psftor-str φ₂ ∘BC-s psftor-str φ₁))

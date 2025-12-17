@@ -151,4 +151,4 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
   Psf-coh-induce R₁ = psftor-ind uC (λ R₂ _ → Psf-coh-data R₂) (F-ρ (str-pf R₁) , (F-λ (str-pf R₁) , F-α (str-pf R₁)))
     where
       open Psfunctor
-      open PsfunctorStr
+      open PsftorStr

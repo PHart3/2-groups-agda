@@ -17,7 +17,7 @@ module Psftor-inverse where
 
 open BicatStr {{...}}
 open Psfunctor
-open PsfunctorStr
+open PsftorStr
 open Pstrans
 
 module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}} where
