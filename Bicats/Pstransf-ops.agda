@@ -18,7 +18,7 @@ module Pstransf-ops where
 
 open BicatStr {{...}}
 open Psfunctor
-open PsfunctorStr
+open PsftorStr
 open Psfunctor-nc
 open PsfunctorNcStr
 open Pstrans-nc

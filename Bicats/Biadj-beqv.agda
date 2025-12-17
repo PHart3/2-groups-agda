@@ -46,7 +46,7 @@ module _ {i₁ i₂ j₁ j₂} {C@(C₀ , _) : Bicat j₂ i₂} {B@(B₀ , _) : 
   snd (iso₂ (beqv-to-wniso be)) x = aeqv-to-weqv (lev-eq₂ be x)
 
   open Psfunctor
-  open PsfunctorStr
+  open PsftorStr
   open HAdjEquiv-wc
 
   baeqv-to-wniso : ξC biadj-bieqv ξB → HAdjEquiv-wc (bc-to-wc B) (bc-to-wc C)
