@@ -1,6 +1,6 @@
 {-# OPTIONS --without-K --rewriting #-}
 
--- the collection of the main final results of the repo
+-- the collection of the main final results of the codebase
 
 module Final-thms where
 
