@@ -20,11 +20,11 @@ open Biequiv-coh
 open InvMod
 
 -- the identity biadjoint biequivalence
-biadj-bieuqiv-id : ∀ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} {{uC : is-univ-bc-inst {{ξC}}}} → ξC biadj-bieqv ξC
+biadj-bieuqiv-id : ∀ {i j} {C₀ : Type i} {{ξC : BicatStr j C₀}} → ξC biadj-bieqv ξC
 Ψ-L (fst biadj-bieuqiv-id) = idfBC
 Ψ-R (fst biadj-bieuqiv-id) = idfBC
-ε (fst biadj-bieuqiv-id) = unitl-ps-≃ idpfBC
-η (fst biadj-bieuqiv-id) = unitr-ps-≃ idpfBC
+ε (fst biadj-bieuqiv-id) = unitl-psf-≃ idpfBC
+η (fst biadj-bieuqiv-id) = unitr-psf-≃ idpfBC
 η₀-∼ (ζζ (snd (biadj-bieuqiv-id {{ξC}}))) a = ! (ap (λ m → ⟦ ξC ⟧ m ◻ id₁ a) (lamb (id₁ a)))
 η₁-∼ (ζζ (snd (biadj-bieuqiv-id {{ξC}}))) {a} {b} f = η₁-∼-flip aux
   where abstract

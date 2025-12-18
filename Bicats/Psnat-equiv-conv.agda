@@ -14,7 +14,7 @@ module Psnat-equiv-conv where
 
 open BicatStr {{...}}
 open Psfunctor
-open PsfunctorStr
+open PsftorStr
 open Psfunctor-nc
 open PsfunctorNcStr
 open Pstrans-nc
@@ -25,13 +25,13 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
 
   abstract
 
-    psnat-≃-∙-pres : {R₁ R₃ R₂ : Psfunctor-nc {{ξB}} {{ξC}}} (T₁ : R₁ ps-≃ R₂) (T₂ : R₂ ps-≃ R₃) →
+    psnat-≃-∙-pres : {R₁ R₃ R₂ : Psfunctor-nc {{ξB}} {{ξC}}} (T₁ : R₁ psf-≃ R₂) (T₂ : R₂ psf-≃ R₃) →
       ps-≃-to-== uC (psnat-≃-∙ uC T₁ T₂) == ps-≃-to-== uC T₁ ∙ ps-≃-to-== uC T₂ 
     psnat-≃-∙-pres {R₁} {R₃} = psftor-ind uC
-      (λ R₂ T₁ → (T₂ : R₂ ps-≃ R₃) → ps-≃-to-== uC (psnat-≃-∙ uC T₁ T₂) == ps-≃-to-== uC T₁ ∙ ps-≃-to-== uC T₂)
+      (λ R₂ T₁ → (T₂ : R₂ psf-≃ R₃) → ps-≃-to-== uC (psnat-≃-∙ uC T₁ T₂) == ps-≃-to-== uC T₁ ∙ ps-≃-to-== uC T₂)
       λ T₂ → ap (ps-≃-to-== uC) (psnat-≃-∙-β uC) ∙ ap (λ t → t ∙ ps-≃-to-== uC T₂) (! (ps-≃-to-==-β uC))
 
-    psnat-≃-∙-pres-tri : {R₁ R₂ R₃ R₄ : Psfunctor-nc {{ξB}} {{ξC}}} (T₁ : R₁ ps-≃ R₂) (T₂ : R₂ ps-≃ R₃) (T₃ : R₃ ps-≃ R₄)
+    psnat-≃-∙-pres-tri : {R₁ R₂ R₃ R₄ : Psfunctor-nc {{ξB}} {{ξC}}} (T₁ : R₁ psf-≃ R₂) (T₂ : R₂ psf-≃ R₃) (T₃ : R₃ psf-≃ R₄)
       → ps-≃-to-== uC (psnat-≃-∙ uC T₁ (psnat-≃-∙ uC T₂ T₃)) == ps-≃-to-== uC T₁ ∙ ps-≃-to-== uC T₂ ∙ ps-≃-to-== uC T₃  
     psnat-≃-∙-pres-tri T₁ T₂ T₃ = psnat-≃-∙-pres T₁ (psnat-≃-∙ uC T₂ T₃) ∙ ap (λ t → ps-≃-to-== uC T₁ ∙ t) (psnat-≃-∙-pres T₂ T₃)
 
@@ -40,7 +40,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
     abstract
 
       psnat-≃-whisk-l-pres : (uD : is-univ-bc ξD)
-        {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} (T : R₁ ps-≃ R₂) (G : Psfunctor {{ξC}} {{ξD}}) → 
+        {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} (T : R₁ psf-≃ R₂) (G : Psfunctor {{ξC}} {{ξD}}) → 
         ps-≃-to-== uD (psnat-≃-whisk-l uC T G) == ap (λ m → (psftor-str G) ∘BC-s m) (ps-≃-to-== uC T)
       psnat-≃-whisk-l-pres uD = psftor-ind uC
         (λ R₂ T → ∀ G → ps-≃-to-== uD (psnat-≃-whisk-l uC T G) == ap (λ m → (psftor-str G) ∘BC-s m) (ps-≃-to-== uC T))
@@ -49,7 +49,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
           ps-≃-to-==-β uD ∙
           ! (ap (ap (λ m → (psftor-str G) ∘BC-s m)) (ps-≃-to-==-β uC))
 
-      psnat-≃-whisk-r-pres : {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} (T : R₁ ps-≃ R₂) (G : Psfunctor-nc {{ξD}} {{ξB}}) → 
+      psnat-≃-whisk-r-pres : {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} (T : R₁ psf-≃ R₂) (G : Psfunctor-nc {{ξD}} {{ξB}}) → 
         ps-≃-to-== uC (psnat-≃-whisk-r uC T G) == ap (λ m → m ∘BC-s G) (ps-≃-to-== uC T)
       psnat-≃-whisk-r-pres = psftor-ind uC
         (λ R₂ T → ∀ G → ps-≃-to-== uC (psnat-≃-whisk-r uC T G) == ap (λ m → m ∘BC-s G) (ps-≃-to-== uC T))

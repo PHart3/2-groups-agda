@@ -14,7 +14,7 @@ module Bicat-iso where
 
 open BicatStr
 open Psfunctor
-open PsfunctorStr {{...}}
+open PsftorStr {{...}}
 
 module _ {i₁ i₂ j₁ j₂ : ULevel} {B₀ : Type i₁} where
 

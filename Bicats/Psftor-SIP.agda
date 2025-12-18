@@ -92,10 +92,10 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
               (! (ap (λ m → ⟦ ξC ⟧ id₁ (cc₁ z) ◻ m) (F-◻ (str-pf R₁) f g)))))}}
 
     abstract
-      psftor-contr : is-contr (Σ (Psfunctor-nc {{ξB}} {{ξC}}) (λ R₂ → R₁ ps-≃ R₂))
+      psftor-contr : is-contr (Σ (Psfunctor-nc {{ξB}} {{ξC}}) (λ R₂ → R₁ psf-≃ R₂))
       psftor-contr = equiv-preserves-level lemma {{psftor-contr-aux}}
         where
-          lemma : tot-sp ≃ Σ (Psfunctor-nc {{ξB}} {{ξC}}) (λ R₂ → R₁ ps-≃ R₂)
+          lemma : tot-sp ≃ Σ (Psfunctor-nc {{ξB}} {{ξC}}) (λ R₂ → R₁ psf-≃ R₂)
           lemma = 
             equiv
               (λ ((M , Ar) , R-ids , R-∘s) → psfunctornc {{ξB}} {{ξC}} (fst ∘ M)
@@ -108,28 +108,28 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
               (λ _ → idp)
               λ _ → idp
 
-    psftor-ind : ∀ {k} (Q : (R₂ : Psfunctor-nc {{ξB}} {{ξC}}) → (R₁ ps-≃ R₂ → Type k))
-      → Q R₁ ps-≃-id → {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} (e : R₁ ps-≃ R₂) → Q R₂ e
+    psftor-ind : ∀ {k} (Q : (R₂ : Psfunctor-nc {{ξB}} {{ξC}}) → (R₁ psf-≃ R₂ → Type k))
+      → Q R₁ ps-≃-id → {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} (e : R₁ psf-≃ R₂) → Q R₂ e
     psftor-ind Q = ID-ind-map Q psftor-contr
     
-    psftor-ind-β : ∀ {k} (Q : (R₂ : Psfunctor-nc {{ξB}} {{ξC}}) → (R₁ ps-≃ R₂ → Type k))
+    psftor-ind-β : ∀ {k} (Q : (R₂ : Psfunctor-nc {{ξB}} {{ξC}}) → (R₁ psf-≃ R₂ → Type k))
       → (r : Q R₁ ps-≃-id) → psftor-ind Q r ps-≃-id == r
     psftor-ind-β Q = ID-ind-map-β Q psftor-contr
 
-    ps-≃-to-== : {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} → R₁ ps-≃ R₂ → R₁ == R₂
+    ps-≃-to-== : {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} → R₁ psf-≃ R₂ → R₁ == R₂
     ps-≃-to-== {R₂} = psftor-ind (λ R₂ _ → R₁ == R₂) idp
 
     ps-≃-to-==-β : ps-≃-to-== ps-≃-id == idp
     ps-≃-to-==-β = psftor-ind-β (λ R₂ _ → R₁ == R₂) idp
 
-    ps-≃-from-== : {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} → R₁ == R₂ → R₁ ps-≃ R₂
+    ps-≃-from-== : {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} → R₁ == R₂ → R₁ psf-≃ R₂
     ps-≃-from-== idp = ps-≃-id
 
-    ps-≃-==-≃ : {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} → (R₁ == R₂) ≃ (R₁ ps-≃ R₂)
+    ps-≃-==-≃ : {R₂ : Psfunctor-nc {{ξB}} {{ξC}}} → (R₁ == R₂) ≃ (R₁ psf-≃ R₂)
     ps-≃-==-≃ = equiv ps-≃-from-== ps-≃-to-== aux1 aux2
       where
 
-        aux1 : ∀ {R₂} (p : R₁ ps-≃ R₂) → ps-≃-from-== (ps-≃-to-== p) == p
+        aux1 : ∀ {R₂} (p : R₁ psf-≃ R₂) → ps-≃-from-== (ps-≃-to-== p) == p
         aux1 = psftor-ind (λ _ p → ps-≃-from-== (ps-≃-to-== p) == p) (ap ps-≃-from-== ps-≃-to-==-β)
 
         aux2 : ∀ {R₂} (p : R₁ == R₂) → ps-≃-to-== (ps-≃-from-== p) == p
@@ -137,18 +137,18 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
 
 module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : BicatStr j₁ B₀}} {{ξC : BicatStr j₂ C₀}} (uC : is-univ-bc ξC) where
 
-  psf-≃-==-≃ : {R₁ R₂ : Psfunctor {{ξB}} {{ξC}}} → (R₁ == R₂) ≃ (psftor-str R₁ ps-≃ psftor-str R₂)
+  psf-≃-==-≃ : {R₁ R₂ : Psfunctor {{ξB}} {{ξC}}} → (R₁ == R₂) ≃ (psftor-str R₁ psf-≃ psftor-str R₂)
   psf-≃-==-≃ =
     ps-≃-==-≃ uC ∘e
     (Subtype=-econv (subtypeprop Psf-coh-data {{λ {ψ} → Psf-coh-data-is-prop {ψ = ψ}}}) _ _)⁻¹ ∘e
     ap-equiv Psftor-Σ-≃  _ _
 
-  psf-≃-to-== : {R₁ R₂ : Psfunctor {{ξB}} {{ξC}}} → psftor-str R₁ ps-≃ psftor-str R₂ → R₁ == R₂
+  psf-≃-to-== : {R₁ R₂ : Psfunctor {{ξB}} {{ξC}}} → psftor-str R₁ psf-≃ psftor-str R₂ → R₁ == R₂
   psf-≃-to-== = <– psf-≃-==-≃
 
   Psf-coh-induce : (R₁ : Psfunctor {{ξB}} {{ξC}}) {R₂ : Psfunctor-nc {{ξB}} {{ξC}}}
-    → psftor-str R₁ ps-≃ R₂ → Psf-coh-data R₂
+    → psftor-str R₁ psf-≃ R₂ → Psf-coh-data R₂
   Psf-coh-induce R₁ = psftor-ind uC (λ R₂ _ → Psf-coh-data R₂) (F-ρ (str-pf R₁) , (F-λ (str-pf R₁) , F-α (str-pf R₁)))
     where
       open Psfunctor
-      open PsfunctorStr
+      open PsftorStr
