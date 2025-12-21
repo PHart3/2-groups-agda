@@ -192,7 +192,7 @@ e1 ∘e e2 = (–> e1 ∘ –> e2) , record {g = (<– e2 ∘ <– e1); M} where
         ap (–> e1) (<–-inv-r e2 (<– e1 ((–> e1 ∘ –> e2) a)) ∙ <–-inv-l e1 (–> e2 a))
             =⟨ ap-∙ (–> e1) (<–-inv-r e2 (<– e1 ((–> e1 ∘ –> e2) a))) (<–-inv-l e1 (–> e2 a)) ⟩
         ap (–> e1) (<–-inv-r e2 (<– e1 ((–> e1 ∘ –> e2) a))) ∙ ap (–> e1) (<–-inv-l e1 (–> e2 a))
-            =⟨  ap (–> e1) (<–-inv-r e2 (<– e1 ((–> e1 ∘ –> e2) a))) ∙ₗ (<–-inv-adj e1 (–> e2 a)) ⟩
+            =⟨ ap (–> e1) (<–-inv-r e2 (<– e1 ((–> e1 ∘ –> e2) a))) ∙ₗ (<–-inv-adj e1 (–> e2 a)) ⟩
         ap (–> e1) (<–-inv-r e2 (<– e1 ((–> e1 ∘ –> e2) a))) ∙ <–-inv-r e1 ((–> e1 ∘ –> e2) a)
             =∎
 
