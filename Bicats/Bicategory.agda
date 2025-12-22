@@ -159,6 +159,42 @@ module _ (j : ULevel) where
         ap (λ m → i ◻ m) (α h g f) ◃∎
       pent-bc◃-rot2 f g h i = post-rotate'-in (post-rotate'-in (pre-rotate-in (pre-rotate-in (pent-bc◃ f g h i))))
 
+      pent-bc◃-rot3 : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e) →
+        ! (α i (h ◻ g) f) ◃∙
+        ! (ap (λ m → i ◻ m) (α h g f)) ◃∎
+          =ₛ
+        ap (λ m → m ◻ f) (α i h g) ◃∙
+        ! (α (i ◻ h) g f) ◃∙
+        ! (α i h (g ◻ f)) ◃∎
+      pent-bc◃-rot3 f g h i = pre-rotate'-out (post-rotate'-in (pent-bc◃-rot2 f g h i))
+
+      pent-bc◃-rot4 : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e) →
+        ! (ap (λ m → i ◻ m) (α h g f)) ◃∙
+        α i h (g ◻ f) ◃∙
+        α (i ◻ h) g f ◃∎
+          =ₛ
+        α i (h ◻ g) f ◃∙
+        ap (λ m → m ◻ f) (α i h g) ◃∎
+      pent-bc◃-rot4 f g h i = pre-rotate'-in (pent-bc◃ f g h i)
+
+      pent-bc◃-rot5 : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e) →
+        α i h (g ◻ f) ◃∎
+          =ₛ
+        ap (λ m → i ◻ m) (α h g f) ◃∙
+        α i (h ◻ g) f ◃∙
+        ap (λ m → m ◻ f) (α i h g) ◃∙
+        ! (α (i ◻ h) g f) ◃∎
+      pent-bc◃-rot5 f g h i = post-rotate-in (pent-bc◃ f g h i)
+
+      pent-bc◃-rot6 : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e) →
+        ! (ap (λ m → i ◻ m) (α h g f)) ◃∙
+        α i h (g ◻ f) ◃∎
+          =ₛ
+        α i (h ◻ g) f ◃∙
+        ap (λ m → m ◻ f) (α i h g) ◃∙
+        ! (α (i ◻ h) g f) ◃∎
+      pent-bc◃-rot6 f g h i = pre-rotate'-in (pent-bc◃-rot5 f g h i)
+
   Bicat : (i : ULevel) → Type (lmax (lsucc j) (lsucc i))
   Bicat i = Σ (Type i) BicatStr
 

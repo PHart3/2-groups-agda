@@ -250,9 +250,17 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} (g : B → C) (f : A →
     → ap g (p ∙ ap f q) ◃∎ =ₛ ap g p ◃∙ ap (g ∘ f) q ◃∎
   ap-∙-∘◃ idp idp = =ₛ-in idp
 
+  !-ap-∙-∘◃ : {x y : A} {b : B} (p : b == f x) (q : x == y)
+    → ! (ap g (p ∙ ap f q)) ◃∎ =ₛ ! (ap (g ∘ f) q) ◃∙ ! (ap g p) ◃∎
+  !-ap-∙-∘◃ idp idp = =ₛ-in idp
+
   !-ap-∘-∙◃ : {x y : A} (p : x == y) {b : B} (q : f y == b)
     → ! (ap g (ap f p ∙ q)) ◃∎ =ₛ ! (ap g q) ◃∙ ! (ap (g ∘ f) p) ◃∎
   !-ap-∘-∙◃ idp idp = =ₛ-in idp
+
+  !-∘-ap-∙◃ : {x y : A} {b : B} (q : b == f y) (p : y == x)
+    → ! (ap g (ap f p)) ◃∙ ! (ap g q) ◃∎ =ₛ ! (ap g (q ∙ ap f p)) ◃∎
+  !-∘-ap-∙◃ idp idp = =ₛ-in idp
 
   ap-∘-∙!◃ : {x y : A} (p : x == y) {b : B} (q : b == f y)
     → ap g (ap f p ∙ ! q) ◃∎ =ₛ ap (g ∘ f) p ◃∙ ! (ap g q) ◃∎
