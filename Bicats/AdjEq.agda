@@ -14,7 +14,6 @@ module AdjEq {i j} {B₀ : Type i} where
 open BicatStr {{...}}
 
 -- adjoint equivalence structure on a 1-cell of a bicategory
-
 record Adjequiv {{_ : BicatStr j B₀}} {a b : B₀} (f : hom a b) : Type (lmax i j) where
   constructor Adj-eqv
   field
@@ -31,7 +30,7 @@ record Adjequiv {{_ : BicatStr j B₀}} {a b : B₀} (f : hom a b) : Type (lmax 
   coher-map-rot = pre-rotate-in (post-rotate-in coher-map-◃)
 
   coher-map-rot2 : ! (lamb f) ◃∙ ρ f ◃∙ ap (λ m → f ◻ m) eta ◃∙ α f inv f ◃∎ =ₛ ap (λ m → m ◻ f) eps ◃∎
-  coher-map-rot2 = {!!}
+  coher-map-rot2 = pre-rotate'-in coher-map-◃
 
   coher-inv-◃ : ρ inv ◃∙ ap (λ m → inv ◻ m) eps ◃∙ α inv f inv ◃∎ =ₛ lamb inv ◃∙ ap (λ m → m ◻ inv) eta ◃∎
   coher-inv-◃ = =ₛ-in coher-inv
@@ -40,245 +39,224 @@ record Adjequiv {{_ : BicatStr j B₀}} {a b : B₀} (f : hom a b) : Type (lmax 
   coher-inv-rot = pre-rotate-in (post-rotate-in coher-inv-◃)
 
   coher-inv-rot2 : ! (lamb inv) ◃∙ ρ inv ◃∙ ap (λ m → inv ◻ m) eps ◃∙ α inv f inv ◃∎ =ₛ ap (λ m → m ◻ inv) eta ◃∎
-  coher-inv-rot2 = {!!}
+  coher-inv-rot2 = pre-rotate'-in coher-inv-◃
 
   coher-inv-rot3 : ρ inv ◃∙ ap (λ m → inv ◻ m) eps ◃∙ α inv f inv ◃∙ ! (ap (λ m → m ◻ inv) eta) ◃∎ =ₛ lamb inv ◃∎
   coher-inv-rot3 = post-rotate'-in coher-inv-◃
 
+-- weak equivalence structure on a 1-cell
+record Wkequiv-bc {{_ : BicatStr j B₀}} {a b : B₀} (f : hom a b) : Type (lmax i j) where
+  constructor Wk-eqv
+  field
+    inv : hom b a
+    eta : id₁ a == inv ◻ f
+    eps : id₁ b == f ◻ inv
+  -- coher-map (the first zig-zag identity) implies coher-inv (the second)
+  cohmap-to-cohinv :
+    ρ f ∙ ap (λ m → f ◻ m) eta ∙ α f inv f == lamb f ∙ ap (λ m → m ◻ f) eps →
+    ρ inv ∙ ap (λ m → inv ◻ m) eps ∙ α inv f inv == lamb inv ∙ ap (λ m → m ◻ inv) eta
+  cohmap-to-cohinv = {!!}
+
 open Adjequiv
-
--- induced internal equivalence in underlying wild category
-aeqv-to-weqv : {{ξB : BicatStr j B₀}} {a b : B₀} {f : hom {{ξB}} a b} → Adjequiv f → equiv-wc (bc-to-wc (B₀ , ξB)) f
-fst (aeqv-to-weqv ae) = inv ae
-fst (snd (aeqv-to-weqv ae)) = eta ae
-snd (snd (aeqv-to-weqv ae)) = eps ae
-
-Adjequiv-whisk-r-≃ : {{_ : BicatStr j B₀}} {a b c : B₀} {f : hom a b} → Adjequiv f → (hom b c) ≃ (hom a c) 
-Adjequiv-whisk-r-≃ {f = f} ae = equiv (λ m → m ◻ f) (λ m → m ◻ inv ae)
-  (λ m → ! (α m (inv ae) f) ∙ ! (ap (λ k → m ◻ k) (eta ae)) ∙ ! (ρ m))
-  λ m → ! (α m f (inv ae)) ∙ ! (ap (λ k → m ◻ k) (eps ae)) ∙ ! (ρ m)
+open Wkequiv-bc
 
 AdjEquiv : (ξB : BicatStr j B₀) (a b : B₀) → Type (lmax i j)
 AdjEquiv ξB a b = Σ (hom {{ξB}} a b) (λ f → Adjequiv {{ξB}} f)
 
+WkEquiv-bc : (ξB : BicatStr j B₀) (a b : B₀) → Type (lmax i j)
+WkEquiv-bc ξB a b = Σ (hom {{ξB}} a b) (λ f → Wkequiv-bc {{ξB}} f)
+
+-- some basic operations on equivalences
+
 module _ {{ξB : BicatStr j B₀}} where
 
-  infix 50 _AdjEqv-∘_
-  _AdjEqv-∘_ : {a b c : B₀} → AdjEquiv ξB b c → AdjEquiv ξB a b → AdjEquiv ξB a c
-  fst (g , aeg AdjEqv-∘ f , aef) = g ◻ f
-  inv (snd (g , aeg AdjEqv-∘ f , aef)) = inv aef ◻ inv aeg
-  eta (snd (g , aeg AdjEqv-∘ f , aef)) =
+  adjeqv-frg : {a b : B₀} → AdjEquiv ξB a b → WkEquiv-bc ξB a b
+  fst (adjeqv-frg (f , ae)) = f
+  snd (adjeqv-frg (f , ae)) = Wk-eqv (inv ae) (eta ae) (eps ae)
+
+  -- every weak equivalence can be promoted to an adjoint one
+  wkeqv-bc-promote : {a b : B₀} → WkEquiv-bc ξB a b → AdjEquiv ξB a b
+  fst (wkeqv-bc-promote (f , we)) = f
+  inv (snd (wkeqv-bc-promote (f , we))) = inv we
+  eta (snd (wkeqv-bc-promote (f , we))) = eta we
+  eps (snd (wkeqv-bc-promote (f , we))) =
+    eps we ∙
+    ap (λ m → f ◻ m) (lamb (inv we)) ∙
+    ap (λ m → f ◻ m ◻ inv we) (eta we) ∙
+    ! (ap (λ m → f ◻ m) (α (inv we) f (inv we))) ∙
+    α f (inv we) (f ◻ inv we) ∙
+    ! (ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ f ◻ inv we) (eps we)) ∙
+    ! (lamb (f ◻ inv we))
+  coher-map (snd (wkeqv-bc-promote (f , we))) = =ₛ-out $
+    ρ f ◃∙
+    ap (λ m → f ◻ m) (eta we) ◃∙
+    α f (inv we) f ◃∎
+      =ₛ⟨ {!!} ⟩
+    lamb f ◃∙
+    ap (λ m → m ◻ f) (eps we) ◃∙
+    ap (λ m → m ◻ f) (ap (λ m → f ◻ m) (lamb (inv we))) ◃∙
+    ! (α f (id₁ _ ◻ inv we) f) ◃∙
+    ! (ap (λ m → f ◻ m) (α (id₁ _) (inv we) f)) ◃∙
+    ! (ap (λ m → f ◻ m) (lamb (⟦ ξB ⟧ inv we ◻ f))) ◃∙
+    (ap (λ m → f ◻ m)
+      (ρ (inv we ◻ f) ∙
+      ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ inv we ◻ f ◻ m) (eta we) ∙
+      α (inv we ◻ f) (inv we) f) ∙
+    α f (⟦ ξB ⟧ ⟦ ξB ⟧ inv we ◻ f ◻ inv we) f) ◃∙
+    ap (λ m → m ◻ f) (! (ap (λ m → f ◻ m) (α (inv we) f (inv we)))) ◃∙
+    ap (λ m → m ◻ f) (α f (inv we) (⟦ ξB ⟧ f ◻ inv we)) ◃∙
+    (! (ap (λ k → ⟦ ξB ⟧ ⟦ ξB ⟧ f ◻ inv we ◻ k) (ρ f ∙ ap (λ m → f ◻ m) (eta we)) ∙
+    ap (λ k → ⟦ ξB ⟧ ⟦ ξB ⟧ f ◻ inv we ◻ k) (α f (inv we) f) ∙
+    α (f ◻ inv we) (f ◻ inv we) f)) ◃∙
+    ! (ap (λ m → m ◻ f) (eps we)) ◃∙
+    (ap (λ k → id₁ _ ◻ k) (ρ f ∙ ap (λ m → f ◻ m) (eta we)) ∙
+    ap (λ k → id₁ _ ◻ k) (α f (inv we) f) ∙
+    α (id₁ _) (f ◻ inv we) f) ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ⟨ 9 & 3 & !ₛ (apCommSq◃!
+        (λ m → ap (λ k → m ◻ k) (ρ f ∙ ap (λ k → f ◻ k) (eta we)) ∙ ap (λ k → m ◻ k) (α f (inv we) f) ∙ α m (f ◻ inv we) f)
+        (eps we)) ⟩
+    lamb f ◃∙
+    ap (λ m → m ◻ f) (eps we) ◃∙
+    ap (λ m → m ◻ f) (ap (λ m → f ◻ m) (lamb (inv we))) ◃∙
+    ! (α f (id₁ _ ◻ inv we) f) ◃∙
+    ! (ap (λ m → f ◻ m) (α (id₁ _) (inv we) f)) ◃∙
+    ! (ap (λ m → f ◻ m) (lamb (⟦ ξB ⟧ inv we ◻ f))) ◃∙
+    (ap (λ m → f ◻ m)
+      (ρ (inv we ◻ f) ∙
+      ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ inv we ◻ f ◻ m) (eta we) ∙
+      α (inv we ◻ f) (inv we) f) ∙
+    α f (⟦ ξB ⟧ ⟦ ξB ⟧ inv we ◻ f ◻ inv we) f) ◃∙
+    ap (λ m → m ◻ f) (! (ap (λ m → f ◻ m) (α (inv we) f (inv we)))) ◃∙
+    ap (λ m → m ◻ f) (α f (inv we) (⟦ ξB ⟧ f ◻ inv we)) ◃∙
+    ! (ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ f ◻ inv we ◻ f) (eps we)) ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ⟨ 5 & 1 & {!!} ⟩
+    lamb f ◃∙
+    ap (λ m → m ◻ f) (eps we) ◃∙
+    ap (λ m → m ◻ f) (ap (λ m → f ◻ m) (lamb (inv we))) ◃∙
+    ! (α f (id₁ _ ◻ inv we) f) ◃∙
+    ! (ap (λ m → f ◻ m) (α (id₁ _) (inv we) f)) ◃∙
+    ! (ap (λ m → f ◻ m) (ap (λ m → id₁ _ ◻ m) (eta we))) ◃∙
+    ! (ap (λ m → f ◻ m) (lamb (id₁ _))) ◃∙
+    ap (λ m → f ◻ m) (eta we) ◃∙
+    (ap (λ m → f ◻ m)
+      (ρ (inv we ◻ f) ∙
+      ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ inv we ◻ f ◻ m) (eta we) ∙
+      α (inv we ◻ f) (inv we) f) ∙
+    α f (⟦ ξB ⟧ ⟦ ξB ⟧ inv we ◻ f ◻ inv we) f) ◃∙
+    ap (λ m → m ◻ f) (! (ap (λ m → f ◻ m) (α (inv we) f (inv we)))) ◃∙
+    ap (λ m → m ◻ f) (α f (inv we) (⟦ ξB ⟧ f ◻ inv we)) ◃∙
+    ! (ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ f ◻ inv we ◻ f) (eps we)) ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ₁⟨ 6 & 1 & {!!} ⟩
+    lamb f ◃∙
+    ap (λ m → m ◻ f) (eps we) ◃∙
+    ap (λ m → m ◻ f) (ap (λ m → f ◻ m) (lamb (inv we))) ◃∙
+    ! (α f (id₁ _ ◻ inv we) f) ◃∙
+    ! (ap (λ m → f ◻ m) (α (id₁ _) (inv we) f)) ◃∙
+    ! (ap (λ m → f ◻ m) (ap (λ m → id₁ _ ◻ m) (eta we))) ◃∙
+    ! (ap (λ m → f ◻ m) (ρ (id₁ _))) ◃∙
+    ap (λ m → f ◻ m) (eta we) ◃∙
+    (ap (λ m → f ◻ m)
+      (ρ (inv we ◻ f) ∙
+      ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ inv we ◻ f ◻ m) (eta we) ∙
+      α (inv we ◻ f) (inv we) f) ∙
+    α f (⟦ ξB ⟧ ⟦ ξB ⟧ inv we ◻ f ◻ inv we) f) ◃∙
+    ap (λ m → m ◻ f) (! (ap (λ m → f ◻ m) (α (inv we) f (inv we)))) ◃∙
+    ap (λ m → m ◻ f) (α f (inv we) (⟦ ξB ⟧ f ◻ inv we)) ◃∙
+    ! (ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ f ◻ inv we ◻ f) (eps we)) ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ⟨ 3 & 4 & {!!} ⟩ 
+    lamb f ◃∙
+    ap (λ m → m ◻ f) (eps we) ◃∙
+    ap (λ m → m ◻ f) (ap (λ m → f ◻ m) (lamb (inv we))) ◃∙
+    (! (ap (λ m → f ◻ m) (ρ (id₁ _) ∙ ap (λ m → id₁ _ ◻ m) (eta we) ∙ α (id₁ _) (inv we) f) ∙
+    α f (id₁ _ ◻ inv we) f)) ◃∙
+    ap (λ m → f ◻ m) (eta we) ◃∙
+    (ap (λ m → f ◻ m)
+      (ρ (inv we ◻ f) ∙
+      ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ inv we ◻ f ◻ m) (eta we) ∙
+      α (inv we ◻ f) (inv we) f) ∙
+    α f (⟦ ξB ⟧ ⟦ ξB ⟧ inv we ◻ f ◻ inv we) f) ◃∙
+    ap (λ m → m ◻ f) (! (ap (λ m → f ◻ m) (α (inv we) f (inv we)))) ◃∙
+    ap (λ m → m ◻ f) (α f (inv we) (⟦ ξB ⟧ f ◻ inv we)) ◃∙
+    ! (ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ f ◻ inv we ◻ f) (eps we)) ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ⟨ 3 & 3 &
+        !ₛ (apCommSq◃ (λ m → ap (λ k → f ◻ k) (ρ m ∙ ap (λ k → m ◻ k) (eta we) ∙ α m (inv we) f) ∙ α f (m ◻ inv we) f) (eta we)) ⟩
+    lamb f ◃∙
+    ap (λ m → m ◻ f) (eps we) ◃∙
+    ap (λ m → m ◻ f) (ap (λ m → f ◻ m) (lamb (inv we))) ◃∙
+    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ f ◻ ⟦ ξB ⟧ m ◻ inv we ◻ f) (eta we) ◃∙
+    ap (λ m → m ◻ f) (! (ap (λ m → f ◻ m) (α (inv we) f (inv we)))) ◃∙
+    ap (λ m → m ◻ f) (α f (inv we) (⟦ ξB ⟧ f ◻ inv we)) ◃∙
+    ! (ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ f ◻ inv we ◻ f) (eps we)) ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ₁⟨ 3 & 1 & ap-∘ (λ m → m ◻ f) (λ m → ⟦ ξB ⟧ f ◻ ⟦ ξB ⟧ m ◻ inv we) (eta we) ⟩
+    lamb f ◃∙
+    ap (λ m → m ◻ f) (eps we) ◃∙
+    ap (λ m → m ◻ f) (ap (λ m → f ◻ m) (lamb (inv we))) ◃∙
+    ap (λ m → m ◻ f) (ap (λ m → ⟦ ξB ⟧ f ◻ ⟦ ξB ⟧ m ◻ inv we) (eta we)) ◃∙
+    ap (λ m → m ◻ f) (! (ap (λ m → f ◻ m) (α (inv we) f (inv we)))) ◃∙
+    ap (λ m → m ◻ f) (α f (inv we) (⟦ ξB ⟧ f ◻ inv we)) ◃∙
+    ! (ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ f ◻ inv we ◻ f) (eps we)) ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ₁⟨ 6 & 1 & {!!} ⟩ 
+    lamb f ◃∙
+    ap (λ m → m ◻ f) (eps we) ◃∙
+    ap (λ m → m ◻ f) (ap (λ m → f ◻ m) (lamb (inv we))) ◃∙
+    ap (λ m → m ◻ f) (ap (λ m → ⟦ ξB ⟧ f ◻ ⟦ ξB ⟧ m ◻ inv we) (eta we)) ◃∙
+    ap (λ m → m ◻ f) (! (ap (λ m → f ◻ m) (α (inv we) f (inv we)))) ◃∙
+    ap (λ m → m ◻ f) (α f (inv we) (⟦ ξB ⟧ f ◻ inv we)) ◃∙
+    ap (λ m → m ◻ f) (! (ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ f ◻ inv we) (eps we))) ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ⟨ 1 & 7 & !ₛ (ap-seq-∙ (λ m → m ◻ f)
+        (eps we ◃∙
+        ap (λ m → f ◻ m) (lamb (inv we)) ◃∙
+        ap (λ m → ⟦ ξB ⟧ f ◻ ⟦ ξB ⟧ m ◻ inv we) (eta we) ◃∙
+        ! (ap (λ m → f ◻ m) (α (inv we) f (inv we))) ◃∙
+        α f (inv we) (⟦ ξB ⟧ f ◻ inv we) ◃∙
+        ! (ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ f ◻ inv we) (eps we)) ◃∙
+        ! (lamb (f ◻ inv we)) ◃∎)) ⟩
+    lamb f ◃∙
+    ap (λ m → m ◻ f)
+      (eps we ∙
+      ap (λ m → f ◻ m) (lamb (inv we)) ∙
+      ap (λ m → ⟦ ξB ⟧ f ◻ ⟦ ξB ⟧ m ◻ inv we) (eta we) ∙
+      ! (ap (λ m → f ◻ m) (α (inv we) f (inv we))) ∙
+      α f (inv we) (⟦ ξB ⟧ f ◻ inv we) ∙
+      ! (ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ f ◻ inv we) (eps we)) ∙
+      ! (lamb (f ◻ inv we))) ◃∎ ∎ₛ
+  coher-inv (snd (wkeqv-bc-promote (f , we))) = cohmap-to-cohinv
+    (Wk-eqv (inv we) (eta we) (eps (snd (wkeqv-bc-promote (f , we)))))
+    (coher-map (snd (wkeqv-bc-promote (f , we))))
+
+  Adjequiv-whisk-r-≃ : {a b c : B₀} {f : hom a b} → Adjequiv f → (hom b c) ≃ (hom a c) 
+  Adjequiv-whisk-r-≃ {f = f} ae = equiv (λ m → m ◻ f) (λ m → m ◻ inv ae)
+    (λ m → ! (α m (inv ae) f) ∙ ! (ap (λ k → m ◻ k) (eta ae)) ∙ ! (ρ m))
+    λ m → ! (α m f (inv ae)) ∙ ! (ap (λ k → m ◻ k) (eps ae)) ∙ ! (ρ m)
+
+  infix 50 _WkEqv-bc-∘_
+  _WkEqv-bc-∘_ : {a b c : B₀} → WkEquiv-bc ξB b c → WkEquiv-bc ξB a b → WkEquiv-bc ξB a c
+  fst (g , aeg WkEqv-bc-∘ f , aef) = g ◻ f
+  inv (snd (g , aeg WkEqv-bc-∘ f , aef)) = inv aef ◻ inv aeg
+  eta (snd (g , aeg WkEqv-bc-∘ f , aef)) =
     eta aef ∙
     ap (λ m → m ◻ f) (ρ (inv aef)) ∙
     ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ inv aef ◻ m ◻ f) (eta aeg) ∙
     ap (λ m → m ◻ f) (α (inv aef) (inv aeg) g) ∙
     ! (α (inv aef ◻ inv aeg) g f) 
-  eps (snd (g , aeg AdjEqv-∘ f , aef)) = 
+  eps (snd (g , aeg WkEqv-bc-∘ f , aef)) = 
     eps aeg ∙
     ap (λ m → g ◻ m) (lamb (inv aeg)) ∙
     ap (λ m → ⟦ ξB ⟧ g ◻ ⟦ ξB ⟧ m ◻ inv aeg) (eps aef) ∙
     ! (ap (λ m → g ◻ m) (α f (inv aef) (inv aeg))) ∙
     α g f (inv aef ◻ inv aeg)
-  coher-map (snd (g , aeg AdjEqv-∘ f , aef)) = =ₛ-out $
-    ρ (g ◻ f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m)
-      (eta aef ∙
-      ap (λ m → m ◻ f) (ρ (inv aef)) ∙
-      ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ inv aef ◻ m ◻ f) (eta aeg) ∙
-      ap (λ m → m ◻ f) (α (inv aef) (inv aeg) g) ∙
-      ! (α (inv aef ◻ inv aeg) g f)) ◃∙
-    α (g ◻ f) (inv aef ◻ inv aeg) (g ◻ f) ◃∎
-      =ₛ⟨ 1 & 1 & ap-seq-∙ (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m)
-        (eta aef ◃∙
-        ap (λ m → m ◻ f) (ρ (inv aef)) ◃∙
-        ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ inv aef ◻ m ◻ f) (eta aeg) ◃∙
-        ap (λ m → m ◻ f) (α (inv aef) (inv aeg) g) ◃∙
-        ! (α (inv aef ◻ inv aeg) g f) ◃∎) ⟩
-    ρ (g ◻ f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (eta aef) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (ap (λ m → m ◻ f) (ρ (inv aef))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ inv aef ◻ m ◻ f) (eta aeg)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (ap (λ m → m ◻ f) (α (inv aef) (inv aeg) g)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (! (α (inv aef ◻ inv aeg) g f)) ◃∙
-    α (g ◻ f) (inv aef ◻ inv aeg) (g ◻ f) ◃∎
-      =ₛ⟨ 1 & 1 & apCommSq◃ (λ m → α g f m) (eta aef) ⟩
-    ρ (g ◻ f) ◃∙
-    ! (α g f (id₁ _)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ g ◻ ⟦ ξB ⟧ f ◻ m) (eta aef) ◃∙
-    α g f (inv aef ◻ f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (ap (λ m → m ◻ f) (ρ (inv aef))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ inv aef ◻ m ◻ f) (eta aeg)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (ap (λ m → m ◻ f) (α (inv aef) (inv aeg) g)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (! (α (inv aef ◻ inv aeg) g f)) ◃∙
-    α (g ◻ f) (inv aef ◻ inv aeg) (g ◻ f) ◃∎
-      =ₛ₁⟨ 2 & 1 & ap-∘ (λ m → g ◻ m) (λ m → f ◻ m) (eta aef) ⟩
-    ρ (g ◻ f) ◃∙
-    ! (α g f (id₁ _)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ g ◻ m) (ap (λ m → ⟦ ξB ⟧ f ◻ m) (eta aef)) ◃∙
-    α g f (inv aef ◻ f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (ap (λ m → m ◻ f) (ρ (inv aef))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ inv aef ◻ m ◻ f) (eta aeg)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (ap (λ m → m ◻ f) (α (inv aef) (inv aeg) g)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (! (α (inv aef ◻ inv aeg) g f)) ◃∙
-    α (g ◻ f) (inv aef ◻ inv aeg) (g ◻ f) ◃∎
-      =ₛ⟨ 2 & 1 & ap-seq-=ₛ (λ m → ⟦ ξB ⟧ g ◻ m) (coher-map-rot aef) ⟩
-    ρ (g ◻ f) ◃∙
-    ! (α g f (id₁ _)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ g ◻ m) (! (ρ f)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ g ◻ m) (lamb f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ g ◻ m) (ap (λ m → m ◻ f) (eps aef)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ g ◻ m) (! (α f (inv aef) f)) ◃∙
-    α g f (inv aef ◻ f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (ap (λ m → m ◻ f) (ρ (inv aef))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ inv aef ◻ m ◻ f) (eta aeg)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (ap (λ m → m ◻ f) (α (inv aef) (inv aeg) g)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (! (α (inv aef ◻ inv aeg) g f)) ◃∙
-    α (g ◻ f) (inv aef ◻ inv aeg) (g ◻ f) ◃∎
-      =ₛ₁⟨ 8 & 1 & ∘-ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ inv aef ◻ m ◻ f) (eta aeg) ⟩
-    ρ (g ◻ f) ◃∙
-    ! (α g f (id₁ _)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ g ◻ m) (! (ρ f)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ g ◻ m) (lamb f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ g ◻ m) (ap (λ m → m ◻ f) (eps aef)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ g ◻ m) (! (α f (inv aef) f)) ◃∙
-    α g f (inv aef ◻ f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (ap (λ m → m ◻ f) (ρ (inv aef))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ ⟦ ξB ⟧ ⟦ ξB ⟧ inv aef ◻ m ◻ f) (eta aeg) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (ap (λ m → m ◻ f) (α (inv aef) (inv aeg) g)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (! (α (inv aef ◻ inv aeg) g f)) ◃∙
-    α (g ◻ f) (inv aef ◻ inv aeg) (g ◻ f) ◃∎
-      =ₛ⟨ 8 & 1 & hmtpy-nat-∙◃
-        (λ m → α (g ◻ f) (inv aef ◻ m) f ∙
-        ap (λ k → k ◻ f)
-          (α (g ◻ f) (inv aef) m ∙ ! (ap (λ k → k ◻ m) (α g f (inv aef))) ∙
-          ! (ap (λ k → k ◻ m) (ρ g ∙ ap (λ k → g ◻ k) (eps aef)))))
-        (eta aeg) ⟩
-    ρ (g ◻ f) ◃∙
-    ! (α g f (id₁ _)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ g ◻ m) (! (ρ f)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ g ◻ m) (lamb f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ g ◻ m) (ap (λ m → m ◻ f) (eps aef)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ g ◻ m) (! (α f (inv aef) f)) ◃∙
-    α g f (inv aef ◻ f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (ap (λ m → m ◻ f) (ρ (inv aef))) ◃∙
-    (α (g ◻ f) (inv aef ◻ id₁ _) f ∙
-    ap (λ m → m ◻ f)
-      (α (g ◻ f) (inv aef) (id₁ _) ∙
-      ! (ap (λ m → m ◻ id₁ _) (α g f (inv aef))) ∙
-      ! (ap (λ m → m ◻ id₁ _) (ρ g ∙ ap (λ m → g ◻ m) (eps aef))))) ◃∙ 
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ m ◻ f) (eta aeg) ◃∙
-    ! (α (g ◻ f) (⟦ ξB ⟧ inv aef ◻ ⟦ ξB ⟧ inv aeg ◻ g) f ∙
-    ap (λ m → m ◻ f)
-      (α (g ◻ f) (inv aef) (inv aeg ◻ g) ∙
-      ! (ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ inv aeg ◻ g) (α g f (inv aef))) ∙
-      ! (ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ inv aeg ◻ g) (ρ g ∙ ap (λ m → g ◻ m) (eps aef))))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (ap (λ m → m ◻ f) (α (inv aef) (inv aeg) g)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ g ◻ f ◻ m) (! (α (inv aef ◻ inv aeg) g f)) ◃∙
-    α (g ◻ f) (inv aef ◻ inv aeg) (g ◻ f) ◃∎
-      =ₛ⟨ {!!} ⟩
-    lamb (g ◻ f) ◃∙
-    α (id₁ _) g f ◃∙
-    ap (λ m → m ◻ f) (! (lamb g)) ◃∙
-    ap (λ m → m ◻ f) (ρ g) ◃∙
-    ap (λ m → m ◻ f) (ap (λ m → g ◻ m) (eta aeg)) ◃∙
-    ap (λ m → m ◻ f) (α g (inv aeg) g) ◃∙
-    ! (α (g ◻ inv aeg) g f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (ap (λ m → g ◻ m) (lamb (inv aeg))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (ap (λ m → ⟦ ξB ⟧ g ◻ ⟦ ξB ⟧ m ◻ inv aeg) (eps aef)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (! (ap (λ m → g ◻ m) (α f (inv aef) (inv aeg)))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (α g f (inv aef ◻ inv aeg)) ◃∎
-      =ₛ⟨ 2 & 4 & ap-seq-=ₛ (λ m → m ◻ f) (coher-map-rot2 aeg) ⟩
-    lamb (g ◻ f) ◃∙
-    α (id₁ _) g f ◃∙
-    ap (λ m → m ◻ f) (ap (λ m → m ◻ g) (eps aeg)) ◃∙
-    ! (α (g ◻ inv aeg) g f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (ap (λ m → g ◻ m) (lamb (inv aeg))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (ap (λ m → ⟦ ξB ⟧ g ◻ ⟦ ξB ⟧ m ◻ inv aeg) (eps aef)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (! (ap (λ m → g ◻ m) (α f (inv aef) (inv aeg)))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (α g f (inv aef ◻ inv aeg)) ◃∎
-      =ₛ₁⟨ 2 & 1 & ∘-ap (λ m → m ◻ f) (λ m → m ◻ g) (eps aeg) ⟩
-    lamb (g ◻ f) ◃∙
-    α (id₁ _) g f ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ m ◻ g ◻ f) (eps aeg) ◃∙
-    ! (α (g ◻ inv aeg) g f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (ap (λ m → g ◻ m) (lamb (inv aeg))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (ap (λ m → ⟦ ξB ⟧ g ◻ ⟦ ξB ⟧ m ◻ inv aeg) (eps aef)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (! (ap (λ m → g ◻ m) (α f (inv aef) (inv aeg)))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (α g f (inv aef ◻ inv aeg)) ◃∎
-      =ₛ⟨ 1 & 3 & !ₛ (hmtpy-nat-∙◃ (λ m → α m g f) (eps aeg))  ⟩
-    lamb (g ◻ f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (eps aeg) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (ap (λ m → g ◻ m) (lamb (inv aeg))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (ap (λ m → ⟦ ξB ⟧ g ◻ ⟦ ξB ⟧ m ◻ inv aeg) (eps aef)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (! (ap (λ m → g ◻ m) (α f (inv aef) (inv aeg)))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (α g f (inv aef ◻ inv aeg)) ◃∎
-      =ₛ⟨ 1 & 5 & !ₛ (ap-seq-∙ (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f)
-        (eps aeg ◃∙
-        ap (λ m → g ◻ m) (lamb (inv aeg)) ◃∙
-        ap (λ m → ⟦ ξB ⟧ g ◻ ⟦ ξB ⟧ m ◻ inv aeg) (eps aef) ◃∙
-        ! (ap (λ m → g ◻ m) (α f (inv aef) (inv aeg))) ◃∙
-        α g f (inv aef ◻ inv aeg) ◃∎)) ⟩
-    lamb (g ◻ f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f)
-      (eps aeg ∙
-      ap (λ m → g ◻ m) (lamb (inv aeg)) ∙
-      ap (λ m → ⟦ ξB ⟧ g ◻ ⟦ ξB ⟧ m ◻ inv aeg) (eps aef) ∙
-      ! (ap (λ m → g ◻ m) (α f (inv aef) (inv aeg))) ∙
-      α g f (inv aef ◻ inv aeg)) ◃∎ ∎ₛ
 
-
-{-
-      =ₛ⟨ {!!} ⟩
-    lamb (g ◻ f) ◃∙
-    α (id₁ _) g f ◃∙
-    ap (λ m → m ◻ f) (! (lamb g)) ◃∙
-    ap (λ m → m ◻ f) (ρ g) ◃∙
-    ap (λ m → m ◻ f) (ap (λ m → g ◻ m) (eta aeg)) ◃∙
-    ap (λ m → m ◻ f) (α g (inv aeg) g) ◃∙
-    ! (α (g ◻ inv aeg) g f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (ap (λ m → g ◻ m) (lamb (inv aeg))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (ap (λ m → ⟦ ξB ⟧ g ◻ ⟦ ξB ⟧ m ◻ inv aeg) (eps aef)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (! (ap (λ m → g ◻ m) (α f (inv aef) (inv aeg)))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (α g f (inv aef ◻ inv aeg)) ◃∎
-      =ₛ⟨ 2 & 4 & ap-seq-=ₛ (λ m → m ◻ f) (coher-map-rot2 aeg) ⟩
-    lamb (g ◻ f) ◃∙
-    α (id₁ _) g f ◃∙
-    ap (λ m → m ◻ f) (ap (λ m → m ◻ g) (eps aeg)) ◃∙
-    ! (α (g ◻ inv aeg) g f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (ap (λ m → g ◻ m) (lamb (inv aeg))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (ap (λ m → ⟦ ξB ⟧ g ◻ ⟦ ξB ⟧ m ◻ inv aeg) (eps aef)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (! (ap (λ m → g ◻ m) (α f (inv aef) (inv aeg)))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (α g f (inv aef ◻ inv aeg)) ◃∎
-      =ₛ₁⟨ 2 & 1 & ∘-ap (λ m → m ◻ f) (λ m → m ◻ g) (eps aeg) ⟩
-    lamb (g ◻ f) ◃∙
-    α (id₁ _) g f ◃∙
-    ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ m ◻ g ◻ f) (eps aeg) ◃∙
-    ! (α (g ◻ inv aeg) g f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (ap (λ m → g ◻ m) (lamb (inv aeg))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (ap (λ m → ⟦ ξB ⟧ g ◻ ⟦ ξB ⟧ m ◻ inv aeg) (eps aef)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (! (ap (λ m → g ◻ m) (α f (inv aef) (inv aeg)))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (α g f (inv aef ◻ inv aeg)) ◃∎
-      =ₛ⟨ 1 & 3 & !ₛ (hmtpy-nat-∙◃ (λ m → α m g f) (eps aeg))  ⟩
-    lamb (g ◻ f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (eps aeg) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (ap (λ m → g ◻ m) (lamb (inv aeg))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (ap (λ m → ⟦ ξB ⟧ g ◻ ⟦ ξB ⟧ m ◻ inv aeg) (eps aef)) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (! (ap (λ m → g ◻ m) (α f (inv aef) (inv aeg)))) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f) (α g f (inv aef ◻ inv aeg)) ◃∎
-      =ₛ⟨ 1 & 5 & !ₛ (ap-seq-∙ (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f)
-        (eps aeg ◃∙
-        ap (λ m → g ◻ m) (lamb (inv aeg)) ◃∙
-        ap (λ m → ⟦ ξB ⟧ g ◻ ⟦ ξB ⟧ m ◻ inv aeg) (eps aef) ◃∙
-        ! (ap (λ m → g ◻ m) (α f (inv aef) (inv aeg))) ◃∙
-        α g f (inv aef ◻ inv aeg) ◃∎)) ⟩
-    lamb (g ◻ f) ◃∙
-    ap (λ m → ⟦ ξB ⟧ m ◻ ⟦ ξB ⟧ g ◻ f)
-      (eps aeg ∙
-      ap (λ m → g ◻ m) (lamb (inv aeg)) ∙
-      ap (λ m → ⟦ ξB ⟧ g ◻ ⟦ ξB ⟧ m ◻ inv aeg) (eps aef) ∙
-      ! (ap (λ m → g ◻ m) (α f (inv aef) (inv aeg))) ∙
-      α g f (inv aef ◻ inv aeg)) ◃∎ ∎ₛ -}
-  coher-inv (snd (g , aeg AdjEqv-∘ f , aef)) = {!!}
+  infix 50 _AdjEq-∘_
+  _AdjEq-∘_ : {a b c : B₀} → AdjEquiv ξB b c → AdjEquiv ξB a b → AdjEquiv ξB a c
+  g AdjEq-∘ f = wkeqv-bc-promote (adjeqv-frg g WkEqv-bc-∘ adjeqv-frg f)
   
   AdjEq-rev : {a b : B₀} → AdjEquiv ξB a b → AdjEquiv ξB b a
   fst (AdjEq-rev (f , ae)) = inv ae
@@ -290,6 +268,13 @@ module _ {{ξB : BicatStr j B₀}} where
 
   AdjEq-rev-≃ : {a b : B₀} → AdjEquiv ξB a b ≃ AdjEquiv ξB b a
   AdjEq-rev-≃ = equiv AdjEq-rev AdjEq-rev (λ _ → idp) λ _ → idp
+
+-- induced internal equivalence in underlying wild category
+aeqv-to-weqv : {{ξB : BicatStr j B₀}} {a b : B₀} {f : hom {{ξB}} a b} → Adjequiv f → equiv-wc (bc-to-wc (B₀ , ξB)) f
+fst (aeqv-to-weqv ae) = inv ae
+fst (snd (aeqv-to-weqv ae)) = eta ae
+snd (snd (aeqv-to-weqv ae)) = eps ae
+
 {-
 module ae-unique {{_ : BicatStr j B₀}} {a b : B₀} {f : hom a b} where
 
