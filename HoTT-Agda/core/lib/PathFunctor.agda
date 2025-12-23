@@ -869,6 +869,16 @@ module _ {i j k} {A : Type i} {B : Type j} {C : Type k} where
     → ap-comm f p q == ! (ap-comm (λ x y → f y x) q p)
   ap-comm-comm f p@idp q@idp = idp
 
+module _ {i} {A : Type i} {x y : A} where
+
+  ap-∙-id-unit-r : {q s : x == y} (r : s == q ∙ idp)
+    → ap (λ p → p ∙ idp) (r ∙ ∙-unit-r q) == ∙-unit-r s ∙ r
+  ap-∙-id-unit-r {q = idp} idp = idp
+
+  ∙-id-ind : ∀ {j} {p₁ p₂ : x == y} (P : p₁ ∙ idp == p₂ ∙ idp → Type j)
+    → Π (p₁ == p₂) (λ r → P (ap (λ p → p ∙ idp) r)) → (r : _) → P r 
+  ∙-id-ind {p₁ = idp} {p₂} P f ρ = transport P (ap-∙-id-unit-r ρ) (f (ρ ∙ ∙-unit-r p₂))
+
 module _ {i} {A : Type i} where
 
   transp-cst=idf : {a x y : A} (p : x == y) (q : a == x)
@@ -992,9 +1002,11 @@ module _ {i j} {A : Type i} {B : A → Type j} where
   transp-inv : {x y : A} (p : x == y) (v : B y) → transport B p (transport B (! p) v) == v
   transp-inv idp v = idp
 
-module _ {i j} {A : Type i} {x y : A} {B : Type j} {f g h : A → B} {F : (x : A) → f x == g x} {G : (x : A) → g x == h x} where
+module _ {i j} {A : Type i} {x y : A} {B : Type j} {f g h : A → B}
+  {F : (x : A) → f x == g x} {G : (x : A) → g x == h x} where
 
-  apd-concat-pres : (κ : x == y) → transport (λ x → f x == h x) κ (F x ∙ G x) == F y ∙ (transport (λ x → g x == h x) κ (G x))
+  apd-concat-pres : (κ : x == y) →
+    transport (λ x → f x == h x) κ (F x ∙ G x) == F y ∙ (transport (λ x → g x == h x) κ (G x))
   apd-concat-pres idp = idp
 
 module _ {i j k} {A : Type i} {B : Type j} {ψ : A → B} {F : B → Type k} {γ : (x : B) → F x} where
@@ -1060,13 +1072,3 @@ module _ {i₀ i₁ i₂ i₃ i₄ i₅ j} {A₀ : Type i₀} {A₁ : Type i₁}
     → (x₀ == y₀) → (x₁ == y₁) → (x₂ == y₂) → (x₃ == y₃) → (x₄ == y₄) → (x₅ == y₅)
     → f x₀ x₁ x₂ x₃ x₄ x₅ == f y₀ y₁ y₂ y₃ y₄ y₅
   ap6 idp idp idp idp idp idp = idp
-
-module _ {i} {A : Type i} {x y : A} where
-
-  ap-∙-id-unit-r : {q s : x == y} (r : s == q ∙ idp)
-    → ap (λ p → p ∙ idp) (r ∙ ∙-unit-r q) == ∙-unit-r s ∙ r
-  ap-∙-id-unit-r {q = idp} idp = idp
-
-  ∙-id-ind : ∀ {j} {p₁ p₂ : x == y} (P : p₁ ∙ idp == p₂ ∙ idp → Type j)
-    → Π (p₁ == p₂) (λ r → P (ap (λ p → p ∙ idp) r)) → (r : _) → P r 
-  ∙-id-ind {p₁ = idp} {p₂} P f ρ = transport P (ap-∙-id-unit-r ρ) (f (ρ ∙ ∙-unit-r p₂))

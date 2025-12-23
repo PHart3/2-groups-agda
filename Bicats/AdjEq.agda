@@ -91,11 +91,106 @@ module _ {{ξB : BicatStr j B₀}} where
     ρ f ◃∙
     ap (λ m → f ◻ m) (eta we) ◃∙
     α f (inv we) f ◃∎
-      =ₛ⟨ {!!} ⟩
+      =ₛ⟨ =ₛ-in (! (ap-idf-idp (ρ f ∙  ap (λ m → f ◻ m) (eta we) ∙ α f (inv we) f))) ⟩
+    ap (λ m → m) (ρ f ∙  ap (λ m → f ◻ m) (eta we) ∙ α f (inv we) f) ◃∙
+    idp ◃∎
+      =ₛ⟨ 1 & 1 & {!!} ⟩
+    ap (λ m → m) (ρ f ∙  ap (λ m → f ◻ m) (eta we) ∙ α f (inv we) f) ◃∙
+    lamb (⟦ ξB ⟧ ⟦ ξB ⟧ f ◻ inv we ◻ f) ◃∙
+    α (id₁ _) (f ◻ inv we) f ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ⟨ 0 & 2 & homotopy-naturality _ _ lamb (ρ f ∙ ap (λ m → f ◻ m) (eta we) ∙ α f (inv we) f) ⟩
+    lamb f ◃∙
+    ap (λ m → id₁ _ ◻ m) (ρ f ∙ ap (λ m → f ◻ m) (eta we) ∙ α f (inv we) f) ◃∙
+    α (id₁ _) (f ◻ inv we) f ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ⟨ 0 & 1 & =ₛ-in (! (∙-unit-r (lamb f))) ⟩
+    lamb f ◃∙
+    idp ◃∙
+    ap (λ m → id₁ _ ◻ m) (ρ f ∙ ap (λ m → f ◻ m) (eta we) ∙ α f (inv we) f) ◃∙
+    α (id₁ _) (f ◻ inv we) f ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ⟨ 1 & 6 & {!!} ⟩
     lamb f ◃∙
     ap (λ m → m ◻ f) (eps we) ◃∙
-    {!!} ◃∙
-    {!!} ◃∙
+    ! (α f (inv we) f) ◃∙
+    idp ◃∙
+    idp ◃∙
+    α f (inv we) f ◃∙
+    ! (ap (λ m → m ◻ f) (eps we)) ◃∙
+    ap (λ m → id₁ _ ◻ m) (ρ f ∙ ap (λ m → f ◻ m) (eta we) ∙ α f (inv we) f) ◃∙
+    α (id₁ _) (f ◻ inv we) f ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ⟨ 4 & 1 & {!!} ⟩
+    lamb f ◃∙
+    ap (λ m → m ◻ f) (eps we) ◃∙
+    ! (α f (inv we) f) ◃∙
+    idp ◃∙
+    ap (λ m → f ◻ m)
+      (ρ (inv we ◻ f) ∙ ! (α (inv we) f (id₁ _)) ∙ ! (ap (λ m → inv we ◻ m) (ρ f))) ◃∙
+    α f (inv we) f ◃∙
+    ! (ap (λ m → m ◻ f) (eps we)) ◃∙
+    ap (λ m → id₁ _ ◻ m) (ρ f ∙ ap (λ m → f ◻ m) (eta we) ∙ α f (inv we) f) ◃∙
+    α (id₁ _) (f ◻ inv we) f ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ⟨ 3 & 1 & {!!} ⟩
+    lamb f ◃∙
+    ap (λ m → m ◻ f) (eps we) ◃∙
+    ! (α f (inv we) f) ◃∙
+    idp ◃∙
+    ap (λ m → f ◻ m) (ρ (inv we ◻ f)) ◃∙
+    ! (ap (λ m → f ◻ m) (α (inv we) f (id₁ _))) ◃∙
+    ! (ap (λ m → f ◻ m) (ap (λ m → inv we ◻ m) (ρ f))) ◃∙
+    α f (inv we) f ◃∙
+    ! (ap (λ m → m ◻ f) (eps we)) ◃∙
+    ap (λ m → id₁ _ ◻ m) (ρ f ∙ ap (λ m → f ◻ m) (eta we) ∙ α f (inv we) f) ◃∙
+    α (id₁ _) (f ◻ inv we) f ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ₁⟨ 6 & 1 & ap ! (∘-ap (λ m → f ◻ m) (λ m → inv we ◻ m) (ρ f)) ⟩ 
+    lamb f ◃∙
+    ap (λ m → m ◻ f) (eps we) ◃∙
+    ! (α f (inv we) f) ◃∙
+    idp ◃∙
+    ap (λ m → f ◻ m) (ρ (inv we ◻ f)) ◃∙
+    ! (ap (λ m → f ◻ m) (α (inv we) f (id₁ _))) ◃∙
+    ! (ap (λ m → ⟦ ξB ⟧ f ◻ ⟦ ξB ⟧ inv we ◻ m) (ρ f)) ◃∙
+    α f (inv we) f ◃∙
+    ! (ap (λ m → m ◻ f) (eps we)) ◃∙
+    ap (λ m → id₁ _ ◻ m) (ρ f ∙ ap (λ m → f ◻ m) (eta we) ∙ α f (inv we) f) ◃∙
+    α (id₁ _) (f ◻ inv we) f ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ⟨ 6 & 2 & !ₛ (homotopy-naturality-!ap (λ m → α f (inv we) m) (ρ f)) ⟩
+    lamb f ◃∙
+    ap (λ m → m ◻ f) (eps we) ◃∙
+    ! (α f (inv we) f) ◃∙
+    idp ◃∙
+    ap (λ m → f ◻ m) (ρ (inv we ◻ f)) ◃∙
+    ! (ap (λ m → f ◻ m) (α (inv we) f (id₁ _))) ◃∙
+    α f (inv we) (f ◻ id₁ _) ◃∙
+    ! (ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ f ◻ inv we ◻ m) (ρ f)) ◃∙
+    ! (ap (λ m → m ◻ f) (eps we)) ◃∙
+    ap (λ m → id₁ _ ◻ m) (ρ f ∙ ap (λ m → f ◻ m) (eta we) ∙ α f (inv we) f) ◃∙
+    α (id₁ _) (f ◻ inv we) f ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ⟨ 3 & 1 & {!!} ⟩
+    lamb f ◃∙
+    ap (λ m → m ◻ f) (eps we) ◃∙
+    ! (α f (inv we) f) ◃∙
+    ap (λ m → f ◻ m)
+      (ap (λ m → m ◻ f) (lamb (inv we)) ∙ ! (α (id₁ _) (inv we) f) ∙ ! (lamb (⟦ ξB ⟧ inv we ◻ f))) ◃∙
+    ap (λ m → f ◻ m) (ρ (inv we ◻ f)) ◃∙
+    ! (ap (λ m → f ◻ m) (α (inv we) f (id₁ _))) ◃∙
+    α f (inv we) (f ◻ id₁ _) ◃∙
+    ! (ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ f ◻ inv we ◻ m) (ρ f)) ◃∙
+    ! (ap (λ m → m ◻ f) (eps we)) ◃∙
+    ap (λ m → id₁ _ ◻ m) (ρ f ∙ ap (λ m → f ◻ m) (eta we) ∙ α f (inv we) f) ◃∙
+    α (id₁ _) (f ◻ inv we) f ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ⟨ 3 & 1 & {!!} ⟩
+    lamb f ◃∙
+    ap (λ m → m ◻ f) (eps we) ◃∙
+    ! (α f (inv we) f) ◃∙
+    ap (λ m → f ◻ m) (ap (λ m → m ◻ f) (lamb (inv we))) ◃∙
     ! (ap (λ m → f ◻ m) (α (id₁ _) (inv we) f)) ◃∙
     ! (ap (λ m → f ◻ m) (lamb (⟦ ξB ⟧ inv we ◻ f))) ◃∙
     ap (λ m → f ◻ m) (ρ (inv we ◻ f)) ◃∙
@@ -106,7 +201,22 @@ module _ {{ξB : BicatStr j B₀}} where
     ap (λ m → id₁ _ ◻ m) (ρ f ∙ ap (λ m → f ◻ m) (eta we) ∙ α f (inv we) f) ◃∙
     α (id₁ _) (f ◻ inv we) f ◃∙
     ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
-      =ₛ⟨ 2 & 2 & {!!} ⟩
+      =ₛ₁⟨ 3 & 1 & ∘-ap (λ m → f ◻ m) (λ m → m ◻ f) (lamb (inv we)) ⟩
+    lamb f ◃∙
+    ap (λ m → m ◻ f) (eps we) ◃∙
+    ! (α f (inv we) f) ◃∙
+    ap (λ m → ⟦ ξB ⟧ f ◻ ⟦ ξB ⟧ m ◻ f) (lamb (inv we)) ◃∙
+    ! (ap (λ m → f ◻ m) (α (id₁ _) (inv we) f)) ◃∙
+    ! (ap (λ m → f ◻ m) (lamb (⟦ ξB ⟧ inv we ◻ f))) ◃∙
+    ap (λ m → f ◻ m) (ρ (inv we ◻ f)) ◃∙
+    ! (ap (λ m → f ◻ m) (α (inv we) f (id₁ _))) ◃∙
+    α f (inv we) (f ◻ id₁ _) ◃∙
+    ! (ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ f ◻ inv we ◻ m) (ρ f)) ◃∙
+    ! (ap (λ m → m ◻ f) (eps we)) ◃∙
+    ap (λ m → id₁ _ ◻ m) (ρ f ∙ ap (λ m → f ◻ m) (eta we) ∙ α f (inv we) f) ◃∙
+    α (id₁ _) (f ◻ inv we) f ◃∙
+    ap (λ m → m ◻ f) (! (lamb (f ◻ inv we))) ◃∎
+      =ₛ⟨ 2 & 2 & homotopy-naturality-! (λ m → α f m f) (lamb (inv we)) ⟩
     lamb f ◃∙
     ap (λ m → m ◻ f) (eps we) ◃∙
     ap (λ m → ⟦ ξB ⟧ ⟦ ξB ⟧ f ◻ m ◻ f) (lamb (inv we)) ◃∙
