@@ -83,9 +83,17 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → ap f p ∙ ap f q ∙ ap f r == ap f (p ∙ q ∙ r)
   ∙∙-ap idp idp r = idp
 
+  ∙∙-ap◃ : {x y z w : A} (p : x == y) (q : y == z) (r : z == w)
+    → ap f p ◃∙ ap f q ◃∙ ap f r ◃∎ =ₛ ap f (p ∙ q ∙ r) ◃∎
+  ∙∙-ap◃ idp idp r = =ₛ-in idp
+
   ap-∙∙ : {x y z w : A} (p : x == y) (q : y == z) (r : z == w)
     → ap f (p ∙ q ∙ r) == ap f p ∙ ap f q ∙ ap f r
   ap-∙∙ idp idp r = idp
+
+  ap-∙∙◃ : {x y z w : A} (p : x == y) (q : y == z) (r : z == w)
+    → ap f (p ∙ q ∙ r) ◃∎ =ₛ ap f p ◃∙ ap f q ◃∙ ap f r ◃∎
+  ap-∙∙◃ idp idp r = =ₛ-in idp
 
   ap-!∙∙ : {x y z w : A} (p : y == x) (q : y == z) (r : z == w)
     → ap f (! p ∙ q ∙ r) == ! (ap f p) ∙ ap f q ∙ ap f r
@@ -95,27 +103,30 @@ module _ {i j} {A : Type i} {B : Type j} (f : A → B) where
     → ap f (! p ∙ q ∙ r) ◃∎ =ₛ ! (ap f p) ◃∙ ap f q ◃∙ ap f r ◃∎
   ap-!∙∙◃ idp idp r = =ₛ-in idp
 
-  module _ {ℓ} {C : Type ℓ} (k : C → A) where
+  ap-∙∙!◃ : {x y z w : A} (p : x == y) (q : y == z) (r : w == z)
+    →  ap f p ◃∙ ap f q ◃∙ ! (ap f r) ◃∎ =ₛ ap f (p ∙ q ∙ ! r) ◃∎
+  ap-∙∙!◃ idp idp idp = =ₛ-in idp
 
-    ap-∙!!ap◃ : {x y : A} {z w : C} (p : x == y) (q : k z == y) (r : w == z)
-      → ap f (p ∙ ! q ∙ ! (ap k r)) ◃∎ =ₛ ap f p ◃∙ ! (ap f q) ◃∙ ! (ap f (ap k r)) ◃∎
-    ap-∙!!ap◃ idp idp idp = =ₛ-in idp
+  ap-∙!!◃ : {x y z w : A} (p : x == y) (q : z == y) (r : w == z)
+    → ap f (p ∙ ! q ∙ ! r) ◃∎ =ₛ ap f p ◃∙ ! (ap f q) ◃∙ ! (ap f r) ◃∎
+  ap-∙!!◃ idp idp idp = =ₛ-in idp
 
-    ap-∙ap!!◃ : {x y : C} {z w : A} (p : x == y) (q : z == k y) (r : w == z)
-      → ap f (ap k p ∙ ! q ∙ ! r) ◃∎ =ₛ ap f (ap k p) ◃∙ ! (ap f q) ◃∙ ! (ap f r) ◃∎
-    ap-∙ap!!◃ idp idp idp = =ₛ-in idp
+  ap-∙2∙◃ : {a b c d : A} {e : B} (p₁ : a == c) (p₂ : c == d) (p₃ : d == b) (p₄ : f b == e)
+    → ap f p₁ ◃∙ ap f p₂ ◃∙ ap f p₃ ◃∙ p₄ ◃∎ =ₛ (ap f (p₁ ∙ p₂ ∙ p₃) ∙ p₄) ◃∎
+  ap-∙2∙◃ idp idp _ _ = =ₛ-in idp
 
-    ap-∙-ap-∙◃ : {c d : C} {e : B} {a b : A} (p₁ : a == k c) (p₂ : c == d) (p₃ : k d == b) (p₄ : f b == e)
-      → ap f p₁ ◃∙ ap f (ap k p₂) ◃∙ ap f p₃ ◃∙ p₄ ◃∎ =ₛ (ap f (p₁ ∙ ap k p₂ ∙ p₃) ∙ p₄) ◃∎
-    ap-∙-ap-∙◃ idp idp idp idp = =ₛ-in idp
+  !-ap-∙2∙◃ : {x y a b : A} {z : B} (p₁ : a == x) (p₂ : x == y) (p₃ : y == b) (p₄ : f b == z)
+    → ! p₄ ◃∙ ! (ap f p₃) ◃∙ ! (ap f p₂) ◃∙ ! (ap f p₁) ◃∎ =ₛ ! (ap f (p₁ ∙ p₂ ∙ p₃) ∙ p₄) ◃∎
+  !-ap-∙2∙◃ idp idp idp idp = =ₛ-in idp
 
-    !-ap-∙-ap-∙2◃ : {x y : C} {z : B} {a b : A} (p₁ : a == k x) (p₂ : x == y) (p₃ : k y == b) (p₄ : f b == z)
-      → ! p₄ ◃∙ ! (ap f p₃) ◃∙ ! (ap f (ap k p₂)) ◃∙ ! (ap f p₁) ◃∎ =ₛ ! (ap f (p₁ ∙ ap k p₂ ∙ p₃) ∙ p₄) ◃∎
-    !-ap-∙-ap-∙2◃ idp idp idp idp = =ₛ-in idp
+  ap-∙2-!2◃ : {x y z w u : A} (p₁ : x == y) (p₂ : y == z) (p₃ : w == z) (p₄ : u == w)
+    → ap f p₁ ◃∙ ap f p₂ ◃∙ ap f (! p₃) ◃∙ ! (ap f p₄) ◃∎ =ₛ ap f (p₁ ∙ p₂ ∙ ! p₃ ∙ ! p₄) ◃∎
+  ap-∙2-!2◃ idp idp idp idp = =ₛ-in idp
 
-    ap-!-∙2-ap◃ : {c d : C} {a b e : A} (p₁ : a == b) (p₂ : a == k c) (p₃ : c == d) (p₄ : k d == e)
-      → ap f (! p₁ ∙ p₂ ∙ ap k p₃ ∙ p₄) ◃∎ =ₛ ! (ap f p₁) ◃∙ ap f p₂ ◃∙ ap (f ∘ k) p₃ ◃∙ ap f p₄ ◃∎
-    ap-!-∙2-ap◃ idp idp idp idp = =ₛ-in idp
+  ap-!-∙2-ap◃ : ∀ {ℓ} {C : Type ℓ} (k : C → A) →
+    {c d : C} {a b e : A} (p₁ : a == b) (p₂ : a == k c) (p₃ : c == d) (p₄ : k d == e)
+    → ap f (! p₁ ∙ p₂ ∙ ap k p₃ ∙ p₄) ◃∎ =ₛ ! (ap f p₁) ◃∙ ap f p₂ ◃∙ ap (f ∘ k) p₃ ◃∙ ap f p₄ ◃∎
+  ap-!-∙2-ap◃ _ idp idp idp _ = =ₛ-in idp
 
   ap-∙∙!! : {x y z w v : A} (p : x == y) (q : y == z) (r : w == z) (s : v == w)
     → ap f (p ∙ q ∙ ! r ∙ ! s) ◃∎ =ₛ ap f p ◃∙ ap f q ◃∙ ! (ap f r) ◃∙ ! (ap f s) ◃∎ 
@@ -352,6 +363,9 @@ ap-idf idp = idp
 
 !-ap-idf-r : ∀ {i} {A : Type i} {u v : A} (p : u == v) → p ∙ ! (ap (λ v → v) p) == idp
 !-ap-idf-r idp = idp
+
+!-ap-idf-r◃ : ∀ {i} {A : Type i} {u v : A} (p : u == v) → p ◃∙ ! (ap (λ v → v) p) ◃∎ =ₛ []
+!-ap-idf-r◃ idp = =ₛ-in idp
 
 ap-idf-!-l : ∀ {i} {A : Type i} {u v : A} (p : u == v) → ! p ◃∙ ap (λ v → v) p ◃∎ =ₛ []
 ap-idf-!-l idp = =ₛ-in idp

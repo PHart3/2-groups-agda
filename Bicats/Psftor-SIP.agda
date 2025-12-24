@@ -8,7 +8,7 @@ open import lib.types.Paths
 open import lib.types.Sigma
 open import lib.types.Pi
 open import Bicategory
-open import AdjEq
+open import AdjEqv
 open import Pstransf
 open import Pstransf-id
 open import Univ-bc

@@ -11,8 +11,8 @@ open import Delooping
 open import LoopK-hom
 open import Delooping-equiv
 open import Ptd-bc
-open import AdjEq
-open import AdjEq-exmps
+open import AdjEqv
+open import AdjEqvv-exmps
 
 module KLoop-adjeq where
 

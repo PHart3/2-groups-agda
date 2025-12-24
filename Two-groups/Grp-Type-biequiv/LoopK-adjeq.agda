@@ -4,8 +4,8 @@ open import lib.Basics
 open import 2Grp
 open import Delooping-equiv
 open import 2Grp-bc
-open import AdjEq
-open import AdjEq-exmps
+open import AdjEqv
+open import AdjEqvv-exmps
 
 module LoopK-adjeq where
 

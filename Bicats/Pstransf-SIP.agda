@@ -118,7 +118,7 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂} {{ξB : Bic
   T₁ ≃-⇔ T₂ = InvMod (pstrans-str (fst T₁)) (pstrans-str (fst T₂))
 
   open import Univ-bc
-  open import AdjEq
+  open import AdjEqv
 
   ps-≃-InvMod-==-≃ : {T₁ T₂ : R psf-≃ S} → (T₁ == T₂) ≃ (T₁ ≃-⇔ T₂)
   ps-≃-InvMod-==-≃ {T₁} {T₂} = InvModc-==-≃ ∘e
