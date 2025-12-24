@@ -112,6 +112,22 @@ module _ (j : ULevel) where
         ! (ap (λ m → g ◻ m) (lamb f)) ◃∎
       tri-bc◃-rot4 {b = b} f g = pre-rotate'-in (tri-bc◃-rot3-pre f g)
 
+      tri-bc◃-rot5 : {a b c : B₀} (f : hom a b) (g : hom b c) →
+        ap (λ m → m ◻ f) (! (ρ g)) ◃∎
+          =ₛ
+        ! (α g (id₁ b) f) ◃∙
+        ap (λ m → g ◻ m) (! (lamb f)) ◃∎
+      tri-bc◃-rot5 {b = b} f g =
+        ap (λ m → m ◻ f) (! (ρ g)) ◃∎
+          =ₛ₁⟨ ap-! (λ m → m ◻ f) (ρ g) ⟩
+        ! (ap (λ m → m ◻ f) (ρ g)) ◃∎
+          =ₛ⟨ tri-bc◃-rot4 f g ⟩
+        ! (α g (id₁ b) f) ◃∙
+        ! (ap (λ m → g ◻ m) (lamb f)) ◃∎
+          =ₛ₁⟨ 1 & 1 & !-ap (λ m → g ◻ m) (lamb f) ⟩
+        ! (α g (id₁ b) f) ◃∙
+        ap (λ m → g ◻ m) (! (lamb f)) ◃∎ ∎ₛ
+
       pent-bc◃ : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e) →
         α i h (g ◻ f) ◃∙
         α (i ◻ h) g f ◃∎

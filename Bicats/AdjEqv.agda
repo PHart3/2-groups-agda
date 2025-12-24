@@ -31,6 +31,19 @@ record Adjequiv {{_ : BicatStr j B₀}} {a b : B₀} (f : hom a b) : Type (lmax 
 
   coher-map-rot2 : ! (lamb f) ◃∙ ρ f ◃∙ ap (λ m → f ◻ m) eta ◃∙ α f inv f ◃∎ =ₛ ap (λ m → m ◻ f) eps ◃∎
   coher-map-rot2 = pre-rotate'-in coher-map-◃
+  
+  coher-map-rot3 : ρ f ◃∙ ap (λ m → f ◻ m) eta ◃∙ α f inv f ◃∙ ! (ap (λ m → m ◻ f) eps) ◃∎ =ₛ lamb f ◃∎
+  coher-map-rot3 = post-rotate'-in coher-map-◃
+
+  coher-map-rot4 : ap (λ m → m ◻ f) eps ◃∙ ! (α f inv f) ◃∙ ap (λ m → f ◻ m) (! eta) ◃∙ ! (ρ f) ◃∎ =ₛ ! (lamb f) ◃∎
+  coher-map-rot4 =
+    ap (λ m → m ◻ f) eps ◃∙ ! (α f inv f) ◃∙ ap (λ m → f ◻ m) (! eta) ◃∙ ! (ρ f) ◃∎
+      =ₛ₁⟨ 0 & 1 & ! (!-! (ap (λ m → m ◻ f) eps)) ⟩
+    ! (! (ap (λ m → m ◻ f) eps)) ◃∙ ! (α f inv f) ◃∙ ap (λ m → f ◻ m) (! eta) ◃∙ ! (ρ f) ◃∎
+      =ₛ₁⟨ 2 & 1 & ap-! (λ m → f ◻ m) eta ⟩
+    ! (! (ap (λ m → m ◻ f) eps)) ◃∙ ! (α f inv f) ◃∙ ! (ap (λ m → f ◻ m) eta) ◃∙ ! (ρ f) ◃∎
+      =ₛ⟨ !-=ₛ coher-map-rot3 ⟩
+    ! (lamb f) ◃∎ ∎ₛ
 
   coher-inv-◃ : ρ inv ◃∙ ap (λ m → inv ◻ m) eps ◃∙ α inv f inv ◃∎ =ₛ lamb inv ◃∙ ap (λ m → m ◻ inv) eta ◃∎
   coher-inv-◃ = =ₛ-in coher-inv
@@ -43,6 +56,16 @@ record Adjequiv {{_ : BicatStr j B₀}} {a b : B₀} (f : hom a b) : Type (lmax 
 
   coher-inv-rot3 : ρ inv ◃∙ ap (λ m → inv ◻ m) eps ◃∙ α inv f inv ◃∙ ! (ap (λ m → m ◻ inv) eta) ◃∎ =ₛ lamb inv ◃∎
   coher-inv-rot3 = post-rotate'-in coher-inv-◃
+
+  coher-inv-rot4 : ap (λ m → m ◻ inv) eta ◃∙ ! (α inv f inv) ◃∙ ap (λ m → inv ◻ m) (! eps) ◃∙ ! (ρ inv) ◃∎ =ₛ ! (lamb inv) ◃∎
+  coher-inv-rot4 =
+    ap (λ m → m ◻ inv) eta ◃∙ ! (α inv f inv) ◃∙ ap (λ m → inv ◻ m) (! eps) ◃∙ ! (ρ inv) ◃∎
+      =ₛ₁⟨ 0 & 1 & ! (!-! (ap (λ m → m ◻ inv) eta)) ⟩
+    ! (! (ap (λ m → m ◻ inv) eta)) ◃∙ ! (α inv f inv) ◃∙ ap (λ m → inv ◻ m) (! eps) ◃∙ ! (ρ inv) ◃∎
+      =ₛ₁⟨ 2 & 1 & ap-! (λ m → inv ◻ m) eps ⟩
+    ! (! (ap (λ m → m ◻ inv) eta)) ◃∙ ! (α inv f inv) ◃∙ ! (ap (λ m → inv ◻ m) eps) ◃∙ ! (ρ inv) ◃∎
+      =ₛ⟨ !-=ₛ coher-inv-rot3 ⟩
+    ! (lamb inv) ◃∎ ∎ₛ
 
 open Adjequiv
 
