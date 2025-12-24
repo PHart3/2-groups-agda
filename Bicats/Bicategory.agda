@@ -195,6 +195,24 @@ module _ (j : ULevel) where
         ! (α (i ◻ h) g f) ◃∎
       pent-bc◃-rot6 f g h i = pre-rotate'-in (pent-bc◃-rot5 f g h i)
 
+      pent-bc◃-rot7 : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e) →
+        ! (ap (λ m → i ◻ m) (α h g f)) ◃∎
+          =ₛ
+        α i (h ◻ g) f ◃∙
+        ap (λ m → m ◻ f) (α i h g) ◃∙
+        ! (α (i ◻ h) g f) ◃∙
+        ! (α i h (g ◻ f)) ◃∎
+      pent-bc◃-rot7 f g h i = pre-rotate'-out (pent-bc◃-rot3 f g h i)
+
+      pent-bc◃-rot8 : {a b c d e : B₀} (f : hom a b) (g : hom b c) (h : hom c d) (i : hom d e) →
+        α (i ◻ h) g f ◃∙
+        ! (ap (λ m → m ◻ f) (α i h g)) ◃∎
+          =ₛ
+        ! (α i h (g ◻ f)) ◃∙
+        ap (λ m → i ◻ m) (α h g f) ◃∙
+        α i (h ◻ g) f ◃∎
+      pent-bc◃-rot8 f g h i = post-rotate'-out (pre-rotate-out (pent-bc◃-rot2 f g h i))
+
   Bicat : (i : ULevel) → Type (lmax (lsucc j) (lsucc i))
   Bicat i = Σ (Type i) BicatStr
 
