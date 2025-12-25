@@ -12,7 +12,7 @@ open import LoopK-hom
 open import Delooping-equiv
 open import Ptd-bc
 open import AdjEqv
-open import AdjEqvv-exmps
+open import AdjEqv-exmps
 
 module KLoop-adjeq where
 
@@ -24,6 +24,7 @@ module _ {i} {X : Ptd i} {{cX : is-connected 0 (de⊙ X)}} {{tX : has-level 2 (d
        (K₂-rec-hom {{Loop2Grp (pt X)}} (pt X) {φ = idf (pt X == pt X)} idf2G)
        (3-for-2-e _ (ΩK₂-hom (pt X) idf2G) loop-equiv (idf-is-equiv (pt X == pt X)))
 
+     -- the canonical map K₂ (Ω X) → X is an adjoint equivalence
      KLoop-adjeq-str : Adjequiv {a = _ , (K₂-is-conn (pt X == pt X) , K₂-is-2type (pt X == pt X))} $
        K₂-rec-hom {{Loop2Grp (pt X)}} (pt X) {φ = idf (pt X == pt X)} idf2G
      KLoop-adjeq-str =

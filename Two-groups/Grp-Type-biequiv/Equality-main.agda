@@ -1,7 +1,7 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
-open import AdjEqvv-exmps
+open import AdjEqv-exmps
 open import 2Grp-bc
 open import Ptd-bc
 open import Biadj-beqv
