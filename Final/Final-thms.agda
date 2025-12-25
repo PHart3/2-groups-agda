@@ -33,7 +33,7 @@ open import Biadj-biequiv-main public
 open import Equality-main public
 
 
-{- The following file (which takes several minutes) is independent of all of the above files and is included here
+{- The following file (which takes about five minutes) is independent of all of the above files and is included here
    just for completeness of our mathematical development. Comment out the following line to avoid checking it. -}
 -- the automorphism 2-group on an object of a bicategory 
 open import Automor2Grp public
