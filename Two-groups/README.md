@@ -35,6 +35,10 @@ pointed connected 2-types.
   a pseudofunctor from pointed connected 2-types to 2-groups along with
   associated proofs of coherence of these constructions. The object function
   of the LoopSpace pseudofunctor is defined in `Hmtpy2Grp.agda`.
+  
+  In addition, we put in this folder the automorphism 2-group on an object of a bicategory
+  (which specializes to a LoopSpace 2-group when the bicategory is that of 1-types in a 
+  given universe).
 
 - The `Grp-Type-biequiv/` folder contains the proof of our desired biadjoint biequivalence.
   The two arrows of the biequivalence are defined by the delooping and LoopSpace
