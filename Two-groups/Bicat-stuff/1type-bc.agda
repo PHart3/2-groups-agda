@@ -23,3 +23,7 @@ module _ (i : ULevel) where
   tri-bc 1type-bicat _ _ = idp
   pent-bc 1type-bicat _ _ _ _ = idp
   hom-trunc 1type-bicat {b = (_ , tY)} = Π-level-instance {{tY}} 
+
+instance
+  1type-bicat-instqance : ∀ {i} → BicatStr i (1 -Type i)
+  1type-bicat-instqance {i} = 1type-bicat i
