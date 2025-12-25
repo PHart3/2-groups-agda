@@ -47,9 +47,13 @@ module _ {i} {A : Type i} where
     → (p ∙' q) ∙ r == p ∙ (q ∙ r)
   ∙'∙-∙∙-assoc p idp r = idp
 
+  assoc-∙3 : {x₁ x₂ x₃ x₄ x₅ : A} (p₁ : x₁ == x₂) (p₂ : x₂ == x₃) (p₃ : x₃ == x₄) {p₄ : x₄ == x₅}
+    → p₁ ∙ p₂ ∙ p₃ ∙ p₄ == (p₁ ∙ p₂ ∙ p₃) ∙ p₄
+  assoc-∙3 idp idp p₃ = idp
+
   assoc-4-∙ : {x₁ x₂ x₃ x₄ x₅ x₆ : A} (p₁ : x₁ == x₂) (p₂ : x₂ == x₃) (p₃ : x₃ == x₄) (p₄ : x₄ == x₅) (p₅ : x₅ == x₆)
     → p₁ ∙ p₂ ∙ p₃ ∙ p₄ ∙ p₅ == (p₁ ∙ p₂ ∙ p₃) ∙ p₄ ∙ p₅
-  assoc-4-∙ idp idp p₃ p₄ p₅ = idp 
+  assoc-4-∙ idp idp p₃ p₄ p₅ = idp
 
   -- [∙-unit-l] and [∙'-unit-r] are definitional
 

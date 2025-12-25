@@ -331,6 +331,20 @@ module _ {i₀ i₁ j₀ j₁} {A₀ : Type i₀} {A₁ : Type i₁}
   → (pair= p q ∙ pair= p' r) == pair= (p ∙ p') (q ∙ᵈ r)
 Σ-∙ {p = idp} {p' = idp} q r = Σ-∙-aux q r
 
+Σ-∙3-aux : ∀ {i j} {A : Type i} {B : A → Type j} {x : A}
+  {u v w w' w'' : B x} (q : u == v) (r : v == w) (s : w == w') (s' : w' == w'')
+  → ap {B = Σ A B} (x ,_) q ∙ ap (x ,_) r ∙ ap (x ,_) s ∙ ap (x ,_) s' == ap (x ,_) (q ∙ r ∙ s ∙ s')
+Σ-∙3-aux idp idp idp _ = idp
+
+Σ-∙3 : ∀ {i j} {A : Type i} {B : A → Type j}
+  {x y z d e : A} {u : B x} {v : B y} {w : B z} {w' : B d} {w'' : B e}
+  (p : x == y) (q : u == v [ B ↓ p ])
+  (p' : y == z) (r : v == w [ B ↓ p' ])
+  (t : z == d) (s : w == w' [ B ↓ t ])
+  (t' : d == e) (s' : w' == w'' [ B ↓ t' ])
+  → (pair= p q ∙ pair= p' r ∙ pair= t s ∙ pair= t' s') == pair= (p ∙ p' ∙ t ∙ t') (q ∙ᵈ r ∙ᵈ s ∙ᵈ s')
+Σ-∙3 idp q idp r idp s idp s' = Σ-∙3-aux q r s s'
+
 -- Implementation of [!] on Σ
 Σ-! : ∀ {i j} {A : Type i} {B : A → Type j}
   {x y : A} {p : x == y}

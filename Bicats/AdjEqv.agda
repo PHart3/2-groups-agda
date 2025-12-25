@@ -9,12 +9,11 @@ open import Bicategory
 open import Bicat-coher
 open import Bicat-wild
 
-module AdjEq {i j} {B₀ : Type i} where
+module AdjEqv {i j} {B₀ : Type i} where
 
 open BicatStr {{...}}
 
 -- adjoint equivalence structure on a 1-cell of a bicategory
-
 record Adjequiv {{_ : BicatStr j B₀}} {a b : B₀} (f : hom a b) : Type (lmax i j) where
   constructor Adj-eqv
   field
@@ -30,40 +29,74 @@ record Adjequiv {{_ : BicatStr j B₀}} {a b : B₀} (f : hom a b) : Type (lmax 
   coher-map-rot : ap (λ m → f ◻ m) eta ◃∎ =ₛ ! (ρ f) ◃∙ lamb f ◃∙ ap (λ m → m ◻ f) eps ◃∙ ! (α f inv f) ◃∎
   coher-map-rot = pre-rotate-in (post-rotate-in coher-map-◃)
 
+  coher-map-rot2 : ! (lamb f) ◃∙ ρ f ◃∙ ap (λ m → f ◻ m) eta ◃∙ α f inv f ◃∎ =ₛ ap (λ m → m ◻ f) eps ◃∎
+  coher-map-rot2 = pre-rotate'-in coher-map-◃
+  
+  coher-map-rot3 : ρ f ◃∙ ap (λ m → f ◻ m) eta ◃∙ α f inv f ◃∙ ! (ap (λ m → m ◻ f) eps) ◃∎ =ₛ lamb f ◃∎
+  coher-map-rot3 = post-rotate'-in coher-map-◃
+
+  coher-map-rot4 : ap (λ m → m ◻ f) eps ◃∙ ! (α f inv f) ◃∙ ap (λ m → f ◻ m) (! eta) ◃∙ ! (ρ f) ◃∎ =ₛ ! (lamb f) ◃∎
+  coher-map-rot4 =
+    ap (λ m → m ◻ f) eps ◃∙ ! (α f inv f) ◃∙ ap (λ m → f ◻ m) (! eta) ◃∙ ! (ρ f) ◃∎
+      =ₛ₁⟨ 0 & 1 & ! (!-! (ap (λ m → m ◻ f) eps)) ⟩
+    ! (! (ap (λ m → m ◻ f) eps)) ◃∙ ! (α f inv f) ◃∙ ap (λ m → f ◻ m) (! eta) ◃∙ ! (ρ f) ◃∎
+      =ₛ₁⟨ 2 & 1 & ap-! (λ m → f ◻ m) eta ⟩
+    ! (! (ap (λ m → m ◻ f) eps)) ◃∙ ! (α f inv f) ◃∙ ! (ap (λ m → f ◻ m) eta) ◃∙ ! (ρ f) ◃∎
+      =ₛ⟨ !-=ₛ coher-map-rot3 ⟩
+    ! (lamb f) ◃∎ ∎ₛ
+
   coher-inv-◃ : ρ inv ◃∙ ap (λ m → inv ◻ m) eps ◃∙ α inv f inv ◃∎ =ₛ lamb inv ◃∙ ap (λ m → m ◻ inv) eta ◃∎
   coher-inv-◃ = =ₛ-in coher-inv
 
-  coher-inv-rot : ρ inv ◃∙ ap (λ m → inv ◻ m) eps ◃∙ α inv f inv ◃∙ ! (ap (λ m → m ◻ inv) eta) ◃∎ =ₛ lamb inv ◃∎
-  coher-inv-rot = post-rotate'-in coher-inv-◃
+  coher-inv-rot : ap (λ m → inv ◻ m) eps ◃∎ =ₛ ! (ρ inv) ◃∙ lamb inv ◃∙ ap (λ m → m ◻ inv) eta ◃∙ ! (α inv f inv) ◃∎
+  coher-inv-rot = pre-rotate-in (post-rotate-in coher-inv-◃)
+
+  coher-inv-rot2 : ! (lamb inv) ◃∙ ρ inv ◃∙ ap (λ m → inv ◻ m) eps ◃∙ α inv f inv ◃∎ =ₛ ap (λ m → m ◻ inv) eta ◃∎
+  coher-inv-rot2 = pre-rotate'-in coher-inv-◃
+
+  coher-inv-rot3 : ρ inv ◃∙ ap (λ m → inv ◻ m) eps ◃∙ α inv f inv ◃∙ ! (ap (λ m → m ◻ inv) eta) ◃∎ =ₛ lamb inv ◃∎
+  coher-inv-rot3 = post-rotate'-in coher-inv-◃
+
+  coher-inv-rot4 : ap (λ m → m ◻ inv) eta ◃∙ ! (α inv f inv) ◃∙ ap (λ m → inv ◻ m) (! eps) ◃∙ ! (ρ inv) ◃∎ =ₛ ! (lamb inv) ◃∎
+  coher-inv-rot4 =
+    ap (λ m → m ◻ inv) eta ◃∙ ! (α inv f inv) ◃∙ ap (λ m → inv ◻ m) (! eps) ◃∙ ! (ρ inv) ◃∎
+      =ₛ₁⟨ 0 & 1 & ! (!-! (ap (λ m → m ◻ inv) eta)) ⟩
+    ! (! (ap (λ m → m ◻ inv) eta)) ◃∙ ! (α inv f inv) ◃∙ ap (λ m → inv ◻ m) (! eps) ◃∙ ! (ρ inv) ◃∎
+      =ₛ₁⟨ 2 & 1 & ap-! (λ m → inv ◻ m) eps ⟩
+    ! (! (ap (λ m → m ◻ inv) eta)) ◃∙ ! (α inv f inv) ◃∙ ! (ap (λ m → inv ◻ m) eps) ◃∙ ! (ρ inv) ◃∎
+      =ₛ⟨ !-=ₛ coher-inv-rot3 ⟩
+    ! (lamb inv) ◃∎ ∎ₛ
 
 open Adjequiv
+
+AdjEquiv : (ξB : BicatStr j B₀) (a b : B₀) → Type (lmax i j)
+AdjEquiv ξB a b = Σ (hom {{ξB}} a b) (λ f → Adjequiv {{ξB}} f)
+
+-- some basic operations on equivalences
+
+module _ {{ξB : BicatStr j B₀}} where
+
+  Adjequiv-whisk-r-≃ : {a b c : B₀} {f : hom a b} → Adjequiv f → (hom b c) ≃ (hom a c) 
+  Adjequiv-whisk-r-≃ {f = f} ae = equiv (λ m → m ◻ f) (λ m → m ◻ inv ae)
+    (λ m → ! (α m (inv ae) f) ∙ ! (ap (λ k → m ◻ k) (eta ae)) ∙ ! (ρ m))
+    λ m → ! (α m f (inv ae)) ∙ ! (ap (λ k → m ◻ k) (eps ae)) ∙ ! (ρ m)
+  
+  AdjEqv-rev : {a b : B₀} → AdjEquiv ξB a b → AdjEquiv ξB b a
+  fst (AdjEqv-rev (f , ae)) = inv ae
+  inv (snd (AdjEqv-rev (f , ae))) = f
+  eta (snd (AdjEqv-rev (f , ae))) = eps ae
+  eps (snd (AdjEqv-rev (f , ae))) = eta ae
+  coher-map (snd (AdjEqv-rev (f , ae))) = coher-inv ae
+  coher-inv (snd (AdjEqv-rev (f , ae))) = coher-map ae
+
+  AdjEqv-rev-≃ : {a b : B₀} → AdjEquiv ξB a b ≃ AdjEquiv ξB b a
+  AdjEqv-rev-≃ = equiv AdjEqv-rev AdjEqv-rev (λ _ → idp) λ _ → idp
 
 -- induced internal equivalence in underlying wild category
 aeqv-to-weqv : {{ξB : BicatStr j B₀}} {a b : B₀} {f : hom {{ξB}} a b} → Adjequiv f → equiv-wc (bc-to-wc (B₀ , ξB)) f
 fst (aeqv-to-weqv ae) = inv ae
 fst (snd (aeqv-to-weqv ae)) = eta ae
 snd (snd (aeqv-to-weqv ae)) = eps ae
-
-Adjequiv-whisk-r-≃ : {{_ : BicatStr j B₀}} {a b c : B₀} {f : hom a b} → Adjequiv f → (hom b c) ≃ (hom a c) 
-Adjequiv-whisk-r-≃ {f = f} ae = equiv (λ m → m ◻ f) (λ m → m ◻ inv ae)
-  (λ m → ! (α m (inv ae) f) ∙ ! (ap (λ k → m ◻ k) (eta ae)) ∙ ! (ρ m))
-  λ m → ! (α m f (inv ae)) ∙ ! (ap (λ k → m ◻ k) (eps ae)) ∙ ! (ρ m)
-
-AdjEquiv : (ξB : BicatStr j B₀) (a b : B₀) → Type (lmax i j)
-AdjEquiv ξB a b = Σ (hom {{ξB}} a b) (λ f → Adjequiv {{ξB}} f)
-
-module _ {{ξB : BicatStr j B₀}} where
-
-  AdjEq-rev : {a b : B₀} → AdjEquiv ξB a b → AdjEquiv ξB b a
-  fst (AdjEq-rev (f , ae)) = inv ae
-  inv (snd (AdjEq-rev (f , ae))) = f
-  eta (snd (AdjEq-rev (f , ae))) = eps ae
-  eps (snd (AdjEq-rev (f , ae))) = eta ae
-  coher-map (snd (AdjEq-rev (f , ae))) = coher-inv ae
-  coher-inv (snd (AdjEq-rev (f , ae))) = coher-map ae
-
-  AdjEq-rev-≃ : {a b : B₀} → AdjEquiv ξB a b ≃ AdjEquiv ξB b a
-  AdjEq-rev-≃ = equiv AdjEq-rev AdjEq-rev (λ _ → idp) λ _ → idp
 
 module ae-unique {{_ : BicatStr j B₀}} {a b : B₀} {f : hom a b} where
 
@@ -317,28 +350,18 @@ module ae-unique {{_ : BicatStr j B₀}} {a b : B₀} {f : hom a b} where
       ! (ap (λ m → m) (eps α₁)) ◃∙
       idp ◃∙
       ap (λ m → m) (eps α₂) ◃∎
-        =ₛ₁⟨ 6 & 2 & !-inv-r (ap (λ m → m ◻ f ◻ inv α₁) (eps α₂)) ⟩
+        =ₛ⟨ 6 & 2 & !-inv-r◃ (ap (λ m → m ◻ f ◻ inv α₁) (eps α₂)) ⟩
       eps α₁ ◃∙
       ap (λ m → f ◻ m) (lamb (inv α₁)) ◃∙
       α f (id₁ a) (inv α₁) ◃∙
       ap (λ m → m ◻ inv α₁) (! (ρ f)) ◃∙
       ap (λ m → m ◻ inv α₁) (lamb f) ◃∙
       ! (α (id₁ b) f (inv α₁)) ◃∙
-      idp ◃∙
       ! (lamb (f ◻ inv α₁)) ◃∙
       ! (ap (λ m → m) (eps α₁)) ◃∙
       idp ◃∙
       ap (λ m → m) (eps α₂) ◃∎
         =ₛ⟨ 1 & 3 & tri-bc◃-rot2 (inv α₁) f ⟩
-      eps α₁ ◃∙
-      ap (λ m → m ◻ inv α₁) (lamb f) ◃∙
-      ! (α (id₁ b) f (inv α₁)) ◃∙
-      idp ◃∙
-      ! (lamb (f ◻ inv α₁)) ◃∙
-      ! (ap (λ m → m) (eps α₁)) ◃∙
-      idp ◃∙
-      ap (λ m → m) (eps α₂) ◃∎
-        =ₛ₁⟨ 3 & 2 & idp ⟩
       eps α₁ ◃∙
       ap (λ m → m ◻ inv α₁) (lamb f) ◃∙
       ! (α (id₁ b) f (inv α₁)) ◃∙
@@ -351,14 +374,13 @@ module ae-unique {{_ : BicatStr j B₀}} {a b : B₀} {f : hom a b} where
       ! (ap (λ m → m) (eps α₁)) ◃∙
       idp ◃∙
       ap (λ m → m) (eps α₂) ◃∎
-        =ₛ₁⟨ 0 & 2 & !-ap-idf-r (eps α₁) ⟩
-      idp ◃∙
+        =ₛ⟨ 0 & 2 & !-ap-idf-r◃ (eps α₁) ⟩
       idp ◃∙
       ap (λ m → m) (eps α₂) ◃∎
         =ₛ₁⟨ ap-idf (eps α₂) ⟩
       eps α₂ ◃∎ ∎ₛ
 
-      where
+      where abstract
 
         aux1 : ap (λ m → m ◻ f) e-inv == ! (eta α₁) ∙ eta α₂
         aux1 = ∙'-rot-out (eta α₁) (ap (λ m → m ◻ f) e-inv) c
@@ -408,7 +430,7 @@ module ae-unique {{_ : BicatStr j B₀}} {a b : B₀} {f : hom a b} where
           ! (α (inv α₂) f (inv α₁)) ◃∙
           ! (ap (λ m → inv α₂ ◻ m) (eps α₁)) ◃∙
           ! (ρ (inv α₂)) ◃∎
-            =ₛ⟨ 0 & 4 & coher-inv-rot α₁ ⟩
+            =ₛ⟨ 0 & 4 & coher-inv-rot3 α₁ ⟩
           lamb (inv α₁) ◃∙
           ap (λ m → m ◻ inv α₁) (eta α₂) ◃∙
           ! (α (inv α₂) f (inv α₁)) ◃∙
@@ -449,8 +471,10 @@ module ae-unique {{_ : BicatStr j B₀}} {a b : B₀} {f : hom a b} where
             Σ (Adjequiv f) (λ α₂ → α₁ Adjeq≃ α₂)
           lemma =
             equiv
-              (λ ((inv₂ , e-inv) , ((eta₂ , e-eta) , (eps₂ , e-eps)) , (cm₂ , ci₂)) → (Adj-eqv inv₂ eta₂ eps₂ cm₂ ci₂) , e-inv , (e-eta , e-eps))
-              (λ ((Adj-eqv inv₂ eta₂ eps₂ cm₂ ci₂) , e-inv , (e-eta , e-eps)) → (inv₂ , e-inv) , ((eta₂ , e-eta) , (eps₂ , e-eps)) , (cm₂ , ci₂))
+              (λ ((inv₂ , e-inv) , ((eta₂ , e-eta) , (eps₂ , e-eps)) , (cm₂ , ci₂)) →
+                (Adj-eqv inv₂ eta₂ eps₂ cm₂ ci₂) , e-inv , (e-eta , e-eps))
+              (λ ((Adj-eqv inv₂ eta₂ eps₂ cm₂ ci₂) , e-inv , (e-eta , e-eps)) →
+                (inv₂ , e-inv) , ((eta₂ , e-eta) , (eps₂ , e-eps)) , (cm₂ , ci₂))
               (λ _ → idp)
               λ _ → idp
 

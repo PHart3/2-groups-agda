@@ -7,7 +7,7 @@ open import lib.NConnected
 open import lib.types.Sigma
 open import lib.types.Pointed
 open import lib.types.PtdMap-conv
-open import AdjEq
+open import AdjEqv
 open import 2SGrpMap
 open import 2Semigroup
 open import 2Grp
@@ -19,7 +19,7 @@ open import Univ-bc
 
 -- adjoint equivalences in our two specific settings of interest
 
-module AdjEq-exmps where
+module AdjEqv-exmps where
 
 open Adjequiv
 
@@ -51,7 +51,7 @@ module _ {i} {X : Ptd02 i} where
         (⊙∘-lunit φ ∙⊙∼ ⊙∘-pre φ (==-to-⊙-crd∼ (eps ae))) =∎
 
   abstract
-    adjeq-to-⊙≃-β : adjeq-to-⊙≃ AdjEq-id₁ == ⊙ide (fst X)
+    adjeq-to-⊙≃-β : adjeq-to-⊙≃ AdjEqv-id₁ == ⊙ide (fst X)
     adjeq-to-⊙≃-β = Subtype=-out (subtypeprop (is-equiv ∘ fst)) idp
 
   -- an equivalence of pointed types is an adjoint equivalence
@@ -152,7 +152,7 @@ module _ {i} {G₁ : Type i} {{η₁ : CohGrp G₁}} where
         (natiso-whisk-r (natiso2G-from-== (eps ae)) natiso-∘ unit-wksgrphom-l (grphom-forg f)) =∎
 
   abstract
-    adjeq-to-2g≃-β : adjeq-to-2g≃  AdjEq-id₁ == (cohgrphom (idf G₁) {{idf2G}} , idf-is-equiv G₁)
+    adjeq-to-2g≃-β : adjeq-to-2g≃  AdjEqv-id₁ == (cohgrphom (idf G₁) {{idf2G}} , idf-is-equiv G₁)
     adjeq-to-2g≃-β = Subtype=-out (subtypeprop (is-equiv ∘ map)) idp
 
 -- an equivalence of 2-groups is an adjoint equivalence
@@ -165,7 +165,7 @@ module _ {i} {G₁ : Type i} {η₁ : CohGrp G₁} where
       2grphom-ind
         (λ ((_ , η₂) : 2Grp-tot i) (((map , _) , σ) : η₁ 2g≃ η₂)
           → Adjequiv (cohgrphom {{η₁}} {{η₂}} map {{σ}}))
-        (snd (AdjEq-id₁ {{2grp-bicat-instance}}))
+        (snd (AdjEqv-id₁ {{2grp-bicat-instance}}))
 
   adjeq-to-2g≃-≃ : {G₂ : Type i} {{η₂ : CohGrp G₂}} →
     (AdjEquiv (2grp-bicat i) (_ , η₁) (_ , η₂)) ≃ (Σ (CohGrpHom {{η₁}} {{η₂}}) (λ φ → is-equiv (map {{η₁}} φ)))

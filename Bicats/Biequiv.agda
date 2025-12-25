@@ -2,7 +2,7 @@
 
 open import lib.Basics
 open import Bicategory
-open import AdjEq
+open import AdjEqv
 open import Biadj
 open import Univ-bc
 open import Psftor-inverse

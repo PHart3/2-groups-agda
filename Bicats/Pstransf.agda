@@ -8,7 +8,7 @@ open import lib.wild-cats.WildCats renaming
 open import Bicat-wild
 open import Bicategory
 open import Bicat-coher
-open import AdjEq
+open import AdjEqv
 
 module Pstransf where
 

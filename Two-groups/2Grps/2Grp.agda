@@ -1,6 +1,7 @@
 {-# OPTIONS --without-K --rewriting #-}
 
 open import lib.Basics
+open import lib.types.Sigma
 open import 2Semigroup
 
 module 2Grp where
@@ -50,12 +51,53 @@ record CohGrp {i} (X : Type i) : Type i where
       ap (mu (inv x)) (rinv x) ∙
       al (inv x) x (inv x) ∙
       ap (λ z → mu z (inv x)) (linv x)
-
--- underlying 2-semigroup structure of a 2-group
+      
 module _ {i} {G : Type i} where
 
+  CohGrp-data : (mu : G → G → G) (al : (x y z : G) → mu x (mu y z) == mu (mu x y) z) → Type i
+  CohGrp-data mu al = 
+    [ id ∈ G ] ×
+      [ lam ∈ ((x : G) → mu id x == x) ] × 
+      [ rho ∈ ((x : G) → mu x id == x) ] ×
+        [ tr ∈ ((x y : G) → ap (λ z → mu z y) (rho x) == ! (al x id y) ∙ ap (mu x) (lam y)) ] ×
+        [ pent ∈ ((w x y z : G) →
+            al w x (mu y z) ∙ al (mu w x) y z
+            ==
+            ap (mu w) (al x y z) ∙ al w (mu x y) z ∙ ap (λ v → mu v z) (al w x y)) ] ×
+        [ inv ∈ (G → G) ] ×
+          [ linv ∈ ((x : G) → mu (inv x) x == id) ] ×
+          [ rinv ∈ ((x : G) → id == mu x (inv x)) ] ×
+            (((x : G) →
+              lam x
+              ==
+              ap (λ z → mu z x) (rinv x) ∙
+              ! (al x (inv x) x) ∙
+              ap (mu x) (linv x) ∙
+              rho x) ×
+            ((x : G) →
+              ! (lam (inv x))
+              ==
+              ! (rho (inv x)) ∙
+              ap (mu (inv x)) (rinv x) ∙
+              al (inv x) x (inv x) ∙
+              ap (λ z → mu z (inv x)) (linv x)))
+
+  -- assembling CohGrp as a Σ-type
+  CohGrp-Σ-≃ :
+    Σ (WkSGrp G) (λ (wksgrp {{_}} mu al) → CohGrp-data mu al)
+      ≃
+    CohGrp G
+  CohGrp-Σ-≃ = equiv
+    (λ ((wksgrp {{1t}} mu al) , (id₁ , lam , rho , tr , pent , inv , linv , rinv , zz₁ , zz₂)) →
+      cohgrp {{1t}} id₁ mu lam rho al tr pent inv linv rinv zz₁ zz₂ )
+    (λ (cohgrp {{1t}} id₁ mu lam rho al tr pent inv linv rinv zz₁ zz₂) →
+      (wksgrp {{1t}} mu al) , (id₁ , lam , rho , tr , pent , inv , linv , rinv , zz₁ , zz₂))
+    (λ _ → idp)
+    λ _ → idp
+    
+  -- underlying 2-semigroup structure of a 2-group
   sgrp : CohGrp G → WkSGrp G
-  sgrp η = cohgrp (mu η) (al η) where open CohGrp
+  sgrp η = wksgrp (mu η) (al η) where open CohGrp
 
   instance
     sgrp-instance : {{η : CohGrp G}} → WkSGrp G

@@ -3,7 +3,7 @@
 open import lib.Basics
 open import 2Grp-bc
 open import Ptd-bc
-open import AdjEq-exmps
+open import AdjEqv-exmps
 open import Biequiv
 open import Biequiv-main
 open import Biadj-data.Loop-zig-zag

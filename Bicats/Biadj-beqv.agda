@@ -4,7 +4,7 @@ open import lib.Basics
 open import lib.types.Sigma
 open import lib.wild-cats.WildCats
 open import Bicategory
-open import AdjEq
+open import AdjEqv
 open import Bicat-wild
 open import Biadj
 open import Pstransf-SIP

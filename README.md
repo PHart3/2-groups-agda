@@ -84,7 +84,7 @@ collecting the main theorems.
   you have lots of available RAM. We have found that type-checking directly on a macOS with an M1 chip is
   much faster (but still intensive). See `Final/README.md` for relevant details.
 
-- Comment out the final two imports in `Final/Final-thms` to reduce the type-checking by over an hour.
+- Comment out the final four imports in `Final/Final-thms.agda` to reduce the type-checking by over half.
   Doing so will check all relevant type equivalences but not the biadjoint biequivalence.
 
 - Finally, we have included in this repo's root a zip file of the generated html files for all of the Agda code,
