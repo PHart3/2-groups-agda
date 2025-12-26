@@ -5,9 +5,10 @@ open import lib.NType2
 open import lib.FTID
 open import lib.types.Sigma
 open import Bicategory
-open import Bicat-coher
 open import AdjEqv
 open import Univ-bc
+
+-- SIP for adjoint equivalences
 
 module AdjEqv-SIP where
 
