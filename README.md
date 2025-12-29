@@ -18,7 +18,7 @@ collecting the main theorems.
 
 - `HoTT-Agda/`
 
-  A stripped down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
+  A stripped-down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
   with many changes and additions motivated by our construction
   of the biadjoint biequivalence and by the work on Sính triples.
 
