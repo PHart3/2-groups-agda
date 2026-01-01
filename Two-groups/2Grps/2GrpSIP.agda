@@ -106,14 +106,8 @@ module _ {i} (G₁ : Type i) (η₁ : CohGrp G₁) where
             ( φ , cohgrphomstrfull map-comp map-al map-id map-rho map-lam map-inv map-rinv map-linv ) )
           → ((G₂ , 1trunc₂) , φ) , ((mu₂ , map-comp) , ((id₂ , map-id) , (lam₂ , map-lam) , ((rho₂ , map-rho) ,
             ((al₂ , map-al) , ((inv₂ , map-inv) , (linv₂ , map-linv) , ((rinv₂ , map-rinv) , tr₂ , pent₂ , zz₁₂ , zz₂₂)))))))
-        (λ
-          (( G₂ , cohgrp {{1trunc₂}} id₂ mu₂ lam₂ rho₂ al₂ tr₂ pent₂ inv₂ linv₂ rinv₂ zz₁₂ zz₂₂ ) ,
-            ( φ , cohgrphomstrfull map-comp map-al map-id map-rho map-lam map-inv map-rinv map-linv ) )
-          → idp)
-        λ
-          (( ( G₂ , 1trunc₂ ) , φ ) , ( mu₂ , map-comp ) , (id₂ , map-id) , ( lam₂ , map-lam ) , ( rho₂ , map-rho ) ,
-            ( al₂ , map-al ) , ( inv₂ , map-inv ) , ( linv₂ , map-linv ) , ( rinv₂ , map-rinv ) , tr₂ , pent₂ , zz₁₂ , zz₂₂ )
-          → idp
+        (λ _ → idp)
+        λ _ → idp
 
   2grphomf-contr : is-contr (Σ (Σ (Type i) (λ G₂ → CohGrp G₂)) (λ (_ , η₂) → η₁ 2g≃-f η₂))
   2grphomf-contr = equiv-preserves-level (2grphomf-Σ-≃ ∘e (2grphomf-Σ-contr G₁ η₁)⁻¹)

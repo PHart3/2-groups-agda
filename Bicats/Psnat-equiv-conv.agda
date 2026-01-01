@@ -3,7 +3,7 @@
 open import lib.Basics
 open import Bicategory
 open import Pstransf
-open import AdjEq
+open import AdjEqv
 open import Psftor-SIP
 open import Pstransf-id
 open import Pstransf-SIP
