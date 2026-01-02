@@ -5,7 +5,7 @@ open import lib.NType2
 open import lib.types.Pi
 open import Bicategory
 open import Pstransf
-open import AdjEq
+open import AdjEqv
 open import Psftor-SIP
 open import Pstransf-id
 open import Pstransf-SIP

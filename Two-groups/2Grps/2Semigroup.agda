@@ -8,7 +8,7 @@ module 2Semigroup where
 
 -- (weak) 2-semigroup structure on a type
 record WkSGrp {i} (X : Type i) : Type i where
-  constructor cohgrp
+  constructor wksgrp
   field
     instance {{1trunc}} : has-level 1 X
     mu : X → X → X

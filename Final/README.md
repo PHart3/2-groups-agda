@@ -7,9 +7,9 @@
 The type-checking of this file is arduous. We have verified that the type-checker
 finishes successfully on the following machine:
 
-*macOS Sequoia 15.4.1, Apple M1 chip, 16 GB of RAM*
+*macOS Sequoia 15.6, Apple M1 chip, 16 GB of RAM*
 
-The type-checking takes about 255 minutes in total (see [stats.md](stats.md)).
+The type-checking takes about 4.8 hours in total (see [stats.md](stats.md)).
 Note that macOS, unlike Linux, dynamically alters the size of the swap
 space as the process runs. This is crucial because the type-checking uses
 as much as 28 GB of physical memory. Therefore, you will need to increase

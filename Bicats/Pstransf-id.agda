@@ -2,7 +2,7 @@
 
 open import lib.Basics
 open import Bicategory
-open import AdjEq
+open import AdjEqv
 open import Bicat-coher
 open import Pstransf
 open import Univ-bc
@@ -149,4 +149,4 @@ module _ {i₁ i₂ j₁ j₂} {B₀ : Type i₁} {C₀ : Type i₂}
 
     ps-≃-id : {R : Psfunctor-nc {{ξB}} {{ξC}}} → R psf-≃ R
     fst (ps-≃-id {R}) = Pstrans-id {R}
-    snd ps-≃-id _ = snd AdjEq-id₁
+    snd ps-≃-id _ = snd AdjEqv-id₁
