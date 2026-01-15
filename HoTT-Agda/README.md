@@ -33,7 +33,8 @@ The main library is more or less divided into four parts.
 - The fourth part is found in `lib.wild-cats` and develops wild category theory.
   In particular, it shows that every half-adjoint equivalence of wild categories (and its inverse) is fully faithful.
 
-In addition, this directory contains, in `FTID.agda`, a general form of the structure identity principle (SIP), which we use frequently.
+This directory also contains, among other things, a general form of the structure identity principle (SIP), 
+which is found in the file `FTID.agda` and is used frequently.
 
 ### Theorems (directory `theorems/`)
 
