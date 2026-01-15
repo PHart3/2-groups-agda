@@ -27,11 +27,13 @@ Structure of the source
 
 The main library is more or less divided into four parts.
 
-- The first part is exported in the module `lib.Basics` and contains essential constructions.
+- The first part is exported in the module `lib.Basics` and contains essential constructions. 
 - The second part is found in `lib.groups` and develops basic group theory.
 - The third part is found in `lib.types` and develops type formers.
 - The fourth part is found in `lib.wild-cats` and develops wild category theory.
   In particular, it shows that every half-adjoint equivalence of wild categories (and its inverse) is fully faithful.
+
+In addition, this directory contains, in `FTID.agda`, a general form of the structure identity principle (SIP), which we use frequently.
 
 ### Theorems (directory `theorems/`)
 
