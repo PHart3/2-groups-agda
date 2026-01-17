@@ -6,12 +6,12 @@
     
   We also derive a verified equality between them by way of univalence.
 
-  A preprint outlining our mechanization is located [here](https://phart3.github.io/2-groups-preprint.pdf).
-
 - We mechanize Owen Milner's equivalence between the type of *n*-groups (i.e., pointed connected *n*-types) and
   that of Sính triples (where *n* > 1).
 
 The code has been checked with Agda 2.6.4.3. 
+
+A preprint outlining the contents of the codebase is located [here](https://phart3.github.io/2-groups-preprint.pdf).
 
 ## Organization
 
