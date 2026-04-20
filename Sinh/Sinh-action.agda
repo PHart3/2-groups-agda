@@ -11,9 +11,6 @@ module Sinh-action where
 
 module _ {n : ℕ} {i : ULevel} (G@(X , cX , tX) : [ S (S n) , i ]-Groups) where
 
-  NGrp-Sinh–> : [ S (S n) , i ]-Groups → Sinh-triples (S n) i
-  NGrp-Sinh–> = –> NGrp-Sinh-≃
-
   NGrp-Sinh-≃-group : fst (fst (NGrp-Sinh–> G)) == ⊙Trunc ⟨ S n ⟩ X
   NGrp-Sinh-≃-group = idp
 

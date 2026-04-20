@@ -1,4 +1,4 @@
-{-# OPTIONS --without-K --rewriting --overlapping-instances #-}
+{-# OPTIONS --without-K --rewriting #-}
 
 open import HoTT
 open import lib.types.N-groups
@@ -32,8 +32,14 @@ module _ (n : ℕ) (i : ULevel) where
 module _ {n : ℕ} {i : ULevel} where
 
   -- [ S (S n) , i ]-Groups is defined in lib.types.N-groups
-  NGrp-Sinh-≃ : [ S (S n) , i ]-Groups ≃ Sinh-triples (S n) i
-  NGrp-Sinh-≃ =
+  NGrp-Sinh-≃-pre :
+    [ S (S n) , i ]-Groups
+      ≃
+    [ (X , cX , tX) ∈ [ S n , i ]-Groups ] ×
+      [ H ∈ (de⊙ X → AbGroup i) ] ×
+        Π⊙ X (λ u → Torsors i (⊙EM (H u) (S (S n))))
+          (pt (⊙Torsors (⊙EM (H (pt X)) (S (S n))) {{PtdTorsors-contr {{EM-conn (H (pt X))}} {{EM-SS-+2+ {G = H (pt X)}}}}}))
+  NGrp-Sinh-≃-pre =
     [ S (S n) , i ]-Groups
       ≃⟨ N-Grps-≃ ⟩
     [ (S n) , i , i ]-Groups-v2
@@ -96,21 +102,8 @@ module _ {n : ℕ} {i : ULevel} where
     [ (X , cX , tX) ∈ [ S n , i ]-Groups ] ×
       [ H ∈ (de⊙ X → AbGroup i) ] ×
           Π⊙ X (λ u → Torsors i (⊙EM (H u) (S (S n))))
-            (pt (⊙Torsors (⊙EM (H (pt X)) (S (S n))) {{PtdTorsors-contr {{EM-conn (H (pt X))}}}}))
-      ≃⟨ Σ-emap-r (λ (X , cX , tX) →
-           Σ-emap-r (λ H → Π⊙-==-ext ((λ u → (EM-Torsors-≃ (H u)) ⁻¹) , ptdness X H))) ⟩
-    [ (X , cX , tX) ∈ [ S n , i ]-Groups ] ×
-      [ H ∈ (de⊙ X → AbGroup i) ] ×
-        Π⊙ X (λ u → EM (H u) (S (S (S n)))) (ptEM (H (pt X)) (S (S (S n)))) ≃∎
+            (pt (⊙Torsors (⊙EM (H (pt X)) (S (S n))) {{PtdTorsors-contr {{EM-conn (H (pt X))}}}})) ≃∎
       module Sinh-classif-lemmas where
-
-        -- proof of pointedness in final equivalence
-        ptdness : (X : Ptd i) (H : de⊙ X → AbGroup i) →
-          fst (⊙–> (⊙EM-Torsors-≃ (H (pt X)) ⊙⁻¹))
-            (pt (⊙Torsors (⊙EM (H (pt X)) (S (S n))) {{PtdTorsors-contr {{EM-conn (H (pt X))}}}}))
-            ==
-          pt (⊙EM (H (pt X)) (S (S (S n))))
-        ptdness X H = ⊙–>-pt (⊙EM-Torsors-≃ (H (pt X)) {n} ⊙⁻¹)
 
         -- the second equivalence: adding singletons 
         orthog-contr :
@@ -185,6 +178,32 @@ module _ {n : ℕ} {i : ULevel} where
                   (ap (λ q → ap (λ tr → Ω^'S-abgroup n ⊙[ F u , x ] {{tr}}) q ∙' snd (snd (m u)) x)
                     (prop-has-all-paths {{=-preserves-level ⟨⟩}} _ _))))))))
               idp
+
+  -- we separate the last equivalence as elsewhere we want direct access to the preceding chain
+  NGrp-Sinh-≃ : [ S (S n) , i ]-Groups ≃ Sinh-triples (S n) i
+  NGrp-Sinh-≃ =
+    [ S (S n) , i ]-Groups
+      ≃⟨ NGrp-Sinh-≃-pre ⟩
+    [ (X , cX , tX) ∈ [ S n , i ]-Groups ] ×
+      [ H ∈ (de⊙ X → AbGroup i) ] ×
+          Π⊙ X (λ u → Torsors i (⊙EM (H u) (S (S n))))
+            (pt (⊙Torsors (⊙EM (H (pt X)) (S (S n))) {{PtdTorsors-contr {{EM-conn (H (pt X))}}}}))
+      ≃⟨ Σ-emap-r (λ (X , cX , tX) →
+           Σ-emap-r (λ H → Π⊙-==-ext ((λ u → (EM-Torsors-≃ (H u)) ⁻¹) , ptdness X H))) ⟩
+    [ (X , cX , tX) ∈ [ S n , i ]-Groups ] ×
+      [ H ∈ (de⊙ X → AbGroup i) ] ×
+        Π⊙ X (λ u → EM (H u) (S (S (S n)))) (ptEM (H (pt X)) (S (S (S n)))) ≃∎
+      module Sinh-classif-final where
+        ptdness : (X : Ptd i) (H : de⊙ X → AbGroup i) →
+          fst (⊙–> (⊙EM-Torsors-≃ (H (pt X)) ⊙⁻¹))
+            (pt (⊙Torsors (⊙EM (H (pt X)) (S (S n))) {{PtdTorsors-contr {{EM-conn (H (pt X))}}}}))
+            ==
+          pt (⊙EM (H (pt X)) (S (S (S n))))
+        ptdness X H = ⊙–>-pt (⊙EM-Torsors-≃ (H (pt X)) {n} ⊙⁻¹)
+
+
+  NGrp-Sinh–> : [ S (S n) , i ]-Groups → Sinh-triples (S n) i
+  NGrp-Sinh–> = –> NGrp-Sinh-≃
 
   {- a set-truncated version recovering the classical description
      of the Postnikov invariant as a cohomology class -}
