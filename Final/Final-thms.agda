@@ -8,6 +8,8 @@ module Final-thms where
 open import Sinh-classif public
 -- a description of the group action from the Sính triple of a given higher group
 open import Sinh-action public
+-- a description of the pullback of the associated cocycle along the basepoint section
+open import Sinh-fiber public
 
 {- type equivalence between coherent 2-groups and pointed connected 2-types as well as
    composite type equivalence between coherent 2-groups and Sính triples -}

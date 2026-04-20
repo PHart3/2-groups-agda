@@ -47,7 +47,7 @@ collecting the main theorems.
 - `Final/`
 
   A single file containing the final biadjoint biequivalence and equality, 
-  Milner's equivalence along with a description of the group action produced by the equivalence,
+  Milner's equivalence along with descriptions of the group action and cocycle produced by the equivalence,
   and the composite type equivalence between pointed connected 2-types and Sính triples.
 
   See `Final/README.md` for details and for the license of the work inside this directory.

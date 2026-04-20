@@ -7,7 +7,7 @@ open import homotopy.EilenbergMacLane
 open import torsors.Delooping
 open import Sinh-classif
 
-{- Consider the cocyle produced by the Sinh-triple for a given n-group BG.
+{- Consider the cocyle produced by the Sính triple for a given n-group BG.
    Its pullback along the basepoint section of the Eilenberg-MacLane type
    family is BG itself. -}
 
@@ -18,11 +18,15 @@ module _ {n : ℕ} {i : ULevel} (G@(X , cX , tX) : [ S (S n) , i ]-Groups) where
   open EMExplicit
 
   private
-  
+
+    -- action from the Sính triple
     action : de⊙ (⊙Trunc ⟨ S n ⟩ X) → AbGroup i
     action = fst (snd (NGrp-Sinh–> G))
 
+    -- cocycle from the Sính triple
     cocycle = snd (snd (NGrp-Sinh–> G))
+    
+    -- torsor variant of the cocycle
     cocycle-tors = snd (snd (–> NGrp-Sinh-≃-pre G))
 
   module _ (x : de⊙ (⊙Trunc ⟨ S n ⟩ X)) where
@@ -43,4 +47,7 @@ module _ {n : ℕ} {i : ULevel} (G@(X , cX , tX) : [ S (S n) , i ]-Groups) where
       (hfiber [_] x)
         ≃
       (fst cocycle x == pt (⊙EM (action x) (S (S (S n)))))
-    NGrp-Sinh-coc-fib-≃ = {!!} ∘e NGrp-Sinh-coc-tors-fib-≃
+    NGrp-Sinh-coc-fib-≃ =
+      post∙-equiv (⊙–>-pt ((⊙EM-Torsors-≃ (action x)) ⊙⁻¹)) ∘e
+      ap-equiv ((EM-Torsors-≃ (action x)) ⁻¹) _ _ ∘e
+      NGrp-Sinh-coc-tors-fib-≃
