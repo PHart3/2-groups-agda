@@ -10,7 +10,7 @@ consisting of an *n*-group BG, a G-module H : BG -> Ab, and a cohomology class i
 
 This directory also contains a proof that the action of the Sính triple for a given *n*-group BG (where *n* ≥ 2) is 
 the canonical action of the fundamental n-group Πₙ(BG) on the abelian group πₙ(BG). Finally, it contains a proof that 
-the pullback of the associated cocycle along the basepoint section of the Eilenberg-MacLane type family is BG itself.
+the equalizer of the associated cocycle with the basepoint section of the Eilenberg-MacLane type family is BG itself.
 
 ## License
 
