@@ -20,7 +20,7 @@ collecting the main theorems.
 
 - `HoTT-Agda/`
 
-  A stripped down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
+  A stripped-down version of Andrew Swan's [HoTT-Agda](https://github.com/awswan/HoTT-Agda/tree/agda-2.6.1-compatible) branch,
   with many changes and additions motivated by our construction
   of the biadjoint biequivalence and by Milner's equivalence.
 
@@ -47,7 +47,7 @@ collecting the main theorems.
 - `Final/`
 
   A single file containing the final biadjoint biequivalence and equality, 
-  Milner's equivalence along with a description of the group action produced by the equivalence,
+  Milner's equivalence along with descriptions of the group action and cocycle produced by the equivalence,
   and the composite type equivalence between pointed connected 2-types and Sính triples.
 
   See `Final/README.md` for details and for the license of the work inside this directory.
@@ -72,7 +72,7 @@ We have successfully tested the following Docker container on Linux with 16 GB o
    docker run --mount type=bind,source=./html,target=/Final/html 2group
    ```
 
-   This may take a few minutes. The HTML files will be under `html/`, and
+   This will take several minutes. The HTML files will be under `html/`, and
    `html/Final-thms.agda.html` will be the entry point.
 
 If you can avoid the overhead of Docker, we suggest that you do so even if you
@@ -81,8 +81,8 @@ have lots of available RAM.
 We have found that type-checking directly on a macOS with an M1 chip is much
 faster (but still intensive). See `Final/README.md` for relevant details.
 
-**Important:** Comment out the final two imports in `Final/Final-thms` to reduce the type-checking by over an hour. Doing so will check
-all relevant type equivalences but not the biadjoint biequivalence.
+**Important:** Comment out the final four imports in `Final/Final-thms.agda` to reduce the type-checking by over half.
+Doing so will check all relevant type equivalences but not the biadjoint biequivalence.
 
 ## Acknowledgement
 

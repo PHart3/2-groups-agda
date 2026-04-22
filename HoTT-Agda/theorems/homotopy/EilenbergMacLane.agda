@@ -200,8 +200,8 @@ module EMExplicit {i} (G : AbGroup i) where
     ap (fst (⊙–> (deloop'-fold (S n)))) (Ω^'S-fmap-∙ n (⊙–> (spectrum (S n))) g₁ g₂) ∙ deloop'-fold-pres-comp n _ _
 
   instance
-    EM-SS-+2+ : {n : ℕ} → has-level (S (S (⟨ n ⟩₋₂ +2+ S (S ⟨ n ⟩₋₂)))) (EM (S (S n)))
-    EM-SS-+2+ {n} =
+    EM-SS-+2+-exp : {n : ℕ} → has-level (S (S (⟨ n ⟩₋₂ +2+ S (S ⟨ n ⟩₋₂)))) (EM (S (S n)))
+    EM-SS-+2+-exp {n} =
       transport! (λ l → has-level l (EM (S (S n)))) (+2+-βr (S (S (⟨ n ⟩₋₂))) (S ⟨ n ⟩₋₂) ∙ +2+-βr (S (S (S (⟨ n ⟩₋₂)))) ⟨ n ⟩₋₂) aux
       where abstract
         aux : ∀ {n} → has-level (S (S (S (S (⟨ n ⟩₋₂ +2+ ⟨ n ⟩₋₂))))) (EM (S (S n)))
@@ -224,7 +224,7 @@ module EMExplicit {i} (G : AbGroup i) where
 -- making instance argument available for instance search
 module _ {i} {G : AbGroup i} where
 
-  open EMExplicit G renaming (EM-SS-+2+ to EM-SS-+2+-exp)
+  open EMExplicit G
   
   instance
     EM-SS-+2+ : {n : ℕ} → has-level (S (S (⟨ n ⟩₋₂ +2+ S (S ⟨ n ⟩₋₂)))) (EM (S (S n)))
