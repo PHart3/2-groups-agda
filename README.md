@@ -1,5 +1,7 @@
 ## Overview
 
+This repository accompanies the LICS 2026 paper [Classifying 2-Groups in Homotopy Type Theory](https://doi.org/10.4230/LIPIcs.LICS.2026.55) by Perry Hart and Owen Milner.
+
 - We construct a fully verified biadjoint biequivalence between
     1. the (2,1)-category of coherent 2-groups
     2. the (2,1)-category of 2-truncated connected pointed types.
@@ -10,8 +12,6 @@
   that of Sính triples (where *n* > 1).
 
 The code has been checked with Agda 2.6.4.3. 
-
-A preprint outlining the contents of the codebase is located [here](https://phart3.github.io/2-groups-preprint.pdf).
 
 ## Organization
 
